@@ -7,6 +7,8 @@
 
 # 下载 Mac 平台的
 
+地址：[http://www.ffmpegmac.net/](http://www.ffmpegmac.net/)
+
 下载完毕后加入到 bin 目录，然后随便找个视频
 
 - 使用 ffmpeg 转码
