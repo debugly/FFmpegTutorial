@@ -7,10 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B4056EEC1EC812D5001E73D3 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4056EEB1EC812D5001E73D3 /* VideoToolbox.framework */; };
+		B4056EEE1EC812DD001E73D3 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4056EED1EC812DD001E73D3 /* AudioToolbox.framework */; };
 		B42FD14E1EC7F92700F230EA /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD14D1EC7F92700F230EA /* main.m */; };
 		B42FD1511EC7F92700F230EA /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD1501EC7F92700F230EA /* AppDelegate.m */; };
-		B42FD1541EC7F92700F230EA /* FirstViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD1531EC7F92700F230EA /* FirstViewController.m */; };
-		B42FD1571EC7F92700F230EA /* SecondViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD1561EC7F92700F230EA /* SecondViewController.m */; };
+		B42FD1541EC7F92700F230EA /* AVCodecConfiguration.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD1531EC7F92700F230EA /* AVCodecConfiguration.m */; };
 		B42FD15A1EC7F92700F230EA /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B42FD1581EC7F92700F230EA /* Main.storyboard */; };
 		B42FD15C1EC7F92700F230EA /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B42FD15B1EC7F92700F230EA /* Assets.xcassets */; };
 		B42FD15F1EC7F92700F230EA /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B42FD15D1EC7F92700F230EA /* LaunchScreen.storyboard */; };
@@ -24,17 +25,19 @@
 		B42FD1EE1EC7F98E00F230EA /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FD1E61EC7F98E00F230EA /* libavutil.a */; };
 		B42FD1EF1EC7F98E00F230EA /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FD1E71EC7F98E00F230EA /* libswresample.a */; };
 		B42FD1F01EC7F98E00F230EA /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FD1E81EC7F98E00F230EA /* libswscale.a */; };
+		B42FD1F61EC80D0E00F230EA /* SupportURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD1F51EC80D0E00F230EA /* SupportURLProtocol.m */; };
+		B42FD2001EC8126700F230EA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FD1FF1EC8126700F230EA /* CoreMedia.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B4056EEB1EC812D5001E73D3 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		B4056EED1EC812DD001E73D3 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		B42FD1491EC7F92700F230EA /* FFmpeg001.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg001.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B42FD14D1EC7F92700F230EA /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B42FD14F1EC7F92700F230EA /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B42FD1501EC7F92700F230EA /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B42FD1521EC7F92700F230EA /* FirstViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FirstViewController.h; sourceTree = "<group>"; };
-		B42FD1531EC7F92700F230EA /* FirstViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FirstViewController.m; sourceTree = "<group>"; };
-		B42FD1551EC7F92700F230EA /* SecondViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SecondViewController.h; sourceTree = "<group>"; };
-		B42FD1561EC7F92700F230EA /* SecondViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SecondViewController.m; sourceTree = "<group>"; };
+		B42FD1521EC7F92700F230EA /* AVCodecConfiguration.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AVCodecConfiguration.h; sourceTree = "<group>"; };
+		B42FD1531EC7F92700F230EA /* AVCodecConfiguration.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AVCodecConfiguration.m; sourceTree = "<group>"; };
 		B42FD1591EC7F92700F230EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B42FD15B1EC7F92700F230EA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B42FD15E1EC7F92700F230EA /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -155,6 +158,9 @@
 		B42FD1E61EC7F98E00F230EA /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
 		B42FD1E71EC7F98E00F230EA /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		B42FD1E81EC7F98E00F230EA /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		B42FD1F41EC80D0E00F230EA /* SupportURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportURLProtocol.h; sourceTree = "<group>"; };
+		B42FD1F51EC80D0E00F230EA /* SupportURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportURLProtocol.m; sourceTree = "<group>"; };
+		B42FD1FF1EC8126700F230EA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +168,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B4056EEE1EC812DD001E73D3 /* AudioToolbox.framework in Frameworks */,
+				B4056EEC1EC812D5001E73D3 /* VideoToolbox.framework in Frameworks */,
+				B42FD2001EC8126700F230EA /* CoreMedia.framework in Frameworks */,
 				B42FD1EC1EC7F98E00F230EA /* libavfilter.a in Frameworks */,
 				B42FD1EF1EC7F98E00F230EA /* libswresample.a in Frameworks */,
 				B42FD1EB1EC7F98E00F230EA /* libavdevice.a in Frameworks */,
@@ -201,10 +210,10 @@
 			children = (
 				B42FD14F1EC7F92700F230EA /* AppDelegate.h */,
 				B42FD1501EC7F92700F230EA /* AppDelegate.m */,
-				B42FD1521EC7F92700F230EA /* FirstViewController.h */,
-				B42FD1531EC7F92700F230EA /* FirstViewController.m */,
-				B42FD1551EC7F92700F230EA /* SecondViewController.h */,
-				B42FD1561EC7F92700F230EA /* SecondViewController.m */,
+				B42FD1521EC7F92700F230EA /* AVCodecConfiguration.h */,
+				B42FD1531EC7F92700F230EA /* AVCodecConfiguration.m */,
+				B42FD1F41EC80D0E00F230EA /* SupportURLProtocol.h */,
+				B42FD1F51EC80D0E00F230EA /* SupportURLProtocol.m */,
 				B42FD1581EC7F92700F230EA /* Main.storyboard */,
 				B42FD15B1EC7F92700F230EA /* Assets.xcassets */,
 				B42FD15D1EC7F92700F230EA /* LaunchScreen.storyboard */,
@@ -225,6 +234,9 @@
 		B42FD1661EC7F96A00F230EA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				B4056EED1EC812DD001E73D3 /* AudioToolbox.framework */,
+				B4056EEB1EC812D5001E73D3 /* VideoToolbox.framework */,
+				B42FD1FF1EC8126700F230EA /* CoreMedia.framework */,
 				B42FD16B1EC7F97400F230EA /* libiconv.tbd */,
 				B42FD1691EC7F96F00F230EA /* libbz2.tbd */,
 				B42FD1671EC7F96A00F230EA /* libz.tbd */,
@@ -496,9 +508,9 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B42FD1571EC7F92700F230EA /* SecondViewController.m in Sources */,
 				B42FD1511EC7F92700F230EA /* AppDelegate.m in Sources */,
-				B42FD1541EC7F92700F230EA /* FirstViewController.m in Sources */,
+				B42FD1F61EC80D0E00F230EA /* SupportURLProtocol.m in Sources */,
+				B42FD1541EC7F92700F230EA /* AVCodecConfiguration.m in Sources */,
 				B42FD14E1EC7F92700F230EA /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -618,7 +630,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
-				HEADER_SEARCH_PATHS = ./ffmpeg/include;
+				HEADER_SEARCH_PATHS = ../ffmpeg/include;
 				INFOPLIST_FILE = FFmpeg001/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -633,7 +645,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ENABLE_BITCODE = NO;
-				HEADER_SEARCH_PATHS = ./ffmpeg/include;
+				HEADER_SEARCH_PATHS = ../ffmpeg/include;
 				INFOPLIST_FILE = FFmpeg001/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -662,6 +674,7 @@
 				B42FD1651EC7F92700F230EA /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
