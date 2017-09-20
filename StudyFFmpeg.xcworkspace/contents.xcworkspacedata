@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:FFmpeg002/FFmpeg002.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:FFmpeg001/FFmpeg001.xcodeproj">
    </FileRef>
 </Workspace>
