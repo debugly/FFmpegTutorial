@@ -10,6 +10,8 @@
 #import <libavutil/log.h>
 #import <libavformat/avformat.h>
 #import <libavcodec/avcodec.h>
+#import <libavutil/pixdesc.h>
+#import <libavutil/samplefmt.h>
 
 @interface ViewController ()
 
@@ -37,6 +39,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
     av_register_all();
     
     NSString *moviePath = [[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
+    ///该地址可以是网络的也可以是本地的；
+    moviePath = @"http://debugly.github.io/repository/test.mp4";
+    
+    if ([moviePath hasPrefix:@"http"]) {
+        //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
+        avformat_network_init();
+    }
     
     AVFormatContext *formatCtx = NULL;
     if (0 != avformat_open_input(&formatCtx, [moviePath cStringUsingEncoding:NSUTF8StringEncoding], NULL, NULL)) {
@@ -70,8 +79,15 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 int sample_rate = stream->codecpar->sample_rate;
                 int channels = stream->codecpar->channels;
                 int64_t brate = stream->codecpar->bit_rate;
-                int64_t duration = stream->duration;
-                [text appendFormat:@"\n%d Kbps，%.1f KHz, %d channels",(int)(brate/1000.0),sample_rate/1000.0,channels];
+//                int64_t duration = stream->duration;
+                
+                enum AVCodecID codecID = stream->codecpar->codec_id;
+                const char *codecDesc = avcodec_get_name(codecID);
+                
+                enum AVSampleFormat format = stream->codecpar->format;
+                const char * formatDesc = av_get_sample_fmt_name(format);
+                
+                [text appendFormat:@"\n\nAudio\n%d Kbps，%.1f KHz， %d channels，%s，%s",(int)(brate/1000.0),sample_rate/1000.0,channels,codecDesc,formatDesc];
             }
                 break;
             case AVMEDIA_TYPE_VIDEO:
@@ -80,7 +96,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 int vwidth = stream->codecpar->width;
                 int vheight = stream->codecpar->height;
                 enum AVCodecID codecID = stream->codecpar->codec_id;
+                const char *codecDesc = avcodec_get_name(codecID);
+                
                 CGFloat fps, timebase = 0.04;
+                enum AVPixelFormat format = stream->codecpar->format;
+                const char * formatDesc = av_get_pix_fmt_name(format);
                 
                 if (stream->time_base.den && stream->time_base.num) {
                     timebase = av_q2d(stream->time_base);
@@ -96,7 +116,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 
                 int64_t brate = stream->codecpar->bit_rate;
                 
-                [text appendFormat:@"\n%dKbps，%d*%d, at %.3fps",(int)(brate/1024.0),vwidth,vheight,fps];
+                [text appendFormat:@"\n\nVideo:\n%dKbps，%d*%d，at %.3fps， %s， %s",(int)(brate/1024.0),vwidth,vheight,fps,codecDesc,formatDesc];
             }
                 break;
             case AVMEDIA_TYPE_ATTACHMENT:
