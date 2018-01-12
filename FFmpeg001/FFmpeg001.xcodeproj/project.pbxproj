@@ -656,14 +656,14 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8YBM843B95;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = FFmpeg001/Info.plist;
+				INFOPLIST_FILE = "$(PROJECT_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ffmpeg/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.FFmpeg001";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.$(PROJECT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
 				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;
@@ -677,14 +677,14 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 8YBM843B95;
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = FFmpeg001/Info.plist;
+				INFOPLIST_FILE = "$(PROJECT_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/ffmpeg/lib",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.FFmpeg001";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.$(PROJECT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
 				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;

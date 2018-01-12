@@ -7,13 +7,15 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B4A4A9631FD39C7000174037 /* MRVideoFrameYUV.m in Sources */ = {isa = PBXBuildFile; fileRef = B4A4A9621FD39C7000174037 /* MRVideoFrameYUV.m */; };
+		B4A4A9661FD4420F00174037 /* OpenGLView20.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4A4A9651FD4420F00174037 /* OpenGLView20.mm */; };
+		B4DFC8D92001284C00FB3209 /* NSTimer+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */; };
 		DD8AF2751F6F6DD4002B2DAB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */; };
 		DD8AF2781F6F6DD4002B2DAB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2771F6F6DD4002B2DAB /* ViewController.m */; };
 		DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF2791F6F6DD4002B2DAB /* Main.storyboard */; };
 		DD8AF27D1F6F6DD4002B2DAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF27C1F6F6DD4002B2DAB /* Assets.xcassets */; };
 		DD8AF2801F6F6DD4002B2DAB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF27E1F6F6DD4002B2DAB /* LaunchScreen.storyboard */; };
 		DD8AF2831F6F6DD4002B2DAB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2821F6F6DD4002B2DAB /* main.m */; };
-		DD8AF30F1F6F7035002B2DAB /* FFmpegConfig.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF30E1F6F7035002B2DAB /* FFmpegConfig.xcconfig */; };
 		DD8AF5961F70DD93002B2DAB /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF5951F70DD93002B2DAB /* test.mp4 */; };
 		DD8AF6121F70E241002B2DAB /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8AF60B1F70E241002B2DAB /* libavcodec.a */; };
 		DD8AF6131F70E241002B2DAB /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8AF60C1F70E241002B2DAB /* libavdevice.a */; };
@@ -31,7 +33,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		DD8AF2701F6F6DD4002B2DAB /* FFmpeg002.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg002.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4A4A9611FD39C7000174037 /* MRVideoFrameYUV.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoFrameYUV.h; sourceTree = "<group>"; };
+		B4A4A9621FD39C7000174037 /* MRVideoFrameYUV.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrameYUV.m; sourceTree = "<group>"; };
+		B4A4A9641FD4420F00174037 /* OpenGLView20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView20.h; sourceTree = "<group>"; };
+		B4A4A9651FD4420F00174037 /* OpenGLView20.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLView20.mm; sourceTree = "<group>"; };
+		B4DFC8D72001284C00FB3209 /* NSTimer+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Util.h"; sourceTree = "<group>"; };
+		B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Util.m"; sourceTree = "<group>"; };
+		DD8AF2701F6F6DD4002B2DAB /* FFmpeg004.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg004.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD8AF2731F6F6DD4002B2DAB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		DD8AF2761F6F6DD4002B2DAB /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
@@ -193,7 +201,7 @@
 			children = (
 				DD8AF5971F70E241002B2DAB /* ffmpeg */,
 				DD8AF30E1F6F7035002B2DAB /* FFmpegConfig.xcconfig */,
-				DD8AF2721F6F6DD4002B2DAB /* FFmpeg002 */,
+				DD8AF2721F6F6DD4002B2DAB /* FFmpeg004 */,
 				DD8AF2711F6F6DD4002B2DAB /* Products */,
 				DD8AF6191F70E26D002B2DAB /* Frameworks */,
 			);
@@ -202,12 +210,12 @@
 		DD8AF2711F6F6DD4002B2DAB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DD8AF2701F6F6DD4002B2DAB /* FFmpeg002.app */,
+				DD8AF2701F6F6DD4002B2DAB /* FFmpeg004.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DD8AF2721F6F6DD4002B2DAB /* FFmpeg002 */ = {
+		DD8AF2721F6F6DD4002B2DAB /* FFmpeg004 */ = {
 			isa = PBXGroup;
 			children = (
 				DD8AF5941F70DD93002B2DAB /* resouce */,
@@ -215,13 +223,19 @@
 				DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */,
 				DD8AF2761F6F6DD4002B2DAB /* ViewController.h */,
 				DD8AF2771F6F6DD4002B2DAB /* ViewController.m */,
+				B4DFC8D72001284C00FB3209 /* NSTimer+Util.h */,
+				B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */,
+				B4A4A9611FD39C7000174037 /* MRVideoFrameYUV.h */,
+				B4A4A9621FD39C7000174037 /* MRVideoFrameYUV.m */,
+				B4A4A9641FD4420F00174037 /* OpenGLView20.h */,
+				B4A4A9651FD4420F00174037 /* OpenGLView20.mm */,
 				DD8AF2791F6F6DD4002B2DAB /* Main.storyboard */,
 				DD8AF27C1F6F6DD4002B2DAB /* Assets.xcassets */,
 				DD8AF27E1F6F6DD4002B2DAB /* LaunchScreen.storyboard */,
 				DD8AF2811F6F6DD4002B2DAB /* Info.plist */,
 				DD8AF2821F6F6DD4002B2DAB /* main.m */,
 			);
-			path = FFmpeg002;
+			path = FFmpeg004;
 			sourceTree = "<group>";
 		};
 		DD8AF5941F70DD93002B2DAB /* resouce */ = {
@@ -442,9 +456,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DD8AF26F1F6F6DD4002B2DAB /* FFmpeg002 */ = {
+		DD8AF26F1F6F6DD4002B2DAB /* FFmpeg004 */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DD8AF2861F6F6DD4002B2DAB /* Build configuration list for PBXNativeTarget "FFmpeg002" */;
+			buildConfigurationList = DD8AF2861F6F6DD4002B2DAB /* Build configuration list for PBXNativeTarget "FFmpeg004" */;
 			buildPhases = (
 				DD8AF26C1F6F6DD4002B2DAB /* Sources */,
 				DD8AF26D1F6F6DD4002B2DAB /* Frameworks */,
@@ -454,9 +468,9 @@
 			);
 			dependencies = (
 			);
-			name = FFmpeg002;
+			name = FFmpeg004;
 			productName = FFmpeg002;
-			productReference = DD8AF2701F6F6DD4002B2DAB /* FFmpeg002.app */;
+			productReference = DD8AF2701F6F6DD4002B2DAB /* FFmpeg004.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -466,7 +480,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = "许乾隆";
+				ORGANIZATIONNAME = "Awesome FFmpeg Study Demo";
 				TargetAttributes = {
 					DD8AF26F1F6F6DD4002B2DAB = {
 						CreatedOnToolsVersion = 9.0;
@@ -474,7 +488,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DD8AF26B1F6F6DD4002B2DAB /* Build configuration list for PBXProject "FFmpeg002" */;
+			buildConfigurationList = DD8AF26B1F6F6DD4002B2DAB /* Build configuration list for PBXProject "FFmpeg004" */;
 			compatibilityVersion = "Xcode 8.0";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -487,7 +501,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DD8AF26F1F6F6DD4002B2DAB /* FFmpeg002 */,
+				DD8AF26F1F6F6DD4002B2DAB /* FFmpeg004 */,
 			);
 		};
 /* End PBXProject section */
@@ -501,7 +515,6 @@
 				DD8AF27D1F6F6DD4002B2DAB /* Assets.xcassets in Resources */,
 				DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */,
 				DD8AF5961F70DD93002B2DAB /* test.mp4 in Resources */,
-				DD8AF30F1F6F7035002B2DAB /* FFmpegConfig.xcconfig in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -513,7 +526,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD8AF2781F6F6DD4002B2DAB /* ViewController.m in Sources */,
+				B4A4A9631FD39C7000174037 /* MRVideoFrameYUV.m in Sources */,
 				DD8AF2831F6F6DD4002B2DAB /* main.m in Sources */,
+				B4A4A9661FD4420F00174037 /* OpenGLView20.mm in Sources */,
+				B4DFC8D92001284C00FB3209 /* NSTimer+Util.m in Sources */,
 				DD8AF2751F6F6DD4002B2DAB /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -655,7 +671,7 @@
 				INFOPLIST_FILE = "$(PROJECT_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.$(PROJECT_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sohu.FFmpeg002;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
 				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;
@@ -672,7 +688,7 @@
 				INFOPLIST_FILE = "$(PROJECT_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.$(PROJECT_NAME)";
+				PRODUCT_BUNDLE_IDENTIFIER = com.sohu.FFmpeg002;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
 				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;
@@ -683,7 +699,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DD8AF26B1F6F6DD4002B2DAB /* Build configuration list for PBXProject "FFmpeg002" */ = {
+		DD8AF26B1F6F6DD4002B2DAB /* Build configuration list for PBXProject "FFmpeg004" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DD8AF2841F6F6DD4002B2DAB /* Debug */,
@@ -692,7 +708,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DD8AF2861F6F6DD4002B2DAB /* Build configuration list for PBXNativeTarget "FFmpeg002" */ = {
+		DD8AF2861F6F6DD4002B2DAB /* Build configuration list for PBXNativeTarget "FFmpeg004" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DD8AF2871F6F6DD4002B2DAB /* Debug */,
