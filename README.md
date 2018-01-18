@@ -14,3 +14,5 @@
 - 第三天：[macOS 上使用 ffmpeg](md/003.md)
 
 - 第四天：[介绍 3 种 iOS 上渲染视频的方式](md/004.md)
+
+- 第五天：[使用 AudioUnit 渲染音频](md/005.md)
