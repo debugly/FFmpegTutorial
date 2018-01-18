@@ -15,7 +15,6 @@
 #import <libavutil/samplefmt.h>
 #import <libavutil/imgutils.h>
 
-#import "MRVideoFrameYUV.h"
 #import <AVFoundation/AVSampleBufferDisplayLayer.h>
 #import "OpenGLView20.h"
 #import "NSTimer+Util.h"
