@@ -445,7 +445,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
 {
     if (audio->sample_fmt == AV_SAMPLE_FMT_S16) {
         
-        return  (int)_samplingRate == audio->sample_rate &&
+        return (int)_samplingRate == audio->sample_rate &&
         _numOutputChannels == audio->channels;
     }
     return NO;

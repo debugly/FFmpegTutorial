@@ -391,7 +391,7 @@
 			isa = PBXGroup;
 			children = (
 				B41051BE201103DC000C1196 /* ffmpeg2 */,
-				B49366FD2010E4FC0060AA0F /* Player */,
+				B49366FD2010E4FC0060AA0F /* AudioPlayer */,
 				B49366632010E4400060AA0F /* AppDelegate.h */,
 				B49366642010E4400060AA0F /* AppDelegate.m */,
 				DD1F27442011C0D10096335A /* ViewController.h */,
@@ -405,7 +405,7 @@
 			path = FFmpeg005;
 			sourceTree = "<group>";
 		};
-		B49366FD2010E4FC0060AA0F /* Player */ = {
+		B49366FD2010E4FC0060AA0F /* AudioPlayer */ = {
 			isa = PBXGroup;
 			children = (
 				B49366FE2010E4FC0060AA0F /* NSTimer+Util.h */,
@@ -415,7 +415,7 @@
 				DD1F27412011BCF70096335A /* MRAudioPlayer.h */,
 				DD1F27422011BCF70096335A /* MRAudioPlayer.m */,
 			);
-			path = Player;
+			path = AudioPlayer;
 			sourceTree = "<group>";
 		};
 		B493670D2010E52F0060AA0F /* Frameworks */ = {
