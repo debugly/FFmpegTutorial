@@ -23,16 +23,14 @@
 		B4105234201103DC000C1196 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B410522D201103DC000C1196 /* libswscale.a */; };
 		B4105240201104D9000C1196 /* FFmpeg2Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B410523F201104D9000C1196 /* FFmpeg2Config.xcconfig */; };
 		B49366652010E4400060AA0F /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B49366642010E4400060AA0F /* AppDelegate.m */; };
-		B49366682010E4400060AA0F /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B49366672010E4400060AA0F /* ViewController.m */; };
 		B493666B2010E4400060AA0F /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B49366692010E4400060AA0F /* Main.storyboard */; };
 		B493666D2010E4400060AA0F /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B493666C2010E4400060AA0F /* Assets.xcassets */; };
 		B49366702010E4400060AA0F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B493666E2010E4400060AA0F /* LaunchScreen.storyboard */; };
 		B49366732010E4400060AA0F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B49366722010E4400060AA0F /* main.m */; };
-		B49367082010E4FD0060AA0F /* MRAudioManager.m in Sources */ = {isa = PBXBuildFile; fileRef = B49367012010E4FC0060AA0F /* MRAudioManager.m */; };
-		B49367092010E4FD0060AA0F /* OpenGLView20.mm in Sources */ = {isa = PBXBuildFile; fileRef = B49367032010E4FC0060AA0F /* OpenGLView20.mm */; };
 		B493670A2010E4FD0060AA0F /* MRAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B49367042010E4FC0060AA0F /* MRAudioFrame.m */; };
-		B493670B2010E4FD0060AA0F /* MRVideoFrameYUV.m in Sources */ = {isa = PBXBuildFile; fileRef = B49367052010E4FC0060AA0F /* MRVideoFrameYUV.m */; };
 		B493670C2010E4FD0060AA0F /* NSTimer+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B49367062010E4FC0060AA0F /* NSTimer+Util.m */; };
+		DD1F27432011BCF70096335A /* MRAudioPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1F27422011BCF70096335A /* MRAudioPlayer.m */; };
+		DD1F27462011C0D10096335A /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD1F27452011C0D10096335A /* ViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -149,23 +147,19 @@
 		B49366602010E4400060AA0F /* FFmpeg005.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg005.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B49366632010E4400060AA0F /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B49366642010E4400060AA0F /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		B49366662010E4400060AA0F /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
-		B49366672010E4400060AA0F /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		B493666A2010E4400060AA0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		B493666C2010E4400060AA0F /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B493666F2010E4400060AA0F /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B49366712010E4400060AA0F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B49366722010E4400060AA0F /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B49366FE2010E4FC0060AA0F /* NSTimer+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Util.h"; sourceTree = "<group>"; };
-		B49366FF2010E4FC0060AA0F /* MRVideoFrameYUV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoFrameYUV.h; sourceTree = "<group>"; };
 		B49367002010E4FC0060AA0F /* MRAudioFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioFrame.h; sourceTree = "<group>"; };
-		B49367012010E4FC0060AA0F /* MRAudioManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioManager.m; sourceTree = "<group>"; };
-		B49367022010E4FC0060AA0F /* OpenGLView20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView20.h; sourceTree = "<group>"; };
-		B49367032010E4FC0060AA0F /* OpenGLView20.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLView20.mm; sourceTree = "<group>"; };
 		B49367042010E4FC0060AA0F /* MRAudioFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioFrame.m; sourceTree = "<group>"; };
-		B49367052010E4FC0060AA0F /* MRVideoFrameYUV.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrameYUV.m; sourceTree = "<group>"; };
 		B49367062010E4FC0060AA0F /* NSTimer+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Util.m"; sourceTree = "<group>"; };
-		B49367072010E4FC0060AA0F /* MRAudioManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioManager.h; sourceTree = "<group>"; };
+		DD1F27412011BCF70096335A /* MRAudioPlayer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRAudioPlayer.h; sourceTree = "<group>"; };
+		DD1F27422011BCF70096335A /* MRAudioPlayer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRAudioPlayer.m; sourceTree = "<group>"; };
+		DD1F27442011C0D10096335A /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		DD1F27452011C0D10096335A /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -400,8 +394,8 @@
 				B49366FD2010E4FC0060AA0F /* Player */,
 				B49366632010E4400060AA0F /* AppDelegate.h */,
 				B49366642010E4400060AA0F /* AppDelegate.m */,
-				B49366662010E4400060AA0F /* ViewController.h */,
-				B49366672010E4400060AA0F /* ViewController.m */,
+				DD1F27442011C0D10096335A /* ViewController.h */,
+				DD1F27452011C0D10096335A /* ViewController.m */,
 				B49366692010E4400060AA0F /* Main.storyboard */,
 				B493666C2010E4400060AA0F /* Assets.xcassets */,
 				B493666E2010E4400060AA0F /* LaunchScreen.storyboard */,
@@ -418,12 +412,8 @@
 				B49367062010E4FC0060AA0F /* NSTimer+Util.m */,
 				B49367002010E4FC0060AA0F /* MRAudioFrame.h */,
 				B49367042010E4FC0060AA0F /* MRAudioFrame.m */,
-				B49367022010E4FC0060AA0F /* OpenGLView20.h */,
-				B49367032010E4FC0060AA0F /* OpenGLView20.mm */,
-				B49366FF2010E4FC0060AA0F /* MRVideoFrameYUV.h */,
-				B49367052010E4FC0060AA0F /* MRVideoFrameYUV.m */,
-				B49367072010E4FC0060AA0F /* MRAudioManager.h */,
-				B49367012010E4FC0060AA0F /* MRAudioManager.m */,
+				DD1F27412011BCF70096335A /* MRAudioPlayer.h */,
+				DD1F27422011BCF70096335A /* MRAudioPlayer.m */,
 			);
 			path = Player;
 			sourceTree = "<group>";
@@ -514,12 +504,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B493670B2010E4FD0060AA0F /* MRVideoFrameYUV.m in Sources */,
-				B49366682010E4400060AA0F /* ViewController.m in Sources */,
-				B49367082010E4FD0060AA0F /* MRAudioManager.m in Sources */,
+				DD1F27462011C0D10096335A /* ViewController.m in Sources */,
+				DD1F27432011BCF70096335A /* MRAudioPlayer.m in Sources */,
 				B49366732010E4400060AA0F /* main.m in Sources */,
 				B493670C2010E4FD0060AA0F /* NSTimer+Util.m in Sources */,
-				B49367092010E4FD0060AA0F /* OpenGLView20.mm in Sources */,
 				B49366652010E4400060AA0F /* AppDelegate.m in Sources */,
 				B493670A2010E4FD0060AA0F /* MRAudioFrame.m in Sources */,
 			);
