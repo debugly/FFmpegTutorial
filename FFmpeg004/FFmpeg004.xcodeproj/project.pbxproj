@@ -25,7 +25,6 @@
 		DD8AF27D1F6F6DD4002B2DAB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF27C1F6F6DD4002B2DAB /* Assets.xcassets */; };
 		DD8AF2801F6F6DD4002B2DAB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF27E1F6F6DD4002B2DAB /* LaunchScreen.storyboard */; };
 		DD8AF2831F6F6DD4002B2DAB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2821F6F6DD4002B2DAB /* main.m */; };
-		DD8AF5961F70DD93002B2DAB /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF5951F70DD93002B2DAB /* test.mp4 */; };
 		DD8AF61B1F70E26E002B2DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8AF61A1F70E26E002B2DAB /* libz.tbd */; };
 		DD8AF61D1F70E277002B2DAB /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8AF61C1F70E277002B2DAB /* libbz2.tbd */; };
 		DD8AF61F1F70E281002B2DAB /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8AF61E1F70E281002B2DAB /* libiconv.tbd */; };
@@ -167,7 +166,6 @@
 		DD8AF27F1F6F6DD4002B2DAB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		DD8AF2811F6F6DD4002B2DAB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DD8AF2821F6F6DD4002B2DAB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		DD8AF5951F70DD93002B2DAB /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
 		DD8AF61A1F70E26E002B2DAB /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		DD8AF61C1F70E277002B2DAB /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
 		DD8AF61E1F70E281002B2DAB /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
@@ -431,7 +429,6 @@
 			isa = PBXGroup;
 			children = (
 				B4105241201245FD000C1196 /* VideoPlayer */,
-				DD8AF5941F70DD93002B2DAB /* resouce */,
 				DD8AF2731F6F6DD4002B2DAB /* AppDelegate.h */,
 				DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */,
 				DD8AF2761F6F6DD4002B2DAB /* ViewController.h */,
@@ -443,15 +440,6 @@
 				DD8AF2821F6F6DD4002B2DAB /* main.m */,
 			);
 			path = FFmpeg004;
-			sourceTree = "<group>";
-		};
-		DD8AF5941F70DD93002B2DAB /* resouce */ = {
-			isa = PBXGroup;
-			children = (
-				DD8AF5951F70DD93002B2DAB /* test.mp4 */,
-			);
-			name = resouce;
-			path = ../../resouce;
 			sourceTree = "<group>";
 		};
 		DD8AF6191F70E26D002B2DAB /* Frameworks */ = {
@@ -529,7 +517,6 @@
 				DD8AF2801F6F6DD4002B2DAB /* LaunchScreen.storyboard in Resources */,
 				DD8AF27D1F6F6DD4002B2DAB /* Assets.xcassets in Resources */,
 				DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */,
-				DD8AF5961F70DD93002B2DAB /* test.mp4 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
