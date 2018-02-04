@@ -2,15 +2,15 @@
 //  FFmpegConfig.xcconfig
 //  FFmpeg002
 //
-//  Created by 许乾隆 on 2017/9/18.
+//  Created by Matt Reach on 2017/9/18.
 //  Copyright © 2017年 Awesome FFmpeg Study Demo. All rights reserved.
 //  开源地址: https://github.com/debugly/StudyFFmpeg
 //
 
 //统一配置ffmpeg 库的路径，因为要写大量的demo，因此写个配置文件比较省事
-
-HEADER_SEARCH_PATHS = ../FFmpeg/FFmpeg-2.6.6/include
-LIBRARY_SEARCH_PATHS = $(inherited) ../FFmpeg/FFmpeg-2.6.6/lib
+FFmpeg = ../FFmpeg/FFmpeg-2.6.6
+HEADER_SEARCH_PATHS = $(FFmpeg)/include
+LIBRARY_SEARCH_PATHS = $(inherited) $(FFmpeg)/lib
 
 //fflibp = $(SRCROOT)/../ffmpeg/ffmpeg3/lib
 //OTHER_LDFLAGS = -llibavformat -L$(fflibp)

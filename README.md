@@ -1,11 +1,11 @@
 
-[![](md/imgs/ffmpeg.png)](http://ffmpeg.org/)
- 
-
+[![](md/imgs/ffmpeg.png)](http://ffmpeg.org/) 
+![](md/imgs/MR-16-9.png)
 
 > 我对 FFmpeg 充满了兴趣，因此抽时间找些资料自己学习下，最终目标是自己能够封装出一个 iOS 版的播放器。
 
-# Awesome FFmpeg Study Demo
+# Matt Reach's Awesome FFmpeg Study Demo
+
 
 - 第零天：[编译 FFmpeg 库](md/000.md)
 - 第一天：[查看编译 config，支持的协议](md/001.md)

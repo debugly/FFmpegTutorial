@@ -426,7 +426,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0900;
-				ORGANIZATIONNAME = "许乾隆";
+				ORGANIZATIONNAME = "Awesome FFmpeg Study Demo";
 				TargetAttributes = {
 					DD8AF26F1F6F6DD4002B2DAB = {
 						CreatedOnToolsVersion = 9.0;
