@@ -19,7 +19,6 @@
 		B42FD16C1EC7F97400F230EA /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FD16B1EC7F97400F230EA /* libiconv.tbd */; };
 		B42FD1F61EC80D0E00F230EA /* SupportURLProtocol.m in Sources */ = {isa = PBXBuildFile; fileRef = B42FD1F51EC80D0E00F230EA /* SupportURLProtocol.m */; };
 		B42FD2001EC8126700F230EA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B42FD1FF1EC8126700F230EA /* CoreMedia.framework */; };
-		B4D2CBD220275BEB00CF3516 /* FFmpeg2Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CBC920275BEB00CF3516 /* FFmpeg2Config.xcconfig */; };
 		B4D2CBD320275BEB00CF3516 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CBCB20275BEB00CF3516 /* libavutil.a */; };
 		B4D2CBD420275BEB00CF3516 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CBCC20275BEB00CF3516 /* libavfilter.a */; };
 		B4D2CBD520275BEB00CF3516 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CBCD20275BEB00CF3516 /* libavcodec.a */; };
@@ -473,7 +472,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				B42FD15F1EC7F92700F230EA /* LaunchScreen.storyboard in Resources */,
-				B4D2CBD220275BEB00CF3516 /* FFmpeg2Config.xcconfig in Resources */,
 				B4D2CBDB2027638700CF3516 /* Assets.xcassets in Resources */,
 				B42FD15A1EC7F92700F230EA /* Main.storyboard in Resources */,
 			);

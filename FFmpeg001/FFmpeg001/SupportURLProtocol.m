@@ -8,7 +8,6 @@
 
 #import "SupportURLProtocol.h"
 #import <libavformat/avformat.h>
-#include <libavcodec/avcodec.h>
 
 @interface SupportURLProtocol ()
 

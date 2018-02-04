@@ -19,7 +19,6 @@
 @property (weak, nonatomic) IBOutlet UITextView *tv;
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
 
-
 @end
 
 @implementation ViewController

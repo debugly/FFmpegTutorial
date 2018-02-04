@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B4D2CB5C20275BC200CF3516 /* FFmpeg2Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CB5320275BC100CF3516 /* FFmpeg2Config.xcconfig */; };
 		B4D2CB5D20275BC200CF3516 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CB5520275BC100CF3516 /* libavutil.a */; };
 		B4D2CB5E20275BC200CF3516 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CB5620275BC100CF3516 /* libavfilter.a */; };
 		B4D2CB5F20275BC200CF3516 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CB5720275BC100CF3516 /* libavcodec.a */; };
@@ -459,7 +458,6 @@
 			files = (
 				DD8AF2801F6F6DD4002B2DAB /* LaunchScreen.storyboard in Resources */,
 				DD8AF27D1F6F6DD4002B2DAB /* Assets.xcassets in Resources */,
-				B4D2CB5C20275BC200CF3516 /* FFmpeg2Config.xcconfig in Resources */,
 				DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
