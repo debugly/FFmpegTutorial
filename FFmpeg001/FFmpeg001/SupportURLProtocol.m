@@ -21,6 +21,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    ///ffmpeg v3不需要；
+    av_register_all();
+    
     NSString *inputProtocol = [self supportProtocols:YES];
     NSString *outputProtocol = [self supportProtocols:NO];
     
@@ -38,7 +41,7 @@
     while (1) {
         const char *p = avio_enum_protocols(a_pup, flag);
         if (p != NULL) {
-            protocolStr = [protocolStr stringByAppendingFormat:@"%s\n",p];
+            protocolStr = [protocolStr stringByAppendingFormat:@"    %s\n",p];
         }else{
             break;
         }

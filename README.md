@@ -7,6 +7,7 @@
 
 # Awesome FFmpeg Study Demo
 
+- 第零天：[编译 FFmpeg 库](md/000.md)
 - 第一天：[查看编译 config，支持的协议](md/001.md)
 
 - 第二天：[查看视频信息](md/002.md)
