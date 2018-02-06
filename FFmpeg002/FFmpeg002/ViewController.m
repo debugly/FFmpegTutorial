@@ -117,8 +117,6 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 ///音频流
             case AVMEDIA_TYPE_AUDIO:
             {
-                
-                //取出来流信息结构体
                 //采样率
                 int sample_rate = codec->sample_rate;
                 //声道数
@@ -142,15 +140,6 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 ///视频流
             case AVMEDIA_TYPE_VIDEO:
             {
-                /*
-                 老的获取方式
-                 AVCodecContext *codecCtx = stream->codec;
-                 codecCtx->width
-                 codecCtx->height
-                 codecCtx->codec_type
-                 */
-                //取出来流信息结构体
-                AVCodecContext *codec = stream->codec;
                 ///画面宽度，单位像素
                 int vwidth = codec->width;
                 ///画面高度，单位像素
