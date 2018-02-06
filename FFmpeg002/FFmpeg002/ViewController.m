@@ -101,7 +101,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///用于查看详细信息，调试的时候打出来看下很有必要
     av_dump_format(formatCtx, 0, [moviePath.lastPathComponent cStringUsingEncoding: NSUTF8StringEncoding], false);
     
-    /* 接下来，尝试找到我们关系的信息*/
+    /* 接下来，尝试找到我们关心的信息*/
     
     NSMutableString *text = [[NSMutableString alloc]init];
     
@@ -111,18 +111,19 @@ static void fflog(void *context, int level, const char *format, va_list args){
     for (NSInteger i = 0; i < formatCtx->nb_streams; i++) {
         
         AVStream *stream = formatCtx->streams[i];
-        enum AVMediaType codec_type = stream->codec->codec_type;
+        AVCodecContext *codec = stream->codec;
+        enum AVMediaType codec_type = codec->codec_type;
         switch (codec_type) {
                 ///音频流
             case AVMEDIA_TYPE_AUDIO:
             {
-                AVCodecContext *codec = stream->codec;
+                
                 //取出来流信息结构体
                 //采样率
                 int sample_rate = codec->sample_rate;
                 //声道数
                 int channels = codec->channels;
-                //比特率
+                //平均比特率
                 int64_t brate = codec->bit_rate;
                 //时长
                 int64_t duration = stream->duration;
