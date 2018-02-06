@@ -612,7 +612,6 @@
 				INFOPLIST_FILE = "$(PROJECT_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.$(PROJECT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
 				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;
@@ -629,7 +628,6 @@
 				INFOPLIST_FILE = "$(PROJECT_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.sohu-inc.$(PROJECT_NAME)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
 				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;

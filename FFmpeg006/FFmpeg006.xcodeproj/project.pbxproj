@@ -14,10 +14,10 @@
 		B4104FBD2010E88B000C1196 /* libbz2.1.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B4104FB42010E7E9000C1196 /* libbz2.1.0.tbd */; };
 		B4104FBE2010E88B000C1196 /* libz.1.2.5.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = B4104FB32010E7D6000C1196 /* libz.1.2.5.tbd */; };
 		B4104FC02010E9D1000C1196 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B4104FBF2010E9CD000C1196 /* CoreAudio.framework */; };
+		B4B9A30D2029E9AB00DD2762 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4B9A30C2029E9AB00DD2762 /* Assets.xcassets */; };
 		B4D2C884201F77A800CF3516 /* MRMoviePlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2C877201F77A800CF3516 /* MRMoviePlayer.m */; };
 		B4D2C885201F77A800CF3516 /* MRAudioFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2C878201F77A800CF3516 /* MRAudioFrame.m */; };
 		B4D2C886201F77A800CF3516 /* NSTimer+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2C879201F77A800CF3516 /* NSTimer+Util.m */; };
-		B4D2C887201F77A800CF3516 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4D2C87A201F77A800CF3516 /* Assets.xcassets */; };
 		B4D2C888201F77A800CF3516 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2C87B201F77A800CF3516 /* ViewController.m */; };
 		B4D2C889201F77A800CF3516 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D2C87C201F77A800CF3516 /* LaunchScreen.storyboard */; };
 		B4D2C88A201F77A800CF3516 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D2C87E201F77A800CF3516 /* Main.storyboard */; };
@@ -45,6 +45,7 @@
 		B4104FB82010E874000C1196 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		B4104FBF2010E9CD000C1196 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
 		B49366602010E4400060AA0F /* FFmpeg006.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg006.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B4B9A30C2029E9AB00DD2762 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../Assets.xcassets; sourceTree = "<group>"; };
 		B4D2C872201F77A800CF3516 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		B4D2C874201F77A800CF3516 /* MRMoviePlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMoviePlayer.h; sourceTree = "<group>"; };
 		B4D2C875201F77A800CF3516 /* NSTimer+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Util.h"; sourceTree = "<group>"; };
@@ -52,7 +53,6 @@
 		B4D2C877201F77A800CF3516 /* MRMoviePlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMoviePlayer.m; sourceTree = "<group>"; };
 		B4D2C878201F77A800CF3516 /* MRAudioFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioFrame.m; sourceTree = "<group>"; };
 		B4D2C879201F77A800CF3516 /* NSTimer+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Util.m"; sourceTree = "<group>"; };
-		B4D2C87A201F77A800CF3516 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../Assets.xcassets; sourceTree = "<group>"; };
 		B4D2C87B201F77A800CF3516 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		B4D2C87D201F77A800CF3516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		B4D2C87F201F77A800CF3516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -228,10 +228,10 @@
 			children = (
 				B4D2C873201F77A800CF3516 /* MoviePlayer */,
 				B4D2C872201F77A800CF3516 /* AppDelegate.h */,
-				B4D2C87A201F77A800CF3516 /* Assets.xcassets */,
 				B4D2C87B201F77A800CF3516 /* ViewController.m */,
 				B4D2C87C201F77A800CF3516 /* LaunchScreen.storyboard */,
 				B4D2C87E201F77A800CF3516 /* Main.storyboard */,
+				B4B9A30C2029E9AB00DD2762 /* Assets.xcassets */,
 				B4D2C880201F77A800CF3516 /* main.m */,
 				B4D2C881201F77A800CF3516 /* AppDelegate.m */,
 				B4D2C882201F77A800CF3516 /* Info.plist */,
@@ -498,8 +498,8 @@
 				B4D2C88D201F77A800CF3516 /* Info.plist in Resources */,
 				B4D2C88A201F77A800CF3516 /* Main.storyboard in Resources */,
 				B4D2CA7020275B1000CF3516 /* FFmpeg2Config.xcconfig in Resources */,
-				B4D2C887201F77A800CF3516 /* Assets.xcassets in Resources */,
 				B4D2C889201F77A800CF3516 /* LaunchScreen.storyboard in Resources */,
+				B4B9A30D2029E9AB00DD2762 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -659,7 +659,6 @@
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sohu.ff;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -676,7 +675,6 @@
 				INFOPLIST_FILE = "$(TARGET_NAME)/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.sohu.ff;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
