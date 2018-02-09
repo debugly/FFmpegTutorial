@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <libavutil/frame.h>
+#import <CoreMedia/CMSampleBuffer.h>
 
 @interface MRVideoFrame : NSObject
 
 @property (assign, nonatomic) float duration;
-@property (assign, nonatomic) AVFrame *frame;
+@property (assign, nonatomic) CMSampleBufferRef sampleBuffer;
 
 @end

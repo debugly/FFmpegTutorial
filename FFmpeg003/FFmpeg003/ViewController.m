@@ -42,17 +42,18 @@
 @implementation ViewController
 
 static void fflog(void *context, int level, const char *format, va_list args){
-    @autoreleasepool {
-        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-        
-        NSLog(@"ff:%d%@",level,message);
-    }
+//    @autoreleasepool {
+//        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+//
+//        NSLog(@"ff:%d%@",level,message);
+//    }
 }
 
 - (void)dealloc
 {
     if (self.formatCtx) {
-        avformat_close_input(self.formatCtx);
+        AVFormatContext *formatCtx = self.formatCtx;
+        avformat_close_input(&formatCtx);
     }
 }
 
@@ -72,7 +73,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     _stream_index_video = -1;
     _videoFrames = [NSMutableArray array];
     
-    //av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
+    av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
     //av_log_set_flags(AV_LOG_SKIP_REPEATED);
     
     ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
@@ -81,7 +82,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
     moviePath = @"http://debugly.cn/repository/test.mp4";
-    moviePath = @"http://10.7.36.51/ffmpeg-test/test.mp4";
+    moviePath = @"http://localhost/ffmpeg-test/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -118,6 +119,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
             }
         }
     }
+    
+    NSLog(@"buffedDuration : %g",buffedDuration);
+    
     return buffedDuration >= kMinBufferDuration;
 }
 
@@ -137,7 +141,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         }
     }
     
-    NSLog(@"buffedDuration : %g",buffedDuration);
+//    NSLog(@"buffedDuration : %g",buffedDuration);
     
     return buffedDuration >= kMinBufferDuration;
 }
@@ -163,7 +167,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         float interval = videoFrame.duration;
         [self displayVideoFrame:videoFrame];
         const NSTimeInterval time = MAX(interval, 0.01);
-        //    NSLog(@"after %fs tick",time);
+            NSLog(@"after %fs tick",time);
         
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
         dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -173,7 +177,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         [self.view bringSubviewToFront:_indicatorView];
         [_indicatorView startAnimating];
         _weakSelf_SL
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(12 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             _strongSelf_SL
             [self videoTick];
         });
@@ -222,10 +226,12 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         
                         if (video_frame->format == AV_PIX_FMT_YUV420P || video_frame->format == AV_PIX_FMT_YUVJ420P) {
                             unsigned char *nv12 = NULL;
+                            
                             int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
                             if (nv12Size > 0){
                                 
                                 UIImage *image = [self NV12toUIImage:self.width h:self.height buffer:nv12];
+                                
                                 free(nv12);
                                 nv12 = NULL;
                                 const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
@@ -236,6 +242,8 @@ static void fflog(void *context, int level, const char *format, va_list args){
                                 @synchronized(self) {
                                     [self.videoFrames addObject:frame];
                                 }
+                                
+                                
                             }
                         }
                     }];
@@ -357,11 +365,18 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
         NSLog(@"Unable to create cvpixelbuffer %d", result);
     }
     
+    UIImage *image = [self cvPixelBufferReftoUIImage:pixelBuffer w:w h:h];
+    return image;
+}
+
+//性能是很差,平均需要 0.3s，很不适合用来渲染视频 ！！！
+- (UIImage *)cvPixelBufferReftoUIImage:(CVPixelBufferRef)pixelBuffer w:(int)w h:(int)h
+{
     // CIImage Conversion
     CIImage *coreImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+    NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
     
     CIContext *context = [CIContext contextWithOptions:nil];
-    
     
     ///引发内存泄露? https://stackoverflow.com/questions/32520082/why-is-cicontext-createcgimage-causing-a-memory-leak
     CGImageRef cgImage = [context createCGImage:coreImage
@@ -371,12 +386,14 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     UIImage *uiImage = [[UIImage alloc] initWithCGImage:cgImage
                                                   scale:1.0
                                             orientation:UIImageOrientationUp];
-    
+    NSTimeInterval end = CFAbsoluteTimeGetCurrent();
+    NSLog(@"decode an image cost :%g",end-begin);
     CVPixelBufferRelease(pixelBuffer);
     CGImageRelease(cgImage);
     
     return uiImage;
 }
+
 - (void)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
@@ -472,49 +489,21 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     /*AVFormatContext 的 streams 变量是个数组，里面存放了 nb_streams 个元素，每个元素都是一个 AVStream */
     [text appendFormat:@"共%u个流，%llds",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
     //遍历所有的流
-    for (NSInteger i = 0; i < formatCtx->nb_streams; i++) {
+    for (unsigned int  i = 0; i < formatCtx->nb_streams; i++) {
         
         AVStream *stream = formatCtx->streams[i];
         AVCodecContext *codec = stream->codec;
-        enum AVMediaType codec_type = codec->codec_type;
-        switch (codec_type) {
-                ///音频流
-            case AVMEDIA_TYPE_AUDIO:
-            {
-                //采样率
-                int sample_rate = codec->sample_rate;
-                //声道数
-                int channels = codec->channels;
-                //平均比特率
-                int64_t brate = codec->bit_rate;
-                //时长
-                int64_t duration = stream->duration;
-                //解码器id
-                enum AVCodecID codecID = codec->codec_id;
-                //根据解码器id找到对应名称
-                const char *codecDesc = avcodec_get_name(codecID);
-                //音频采样格式
-                enum AVSampleFormat format = codec->sample_fmt;
-                //获取音频采样格式名称
-                const char * formatDesc = av_get_sample_fmt_name(format);
-                
-                [text appendFormat:@"\n\nAudio\n%d Kbps，%.1f KHz， %d channels，%s，%s，duration:%lld",(int)(brate/1000.0),sample_rate/1000.0,channels,codecDesc,formatDesc,duration];
-            }
-                break;
+        
+        switch (codec->codec_type) {
                 ///视频流
             case AVMEDIA_TYPE_VIDEO:
             {
                 _stream_index_video = i;
             }
                 break;
-            case AVMEDIA_TYPE_ATTACHMENT:
-            {
-                NSLog(@"附加信息流:%ld",i);
-            }
-                break;
             default:
             {
-                NSLog(@"其他流:%ld",i);
+                
             }
                 break;
         }

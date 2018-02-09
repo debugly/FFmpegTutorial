@@ -10,22 +10,21 @@
 
 @implementation MRVideoFrame
 
-- (void)setFrame:(AVFrame *)frame
+- (void)setSampleBuffer:(CMSampleBufferRef)sampleBuffer
 {
-    if (frame != _frame) {
-        if (_frame) {
-            av_frame_unref(_frame);
+    if (sampleBuffer != _sampleBuffer) {
+        if (_sampleBuffer) {
+            CFRelease(sampleBuffer);
         }
-        AVFrame *avf = av_frame_alloc();
-        av_frame_ref(avf, frame);
-        _frame = avf;
+        CFRetain(sampleBuffer);
+        _sampleBuffer = sampleBuffer;
     }
 }
 
 - (void)dealloc
 {
-    if (_frame) {
-        av_frame_unref(_frame);
+    if (_sampleBuffer) {
+        CFRelease(_sampleBuffer);
     }
 }
 
