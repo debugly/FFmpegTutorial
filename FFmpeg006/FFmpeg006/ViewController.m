@@ -280,7 +280,6 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (void)displayVideoFrame:(MRVideoFrame *)frame
 {
     if(!self.glView){
-        
         CGSize vSize = self.view.bounds.size;
         CGFloat vh = vSize.width * self.height / self.width;
         CGRect rect = CGRectMake(0, (vSize.height-vh)/2, vSize.width , vh);

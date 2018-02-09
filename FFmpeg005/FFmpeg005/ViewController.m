@@ -300,7 +300,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
     if(!self.glContext){
         self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
         self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
-        CGRect rect = CGRectMake((self.view.bounds.size.width - self.width)/2.0, (self.view.bounds.size.height - self.height)/2.0, self.width, self.height);
+        
+        CGSize vSize = self.view.bounds.size;
+        CGFloat vh = vSize.width * self.height / self.width;
+        CGRect rect = CGRectMake(0, (vSize.height-vh)/2, vSize.width , vh);
         self.glView = [[GLKView alloc] initWithFrame:rect context:self.glContext];
         [self.view addSubview:self.glView];
     }
