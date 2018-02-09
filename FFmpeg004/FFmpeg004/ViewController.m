@@ -86,7 +86,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
     moviePath = @"http://debugly.cn/repository/test.mp4";
-    moviePath = @"http://localhost/ffmpeg-test/test.mp4";
+    moviePath = @"http://192.168.3.2/ffmpeg-test/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -95,16 +95,19 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         [self openStreamWithPath:moviePath completion:^(AVFormatContext *formatCtx){
-            
-            dispatch_async(dispatch_get_main_queue(), ^{
-                self.formatCtx = formatCtx;
-                
-                [self openVideoStream];
-                
-                [self startReadFrames];
-                
-                [self videoTick];
-            });
+            if (formatCtx) {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    self.formatCtx = formatCtx;
+                    
+                    [self openVideoStream];
+                    
+                    [self startReadFrames];
+                    
+                    [self videoTick];
+                });
+            }else{
+                NSLog(@"不能打开流");
+            }
         }];
     });
 }
@@ -467,45 +470,51 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     if (0 != avformat_open_input(&formatCtx, [moviePath cStringUsingEncoding:NSUTF8StringEncoding], NULL, NULL)) {
         ///关闭，释放内存，置空
         avformat_close_input(&formatCtx);
-    }
-    
-    /* 刚才只是打开了文件，检测了下文件头而已，并没有去找流信息；因此开始读包以获取流信息*/
-    if (0 != avformat_find_stream_info(formatCtx, NULL)) {
-        avformat_close_input(&formatCtx);
-    }
-    
-    ///用于查看详细信息，调试的时候打出来看下很有必要
-    av_dump_format(formatCtx, 0, [moviePath.lastPathComponent cStringUsingEncoding: NSUTF8StringEncoding], false);
-    
-    /* 接下来，尝试找到我们关心的信息*/
-    
-    NSMutableString *text = [[NSMutableString alloc]init];
-    
-    /*AVFormatContext 的 streams 变量是个数组，里面存放了 nb_streams 个元素，每个元素都是一个 AVStream */
-    [text appendFormat:@"共%u个流，%llds",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
-    //遍历所有的流
-    for (unsigned int  i = 0; i < formatCtx->nb_streams; i++) {
-        
-        AVStream *stream = formatCtx->streams[i];
-        AVCodecContext *codec = stream->codec;
-        
-        switch (codec->codec_type) {
-                ///视频流
-            case AVMEDIA_TYPE_VIDEO:
-            {
-                _stream_index_video = i;
-            }
-                break;
-            default:
-            {
-                
-            }
-                break;
+        if (completion) {
+            completion(NULL);
         }
-    }
-    
-    if (completion) {
-        completion(formatCtx);
+    }else{
+        /* 刚才只是打开了文件，检测了下文件头而已，并没有去找流信息；因此开始读包以获取流信息*/
+        if (0 != avformat_find_stream_info(formatCtx, NULL)) {
+            avformat_close_input(&formatCtx);
+            if (completion) {
+                completion(NULL);
+            }
+        }else{
+            ///用于查看详细信息，调试的时候打出来看下很有必要
+            av_dump_format(formatCtx, 0, [moviePath.lastPathComponent cStringUsingEncoding: NSUTF8StringEncoding], false);
+            
+            /* 接下来，尝试找到我们关心的信息*/
+            
+            NSMutableString *text = [[NSMutableString alloc]init];
+            
+            /*AVFormatContext 的 streams 变量是个数组，里面存放了 nb_streams 个元素，每个元素都是一个 AVStream */
+            [text appendFormat:@"共%u个流，%llds",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
+            //遍历所有的流
+            for (unsigned int  i = 0; i < formatCtx->nb_streams; i++) {
+                
+                AVStream *stream = formatCtx->streams[i];
+                AVCodecContext *codec = stream->codec;
+                
+                switch (codec->codec_type) {
+                        ///视频流
+                    case AVMEDIA_TYPE_VIDEO:
+                    {
+                        _stream_index_video = i;
+                    }
+                        break;
+                    default:
+                    {
+                        
+                    }
+                        break;
+                }
+            }
+            
+            if (completion) {
+                completion(formatCtx);
+            }
+        }
     }
 }
 

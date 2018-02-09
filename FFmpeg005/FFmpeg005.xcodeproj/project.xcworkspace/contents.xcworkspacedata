@@ -2,6 +2,6 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "self:FFmpeg005.xcodeproj">
+      location = "self:/Users/xuqianlong/GitWorkspace/StudyFFmpeg/FFmpeg005/FFmpeg005.xcodeproj">
    </FileRef>
 </Workspace>

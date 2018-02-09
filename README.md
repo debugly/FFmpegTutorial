@@ -17,7 +17,7 @@
 
 - 第四天：[使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md) √
 
-- 第五天：[使用 CIImage，OpenGL 渲染视频](md/005.md)
+- 第五天：[使用 CIImage，OpenGL 渲染视频](md/005.md) √
 
 - 第六天：[使用 OpenGL 渲染视频](md/006.md)
 
