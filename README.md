@@ -17,14 +17,16 @@
 
 - 第四天：[使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md) √
 
-- 第五天：[使用 OPENGL 渲染视频](md/005.md)
+- 第五天：[使用 CIImage，OpenGL 渲染视频](md/005.md)
 
-- 第六天：[封装一个简易的视频播放器](md/006.md)
+- 第六天：[使用 OpenGL 渲染视频](md/006.md)
 
-- 第七天：[使用 AudioQueue 渲染音频](md/007.md)
+- 第七天：[封装一个简易的视频播放器](md/0077.md)
 
-- 第八天：[使用 AudioUnit 渲染音频](md/008.md)
+- 第八天：[使用 AudioQueue 渲染音频](md/008.md)
 
-- 第九天：[封装一个简易的音频播放器](md/009.md)
+- 第九天：[使用 AudioUnit 渲染音频](md/009.md)
 
-- 第十天：[封装 MRMoviePlayer 视频播放器](md/010.md)
+- 第十天：[封装一个简易的音频播放器](md/010.md)
+
+- 第十一天：[封装 MRMoviePlayer 视频播放器](md/011.md)
