@@ -7,9 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		B4D2CC77202899B000CF3516 /* MRVideoPlayer.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC66202899B000CF3516 /* MRVideoPlayer.m */; };
 		B4D2CC78202899B000CF3516 /* MRVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC68202899B000CF3516 /* MRVideoFrame.m */; };
-		B4D2CC79202899B000CF3516 /* OpenGLView20.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC6B202899B000CF3516 /* OpenGLView20.mm */; };
 		B4D2CC7A202899B000CF3516 /* NSTimer+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC6C202899B000CF3516 /* NSTimer+Util.m */; };
 		B4D2CC7B202899B000CF3516 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC6E202899B000CF3516 /* ViewController.m */; };
 		B4D2CC7C202899B000CF3516 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CC6F202899B000CF3516 /* LaunchScreen.storyboard */; };
@@ -36,12 +34,8 @@
 
 /* Begin PBXFileReference section */
 		B4D2CC64202899B000CF3516 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		B4D2CC66202899B000CF3516 /* MRVideoPlayer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoPlayer.m; sourceTree = "<group>"; };
 		B4D2CC67202899B000CF3516 /* NSTimer+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Util.h"; sourceTree = "<group>"; };
 		B4D2CC68202899B000CF3516 /* MRVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrame.m; sourceTree = "<group>"; };
-		B4D2CC69202899B000CF3516 /* OpenGLView20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView20.h; sourceTree = "<group>"; };
-		B4D2CC6A202899B000CF3516 /* MRVideoPlayer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoPlayer.h; sourceTree = "<group>"; };
-		B4D2CC6B202899B000CF3516 /* OpenGLView20.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLView20.mm; sourceTree = "<group>"; };
 		B4D2CC6C202899B000CF3516 /* NSTimer+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Util.m"; sourceTree = "<group>"; };
 		B4D2CC6D202899B000CF3516 /* MRVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoFrame.h; sourceTree = "<group>"; };
 		B4D2CC6E202899B000CF3516 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
@@ -207,10 +201,6 @@
 			children = (
 				B4D2CC67202899B000CF3516 /* NSTimer+Util.h */,
 				B4D2CC6C202899B000CF3516 /* NSTimer+Util.m */,
-				B4D2CC69202899B000CF3516 /* OpenGLView20.h */,
-				B4D2CC6B202899B000CF3516 /* OpenGLView20.mm */,
-				B4D2CC6A202899B000CF3516 /* MRVideoPlayer.h */,
-				B4D2CC66202899B000CF3516 /* MRVideoPlayer.m */,
 				B4D2CC6D202899B000CF3516 /* MRVideoFrame.h */,
 				B4D2CC68202899B000CF3516 /* MRVideoFrame.m */,
 			);
@@ -503,8 +493,6 @@
 			files = (
 				B4D2CC7A202899B000CF3516 /* NSTimer+Util.m in Sources */,
 				B4D2CC78202899B000CF3516 /* MRVideoFrame.m in Sources */,
-				B4D2CC79202899B000CF3516 /* OpenGLView20.mm in Sources */,
-				B4D2CC77202899B000CF3516 /* MRVideoPlayer.m in Sources */,
 				B4D2CC7E202899B000CF3516 /* main.m in Sources */,
 				B4D2CC7B202899B000CF3516 /* ViewController.m in Sources */,
 				B4D2CC7F202899B000CF3516 /* AppDelegate.m in Sources */,

@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libavutil/frame.h>
+#import <UIKit/UIImage.h>
 
 @interface MRVideoFrame : NSObject
 
 @property (assign, nonatomic) float duration;
-@property (assign, nonatomic) AVFrame *frame;
+@property (strong, nonatomic) UIImage *image;
 
 @end

@@ -13,7 +13,7 @@
 
 - 第二天：[查看音视频流信息](md/002.md) √
 
-- 第三天：[使用 UIImageView 渲染视频](md/003.md)
+- 第三天：[使用 UIImageView 渲染视频](md/003.md) √
 
 - 第四天：[使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md)
 
