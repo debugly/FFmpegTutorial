@@ -17,6 +17,7 @@
 		B4FA67E1202DE8A600A6A120 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67D9202DE8A600A6A120 /* libavdevice.a */; };
 		B4FA67E2202DE8A600A6A120 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67DA202DE8A600A6A120 /* libswresample.a */; };
 		B4FA67E3202DE8A600A6A120 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67DB202DE8A600A6A120 /* libswscale.a */; };
+		B4FA67E6202DFB6800A6A120 /* OpenGLView20.mm in Sources */ = {isa = PBXBuildFile; fileRef = B4FA67E4202DFB6800A6A120 /* OpenGLView20.mm */; };
 		DD8AF2751F6F6DD4002B2DAB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */; };
 		DD8AF2781F6F6DD4002B2DAB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2771F6F6DD4002B2DAB /* ViewController.m */; };
 		DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF2791F6F6DD4002B2DAB /* Main.storyboard */; };
@@ -136,6 +137,8 @@
 		B4FA67D9202DE8A600A6A120 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavdevice.a; sourceTree = "<group>"; };
 		B4FA67DA202DE8A600A6A120 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		B4FA67DB202DE8A600A6A120 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		B4FA67E4202DFB6800A6A120 /* OpenGLView20.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = OpenGLView20.mm; sourceTree = "<group>"; };
+		B4FA67E5202DFB6800A6A120 /* OpenGLView20.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = OpenGLView20.h; sourceTree = "<group>"; };
 		DD8AF2701F6F6DD4002B2DAB /* FFmpeg006.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg006.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD8AF2731F6F6DD4002B2DAB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -181,6 +184,8 @@
 		B4105241201245FD000C1196 /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				B4FA67E5202DFB6800A6A120 /* OpenGLView20.h */,
+				B4FA67E4202DFB6800A6A120 /* OpenGLView20.mm */,
 				B4DFC8D72001284C00FB3209 /* NSTimer+Util.h */,
 				B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */,
 				B4105245201252CE000C1196 /* MRVideoFrame.h */,
@@ -490,6 +495,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD8AF2781F6F6DD4002B2DAB /* ViewController.m in Sources */,
+				B4FA67E6202DFB6800A6A120 /* OpenGLView20.mm in Sources */,
 				B4105247201252CE000C1196 /* MRVideoFrame.m in Sources */,
 				DD8AF2831F6F6DD4002B2DAB /* main.m in Sources */,
 				B4DFC8D92001284C00FB3209 /* NSTimer+Util.m in Sources */,

@@ -14,8 +14,7 @@
 #import <libavutil/samplefmt.h>
 #import "NSTimer+Util.h"
 #import "MRVideoFrame.h"
-#import <AVFoundation/AVSampleBufferDisplayLayer.h>
-#import <GLKit/GLKit.h>
+#import "OpenGLView20.h"
 
 #ifndef _weakSelf_SL
 #define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
@@ -34,10 +33,7 @@
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) unsigned int stream_index_video;
 
-@property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
-@property (nonatomic, strong) EAGLContext *glContext;
-@property (nonatomic, strong) GLKView *glView;
-@property (nonatomic, strong) CIContext *ciContext;
+@property (weak, nonatomic) OpenGLView20 *glView;
 
 @property (nonatomic,assign) unsigned int width;
 @property (nonatomic,assign) unsigned int height;
@@ -234,28 +230,14 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         
                         
                         if (video_frame->format == AV_PIX_FMT_YUV420P || video_frame->format == AV_PIX_FMT_YUVJ420P) {
-                            unsigned char *nv12 = NULL;
                             
-                            int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
-                            if (nv12Size > 0){
-                                NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-                                
-                                //0.000494003
-                                CVPixelBufferRef pixelBuffer = [self NV12toCVPixelBufferRef:self.width h:self.height linesize:video_frame->linesize[0] buffer:nv12 size:nv12Size];
-                                CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
-                                
-                                NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-                                NSLog(@"decode an image cost :%g",end-begin);
-                                free(nv12);
-                                nv12 = NULL;
-                                const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
-                                MRVideoFrame *frame = [[MRVideoFrame alloc]init];
-                                frame.duration = frameDuration;
-                                frame.ciImage = ciImage;
-                                
-                                @synchronized(self) {
-                                    [self.videoFrames addObject:frame];
-                                }
+                            const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
+                            MRVideoFrame *frame = [[MRVideoFrame alloc]init];
+                            frame.duration = frameDuration;
+                            frame.frame = video_frame;
+                            
+                            @synchronized(self) {
+                                [self.videoFrames addObject:frame];
                             }
                         }
                     }];
@@ -297,106 +279,22 @@ static void fflog(void *context, int level, const char *format, va_list args){
 
 - (void)displayVideoFrame:(MRVideoFrame *)frame
 {
-    if(!self.glContext){
-        self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-        self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
-        CGRect rect = CGRectMake((self.view.bounds.size.width - self.width)/2.0, (self.view.bounds.size.height - self.height)/2.0, self.width, self.height);
-        self.glView = [[GLKView alloc] initWithFrame:rect context:self.glContext];
-        [self.view addSubview:self.glView];
+    if(!self.glView){
+        
+        CGSize vSize = self.view.bounds.size;
+        CGFloat vh = vSize.width * self.height / self.width;
+        CGRect rect = CGRectMake(0, (vSize.height-vh)/2, vSize.width , vh);
+        OpenGLView20 *glView = [[OpenGLView20 alloc]initWithFrame:rect];
+        [self.view addSubview:glView];
+        self.glView = glView;
     }
     
     NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
     
-    CIImage *ciimage = frame.ciImage;
-    if (_glContext != [EAGLContext currentContext]){
-        [EAGLContext setCurrentContext:_glContext];
-    }
-    [_glView bindDrawable];
-    CGFloat scale = [[UIScreen mainScreen]scale];
-    
-    [_ciContext drawImage:ciimage inRect:CGRectMake(0, 0, _glView.bounds.size.width*scale, _glView.bounds.size.height*scale) fromRect:ciimage.extent];
-    
-    [_glView display];
-    
+    AVFrame *video_frame = frame.frame;
+    [self.glView displayYUV420pData:video_frame];
     NSTimeInterval end = CFAbsoluteTimeGetCurrent();
     NSLog(@"displayVideoFrame an image cost :%g",end-begin);
-}
-
-#pragma mark - avframe to nv12
-
-int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
-{
-    if ((pFrame->format == AV_PIX_FMT_YUV420P) || (pFrame->format == AV_PIX_FMT_NV12) || (pFrame->format == AV_PIX_FMT_NV21) || (pFrame->format == AV_PIX_FMT_YUVJ420P)){
-        
-        int height = pFrame->height;
-        int width = pFrame->width;
-        //计算需要分配的内存大小
-        int needSize = height * width * 1.5;
-        
-        if (*nv12 == NULL) {
-            //申请内存
-            *nv12 = malloc(needSize);
-        }
-        unsigned char *buf = *nv12;
-        unsigned char *y = pFrame->data[0];
-        unsigned char *u = pFrame->data[1];
-        unsigned char *v = pFrame->data[2];
-        
-        unsigned int ys = pFrame->linesize[0];
-        
-        //先写入Y（height * width 个 Y 数据）
-        int offset=0;
-        for (int i=0; i < height; i++)
-        {
-            memcpy(buf+offset,y + i * ys, width);
-            offset+=width;
-        }
-        
-        ///一个U一个V交替着排列（一共有 width * height / 4 个 [U + V] ）
-        for (int i = 0; i < width * height / 4; i++)
-        {
-            memcpy(buf+offset,u + i, 1);
-            offset++;
-            memcpy(buf+offset,v + i, 1);
-            offset++;
-        }
-        return needSize;
-    }
-    
-    return -1;
-}
-
-#pragma mark - YUV(NV12)-->CMSampleBufferRef
-
-- (CVPixelBufferRef)NV12toCVPixelBufferRef:(int)w h:(int)h linesize:(int)linesize buffer:(unsigned char *)buffer size:(int)nv12Size
-{
-    CVReturn theError;
-    if (!self.pixelBufferPool){
-        NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-        [attributes setObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-        [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
-        [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
-        [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
-        
-        theError = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef) attributes, &_pixelBufferPool);
-        if (theError != kCVReturnSuccess){
-            NSLog(@"CVPixelBufferPoolCreate Failed");
-        }
-    }
-    
-    CVPixelBufferRef pixelBuffer = nil;
-    theError = CVPixelBufferPoolCreatePixelBuffer(NULL, self.pixelBufferPool, &pixelBuffer);
-    if(theError != kCVReturnSuccess){
-        NSLog(@"CVPixelBufferPoolCreatePixelBuffer Failed");
-    }
-    
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    void* base = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    memcpy(base, buffer, nv12Size);
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    
-    return CFAutorelease(pixelBuffer);
 }
 
 - (void)openVideoStream
@@ -420,7 +318,7 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     
     self.width = codecCtx->width;
     self.height = codecCtx->height;
-    float fps = 0;
+    double fps = 0;
     avStreamFPSTimeBase(stream, 0.04, &fps, &_videoTimeBase);
 }
 
@@ -524,3 +422,4 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 }
 
 @end
+
