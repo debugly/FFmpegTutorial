@@ -21,10 +21,26 @@
     }
 }
 
+- (void)setFrame:(AVFrame *)frame
+{
+    if (frame != _frame) {
+        if (_frame) {
+            av_frame_unref(_frame);
+        }
+        AVFrame *avf = av_frame_alloc();
+        av_frame_ref(avf, frame);
+        _frame = avf;
+    }
+}
+
 - (void)dealloc
 {
     if (_sampleBuffer) {
         CFRelease(_sampleBuffer);
+    }
+    
+    if (_frame) {
+        av_frame_unref(_frame);
     }
 }
 
