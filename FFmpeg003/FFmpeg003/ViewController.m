@@ -35,7 +35,7 @@
 @property (nonatomic,assign) unsigned int width;
 @property (nonatomic,assign) unsigned int height;
 @property (assign, nonatomic) CGFloat videoTimeBase;
-@property (nonatomic,assign) BOOL readingFrame;
+@property (nonatomic,assign) BOOL bufferOk;
 
 @end
 
@@ -82,7 +82,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
     moviePath = @"http://debugly.cn/repository/test.mp4";
-    moviePath = @"http://localhost/ffmpeg-test/test.mp4";
+//    moviePath = @"http://localhost/ffmpeg-test/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -109,103 +109,62 @@ static void fflog(void *context, int level, const char *format, va_list args){
     });
 }
 
-- (BOOL)isDecodeBufferFull
-{
-    float buffedDuration = 0.0;
-    static float kMinBufferDuration = 20;
-    
-    @synchronized(self) {
-    
-        for (MRVideoFrame *frame in self.videoFrames) {
-            buffedDuration += frame.duration;
-            if (buffedDuration >= kMinBufferDuration) {
-                break;
-            }
-        }
-    }
-    
-    NSLog(@"buffedDuration : %g",buffedDuration);
-    
-    return buffedDuration >= kMinBufferDuration;
-}
-
-- (BOOL)isBufferedOK
+- (BOOL)checkIsBufferOK
 {
     float buffedDuration = 0.0;
     static float kMinBufferDuration = 3;
     
-    @synchronized(self) {
-        
-        //如果没有缓冲好，那么就每隔0.1s过来看下buffer
-        for (MRVideoFrame *frame in self.videoFrames) {
-            buffedDuration += frame.duration;
-            if (buffedDuration >= kMinBufferDuration) {
-                break;
-            }
+    //如果没有缓冲好，那么就每隔0.1s过来看下buffer
+    for (MRVideoFrame *frame in self.videoFrames) {
+        buffedDuration += frame.duration;
+        if (buffedDuration >= kMinBufferDuration) {
+            break;
         }
     }
-    
-//    NSLog(@"buffedDuration : %g",buffedDuration);
     
     return buffedDuration >= kMinBufferDuration;
 }
 
 - (void)videoTick
 {
-    BOOL isBufferFull = [self isDecodeBufferFull];
-    
-    if (!isBufferFull) {
-        [self startReadFrames];
-    }
-    
-    BOOL isOK = [self isBufferedOK];
-    
-    if (isOK) {
+    if (self.bufferOk) {
         MRVideoFrame *videoFrame = nil;
         @synchronized(self) {
             videoFrame = [self.videoFrames firstObject];
-            [self.videoFrames removeObjectAtIndex:0];
+            if (videoFrame) {
+                [self.videoFrames removeObjectAtIndex:0];
+            }
         }
-        
-        [_indicatorView stopAnimating];
-        float interval = videoFrame.duration;
-        [self displayVideoFrame:videoFrame];
-        const NSTimeInterval time = MAX(interval, 0.01);
+        if (videoFrame) {
+            [_indicatorView stopAnimating];
+            float interval = videoFrame.duration;
+            [self displayVideoFrame:videoFrame];
+            const NSTimeInterval time = MAX(interval, 0.01);
             NSLog(@"after %fs tick",time);
-        
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self videoTick];
-        });
-    }else{
+            
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self videoTick];
+            });
+            return;
+        }
+    }
+    
+    {
+        self.bufferOk = NO;
         [self.view bringSubviewToFront:_indicatorView];
         [_indicatorView startAnimating];
         _weakSelf_SL
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             _strongSelf_SL
             [self videoTick];
         });
     }
 }
-
 #pragma mark - read frame loop
 
 - (void)startReadFrames
 {
-    BOOL ok = NO;
-    @synchronized(self) {
-        if (self.readingFrame) {
-            return;
-        }else{
-            self.readingFrame = YES;
-            ok = YES;
-        }
-    }
-    
-    //    if (!ok) {
-    //        return;
-    //    }
-    
     if (!self.io_queue) {
         dispatch_queue_t io_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
         self.io_queue = io_queue;
@@ -214,10 +173,8 @@ static void fflog(void *context, int level, const char *format, va_list args){
     _weakSelf_SL
     dispatch_async(self.io_queue, ^{
         
-        while (![self isDecodeBufferFull]) {
+        while (1) {
            
-            NSLog(@"buffed video not full,continue buffer");
-      
             AVPacket pkt;
             _strongSelf_SL
             if (av_read_frame(_formatCtx,&pkt) >= 0) {
@@ -245,9 +202,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
                                 
                                 @synchronized(self) {
                                     [self.videoFrames addObject:frame];
+                                    if (!self.bufferOk) {
+                                        self.bufferOk = [self checkIsBufferOK];
+                                    }
                                 }
-                                
-                                
                             }
                         }
                     }];
@@ -258,8 +216,6 @@ static void fflog(void *context, int level, const char *format, va_list args){
             ///释放内存
             av_packet_unref(&pkt);
         }
-        
-        self.readingFrame = NO;
     });
 }
 
