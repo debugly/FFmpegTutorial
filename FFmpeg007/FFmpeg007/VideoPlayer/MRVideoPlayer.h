@@ -20,4 +20,7 @@
 - (void)removeRenderFromSuperView;
 - (void)playURLString:(NSString *)url;
 
+- (void)onBuffer:(dispatch_block_t)block;
+- (void)onBufferOK:(dispatch_block_t)block;
+
 @end

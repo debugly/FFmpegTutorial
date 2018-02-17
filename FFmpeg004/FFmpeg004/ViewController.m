@@ -532,7 +532,12 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
  0.986037；
  0.0970299；
  
- fps 大约是 24，所以每帧播放时长是 1/24 = 0.5s，这么看的话真机上肯定卡的不行！！
+ fps 大约是 24，所以每帧播放时长是 1/24 = 0.05s，这么看的话真机上肯定卡的不行！！
+ 
+ 优化策略是，保持 video tick 逻辑，解码一帧后检查是否大于3s，大于3s则将 bufferOk 置为YES，video tick 轮询 bufferOk ，如果为 YES 就持续播放，知道把缓冲耗尽，防止出现：buffer里总是剩余3s，然后缓冲一帧，播放一帧的效果！！
+ 
+ 问题：
+    现在缓冲的比较慢，即使是局域网也需要0.1s才行，所以现在的现象是大概播放3s 就卡 7.5s 左右（3 / (0.04 * 1 / 0.1)），需要继续研究这个问题！！
  */
 
 @end

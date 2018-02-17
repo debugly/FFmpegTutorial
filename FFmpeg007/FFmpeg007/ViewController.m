@@ -9,9 +9,18 @@
 #import "ViewController.h"
 #import "MRVideoPlayer.h"
 
+#ifndef _weakSelf_SL
+#define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
+#endif
+
+#ifndef _strongSelf_SL
+#define _strongSelf_SL   __strong __typeof($weakself) self = $weakself;
+#endif
+
 @interface ViewController ()
 
 @property (nonatomic, strong) MRVideoPlayer *player;
+@property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
 
 @end
 
@@ -28,6 +37,25 @@
     _player = [[MRVideoPlayer alloc]init];
     [_player playURLString:moviePath];
     [_player addRenderToSuperView:self.view];
+    
+    _weakSelf_SL
+    [_player onBuffer:^{
+        _strongSelf_SL
+        [self.indicatorView startAnimating];
+    }];
+    
+    [_player onBufferOK:^{
+        _strongSelf_SL
+        [self.indicatorView stopAnimating];
+    }];
+    
+    UIActivityIndicatorView *indicatorView = [[UIActivityIndicatorView alloc]initWithActivityIndicatorStyle:UIActivityIndicatorViewStyleGray];
+    [self.view addSubview:indicatorView];
+    indicatorView.center = self.view.center;
+    indicatorView.hidesWhenStopped = YES;
+    [indicatorView sizeToFit];
+    _indicatorView = indicatorView;
+    [indicatorView startAnimating];
 }
 
 - (void)didReceiveMemoryWarning {

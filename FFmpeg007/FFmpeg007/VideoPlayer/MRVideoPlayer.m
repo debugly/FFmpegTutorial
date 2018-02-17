@@ -28,17 +28,6 @@
 #define _strongSelf_SL   __strong __typeof($weakself) self = $weakself;
 #endif
 
-
-//是否使用ffmpeg3新的解密函数
-#define use_v3 0
-
-
-#define OPENGL 1
-#define IMAGE  2
-#define LAYER  3
-
-#define RENDER OPENGL
-
 @interface MRVideoPlayer()
 
 @property (assign, nonatomic) AVFormatContext *formatCtx;
@@ -51,19 +40,17 @@
 
 @property (strong, nonatomic) dispatch_queue_t io_queue;
 
-@property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
-@property (strong, nonatomic) UIImageView *render;
-@property (strong, nonatomic) AVSampleBufferDisplayLayer *sampleBufferDisplayLayer;
 @property (weak, nonatomic) OpenGLView20 *glView;
 @property (assign, nonatomic) CGFloat videoTimeBase;
-@property (assign, nonatomic) CGFloat fps;
-@property (weak, nonatomic) NSTimer *readFramesTimer;
 @property (strong, nonatomic) NSMutableArray *videoFrames;
 
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) unsigned int width;
 @property (nonatomic,assign) unsigned int height;
-@property (nonatomic,assign) BOOL readingFrame;
+@property (nonatomic,assign) BOOL bufferOk;
+
+@property (copy, nonatomic) dispatch_block_t onBufferBlock;
+@property (copy, nonatomic) dispatch_block_t onBufferOKBlock;
 
 @end
 
@@ -90,14 +77,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
     if (NULL != _formatCtx) {
         avformat_close_input(&_formatCtx);
     }
-    if (self.readFramesTimer) {
-        [self.readFramesTimer invalidate];
-    }
 }
 
 - (void)addRenderToSuperView:(UIView *)superView
 {
-#if RENDER == OPENGL
     OpenGLView20 *glView = [[OpenGLView20 alloc]initWithFrame:superView.bounds];
     [superView addSubview:glView];
     self.glView = glView;
@@ -107,35 +90,12 @@ static void fflog(void *context, int level, const char *format, va_list args){
         CGFloat vh = vSize.width * _videoDimensions.height / _videoDimensions.width;
         self.glView.frame = CGRectMake(0, (vSize.height-vh)/2, vSize.width , vh);
     }
-#elif RENDER == IMAGE
-    if (superView) {
-        self.render = [[UIImageView alloc]init];
-        self.render.frame = superView.bounds;
-        self.render.contentMode = UIViewContentModeScaleAspectFit;
-        [superView addSubview:self.render];
-    }
-#elif RENDER == LAYER
-    self.sampleBufferDisplayLayer = [[AVSampleBufferDisplayLayer alloc] init];
-    self.sampleBufferDisplayLayer.frame = superView.bounds;
-    self.sampleBufferDisplayLayer.position = CGPointMake(CGRectGetMidX(superView.bounds), CGRectGetMidY(superView.bounds));
-    self.sampleBufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-    self.sampleBufferDisplayLayer.opaque = YES;
-    [superView.layer addSublayer:self.sampleBufferDisplayLayer];
-#endif
 }
 
 - (void)removeRenderFromSuperView
 {
-#if RENDER == OPENGL
     [self.glView removeFromSuperview];
     self.glView = nil;
-#elif RENDER == IMAGE
-    [self.render removeFromSuperview];
-    self.render = nil;
-#elif RENDER == LAYER
-    [self.sampleBufferDisplayLayer removeFromSuperlayer];
-    self.sampleBufferDisplayLayer = nil;
-#endif
 }
 
 - (void)playURLString:(NSString *)url
@@ -145,21 +105,22 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
     //av_log_set_flags(AV_LOG_SKIP_REPEATED);
-    
-    ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
-    av_register_all();
-    
-    NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
-    ///该地址可以是网络的也可以是本地的；
-    moviePath = @"http://debugly.cn/repository/test.mp4";
-    moviePath = @"http://192.168.3.2/ffmpeg-test/test.mp4";
-    if ([moviePath hasPrefix:@"http"]) {
-        //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
-        //播放网络视频的时候，要首先初始化下网络模块。
-        avformat_network_init();
-    }
-    
+
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        
+        ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
+        av_register_all();
+        
+        NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
+        ///该地址可以是网络的也可以是本地的；
+        moviePath = @"http://debugly.cn/repository/test.mp4";
+        moviePath = @"http://192.168.3.2/ffmpeg-test/test.mp4";
+        if ([moviePath hasPrefix:@"http"]) {
+            //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
+            //播放网络视频的时候，要首先初始化下网络模块。
+            avformat_network_init();
+        }
+        
         [self openStreamWithPath:moviePath completion:^(AVFormatContext *formatCtx){
             
             if(formatCtx){
@@ -305,39 +266,16 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 
 # pragma mark - 播放速度控制
 
-- (BOOL)isDecodeBufferFull
-{
-    float buffedDuration = 0.0;
-    static float kMinBufferDuration = 6;
-    
-    @synchronized(self) {
-        
-        for (MRVideoFrame *frame in self.videoFrames) {
-            buffedDuration += frame.duration;
-            if (buffedDuration >= kMinBufferDuration) {
-                break;
-            }
-        }
-    }
-    
-    NSLog(@"buffedDuration : %g",buffedDuration);
-    
-    return buffedDuration >= kMinBufferDuration;
-}
-
-- (BOOL)isBufferedOK
+- (BOOL)checkIsBufferOK
 {
     float buffedDuration = 0.0;
     static float kMinBufferDuration = 3;
     
-    @synchronized(self) {
-        
-        //如果没有缓冲好，那么就每隔0.1s过来看下buffer
-        for (MRVideoFrame *frame in self.videoFrames) {
-            buffedDuration += frame.duration;
-            if (buffedDuration >= kMinBufferDuration) {
-                break;
-            }
+    //如果没有缓冲好，那么就每隔0.1s过来看下buffer
+    for (MRVideoFrame *frame in self.videoFrames) {
+        buffedDuration += frame.duration;
+        if (buffedDuration >= kMinBufferDuration) {
+            break;
         }
     }
     
@@ -346,32 +284,34 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 
 - (void)videoTick
 {
-    BOOL isBufferFull = [self isDecodeBufferFull];
-    
-    if (!isBufferFull) {
-        [self startReadFrames];
-    }
-    
-    BOOL isOK = [self isBufferedOK];
-    
-    if (isOK) {
+    if (self.bufferOk) {
         MRVideoFrame *videoFrame = nil;
         @synchronized(self) {
             videoFrame = [self.videoFrames firstObject];
-            [self.videoFrames removeObjectAtIndex:0];
+            if (videoFrame) {
+                [self.videoFrames removeObjectAtIndex:0];
+            }
         }
-        
-        float interval = videoFrame.duration;
-        [self displayVideoFrame:videoFrame];
-        const NSTimeInterval time = MAX(interval, 0.01);
-        NSLog(@"after %fs tick",time);
-        
-        dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-            [self videoTick];
-        });
-    }else{
-        
+        if (videoFrame) {
+            
+            [self handleOnBufferOK];
+            
+            float interval = videoFrame.duration;
+            [self displayVideoFrame:videoFrame];
+            const NSTimeInterval time = MAX(interval, 0.01);
+            NSLog(@"after %fs tick",time);
+            
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self videoTick];
+            });
+            return;
+        }
+    }
+    
+    {
+        self.bufferOk = NO;
+        [self handleOnBuffer];
         _weakSelf_SL
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             _strongSelf_SL
@@ -384,16 +324,6 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 
 - (void)startReadFrames
 {
-    BOOL ok = NO;
-    @synchronized(self) {
-        if (self.readingFrame) {
-            return;
-        }else{
-            self.readingFrame = YES;
-            ok = YES;
-        }
-    }
-    
     if (!self.io_queue) {
         dispatch_queue_t io_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
         self.io_queue = io_queue;
@@ -402,9 +332,7 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     _weakSelf_SL
     dispatch_async(self.io_queue, ^{
         
-        while (![self isDecodeBufferFull]) {
-            
-            NSLog(@"buffed video not full,continue buffer");
+        while (1) {
             
             AVPacket pkt;
             _strongSelf_SL
@@ -425,6 +353,9 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
                             
                             @synchronized(self) {
                                 [self.videoFrames addObject:frame];
+                                if (!self.bufferOk) {
+                                    self.bufferOk = [self checkIsBufferOK];
+                                }
                             }
                         }
                     }];
@@ -435,8 +366,6 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
             ///释放内存
             av_packet_unref(&pkt);
         }
-        
-        self.readingFrame = NO;
     });
 }
 
@@ -473,4 +402,31 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     NSLog(@"displayVideoFrame an image cost :%g",end-begin);
 }
 
+- (void)handleOnBuffer
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.onBufferBlock) {
+            self.onBufferBlock();
+        }
+    });
+}
+
+- (void)handleOnBufferOK
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.onBufferOKBlock) {
+            self.onBufferOKBlock();
+        }
+    });
+}
+
+- (void)onBuffer:(dispatch_block_t)block
+{
+    self.onBufferBlock = block;
+}
+
+- (void)onBufferOK:(dispatch_block_t)block
+{
+    self.onBufferOKBlock = block;
+}
 @end
