@@ -388,7 +388,7 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
         completion(video_frame);
     }
     //用完后记得释放掉
-    av_frame_unref(video_frame);
+    av_frame_free(&video_frame);
 }
 
 #pragma mark - display video frame

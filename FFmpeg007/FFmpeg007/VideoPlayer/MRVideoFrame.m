@@ -14,18 +14,16 @@
 {
     if (frame != _frame) {
         if (_frame) {
-            av_frame_unref(_frame);
+            av_frame_free(&_frame);
         }
-        AVFrame *avf = av_frame_alloc();
-        av_frame_ref(avf, frame);
-        _frame = avf;
+        _frame = av_frame_clone(frame);
     }
 }
 
 - (void)dealloc
 {
     if (_frame) {
-        av_frame_unref(_frame);
+        av_frame_free(&_frame);
     }
 }
 

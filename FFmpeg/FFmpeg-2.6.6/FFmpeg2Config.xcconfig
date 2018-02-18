@@ -11,10 +11,4 @@
 FFmpeg = ../FFmpeg/FFmpeg-2.6.6
 HEADER_SEARCH_PATHS = $(FFmpeg)/include
 LIBRARY_SEARCH_PATHS = $(inherited) $(FFmpeg)/lib
-
-//fflibp = $(SRCROOT)/../ffmpeg/ffmpeg3/lib
-//OTHER_LDFLAGS = -llibavformat -L$(fflibp)
-//-llibavcodec -L$(fflibp) -llibavdevice -L$(fflibp) -llibavfilter -L$(fflibp) -llibavutil -L$(fflibp) -llibswresample -L$(fflibp) -llibswscale -L$(fflibp)
-//-llibavdevice -L$(fflibp)/libavdevice -llibavfilter -L$(fflibp)/libavfilter -llibavformat -L$(fflibp)/libavformat -llibavutil -L$(fflibp)/libavutil -llibswresample -L$(fflibp)/libswresample -llibswscale -L$(fflibp)/libswscale
-
-
+ENABLE_BITCODE = NO
