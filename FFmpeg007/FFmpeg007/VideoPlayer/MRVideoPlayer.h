@@ -23,4 +23,6 @@
 - (void)onBuffer:(dispatch_block_t)block;
 - (void)onBufferOK:(dispatch_block_t)block;
 
+- (void)stop;
+
 @end
