@@ -47,6 +47,7 @@
 		B42FD1F41EC80D0E00F230EA /* SupportURLProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SupportURLProtocol.h; sourceTree = "<group>"; };
 		B42FD1F51EC80D0E00F230EA /* SupportURLProtocol.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SupportURLProtocol.m; sourceTree = "<group>"; };
 		B42FD1FF1EC8126700F230EA /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		B47AABBA20398F71001255C9 /* FFmpegConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = FFmpegConfig.xcconfig; sourceTree = "<group>"; };
 		B4D2CB6720275BEB00CF3516 /* avcodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = avcodec.h; sourceTree = "<group>"; };
 		B4D2CB6820275BEB00CF3516 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		B4D2CB6920275BEB00CF3516 /* buffersrc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = buffersrc.h; sourceTree = "<group>"; };
@@ -139,7 +140,6 @@
 		B4D2CBC520275BEB00CF3516 /* old_codec_ids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = old_codec_ids.h; sourceTree = "<group>"; };
 		B4D2CBC720275BEB00CF3516 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		B4D2CBC820275BEB00CF3516 /* swresample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swresample.h; sourceTree = "<group>"; };
-		B4D2CBC920275BEB00CF3516 /* FFmpeg2Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = FFmpeg2Config.xcconfig; sourceTree = "<group>"; };
 		B4D2CBCB20275BEB00CF3516 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
 		B4D2CBCC20275BEB00CF3516 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavfilter.a; sourceTree = "<group>"; };
 		B4D2CBCD20275BEB00CF3516 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavcodec.a; sourceTree = "<group>"; };
@@ -177,6 +177,7 @@
 		B42FD1401EC7F92700F230EA = {
 			isa = PBXGroup;
 			children = (
+				B47AABBA20398F71001255C9 /* FFmpegConfig.xcconfig */,
 				B4D2CB6420275BEB00CF3516 /* FFmpeg-2.6.6 */,
 				B42FD14B1EC7F92700F230EA /* FFmpeg001 */,
 				B42FD14A1EC7F92700F230EA /* Products */,
@@ -234,7 +235,6 @@
 		B4D2CB6420275BEB00CF3516 /* FFmpeg-2.6.6 */ = {
 			isa = PBXGroup;
 			children = (
-				B4D2CBC920275BEB00CF3516 /* FFmpeg2Config.xcconfig */,
 				B4D2CB6520275BEB00CF3516 /* include */,
 				B4D2CBCA20275BEB00CF3516 /* lib */,
 			);
@@ -418,7 +418,6 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = B42FD1631EC7F92700F230EA /* Build configuration list for PBXNativeTarget "FFmpeg001" */;
 			buildPhases = (
-				DD8AF50F1F70D0AD002B2DAB /* ShellScript */,
 				B42FD1451EC7F92700F230EA /* Sources */,
 				B42FD1461EC7F92700F230EA /* Frameworks */,
 				B42FD1471EC7F92700F230EA /* Resources */,
@@ -479,22 +478,6 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
-/* Begin PBXShellScriptBuildPhase section */
-		DD8AF50F1F70D0AD002B2DAB /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "echo \"================================${SRCROOT}==\"\n_pwd=$PWD\ncd ..\n\n#cp ffmpeg.png ${SRCROOT}/ffmpeg.png\ncp -R \"ffmpeg\" ${SRCROOT}\ncd $_pwd";
-		};
-/* End PBXShellScriptBuildPhase section */
-
 /* Begin PBXSourcesBuildPhase section */
 		B42FD1451EC7F92700F230EA /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -531,7 +514,7 @@
 /* Begin XCBuildConfiguration section */
 		B42FD1611EC7F92700F230EA /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4D2CBC920275BEB00CF3516 /* FFmpeg2Config.xcconfig */;
+			baseConfigurationReference = B47AABBA20398F71001255C9 /* FFmpegConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -579,7 +562,7 @@
 		};
 		B42FD1621EC7F92700F230EA /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4D2CBC920275BEB00CF3516 /* FFmpeg2Config.xcconfig */;
+			baseConfigurationReference = B47AABBA20398F71001255C9 /* FFmpegConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

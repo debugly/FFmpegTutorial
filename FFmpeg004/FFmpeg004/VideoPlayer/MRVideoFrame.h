@@ -12,9 +12,10 @@
 
 @interface MRVideoFrame : NSObject
 
-@property (assign, nonatomic) float duration;
 @property (assign, nonatomic) CMSampleBufferRef sampleBuffer;
 @property (assign, nonatomic) AVFrame *frame;
+@property (assign, nonatomic) float duration;
 @property (assign, nonatomic) int linesize;
+@property (assign, nonatomic) BOOL eof;
 
 @end

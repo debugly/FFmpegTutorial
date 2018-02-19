@@ -139,16 +139,20 @@ static void fflog(void *context, int level, const char *format, va_list args){
             }
         }
         if (videoFrame) {
-            [_indicatorView stopAnimating];
-            float interval = videoFrame.duration;
-            [self displayVideoFrame:videoFrame];
-            const NSTimeInterval time = MAX(interval, 0.01);
-            NSLog(@"after %fs tick",time);
-            
-            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                [self videoTick];
-            });
+            if (videoFrame.eof) {
+                NSLog(@"视频播放结束");
+            }else{
+                [_indicatorView stopAnimating];
+                float interval = videoFrame.duration;
+                [self displayVideoFrame:videoFrame];
+                const NSTimeInterval time = MAX(interval, 0.01);
+                NSLog(@"after %fs tick",time);
+                
+                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                    [self videoTick];
+                });
+            }
             return;
         }
     }
@@ -184,7 +188,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
             AVPacket pkt;
             _strongSelf_SL
             if (av_read_frame(_formatCtx,&pkt) >= 0) {
-                if (pkt.stream_index == _stream_index_video) {
+                if (pkt.stream_index == self.stream_index_video) {
                     
                     _weakSelf_SL
                     [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
@@ -209,6 +213,15 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 }
             }else{
                 NSLog(@"eof,stop read more frame!");
+                MRVideoFrame *frame = [[MRVideoFrame alloc]init];
+                frame.eof = YES;
+                @synchronized(self) {
+                    [self.videoFrames addObject:frame];
+                    if (!self.bufferOk) {
+                        self.bufferOk = [self checkIsBufferOK];
+                    }
+                }
+                break;
             }
             ///释放内存
             av_packet_unref(&pkt);
@@ -384,4 +397,3 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 }
 
 @end
-

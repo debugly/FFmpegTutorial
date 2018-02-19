@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		B4105247201252CE000C1196 /* MRVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B4105246201252CE000C1196 /* MRVideoFrame.m */; };
 		B4DFC8D92001284C00FB3209 /* NSTimer+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */; };
-		B4FA67DC202DE8A600A6A120 /* FFmpeg2Config.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = B4FA67D3202DE8A600A6A120 /* FFmpeg2Config.xcconfig */; };
 		B4FA67DD202DE8A600A6A120 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67D5202DE8A600A6A120 /* libavutil.a */; };
 		B4FA67DE202DE8A600A6A120 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67D6202DE8A600A6A120 /* libavfilter.a */; };
 		B4FA67DF202DE8A600A6A120 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67D7202DE8A600A6A120 /* libavcodec.a */; };
@@ -35,6 +34,7 @@
 /* Begin PBXFileReference section */
 		B4105245201252CE000C1196 /* MRVideoFrame.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoFrame.h; sourceTree = "<group>"; };
 		B4105246201252CE000C1196 /* MRVideoFrame.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrame.m; sourceTree = "<group>"; };
+		B47AABC420399157001255C9 /* FFmpegConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = FFmpegConfig.xcconfig; sourceTree = "<group>"; };
 		B4DFC8D72001284C00FB3209 /* NSTimer+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Util.h"; sourceTree = "<group>"; };
 		B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Util.m"; sourceTree = "<group>"; };
 		B4FA6771202DE8A600A6A120 /* avcodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = avcodec.h; sourceTree = "<group>"; };
@@ -129,7 +129,6 @@
 		B4FA67CF202DE8A600A6A120 /* old_codec_ids.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = old_codec_ids.h; sourceTree = "<group>"; };
 		B4FA67D1202DE8A600A6A120 /* version.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = version.h; sourceTree = "<group>"; };
 		B4FA67D2202DE8A600A6A120 /* swresample.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = swresample.h; sourceTree = "<group>"; };
-		B4FA67D3202DE8A600A6A120 /* FFmpeg2Config.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = FFmpeg2Config.xcconfig; sourceTree = "<group>"; };
 		B4FA67D5202DE8A600A6A120 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavutil.a; sourceTree = "<group>"; };
 		B4FA67D6202DE8A600A6A120 /* libavfilter.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavfilter.a; sourceTree = "<group>"; };
 		B4FA67D7202DE8A600A6A120 /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavcodec.a; sourceTree = "<group>"; };
@@ -197,7 +196,6 @@
 		B4FA676E202DE8A600A6A120 /* FFmpeg-2.6.6 */ = {
 			isa = PBXGroup;
 			children = (
-				B4FA67D3202DE8A600A6A120 /* FFmpeg2Config.xcconfig */,
 				B4FA676F202DE8A600A6A120 /* include */,
 				B4FA67D4202DE8A600A6A120 /* lib */,
 			);
@@ -377,6 +375,7 @@
 		DD8AF2671F6F6DD4002B2DAB = {
 			isa = PBXGroup;
 			children = (
+				B47AABC420399157001255C9 /* FFmpegConfig.xcconfig */,
 				B4FA676E202DE8A600A6A120 /* FFmpeg-2.6.6 */,
 				DD8AF2721F6F6DD4002B2DAB /* FFmpeg006 */,
 				DD8AF2711F6F6DD4002B2DAB /* Products */,
@@ -482,7 +481,6 @@
 			files = (
 				DD8AF2801F6F6DD4002B2DAB /* LaunchScreen.storyboard in Resources */,
 				DD8AF27D1F6F6DD4002B2DAB /* Assets.xcassets in Resources */,
-				B4FA67DC202DE8A600A6A120 /* FFmpeg2Config.xcconfig in Resources */,
 				DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -527,7 +525,7 @@
 /* Begin XCBuildConfiguration section */
 		DD8AF2841F6F6DD4002B2DAB /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4FA67D3202DE8A600A6A120 /* FFmpeg2Config.xcconfig */;
+			baseConfigurationReference = B47AABC420399157001255C9 /* FFmpegConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -583,7 +581,7 @@
 		};
 		DD8AF2851F6F6DD4002B2DAB /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B4FA67D3202DE8A600A6A120 /* FFmpeg2Config.xcconfig */;
+			baseConfigurationReference = B47AABC420399157001255C9 /* FFmpegConfig.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;

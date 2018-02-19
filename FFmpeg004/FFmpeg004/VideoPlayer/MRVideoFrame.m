@@ -25,10 +25,13 @@
 {
     if (frame != _frame) {
         if (_frame) {
-            av_frame_free(&_frame);
+            av_frame_unref(_frame);
+        }else{
+            _frame = av_frame_alloc();
         }
-        AVFrame *avf = av_frame_clone(frame);
-        _frame = avf;
+        if (frame) {
+            av_frame_ref(_frame, frame);
+        }
     }
 }
 
