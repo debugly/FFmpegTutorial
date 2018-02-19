@@ -30,3 +30,15 @@
 - 第十天：[封装一个简易的音频播放器](md/010.md)
 
 - 第十一天：[封装 MRMoviePlayer 视频播放器](md/011.md)
+
+# Usage
+
+克隆该仓库之后，项目并不能运行起来，因为项目依赖的 FFmpeg 库还没有下载下载，需要执行**一次**脚本:
+
+```
+sh init.sh
+```
+
+然后就会自动下载并且解压好需要的 FFmpeg 库了！
+
+编译好的 FFmpeg 库放在[这里](https://github.com/debugly/FFmpeg-iOS-build-script/tree/source)，需要的话可以单独下载使用！
