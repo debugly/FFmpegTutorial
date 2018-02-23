@@ -8,7 +8,7 @@
 
 #import "ViewController.h"
 #import "MRVideoPlayer.h"
-#import "MRAudioPlayer.h"
+#import "MRAudioQueuePlayer.h"
 
 #ifndef _weakSelf_SL
 #define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
@@ -28,7 +28,7 @@
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView2;
 @property (nonatomic, strong) UIView *contentView2;
 
-@property (nonatomic, strong) MRAudioPlayer *audioPlayer;
+@property (nonatomic, strong) MRAudioQueuePlayer *audioPlayer;
 
 @end
 
@@ -87,7 +87,7 @@
         [_audioPlayer stop];
         _audioPlayer = nil;
     }else{
-        _audioPlayer = [[MRAudioPlayer alloc]init];
+        _audioPlayer = [[MRAudioQueuePlayer alloc]init];
         ///使用本地server地址；
         [_audioPlayer playURLString:@"http://192.168.3.2/ffmpeg-test/test.mp3"];
     }
