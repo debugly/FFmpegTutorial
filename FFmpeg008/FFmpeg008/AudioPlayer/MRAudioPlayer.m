@@ -50,7 +50,7 @@
 
 @property (nonatomic,assign) AVCodecContext *audioCodecCtx;
 @property (nonatomic,assign) SwrContext  *swrContext;
-@property (nonatomic,assign) void        *swrBuffer;
+@property (nonatomic,assign) uint8_t     *swrBuffer;
 @property (nonatomic,assign) NSUInteger  swrBufferSize;
 @property (nonatomic,assign) CGFloat     audioTimeBase;
 
@@ -774,10 +774,8 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
             _swrBuffer = realloc(_swrBuffer, _swrBufferSize);
         }
         
-        Byte *outbuf[2] = { _swrBuffer, 0 };
-        
         numFrames = swr_convert(_swrContext,
-                                outbuf,
+                                &_swrBuffer,
                                 audio_Frame->nb_samples * ratio,
                                 (const uint8_t **)audio_Frame->data,
                                 audio_Frame->nb_samples);
@@ -824,6 +822,8 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     
     frame.frame = nil;
     
+//    NSLog(@"frame duration:%.6f,%ld",frame.duration,data.length);
+    
     return YES;
 }
 
@@ -836,26 +836,10 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     }
     
     if (self.bufferOk) {
-        MRAudioFrame *audioFrame = nil;
-        @synchronized(self) {
-            audioFrame = [self.audioFrames firstObject];
-            if (audioFrame) {
-                [self.audioFrames removeObjectAtIndex:0];
-                ///驱动解码loop
-                [self startDecodeLoop];
-            }
-        }
-        if (audioFrame) {
-            if (audioFrame.eof) {
-                NSLog(@"音频播放结束");
-            }else{
-                [self playAudio];
-            }
-            return;
-        }
-    }
-    
-    {
+        ///驱动解码loop
+        [self startDecodeLoop];
+        [self playAudio];
+    }else{
         [self pauseAudio];
         self.bufferOk = NO;
         _weakSelf_SL
