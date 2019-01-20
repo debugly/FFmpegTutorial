@@ -16,12 +16,12 @@
 #import "MRVideoFrame.h"
 #import "OpenGLView20.h"
 
-#ifndef _weakSelf_SL
-#define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
+#ifndef __weakSelf__
+#define __weakSelf__     __weak   __typeof(self) $weakself = self;
 #endif
 
-#ifndef _strongSelf_SL
-#define _strongSelf_SL   __strong __typeof($weakself) self = $weakself;
+#ifndef __strongSelf__
+#define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
 
 @interface ViewController ()
@@ -99,11 +99,15 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 dispatch_async(dispatch_get_main_queue(), ^{
                     self.formatCtx = formatCtx;
                     
-                    [self openVideoStream];
+                    BOOL succ = [self openVideoStream];
                     
-                    [self startReadFrames];
-                    
-                    [self videoTick];
+                    if (succ) {
+                        [self startReadFrames];
+                        
+                        [self videoTick];
+                    } else {
+                        NSLog(@"不支持的编码类型！");
+                    }
                 });
             }else{
                 NSLog(@"不能打开流");
@@ -161,9 +165,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
         self.bufferOk = NO;
         [self.view bringSubviewToFront:_indicatorView];
         [_indicatorView startAnimating];
-        _weakSelf_SL
+        __weakSelf__
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _strongSelf_SL
+            __strongSelf__
             [self videoTick];
         });
     }
@@ -178,7 +182,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         self.io_queue = io_queue;
     }
     
-    _weakSelf_SL
+    __weakSelf__
     dispatch_async(self.io_queue, ^{
         
         while (1) {
@@ -186,13 +190,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
             NSLog(@"buffed video not full,continue buffer");
             
             AVPacket pkt;
-            _strongSelf_SL
+            __strongSelf__
             if (av_read_frame(_formatCtx,&pkt) >= 0) {
                 if (pkt.stream_index == self.stream_index_video) {
                     
-                    _weakSelf_SL
+                    __weakSelf__
                     [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
-                        _strongSelf_SL
+                        __strongSelf__
                         
                         
                         if (video_frame->format == AV_PIX_FMT_YUV420P || video_frame->format == AV_PIX_FMT_YUVJ420P) {
@@ -272,22 +276,25 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSLog(@"displayVideoFrame an image cost :%g",end-begin);
 }
 
-- (void)openVideoStream
+- (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
-    [self openVideoStream:stream];
+    return [self openVideoStream:stream];
 }
 
-- (void)openVideoStream:(AVStream *)stream
+- (BOOL)openVideoStream:(AVStream *)stream
 {
     AVCodecContext *codecCtx = stream->codec;
     // find the decoder for the video stream
     AVCodec *codec = avcodec_find_decoder(codecCtx->codec_id);
-    if (!codec)
-        return;
+    if (!codec){
+        return NO;
+    }
+    
     // open codec
-    if (avcodec_open2(codecCtx, codec, NULL) < 0)
-        return;
+    if (avcodec_open2(codecCtx, codec, NULL) < 0){
+        return NO;
+    }
     
     _videoCodecCtx = codecCtx;
     
@@ -295,6 +302,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     self.height = codecCtx->height;
     double fps = 0;
     avStreamFPSTimeBase(stream, 0.04, &fps, &_videoTimeBase);
+    return YES;
 }
 
 static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
@@ -397,3 +405,5 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 }
 
 @end
+
+
