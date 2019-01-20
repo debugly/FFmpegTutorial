@@ -370,10 +370,10 @@
 		DD8AF2671F6F6DD4002B2DAB = {
 			isa = PBXGroup;
 			children = (
+				DD8AF2711F6F6DD4002B2DAB /* Products */,
 				B47AABC0203990EA001255C9 /* FFmpegConfig.xcconfig */,
 				B4FA676E202DE8A600A6A120 /* FFmpeg-2.6.6 */,
 				DD8AF2721F6F6DD4002B2DAB /* FFmpeg004 */,
-				DD8AF2711F6F6DD4002B2DAB /* Products */,
 				DD8AF6191F70E26D002B2DAB /* Frameworks */,
 			);
 			sourceTree = "<group>";

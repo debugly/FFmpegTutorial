@@ -8,13 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		B4D2CC78202899B000CF3516 /* MRVideoFrame.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC68202899B000CF3516 /* MRVideoFrame.m */; };
-		B4D2CC7A202899B000CF3516 /* NSTimer+Util.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC6C202899B000CF3516 /* NSTimer+Util.m */; };
 		B4D2CC7B202899B000CF3516 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC6E202899B000CF3516 /* ViewController.m */; };
 		B4D2CC7C202899B000CF3516 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CC6F202899B000CF3516 /* LaunchScreen.storyboard */; };
 		B4D2CC7D202899B000CF3516 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CC71202899B000CF3516 /* Main.storyboard */; };
 		B4D2CC7E202899B000CF3516 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC73202899B000CF3516 /* main.m */; };
 		B4D2CC7F202899B000CF3516 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B4D2CC74202899B000CF3516 /* AppDelegate.m */; };
-		B4D2CC80202899B000CF3516 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CC75202899B000CF3516 /* Info.plist */; };
 		B4D2CC82202899C000CF3516 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B4D2CC81202899C000CF3516 /* Assets.xcassets */; };
 		B4D2CCF2202899FD00CF3516 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CCEA202899FD00CF3516 /* libavutil.a */; };
 		B4D2CCF3202899FD00CF3516 /* libavfilter.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CCEB202899FD00CF3516 /* libavfilter.a */; };
@@ -34,9 +32,7 @@
 /* Begin PBXFileReference section */
 		B47AABBE203990AD001255C9 /* FFmpegConfig.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = FFmpegConfig.xcconfig; sourceTree = "<group>"; };
 		B4D2CC64202899B000CF3516 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		B4D2CC67202899B000CF3516 /* NSTimer+Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSTimer+Util.h"; sourceTree = "<group>"; };
 		B4D2CC68202899B000CF3516 /* MRVideoFrame.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrame.m; sourceTree = "<group>"; };
-		B4D2CC6C202899B000CF3516 /* NSTimer+Util.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSTimer+Util.m"; sourceTree = "<group>"; };
 		B4D2CC6D202899B000CF3516 /* MRVideoFrame.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoFrame.h; sourceTree = "<group>"; };
 		B4D2CC6E202899B000CF3516 /* ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		B4D2CC70202899B000CF3516 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -181,7 +177,7 @@
 		B4D2CC63202899B000CF3516 /* FFmpeg003 */ = {
 			isa = PBXGroup;
 			children = (
-				B4D2CC65202899B000CF3516 /* VideoPlayer */,
+				B4D2CC65202899B000CF3516 /* VideoFrame */,
 				B4D2CC64202899B000CF3516 /* AppDelegate.h */,
 				B4D2CC74202899B000CF3516 /* AppDelegate.m */,
 				B4D2CC76202899B000CF3516 /* ViewController.h */,
@@ -195,15 +191,13 @@
 			path = FFmpeg003;
 			sourceTree = "<group>";
 		};
-		B4D2CC65202899B000CF3516 /* VideoPlayer */ = {
+		B4D2CC65202899B000CF3516 /* VideoFrame */ = {
 			isa = PBXGroup;
 			children = (
-				B4D2CC67202899B000CF3516 /* NSTimer+Util.h */,
-				B4D2CC6C202899B000CF3516 /* NSTimer+Util.m */,
 				B4D2CC6D202899B000CF3516 /* MRVideoFrame.h */,
 				B4D2CC68202899B000CF3516 /* MRVideoFrame.m */,
 			);
-			path = VideoPlayer;
+			path = VideoFrame;
 			sourceTree = "<group>";
 		};
 		B4D2CC83202899FD00CF3516 /* FFmpeg-2.6.6 */ = {
@@ -475,7 +469,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4D2CC80202899B000CF3516 /* Info.plist in Resources */,
 				B4D2CC7D202899B000CF3516 /* Main.storyboard in Resources */,
 				B4D2CC7C202899B000CF3516 /* LaunchScreen.storyboard in Resources */,
 				B4D2CC82202899C000CF3516 /* Assets.xcassets in Resources */,
@@ -489,7 +482,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B4D2CC7A202899B000CF3516 /* NSTimer+Util.m in Sources */,
 				B4D2CC78202899B000CF3516 /* MRVideoFrame.m in Sources */,
 				B4D2CC7E202899B000CF3516 /* main.m in Sources */,
 				B4D2CC7B202899B000CF3516 /* ViewController.m in Sources */,

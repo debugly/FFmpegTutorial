@@ -9,12 +9,12 @@
 #import "ViewController.h"
 #import "MRVideoPlayer.h"
 
-#ifndef _weakSelf_SL
-#define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
+#ifndef __weakSelf__
+#define __weakSelf__     __weak   __typeof(self) $weakself = self;
 #endif
 
-#ifndef _strongSelf_SL
-#define _strongSelf_SL   __strong __typeof($weakself) self = $weakself;
+#ifndef __strongSelf__
+#define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
 
 @interface ViewController ()
@@ -83,14 +83,14 @@
     [_player playURLString:moviePath];
     [_player addRenderToSuperView:self.contentView];
     
-    _weakSelf_SL
+    __weakSelf__
     [_player onBuffer:^{
-        _strongSelf_SL
+        __strongSelf__
         [self.indicatorView startAnimating];
     }];
     
     [_player onBufferOK:^{
-        _strongSelf_SL
+        __strongSelf__
         [self.indicatorView stopAnimating];
     }];
     
@@ -122,14 +122,14 @@
     [_player2 playURLString:moviePath];
     [_player2 addRenderToSuperView:self.contentView2];
     
-    _weakSelf_SL
+    __weakSelf__
     [_player2 onBuffer:^{
-        _strongSelf_SL
+        __strongSelf__
         [self.indicatorView2 startAnimating];
     }];
     
     [_player2 onBufferOK:^{
-        _strongSelf_SL
+        __strongSelf__
         [self.indicatorView2 stopAnimating];
     }];
     

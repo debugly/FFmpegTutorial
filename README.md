@@ -13,11 +13,11 @@
 
 - 第二天：[查看音视频流信息](md/002.md) √
 
-- 第三天：[使用 UIImageView 渲染视频](md/003.md) √
+- 第三天：[解码视频流，使用 UIImageView 渲染（性能最差）](md/003.md) √
 
-- 第四天：[使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md) √
+- 第四天：[**改进视频渲染方式**: 使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md) √
 
-- 第五天：[使用 CIImage，OpenGL 渲染视频](md/005.md) √
+- 第五天：[**改进视频渲染方式**: 使用 CIImage，OpenGL 渲染视频](md/005.md) √
 
 - 第六天：[使用 OpenGL 渲染视频](md/006.md) √
 

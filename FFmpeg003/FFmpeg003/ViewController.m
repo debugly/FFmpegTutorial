@@ -12,15 +12,14 @@
 #import <libavcodec/avcodec.h>
 #import <libavutil/pixdesc.h>
 #import <libavutil/samplefmt.h>
-#import "NSTimer+Util.h"
 #import "MRVideoFrame.h"
 
-#ifndef _weakSelf_SL
-#define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
+#ifndef __weakSelf__
+#define __weakSelf__     __weak   __typeof(self) $weakself = self;
 #endif
 
-#ifndef _strongSelf_SL
-#define _strongSelf_SL   __strong __typeof($weakself) self = $weakself;
+#ifndef __strongSelf__
+#define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
 
 @interface ViewController ()
@@ -34,7 +33,7 @@
 @property (weak, nonatomic) UIImageView *renderView;
 @property (nonatomic,assign) unsigned int width;
 @property (nonatomic,assign) unsigned int height;
-@property (assign, nonatomic) CGFloat videoTimeBase;
+@property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;
 
 @end
@@ -42,11 +41,11 @@
 @implementation ViewController
 
 static void fflog(void *context, int level, const char *format, va_list args){
-//    @autoreleasepool {
-//        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-//
-//        NSLog(@"ff:%d%@",level,message);
-//    }
+    //    @autoreleasepool {
+    //        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+    //
+    //        NSLog(@"ff:%d%@",level,message);
+    //    }
 }
 
 - (void)dealloc
@@ -81,29 +80,52 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
-    moviePath = @"http://debugly.cn/repository/test.mp4";
-//    moviePath = @"http://localhost/ffmpeg-test/test.mp4";
+    //    moviePath = @"http://debugly.cn/repository/test.mp4";
+    moviePath = @"http://localhost/ffmpeg-test/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
         avformat_network_init();
     }
     
+    NSLog(@"load movie:%@",moviePath);
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // 打开文件
         [self openStreamWithPath:moviePath completion:^(AVFormatContext *formatCtx){
             
             if(formatCtx){
+                
+                self.formatCtx = formatCtx;
+                // 打开视频流
+                BOOL succ = [self openVideoStream];
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.formatCtx = formatCtx;
                     
-                    [self openVideoStream];
-                    
-                    [self startReadFrames];
-                    
-                    [self videoTick];
+                    if (succ) {
+                        
+                        // 渲染View
+                        if (!self.renderView) {
+                            UIImageView *render = [[UIImageView alloc]initWithFrame:self.view.bounds];
+                            [self.view addSubview:render];
+                            render.contentMode = UIViewContentModeScaleAspectFit;
+                            render.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                            self.renderView = render;
+                        }
+                        // 开始读包解码
+                        [self startReadFrames];
+                        // 播放驱动
+                        [self videoTick];
+                    }else{
+                        NSLog(@"不支持的编码类型！");
+                        [indicatorView stopAnimating];
+                    }
                 });
             }else{
                 NSLog(@"不能打开流");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [indicatorView stopAnimating];
+                });
             }
         }];
     });
@@ -158,9 +180,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
         self.bufferOk = NO;
         [self.view bringSubviewToFront:_indicatorView];
         [_indicatorView startAnimating];
-        _weakSelf_SL
+        __weakSelf__
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _strongSelf_SL
+            __strongSelf__
             [self videoTick];
         });
     }
@@ -174,41 +196,43 @@ static void fflog(void *context, int level, const char *format, va_list args){
         self.io_queue = io_queue;
     }
     
-    _weakSelf_SL
+    __weakSelf__
     dispatch_async(self.io_queue, ^{
         
         while (1) {
-           
             AVPacket pkt;
-            _strongSelf_SL
+            __strongSelf__
+            // 读包
             if (av_read_frame(_formatCtx,&pkt) >= 0) {
+                
+                // 只处理视频
                 if (pkt.stream_index == self.stream_index_video) {
                     
-                    _weakSelf_SL
+                    __weakSelf__
+                    // 解码
                     [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
-                        _strongSelf_SL
+                        __strongSelf__
                         
-                        
-                        if (video_frame->format == AV_PIX_FMT_YUV420P || video_frame->format == AV_PIX_FMT_YUVJ420P) {
-                            unsigned char *nv12 = NULL;
+                        unsigned char *nv12 = NULL;
+                        #warning 这块处理还没有完全证实是否正确
+                        int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
+                        if (nv12Size > 0){
+                            // NV12数据转成 UIImage
+                            UIImage *image = [self NV12toUIImage:self.width h:self.height buffer:nv12];
                             
-                            int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
-                            if (nv12Size > 0){
-                                
-                                UIImage *image = [self NV12toUIImage:self.width h:self.height buffer:nv12];
-                                
-                                free(nv12);
-                                nv12 = NULL;
-                                const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
-                                MRVideoFrame *frame = [[MRVideoFrame alloc]init];
-                                frame.duration = frameDuration;
-                                frame.image = image;
-                                
-                                @synchronized(self) {
-                                    [self.videoFrames addObject:frame];
-                                    if (!self.bufferOk) {
-                                        self.bufferOk = [self checkIsBufferOK];
-                                    }
+                            free(nv12);
+                            nv12 = NULL;
+                            // 获取时长
+                            const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
+                            // 构造模型
+                            MRVideoFrame *frame = [[MRVideoFrame alloc]init];
+                            frame.duration = frameDuration;
+                            frame.image = image;
+                            // 存放到内存
+                            @synchronized(self) {
+                                [self.videoFrames addObject:frame];
+                                if (!self.bufferOk) {
+                                    self.bufferOk = [self checkIsBufferOK];
                                 }
                             }
                         }
@@ -305,6 +329,7 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     
     return -1;
 }
+
 #pragma mark - YUV(NV12)-->CIImage--->UIImage
 //https://stackoverflow.com/questions/25659671/how-to-convert-from-yuv-to-ciimage-for-ios
 -(UIImage *)NV12toUIImage:(int)w h:(int)h buffer:(unsigned char *)buffer
@@ -347,42 +372,42 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
 {
     // CIImage Conversion
     CIImage *coreImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
-    NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-    
     CIContext *context = [CIContext contextWithOptions:nil];
-    
     ///引发内存泄露? https://stackoverflow.com/questions/32520082/why-is-cicontext-createcgimage-causing-a-memory-leak
+    NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
     CGImageRef cgImage = [context createCGImage:coreImage
                                        fromRect:CGRectMake(0, 0, w, h)];
-    
+    NSTimeInterval end = CFAbsoluteTimeGetCurrent();
     // UIImage Conversion
     UIImage *uiImage = [[UIImage alloc] initWithCGImage:cgImage
                                                   scale:1.0
                                             orientation:UIImageOrientationUp];
-    NSTimeInterval end = CFAbsoluteTimeGetCurrent();
+    
     NSLog(@"decode an image cost :%g",end-begin);
     CVPixelBufferRelease(pixelBuffer);
     CGImageRelease(cgImage);
-    
     return uiImage;
 }
 
-- (void)openVideoStream
+- (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
-    [self openVideoStream:stream];
+    return [self openVideoStream:stream];
 }
 
-- (void)openVideoStream:(AVStream *)stream
+- (BOOL)openVideoStream:(AVStream *)stream
 {
     AVCodecContext *codecCtx = stream->codec;
     // find the decoder for the video stream
     AVCodec *codec = avcodec_find_decoder(codecCtx->codec_id);
-    if (!codec)
-        return;
+    if (!codec){
+        return NO;
+    }
+    
     // open codec
-    if (avcodec_open2(codecCtx, codec, NULL) < 0)
-        return;
+    if (avcodec_open2(codecCtx, codec, NULL) < 0){
+        return NO;
+    }
     
     _videoCodecCtx = codecCtx;
     
@@ -390,16 +415,10 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     self.height = codecCtx->height;
     float fps = 0;
     avStreamFPSTimeBase(stream, 0.04, &fps, &_videoTimeBase);
-    if (!self.renderView) {
-        UIImageView *render = [[UIImageView alloc]initWithFrame:self.view.bounds];
-        [self.view addSubview:render];
-        render.contentMode = UIViewContentModeScaleAspectFit;
-        render.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        self.renderView = render;
-    }
+    return YES;
 }
 
-static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
+static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS, float *pTimeBase)
 {
     CGFloat fps, timebase;
     
@@ -499,4 +518,6 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
 }
 
 @end
+
+
 

@@ -20,12 +20,12 @@
 #import "NSTimer+Util.h"
 #import "OpenGLView20.h"
 
-#ifndef _weakSelf_SL
-#define _weakSelf_SL     __weak   __typeof(self) $weakself = self;
+#ifndef __weakSelf__
+#define __weakSelf__     __weak   __typeof(self) $weakself = self;
 #endif
 
-#ifndef _strongSelf_SL
-#define _strongSelf_SL   __strong __typeof($weakself) self = $weakself;
+#ifndef __strongSelf__
+#define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
 
 @interface MRVideoPlayer()
@@ -112,7 +112,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
     //av_log_set_flags(AV_LOG_SKIP_REPEATED);
     
-    _weakSelf_SL
+    __weakSelf__
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         
         ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
@@ -127,7 +127,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         
         [self openStreamWithPath:url completion:^(AVFormatContext *formatCtx){
             
-            _strongSelf_SL
+            __strongSelf__
             
             if(formatCtx){
                 
@@ -324,7 +324,7 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     
     NSLog(@"==========================================startReadFrames");
     
-    _weakSelf_SL
+    __weakSelf__
     dispatch_async(self.read_queue, ^{
         
         while (![self checkIsBufferEnoughPackages]) {
@@ -335,7 +335,7 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
             NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
             
             AVPacket pkt;
-            _strongSelf_SL
+            __strongSelf__
             if (av_read_frame(_formatCtx,&pkt) >= 0) {
                 if (pkt.stream_index == self.stream_index_video) {
                     NSTimeInterval end = CFAbsoluteTimeGetCurrent();
@@ -414,9 +414,9 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
         self.decode_queue = decode_queue;
     }
     
-    _weakSelf_SL
+    __weakSelf__
     dispatch_async(self.decode_queue, ^{
-        _strongSelf_SL
+        __strongSelf__
         while (![self checkIsBufferEnoughFrames]) {
             
             if (!self.activity) {
@@ -524,9 +524,9 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
                 NSLog(@"after %fs tick",time);
                 
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-                _weakSelf_SL
+                __weakSelf__
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    _strongSelf_SL
+                    __strongSelf__
                     [self videoTick];
                 });
             }
@@ -537,9 +537,9 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     {
         self.bufferOk = NO;
         [self handleOnBuffer];
-        _weakSelf_SL
+        __weakSelf__
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            _strongSelf_SL
+            __strongSelf__
             [self videoTick];
         });
     }
