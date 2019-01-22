@@ -12,6 +12,7 @@
 #import <libavcodec/avcodec.h>
 #import <libavutil/pixdesc.h>
 #import <libavutil/samplefmt.h>
+#import <libswscale/swscale.h>
 #import "MRVideoFrame.h"
 
 #ifndef __weakSelf__
@@ -21,6 +22,8 @@
 #ifndef __strongSelf__
 #define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
+
+#define USEBITMAP 1
 
 @interface ViewController ()
 
@@ -35,6 +38,15 @@
 @property (nonatomic,assign) unsigned int height;
 @property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;
+///画面高度，单位像素
+@property (nonatomic,assign) int vwidth;
+@property (nonatomic,assign) int vheight;
+//视频像素格式
+@property (nonatomic,assign) enum AVPixelFormat format;
+@property (nonatomic,assign) uint8_t *out_buffer;
+@property (nonatomic,assign) struct SwsContext * img_convert_ctx;
+@property (nonatomic,assign) AVFrame *pFrameYUV;
+@property (nonatomic,strong) NSNumber *lastPts;
 
 @end
 
@@ -112,6 +124,16 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             render.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
                             self.renderView = render;
                         }
+#if USEBITMAP
+                        const int rgbSize = avpicture_get_size(PIX_FMT_RGB24, self.vwidth, self.vheight);
+                        
+                        self.out_buffer = malloc(rgbSize);
+                        self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+                        
+                        self.pFrameYUV = av_frame_alloc();
+                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, PIX_FMT_RGB24, self.vwidth, self.vheight);
+#endif
+                        
                         // 开始读包解码
                         [self startReadFrames];
                         // 播放驱动
@@ -134,7 +156,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)checkIsBufferOK
 {
     float buffedDuration = 0.0;
-    static float kMinBufferDuration = 3;
+    static float kMinBufferDuration = 1;
     
     //如果没有缓冲好，那么就每隔0.1s过来看下buffer
     for (MRVideoFrame *frame in self.videoFrames) {
@@ -187,6 +209,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         });
     }
 }
+
 #pragma mark - read frame loop
 
 - (void)startReadFrames
@@ -203,7 +226,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
             AVPacket pkt;
             __strongSelf__
             // 读包
-            if (av_read_frame(_formatCtx,&pkt) >= 0) {
+            if (av_read_frame(self->_formatCtx,&pkt) >= 0) {
                 
                 // 只处理视频
                 if (pkt.stream_index == self.stream_index_video) {
@@ -213,21 +236,31 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
                         __strongSelf__
                         
-                        unsigned char *nv12 = NULL;
-                        #warning 这块处理还没有完全证实是否正确
-                        int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
-                        if (nv12Size > 0){
-                            // NV12数据转成 UIImage
-                            UIImage *image = [self NV12toUIImage:self.width h:self.height buffer:nv12];
-                            
-                            free(nv12);
-                            nv12 = NULL;
+                        UIImage *img = [self imageFromAVFrame:video_frame width:self.vwidth height:self.vheight];
+                        
+//                        static int index = 0;
+//                        index ++;
+//                        NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.png",index]];
+//                        NSData *data = UIImagePNGRepresentation(img);
+//                        [[NSFileManager defaultManager]createFileAtPath:path contents:data attributes:nil];
+                        
+                        if (img) {
                             // 获取时长
                             const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
+//                            double frameDuration = 0;
+//
+//                            if (!self.lastPts) {
+//                                self.lastPts = @(video_frame->pts);
+//                            } else {
+//                                long detal = video_frame->pts - [self.lastPts longLongValue];
+//                                frameDuration =  detal* self.videoTimeBase;
+//                                self.lastPts = @(video_frame->pts);
+//                            }
+                            
                             // 构造模型
                             MRVideoFrame *frame = [[MRVideoFrame alloc]init];
                             frame.duration = frameDuration;
-                            frame.image = image;
+                            frame.image = img;
                             // 存放到内存
                             @synchronized(self) {
                                 [self.videoFrames addObject:frame];
@@ -285,6 +318,48 @@ static void fflog(void *context, int level, const char *format, va_list args){
     UIImage *image = frame.image;
     [self.renderView setImage:image];
 }
+
+#if USEBITMAP
+
+- (UIImage *)imageFromAVFrame:(AVFrame*)video_frame width:(int)width height:(int)height
+{
+    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);
+    
+    if (pictRet > 0) {
+        
+        const UInt8 *rgb = self.pFrameYUV->data[0];
+        CFIndex length = self.pFrameYUV->linesize[0]*height;
+        size_t bytesPerRow = self.pFrameYUV->linesize[0];
+        
+        CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+        CFDataRef data = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, rgb, length,kCFAllocatorNull);
+        CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
+        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+        
+        CGImageRef cgImage = CGImageCreate(width,
+                                           height,
+                                           8,
+                                           24,
+                                           bytesPerRow,
+                                           colorSpace,
+                                           bitmapInfo,
+                                           provider,
+                                           NULL,
+                                           NO,
+                                           kCGRenderingIntentDefault);
+        CGColorSpaceRelease(colorSpace);
+        
+        UIImage *image = [UIImage imageWithCGImage:cgImage];
+        CGImageRelease(cgImage);
+        CGDataProviderRelease(provider);
+        CFRelease(data);
+        
+        return image;
+    }
+    return nil;
+}
+
+#else
 
 #pragma mark - avframe to nv12
 
@@ -389,6 +464,23 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     return uiImage;
 }
 
+- (UIImage *)imageFromAVFrame:(AVFrame *)video_frame width:(int)width height:(int)height
+{
+    unsigned char *nv12 = NULL;
+#warning 这块处理还没有完全证实是否正确
+    int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
+    if (nv12Size > 0){
+        // NV12数据转成 UIImage
+        UIImage *image = [self NV12toUIImage:width h:height buffer:nv12];
+        
+        free(nv12);
+        nv12 = NULL;
+        return image;
+    }
+    return nil;
+}
+#endif
+
 - (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
@@ -431,7 +523,7 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
     
     if (st->codec->ticks_per_frame != 1) {
         
-        //timebase *= st->codec->ticks_per_frame;
+        timebase *= st->codec->ticks_per_frame;
     }
     
     if (st->avg_frame_rate.den && st->avg_frame_rate.num)
@@ -494,6 +586,12 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
                         ///视频流
                     case AVMEDIA_TYPE_VIDEO:
                     {
+                        ///画面宽度，单位像素
+                        self.vwidth = codec->width;
+                        ///画面高度，单位像素
+                        self.vheight = codec->height;
+                        //视频像素格式
+                        self.format  = codec->pix_fmt;
                         _stream_index_video = i;
                     }
                         break;
@@ -518,6 +616,3 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
 }
 
 @end
-
-
-
