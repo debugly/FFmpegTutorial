@@ -34,8 +34,6 @@
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) unsigned int stream_index_video;
 @property (weak, nonatomic) UIImageView *renderView;
-@property (nonatomic,assign) unsigned int width;
-@property (nonatomic,assign) unsigned int height;
 @property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;
 ///画面高度，单位像素
@@ -66,6 +64,18 @@ static void fflog(void *context, int level, const char *format, va_list args){
         AVFormatContext *formatCtx = self.formatCtx;
         avformat_close_input(&formatCtx);
     }
+    if (self.img_convert_ctx) {
+        sws_freeContext(self.img_convert_ctx);
+    }
+    
+    if (self.pFrameYUV) {
+        av_frame_free(&self->_pFrameYUV);
+    }
+    
+    if(self.out_buffer){
+        free(self.out_buffer);
+        self.out_buffer = NULL;
+    }
 }
 
 - (void)viewDidLoad
@@ -94,6 +104,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
     moviePath = @"http://localhost/ffmpeg-test/test.mp4";
+    moviePath = @"http://localhost/root/mp4/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -125,14 +136,17 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             self.renderView = render;
                         }
 #if USEBITMAP
-                        const int rgbSize = avpicture_get_size(PIX_FMT_RGB24, self.vwidth, self.vheight);
+                        enum AVPixelFormat pix_fmt = PIX_FMT_RGB24;
+#else
+                        enum AVPixelFormat pix_fmt = PIX_FMT_NV12;
+#endif
+                        const int picSize = avpicture_get_size(pix_fmt, self.vwidth, self.vheight);
                         
-                        self.out_buffer = malloc(rgbSize);
-                        self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, PIX_FMT_RGB24, SWS_BICUBIC, NULL, NULL, NULL);
+                        self.out_buffer = malloc(picSize);
+                        self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
                         
                         self.pFrameYUV = av_frame_alloc();
-                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, PIX_FMT_RGB24, self.vwidth, self.vheight);
-#endif
+                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, pix_fmt, self.vwidth, self.vheight);
                         
                         // 开始读包解码
                         [self startReadFrames];
@@ -172,6 +186,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (void)videoTick
 {
     if (self.bufferOk) {
+        
         MRVideoFrame *videoFrame = nil;
         @synchronized(self) {
             videoFrame = [self.videoFrames firstObject];
@@ -180,21 +195,23 @@ static void fflog(void *context, int level, const char *format, va_list args){
             }
         }
         if (videoFrame) {
+            [_indicatorView stopAnimating];
+            
             if (videoFrame.eof) {
                 NSLog(@"视频播放结束");
             }else{
-                [_indicatorView stopAnimating];
-                float interval = videoFrame.duration;
                 [self displayVideoFrame:videoFrame];
-                const NSTimeInterval time = MAX(interval, 0.01);
-                NSLog(@"after %fs tick",time);
                 
+                float interval = videoFrame.duration;
+                NSTimeInterval time = MAX(interval, 0.01);
                 dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
                 dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
                     [self videoTick];
                 });
             }
             return;
+        }else{
+            NSLog(@"what?");
         }
     }
     
@@ -235,27 +252,16 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     // 解码
                     [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
                         __strongSelf__
-                        
-                        UIImage *img = [self imageFromAVFrame:video_frame width:self.vwidth height:self.vheight];
-                        
-//                        static int index = 0;
-//                        index ++;
-//                        NSString *path = [NSTemporaryDirectory() stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.png",index]];
-//                        NSData *data = UIImagePNGRepresentation(img);
-//                        [[NSFileManager defaultManager]createFileAtPath:path contents:data attributes:nil];
+                        // 根据配置把数据转换成 NV12 或者 RGB24
+                        int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);
+                        if (pictRet <= 0) {
+                            return ;
+                        }
+                        UIImage *img = [self imageFromAVFrame:self.pFrameYUV width:self.vwidth height:self.vheight];
                         
                         if (img) {
                             // 获取时长
                             const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
-//                            double frameDuration = 0;
-//
-//                            if (!self.lastPts) {
-//                                self.lastPts = @(video_frame->pts);
-//                            } else {
-//                                long detal = video_frame->pts - [self.lastPts longLongValue];
-//                                frameDuration =  detal* self.videoTimeBase;
-//                                self.lastPts = @(video_frame->pts);
-//                            }
                             
                             // 构造模型
                             MRVideoFrame *frame = [[MRVideoFrame alloc]init];
@@ -323,124 +329,40 @@ static void fflog(void *context, int level, const char *format, va_list args){
 
 - (UIImage *)imageFromAVFrame:(AVFrame*)video_frame width:(int)width height:(int)height
 {
-    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);
+    const UInt8 *rgb = video_frame->data[0];
+    size_t bytesPerRow = video_frame->linesize[0];
+    CFIndex length = bytesPerRow*height;
     
-    if (pictRet > 0) {
-        
-        const UInt8 *rgb = self.pFrameYUV->data[0];
-        CFIndex length = self.pFrameYUV->linesize[0]*height;
-        size_t bytesPerRow = self.pFrameYUV->linesize[0];
-        
-        CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
-        CFDataRef data = CFDataCreateWithBytesNoCopy(kCFAllocatorDefault, rgb, length,kCFAllocatorNull);
-        CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
-        CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-        
-        CGImageRef cgImage = CGImageCreate(width,
-                                           height,
-                                           8,
-                                           24,
-                                           bytesPerRow,
-                                           colorSpace,
-                                           bitmapInfo,
-                                           provider,
-                                           NULL,
-                                           NO,
-                                           kCGRenderingIntentDefault);
-        CGColorSpaceRelease(colorSpace);
-        
-        UIImage *image = [UIImage imageWithCGImage:cgImage];
-        CGImageRelease(cgImage);
-        CGDataProviderRelease(provider);
-        CFRelease(data);
-        
-        return image;
-    }
-    return nil;
+    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+    ///需要copy！因为video_frame是重复利用的；里面的数据会变化！
+    CFDataRef data = CFDataCreate(kCFAllocatorDefault, rgb, length);
+    CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    CGImageRef cgImage = CGImageCreate(width,
+                                       height,
+                                       8,
+                                       24,
+                                       bytesPerRow,
+                                       colorSpace,
+                                       bitmapInfo,
+                                       provider,
+                                       NULL,
+                                       NO,
+                                       kCGRenderingIntentDefault);
+    CGColorSpaceRelease(colorSpace);
+    
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    CGImageRelease(cgImage);
+    CGDataProviderRelease(provider);
+    CFRelease(data);
+    
+    return image;
 }
 
 #else
 
-#pragma mark - avframe to nv12
-
-int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
-{
-    if ((pFrame->format == AV_PIX_FMT_YUV420P) || (pFrame->format == AV_PIX_FMT_NV12) || (pFrame->format == AV_PIX_FMT_NV21) || (pFrame->format == AV_PIX_FMT_YUVJ420P)){
-        
-        int height = pFrame->height;
-        int width = pFrame->width;
-        //计算需要分配的内存大小
-        int needSize = height * width * 1.5;
-        
-        if (*nv12 == NULL) {
-            //申请内存
-            *nv12 = malloc(needSize);
-        }
-        unsigned char *buf = *nv12;
-        unsigned char *y = pFrame->data[0];
-        unsigned char *u = pFrame->data[1];
-        unsigned char *v = pFrame->data[2];
-        
-        unsigned int ys = pFrame->linesize[0];
-        
-        //先写入Y（height * width 个 Y 数据）
-        int offset=0;
-        for (int i=0; i < height; i++)
-        {
-            memcpy(buf+offset,y + i * ys, width);
-            offset+=width;
-        }
-        
-        ///一个U一个V交替着排列（一共有 width * height / 4 个 [U + V] ）
-        for (int i = 0; i < width * height / 4; i++)
-        {
-            memcpy(buf+offset,u + i, 1);
-            offset++;
-            memcpy(buf+offset,v + i, 1);
-            offset++;
-        }
-        return needSize;
-    }
-    
-    return -1;
-}
-
 #pragma mark - YUV(NV12)-->CIImage--->UIImage
-//https://stackoverflow.com/questions/25659671/how-to-convert-from-yuv-to-ciimage-for-ios
--(UIImage *)NV12toUIImage:(int)w h:(int)h buffer:(unsigned char *)buffer
-{
-    //YUV(NV12)-->CIImage--->UIImage Conversion
-    NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
-    
-    CVPixelBufferRef pixelBuffer = NULL;
-    
-    CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                          w,
-                                          h,
-                                          kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
-                                          (__bridge CFDictionaryRef)(pixelAttributes),
-                                          &pixelBuffer);
-    
-    CVPixelBufferLockBaseAddress(pixelBuffer,0);
-    unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    
-    // Here y_ch0 is Y-Plane of YUV(NV12) data.
-    unsigned char *y_ch0 = buffer;
-    unsigned char *y_ch1 = buffer + w * h;
-    memcpy(yDestPlane, y_ch0, w * h);
-    unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
-    
-    // Here y_ch1 is UV-Plane of YUV(NV12) data.
-    memcpy(uvDestPlane, y_ch1, w * h/2);
-    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    
-    if (result != kCVReturnSuccess) {
-        NSLog(@"Unable to create cvpixelbuffer %d", result);
-    }
-    
-    UIImage *image = [self cvPixelBufferReftoUIImage:pixelBuffer w:w h:h];
-    return image;
-}
 
 //性能是很差,平均需要 0.3s，很不适合用来渲染视频 ！！！
 - (UIImage *)cvPixelBufferReftoUIImage:(CVPixelBufferRef)pixelBuffer w:(int)w h:(int)h
@@ -464,21 +386,45 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     return uiImage;
 }
 
-- (UIImage *)imageFromAVFrame:(AVFrame *)video_frame width:(int)width height:(int)height
+//https://stackoverflow.com/questions/25659671/how-to-convert-from-yuv-to-ciimage-for-ios
+- (UIImage *)imageFromAVFrame:(AVFrame *)pFrame width:(int)width height:(int)height
 {
-    unsigned char *nv12 = NULL;
-#warning 这块处理还没有完全证实是否正确
-    int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
-    if (nv12Size > 0){
-        // NV12数据转成 UIImage
-        UIImage *image = [self NV12toUIImage:width h:height buffer:nv12];
-        
-        free(nv12);
-        nv12 = NULL;
-        return image;
+    // NV12数据转成 UIImage
+    //YUV(NV12)-->CIImage--->UIImage Conversion
+    NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
+    
+    CVPixelBufferRef pixelBuffer = NULL;
+    
+    CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                          w,
+                                          h,
+                                          kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                                          (__bridge CFDictionaryRef)(pixelAttributes),
+                                          &pixelBuffer);
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer,0);
+    unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+    
+    // Here y_ch0 is Y-Plane of YUV(NV12) data.
+    
+    unsigned char *y_ch0 = pFrame->data[0];
+    unsigned char *y_ch1 = pFrame->data[1];
+    
+    memcpy(yDestPlane, y_ch0, w * h);
+    unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+    
+    // Here y_ch1 is UV-Plane of YUV(NV12) data.
+    memcpy(uvDestPlane, y_ch1, w * h / 2.0);
+    CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    if (result != kCVReturnSuccess) {
+        NSLog(@"Unable to create cvpixelbuffer %d", result);
     }
-    return nil;
+    
+    UIImage *image = [self cvPixelBufferReftoUIImage:pixelBuffer w:w h:h];
+    return image;
 }
+
 #endif
 
 - (BOOL)openVideoStream
@@ -502,9 +448,7 @@ int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
     }
     
     _videoCodecCtx = codecCtx;
-    
-    self.width = codecCtx->width;
-    self.height = codecCtx->height;
+
     float fps = 0;
     avStreamFPSTimeBase(stream, 0.04, &fps, &_videoTimeBase);
     return YES;

@@ -13,7 +13,7 @@
 
 - 第二天：[查看音视频流信息](md/002.md) √
 
-- 第三天：[解码视频流，使用 UIImageView 渲染（性能最差）](md/003.md) √
+- 第三天：[解码视频流，使用 UIImageView 渲染（提供了2种方式将 avframe 转成 UIimage）](md/003.md) √
 
 - 第四天：[**改进视频渲染方式**: 使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md) √
 
