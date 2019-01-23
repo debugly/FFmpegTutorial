@@ -15,15 +15,15 @@
 
 - 第三天：[解码视频流，使用 UIImageView 渲染（提供了2种方式将 avframe 转成 UIimage）](md/003.md) √
 
-- 第四天：[**改进视频渲染方式**: 使用 AVSampleBufferDisplayLayer 渲染视频](md/004.md) √
+- 第四天：[使用 AVSampleBufferDisplayLayer 渲染视频( avframe 转成 CMSampleBufferRef)](md/004.md) √
 
-- 第五天：[**改进视频渲染方式**: 使用 CIImage，OpenGL 渲染视频](md/005.md) √
+- 第五天：[**改进视频渲染方式**: 使用 CIImage，OpenGL 渲染视频](md/005.md)
 
-- 第六天：[使用 OpenGL 渲染视频](md/006.md) √
+- 第六天：[使用 OpenGL 渲染视频](md/006.md)
 
-- 第七天：[封装一个简易的视频播放器](md/007.md) √
+- 第七天：[封装一个简易的视频播放器](md/007.md)
 
-- 第八天：[使用 AudioUnit 渲染音频](md/008.md) √
+- 第八天：[使用 AudioUnit 渲染音频](md/008.md)
 
 - 第九天：[使用 AudioQueue 渲染音频](md/009.md)
 
