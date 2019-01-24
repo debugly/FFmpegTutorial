@@ -16,6 +16,7 @@
 		B4FA67E1202DE8A600A6A120 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67D9202DE8A600A6A120 /* libavdevice.a */; };
 		B4FA67E2202DE8A600A6A120 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67DA202DE8A600A6A120 /* libswresample.a */; };
 		B4FA67E3202DE8A600A6A120 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67DB202DE8A600A6A120 /* libswscale.a */; };
+		DD4CC9FD21F9599E00DBA163 /* MRVideoPlayerFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4CC9FC21F9599E00DBA163 /* MRVideoPlayerFoundation.framework */; };
 		DD8AF2751F6F6DD4002B2DAB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */; };
 		DD8AF2781F6F6DD4002B2DAB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2771F6F6DD4002B2DAB /* ViewController.m */; };
 		DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF2791F6F6DD4002B2DAB /* Main.storyboard */; };
@@ -135,6 +136,7 @@
 		B4FA67D9202DE8A600A6A120 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavdevice.a; sourceTree = "<group>"; };
 		B4FA67DA202DE8A600A6A120 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		B4FA67DB202DE8A600A6A120 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		DD4CC9FC21F9599E00DBA163 /* MRVideoPlayerFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MRVideoPlayerFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD8AF2701F6F6DD4002B2DAB /* FFmpeg005.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg005.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD8AF2731F6F6DD4002B2DAB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -158,6 +160,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD4CC9FD21F9599E00DBA163 /* MRVideoPlayerFoundation.framework in Frameworks */,
 				B4FA67DE202DE8A600A6A120 /* libavfilter.a in Frameworks */,
 				DD8AF6251F70E2DF002B2DAB /* AudioToolbox.framework in Frameworks */,
 				DD8AF6231F70E2D4002B2DAB /* CoreMedia.framework in Frameworks */,
@@ -188,14 +191,14 @@
 			path = VideoPlayer;
 			sourceTree = "<group>";
 		};
-		B4FA676E202DE8A600A6A120 /* FFmpeg-2.6.6 */ = {
+		B4FA676E202DE8A600A6A120 /* FFmpeg-2.8.2 */ = {
 			isa = PBXGroup;
 			children = (
 				B4FA676F202DE8A600A6A120 /* include */,
 				B4FA67D4202DE8A600A6A120 /* lib */,
 			);
-			name = "FFmpeg-2.6.6";
-			path = "../FFmpeg/FFmpeg-2.6.6";
+			name = "FFmpeg-2.8.2";
+			path = "../FFmpeg/FFmpeg-2.8.2";
 			sourceTree = "<group>";
 		};
 		B4FA676F202DE8A600A6A120 /* include */ = {
@@ -371,7 +374,7 @@
 			isa = PBXGroup;
 			children = (
 				B47AABC220399128001255C9 /* FFmpegConfig.xcconfig */,
-				B4FA676E202DE8A600A6A120 /* FFmpeg-2.6.6 */,
+				B4FA676E202DE8A600A6A120 /* FFmpeg-2.8.2 */,
 				DD8AF2721F6F6DD4002B2DAB /* FFmpeg005 */,
 				DD8AF2711F6F6DD4002B2DAB /* Products */,
 				DD8AF6191F70E26D002B2DAB /* Frameworks */,
@@ -406,6 +409,7 @@
 		DD8AF6191F70E26D002B2DAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD4CC9FC21F9599E00DBA163 /* MRVideoPlayerFoundation.framework */,
 				DD8AF6241F70E2DF002B2DAB /* AudioToolbox.framework */,
 				DD8AF6221F70E2D4002B2DAB /* CoreMedia.framework */,
 				DD8AF6201F70E2BF002B2DAB /* VideoToolbox.framework */,
@@ -447,7 +451,7 @@
 				TargetAttributes = {
 					DD8AF26F1F6F6DD4002B2DAB = {
 						CreatedOnToolsVersion = 9.0;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -627,15 +631,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YBM843B95;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 96C96H28CU;
 				INFOPLIST_FILE = "$(SRCROOT)/FFmpeg005/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sohu.FFmpeg005;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
-				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -644,15 +648,15 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_STYLE = Manual;
-				DEVELOPMENT_TEAM = 8YBM843B95;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 96C96H28CU;
 				INFOPLIST_FILE = "$(SRCROOT)/FFmpeg005/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.sohu.FFmpeg005;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "a17505de-8ee5-49d8-aac1-189ab2d50ed3";
-				PROVISIONING_PROFILE_SPECIFIER = Any_Project_PP;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

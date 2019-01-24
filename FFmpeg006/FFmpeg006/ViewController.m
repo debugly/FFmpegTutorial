@@ -28,7 +28,7 @@
 
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (assign, nonatomic) AVFormatContext *formatCtx;
-@property (strong, nonatomic) dispatch_queue_t io_queue;
+@property (strong, nonatomic) dispatch_queue_t read_queue;
 @property (nonatomic,strong) NSMutableArray *videoFrames;
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) unsigned int stream_index_video;
@@ -37,7 +37,7 @@
 
 @property (nonatomic,assign) unsigned int width;
 @property (nonatomic,assign) unsigned int height;
-@property (assign, nonatomic) CGFloat videoTimeBase;
+@property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;
 
 @end
@@ -86,6 +86,8 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     moviePath = @"http://debugly.cn/repository/test.mp4";
     moviePath = @"http://192.168.3.2/ffmpeg-test/test.mp4";
+    moviePath = @"http://10.7.36.117/root/mp4/test.mp4";
+    
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -102,7 +104,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     BOOL succ = [self openVideoStream];
                     
                     if (succ) {
-                        [self startReadFrames];
+                        [self startReadPackets];
                         
                         [self videoTick];
                     } else {
@@ -119,7 +121,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)checkIsBufferOK
 {
     float buffedDuration = 0.0;
-    static float kMinBufferDuration = 3;
+    static float kMinBufferDuration = 1;
     
     //如果没有缓冲好，那么就每隔0.1s过来看下buffer
     for (MRVideoFrame *frame in self.videoFrames) {
@@ -175,15 +177,15 @@ static void fflog(void *context, int level, const char *format, va_list args){
 
 #pragma mark - read frame loop
 
-- (void)startReadFrames
+- (void)startReadPackets
 {
-    if (!self.io_queue) {
-        dispatch_queue_t io_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
-        self.io_queue = io_queue;
+    if (!self.read_queue) {
+        dispatch_queue_t read_queue = dispatch_queue_create("read_queue", DISPATCH_QUEUE_SERIAL);
+        self.read_queue = read_queue;
     }
     
     __weakSelf__
-    dispatch_async(self.io_queue, ^{
+    dispatch_async(self.read_queue, ^{
         
         while (1) {
             
@@ -305,7 +307,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     return YES;
 }
 
-static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
+static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS, float *pTimeBase)
 {
     CGFloat fps, timebase;
     

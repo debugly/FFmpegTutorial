@@ -171,14 +171,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		B4D2CAEE20275BC100CF3516 /* FFmpeg-2.6.6 */ = {
+		B4D2CAEE20275BC100CF3516 /* FFmpeg-2.8.2 */ = {
 			isa = PBXGroup;
 			children = (
 				B4D2CAEF20275BC100CF3516 /* include */,
 				B4D2CB5420275BC100CF3516 /* lib */,
 			);
-			name = "FFmpeg-2.6.6";
-			path = "../FFmpeg/FFmpeg-2.6.6";
+			name = "FFmpeg-2.8.2";
+			path = "../FFmpeg/FFmpeg-2.8.2";
 			sourceTree = "<group>";
 		};
 		B4D2CAEF20275BC100CF3516 /* include */ = {
@@ -354,7 +354,7 @@
 			isa = PBXGroup;
 			children = (
 				B47AABBC2039906B001255C9 /* FFmpegConfig.xcconfig */,
-				B4D2CAEE20275BC100CF3516 /* FFmpeg-2.6.6 */,
+				B4D2CAEE20275BC100CF3516 /* FFmpeg-2.8.2 */,
 				DD8AF2721F6F6DD4002B2DAB /* FFmpeg002 */,
 				DD8AF2711F6F6DD4002B2DAB /* Products */,
 				DD8AF6191F70E26D002B2DAB /* Frameworks */,

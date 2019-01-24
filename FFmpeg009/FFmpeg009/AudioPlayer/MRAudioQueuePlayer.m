@@ -55,7 +55,7 @@
 @property (nonatomic,assign) SwrContext  *swrContext;
 @property (nonatomic,assign) uint8_t     *swrBuffer;
 @property (nonatomic,assign) NSUInteger  swrBufferSize;
-@property (nonatomic,assign) CGFloat     audioTimeBase;
+@property (nonatomic,assign) float     audioTimeBase;
 
 @property (nonatomic,strong) MRAudioFrame *currentAudioFrame;
 @property (nonatomic,assign) NSUInteger    currentAudioFramePos;
@@ -283,7 +283,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     return YES;
 }
 
-static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
+static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS, float *pTimeBase)
 {
     CGFloat fps, timebase;
     
@@ -350,7 +350,7 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     self.readingAVFrame = YES;
     
     if (!self.read_queue) {
-        dispatch_queue_t read_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_t read_queue = dispatch_queue_create("read_queue", DISPATCH_QUEUE_SERIAL);
         self.read_queue = read_queue;
     }
     

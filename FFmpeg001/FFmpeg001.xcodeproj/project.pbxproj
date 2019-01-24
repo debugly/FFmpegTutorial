@@ -178,7 +178,7 @@
 			isa = PBXGroup;
 			children = (
 				B47AABBA20398F71001255C9 /* FFmpegConfig.xcconfig */,
-				B4D2CB6420275BEB00CF3516 /* FFmpeg-2.6.6 */,
+				B4D2CB6420275BEB00CF3516 /* FFmpeg-2.8.2 */,
 				B42FD14B1EC7F92700F230EA /* FFmpeg001 */,
 				B42FD14A1EC7F92700F230EA /* Products */,
 				B42FD1661EC7F96A00F230EA /* Frameworks */,
@@ -232,14 +232,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		B4D2CB6420275BEB00CF3516 /* FFmpeg-2.6.6 */ = {
+		B4D2CB6420275BEB00CF3516 /* FFmpeg-2.8.2 */ = {
 			isa = PBXGroup;
 			children = (
 				B4D2CB6520275BEB00CF3516 /* include */,
 				B4D2CBCA20275BEB00CF3516 /* lib */,
 			);
-			name = "FFmpeg-2.6.6";
-			path = "../FFmpeg/FFmpeg-2.6.6";
+			name = "FFmpeg-2.8.2";
+			path = "../FFmpeg/FFmpeg-2.8.2";
 			sourceTree = "<group>";
 		};
 		B4D2CB6520275BEB00CF3516 /* include */ = {

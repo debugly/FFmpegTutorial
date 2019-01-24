@@ -1,6 +1,6 @@
 //
 //  ViewController.m
-//  FFmpeg002
+//  FFmpeg005
 //
 //  Created by Matt Reach on 2017/12/18.
 //  Copyright © 2017年 Awesome FFmpeg Study Demo. All rights reserved.
@@ -12,10 +12,12 @@
 #import <libavcodec/avcodec.h>
 #import <libavutil/pixdesc.h>
 #import <libavutil/samplefmt.h>
+#import <libswscale/swscale.h>
 #import "NSTimer+Util.h"
 #import "MRVideoFrame.h"
 #import <AVFoundation/AVSampleBufferDisplayLayer.h>
 #import <GLKit/GLKit.h>
+#import <MRVideoPlayerFoundation/MRVideoPlayerFoundation.h>
 
 #ifndef __weakSelf__
 #define __weakSelf__     __weak   __typeof(self) $weakself = self;
@@ -25,11 +27,20 @@
 #define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
 
+static int kPacketCacheCount = 24 * 20;
+static int kFrameCacheCount = 24 * 2;
+
 @interface ViewController ()
 
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (assign, nonatomic) AVFormatContext *formatCtx;
-@property (strong, nonatomic) dispatch_queue_t io_queue;
+
+@property (strong, nonatomic) dispatch_queue_t read_queue;
+@property (nonatomic,assign,getter=isReading) BOOL reading;
+
+@property (strong, nonatomic) dispatch_queue_t decode_queue;
+@property (nonatomic,assign,getter=isDecoding) BOOL decoding;
+
 @property (nonatomic,strong) NSMutableArray *videoFrames;
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) unsigned int stream_index_video;
@@ -39,10 +50,19 @@
 @property (nonatomic, strong) GLKView *glView;
 @property (nonatomic, strong) CIContext *ciContext;
 
-@property (nonatomic,assign) unsigned int width;
-@property (nonatomic,assign) unsigned int height;
-@property (assign, nonatomic) CGFloat videoTimeBase;
+@property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;
+@property (nonatomic,assign) BOOL eof;
+///画面高度，单位像素
+@property (nonatomic,assign) int vwidth;
+@property (nonatomic,assign) int vheight;
+//视频像素格式
+@property (nonatomic,assign) enum AVPixelFormat format;
+@property (nonatomic,assign) uint8_t *out_buffer;
+@property (nonatomic,assign) struct SwsContext * img_convert_ctx;
+@property (nonatomic,assign) AVFrame *pFrameYUV;
+
+@property (nonatomic,assign) MRPacketQueue packetQueue;
 
 @end
 
@@ -61,6 +81,18 @@ static void fflog(void *context, int level, const char *format, va_list args){
     if (self.formatCtx) {
         AVFormatContext *formatCtx = self.formatCtx;
         avformat_close_input(&formatCtx);
+    }
+    if (self.img_convert_ctx) {
+        sws_freeContext(self.img_convert_ctx);
+    }
+    
+    if (self.pFrameYUV) {
+        av_frame_free(&self->_pFrameYUV);
+    }
+    
+    if(self.out_buffer){
+        free(self.out_buffer);
+        self.out_buffer = NULL;
     }
 }
 
@@ -90,27 +122,67 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     moviePath = @"http://debugly.cn/repository/test.mp4";
     moviePath = @"http://192.168.3.2/ffmpeg-test/test.mp4";
+    moviePath = @"http://10.7.36.117/root/mp4/test2.mp4";
+    
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
         avformat_network_init();
     }
     
+    NSLog(@"load movie:%@",moviePath);
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        // 打开文件
         [self openStreamWithPath:moviePath completion:^(AVFormatContext *formatCtx){
             
             if(formatCtx){
+                
+                self.formatCtx = formatCtx;
+                // 打开视频流
+                BOOL succ = [self openVideoStream];
+                
                 dispatch_async(dispatch_get_main_queue(), ^{
-                    self.formatCtx = formatCtx;
                     
-                    [self openVideoStream];
-                    
-                    [self startReadFrames];
-                    
-                    [self videoTick];
+                    if (succ) {
+                        
+                        // 渲染View
+                        if(!self.glContext){
+                            self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+                            self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
+                            
+                            CGSize vSize = self.view.bounds.size;
+                            CGFloat vh = vSize.width * self.vheight / self.vwidth;
+                            CGRect rect = CGRectMake(0, (vSize.height-vh)/2, vSize.width , vh);
+                            self.glView = [[GLKView alloc] initWithFrame:rect context:self.glContext];
+                            [self.view addSubview:self.glView];
+                        }
+
+                        enum AVPixelFormat pix_fmt = PIX_FMT_NV12;
+                        const int picSize = avpicture_get_size(pix_fmt, self.vwidth, self.vheight);
+                        
+                        self.out_buffer = malloc(picSize);
+                        self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
+                        
+                        self.pFrameYUV = av_frame_alloc();
+                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, pix_fmt, self.vwidth, self.vheight);
+                        
+                        // 开始读包
+                        [self notifiReadPacket];
+                        // 解码驱动
+                        [self notifiDecodeVideo];
+                        // 播放驱动
+                        [self videoTick];
+                    }else{
+                        NSLog(@"不支持的编码类型！");
+                        [indicatorView stopAnimating];
+                    }
                 });
             }else{
                 NSLog(@"不能打开流");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [indicatorView stopAnimating];
+                });
             }
         }];
     });
@@ -119,9 +191,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)checkIsBufferOK
 {
     float buffedDuration = 0.0;
-    static float kMinBufferDuration = 3;
+    static float kMinBufferDuration = 2;
     
-    //如果没有缓冲好，那么就每隔0.1s过来看下buffer
+    //如果没有缓冲好，那么就每隔1s过来看下buffer
     for (MRVideoFrame *frame in self.videoFrames) {
         buffedDuration += frame.duration;
         if (buffedDuration >= kMinBufferDuration) {
@@ -135,6 +207,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (void)videoTick
 {
     if (self.bufferOk) {
+        
         MRVideoFrame *videoFrame = nil;
         @synchronized(self) {
             videoFrame = [self.videoFrames firstObject];
@@ -143,147 +216,253 @@ static void fflog(void *context, int level, const char *format, va_list args){
             }
         }
         if (videoFrame) {
-            if (videoFrame.eof) {
-                NSLog(@"视频播放结束");
-            }else{
-                [_indicatorView stopAnimating];
-                float interval = videoFrame.duration;
-                [self displayVideoFrame:videoFrame];
-                const NSTimeInterval time = MAX(interval, 0.01);
-                NSLog(@"after %fs tick",time);
-                
-                dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
-                dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                    [self videoTick];
-                });
-            }
+            [_indicatorView stopAnimating];
+            
+            [self displayVideoFrame:videoFrame];
+            
+            float interval = videoFrame.duration;
+            NSTimeInterval time = MAX(interval, 0.01);
+            NSLog(@"display:%g",interval);
+            dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, time * NSEC_PER_SEC);
+            dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+                [self videoTick];
+            });
+            
+            ///播放势必要消耗帧，所以检查下是否需要解码更多帧
+            [self notifiDecodeVideo];
+
             return;
         }
     }
     
     {
-        self.bufferOk = NO;
-        [self.view bringSubviewToFront:_indicatorView];
-        [_indicatorView startAnimating];
-        __weakSelf__
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            __strongSelf__
-            [self videoTick];
-        });
+        if (self.eof) {
+            [_indicatorView stopAnimating];
+            NSLog(@"视频播放结束");
+        }else{
+            NSLog(@"loading");
+            ///播放势必要消耗帧，所以检查下是否需要解码更多帧
+            [self notifiDecodeVideo];
+            
+            self.bufferOk = NO;
+            [self.view bringSubviewToFront:_indicatorView];
+            [_indicatorView startAnimating];
+            __weakSelf__
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+                __strongSelf__
+                [self videoTick];
+            });
+        }
     }
 }
 
 #pragma mark - read frame loop
 
-- (void)startReadFrames
+- (bool)checkPacketFull
 {
-    if (!self.io_queue) {
-        dispatch_queue_t io_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
-        self.io_queue = io_queue;
+    @synchronized(self) {
+        
+        int count = self.packetQueue.nb_packets;
+        
+        if (count < kPacketCacheCount){
+            return false;
+        }
+        
+        return true;
+    }
+}
+
+- (void)notifiDecodeVideo
+{
+    bool full = [self checkFrameFull];
+    if (!full) {
+        [self startDecodePacketToFrames];
+    }
+}
+
+- (bool)checkFrameFull
+{
+    @synchronized(self) {
+        
+        if (!self.videoFrames) {
+            return false;
+        }
+        
+        NSUInteger count = [self.videoFrames count];
+        if (count < kFrameCacheCount) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+}
+
+- (void)cacheAVPacket:(AVPacket *)packet
+{
+    mr_packet_queue_put(&self->_packetQueue, packet);
+}
+
+- (void)notifiReadPacket
+{
+    if (!self.read_queue) {
+        dispatch_queue_t read_queue = dispatch_queue_create("read_queue", DISPATCH_QUEUE_SERIAL);
+        self.read_queue = read_queue;
     }
     
+    if (self.eof) {
+        return;
+    }
+    
+    if (self.isReading) {
+        return;
+    }
+    
+    self.reading = YES;
+    
     __weakSelf__
-    dispatch_async(self.io_queue, ^{
+    dispatch_async(self.read_queue, ^{
         
-        while (1) {
-            
-            AVPacket pkt;
+        /// buffer 不够？继续读取！
+        while (![self checkPacketFull]) {
+            NSLog(@"read packet");
+            AVPacket pkt1, *pkt = &pkt1;
             __strongSelf__
             // 读包
-            if (av_read_frame(_formatCtx,&pkt) >= 0) {
-                
+            if (av_read_frame(_formatCtx,pkt) >= 0) {
+                NSLog(@"cache packet");
                 ///处理视频流
-                if (pkt.stream_index == self.stream_index_video) {
-                    ///解码
-                    __weakSelf__
-                    [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
-                        __strongSelf__
-                        ///目前只处理了 YUV420P 和 YUVJ420P 格式
-                        if (video_frame->format == AV_PIX_FMT_YUV420P || video_frame->format == AV_PIX_FMT_YUVJ420P) {
-                            unsigned char *nv12 = NULL;
-                            
-                            int nv12Size = AVFrameConvertToNV12Buffer(video_frame,&nv12);
-                            if (nv12Size > 0){
-                                NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-                                
-                                //0.000494003
-                                CVPixelBufferRef pixelBuffer = [self NV12toCVPixelBufferRef:self.width h:self.height linesize:video_frame->linesize[0] buffer:nv12 size:nv12Size];
-                                CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
-                                
-                                NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-                                NSLog(@"decode an image cost :%g",end-begin);
-                                free(nv12);
-                                nv12 = NULL;
-                                const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
-                                MRVideoFrame *frame = [[MRVideoFrame alloc]init];
-                                frame.duration = frameDuration;
-                                frame.ciImage = ciImage;
-                                
-                                @synchronized(self) {
-                                    [self.videoFrames addObject:frame];
-                                    if (!self.bufferOk) {
-                                        self.bufferOk = [self checkIsBufferOK];
-                                    }
-                                }
-                            }
-                        }
-                    }];
+                if (pkt1.stream_index == self.stream_index_video) {
+                    [self cacheAVPacket:pkt];
+                    dispatch_async(dispatch_get_main_queue(), ^{
+                        [self notifiDecodeVideo];
+                    });
+                } else {
+                    av_packet_unref(pkt);
                 }
+                
             }else{
-                NSLog(@"eof,stop read more frame!");
-                MRVideoFrame *frame = [[MRVideoFrame alloc]init];
-                frame.eof = YES;
-                @synchronized(self) {
-                    [self.videoFrames addObject:frame];
-                    if (!self.bufferOk) {
-                        self.bufferOk = [self checkIsBufferOK];
-                    }
-                }
+                NSLog(@"eof,stop read more packet!");
+                dispatch_sync(dispatch_get_main_queue(), ^{
+                    self.eof = YES;
+                });
                 break;
             }
-            ///释放内存
-            av_packet_unref(&pkt);
         }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            NSLog(@"packet cache full");
+            self.reading = NO;
+        });
+        
+    });
+}
+
+- (void)startDecodePacketToFrames
+{
+    if (!self.decode_queue) {
+        dispatch_queue_t decode_queue = dispatch_queue_create("decode_queue", DISPATCH_QUEUE_SERIAL);
+        self.decode_queue = decode_queue;
+    }
+    
+    if (self.isDecoding) {
+        return;
+    }
+    
+    self.decoding = YES;
+    
+    __weakSelf__
+    dispatch_async(self.decode_queue, ^{
+        
+        __strongSelf__
+        
+        while (![self checkFrameFull]) {
+            
+            ///解码
+            AVPacket pkt;
+            bool ok = false;
+            @synchronized(self) {
+                ok = mr_packet_queue_get(&self->_packetQueue, &pkt);
+            }
+            
+            NSLog(@"get cache packet:%@",ok?@"succ":@"failed");
+            
+            if (ok) {
+                AVFrame *video_frame = [self decodeVideoPacket:&pkt];
+                av_packet_unref(&pkt);
+                NSLog(@"decode packet:%@",video_frame!=NULL?@"succ":@"failed");
+                if (video_frame) {
+                    // 根据配置把数据转换成 NV12 或者 RGB24
+                    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);
+                    
+                    if (pictRet <= 0) {
+                        continue;
+                    }
+                    
+                    CVPixelBufferRef pixelBuffer = [self pixelBufferRefFromAVFrame:self.pFrameYUV width:self.vwidth height:self.vheight];
+                    
+                    CIImage *ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+                    
+                    if (ciImage) {
+                        // 获取时长
+                        const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
+                        
+                        // 构造模型
+                        MRVideoFrame *frame = [[MRVideoFrame alloc]init];
+                        frame.duration = frameDuration;
+                        frame.ciImage = ciImage;
+                        // 存放到内存
+                        @synchronized(self) {
+                            [self.videoFrames addObject:frame];
+                            if (!self.bufferOk) {
+                                self.bufferOk = [self checkIsBufferOK];
+                            }
+                        }
+                    }
+                    
+                    //用完后记得释放掉
+                    av_frame_free(&video_frame);
+                }
+            } else {
+                ///缓存里没了就停止解码
+                break;
+            }
+            
+            if (!self.eof) {
+                ///缓存消耗了就去读包
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self notifiReadPacket];
+                });
+            }
+        }
+        
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self checkFrameFull]) {
+                NSLog(@"frame cache full");
+            }
+            self.decoding = NO;
+        });
     });
 }
 
 #pragma mark - decode video packet
 
-- (void)handleVideoPacket:(AVPacket *)packet completion:(void(^)(AVFrame *video_frame))completion
+- (AVFrame *)decodeVideoPacket:(AVPacket *)packet
 {
-    if (!completion) {
-        return;
-    }
-    
     int gotframe = 0;
     AVFrame *video_frame = av_frame_alloc();//老版本是 avcodec_alloc_frame
     
     int len = avcodec_decode_video2(_videoCodecCtx, video_frame, &gotframe, packet);
+    
     if (len < 0) {
         NSLog(@"decode video error, skip packet");
     }
-    if (gotframe) {
-        completion(video_frame);
-    }
-    //用完后记得释放掉
-    av_frame_free(&video_frame);
+    return video_frame;
 }
 
 #pragma mark - display video frame
 
 - (void)displayVideoFrame:(MRVideoFrame *)frame
 {
-    if(!self.glContext){
-        self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
-        self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
-        
-        CGSize vSize = self.view.bounds.size;
-        CGFloat vh = vSize.width * self.height / self.width;
-        CGRect rect = CGRectMake(0, (vSize.height-vh)/2, vSize.width , vh);
-        self.glView = [[GLKView alloc] initWithFrame:rect context:self.glContext];
-        [self.view addSubview:self.glView];
-    }
-    
     NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
     
     CIImage *ciimage = frame.ciImage;
@@ -298,112 +477,76 @@ static void fflog(void *context, int level, const char *format, va_list args){
     [_glView display];
     
     NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-    NSLog(@"displayVideoFrame an image cost :%g",end-begin);
-}
-
-#pragma mark - avframe to nv12
-
-int AVFrameConvertToNV12Buffer(AVFrame *pFrame,unsigned char **nv12)
-{
-    if ((pFrame->format == AV_PIX_FMT_YUV420P) || (pFrame->format == AV_PIX_FMT_NV12) || (pFrame->format == AV_PIX_FMT_NV21) || (pFrame->format == AV_PIX_FMT_YUVJ420P)){
-        
-        int height = pFrame->height;
-        int width = pFrame->width;
-        //计算需要分配的内存大小
-        int needSize = height * width * 1.5;
-        
-        if (*nv12 == NULL) {
-            //申请内存
-            *nv12 = malloc(needSize);
-        }
-        unsigned char *buf = *nv12;
-        unsigned char *y = pFrame->data[0];
-        unsigned char *u = pFrame->data[1];
-        unsigned char *v = pFrame->data[2];
-        
-        unsigned int ys = pFrame->linesize[0];
-        
-        //先写入Y（height * width 个 Y 数据）
-        int offset=0;
-        for (int i=0; i < height; i++)
-        {
-            memcpy(buf+offset,y + i * ys, width);
-            offset+=width;
-        }
-        
-        ///一个U一个V交替着排列（一共有 width * height / 4 个 [U + V] ）
-        for (int i = 0; i < width * height / 4; i++)
-        {
-            memcpy(buf+offset,u + i, 1);
-            offset++;
-            memcpy(buf+offset,v + i, 1);
-            offset++;
-        }
-        return needSize;
-    }
-    
-    return -1;
+//    NSLog(@"displayVideoFrame an image cost :%g",end-begin);
 }
 
 #pragma mark - YUV(NV12)-->CMSampleBufferRef
 
-- (CVPixelBufferRef)NV12toCVPixelBufferRef:(int)w h:(int)h linesize:(int)linesize buffer:(unsigned char *)buffer size:(int)nv12Size
+- (CVPixelBufferRef)pixelBufferRefFromAVFrame:(AVFrame *)pFrame width:(int)w height:(int)h
 {
-    CVReturn theError;
-    if (!self.pixelBufferPool){
-        NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-        [attributes setObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-        [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
-        [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
-        [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
-        
-        theError = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef) attributes, &_pixelBufferPool);
-        if (theError != kCVReturnSuccess){
-            NSLog(@"CVPixelBufferPoolCreate Failed");
-        }
-    }
+    // NV12数据转成 UIImage
+    //YUV(NV12)-->CIImage--->UIImage Conversion
+    NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
     
-    CVPixelBufferRef pixelBuffer = nil;
-    theError = CVPixelBufferPoolCreatePixelBuffer(NULL, self.pixelBufferPool, &pixelBuffer);
-    if(theError != kCVReturnSuccess){
-        NSLog(@"CVPixelBufferPoolCreatePixelBuffer Failed");
-    }
+    CVPixelBufferRef pixelBuffer = NULL;
     
-    CVPixelBufferLockBaseAddress(pixelBuffer, 0);
-    void* base = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    memcpy(base, buffer, nv12Size);
+    CVReturn result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                          w,
+                                          h,
+                                          kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                                          (__bridge CFDictionaryRef)(pixelAttributes),
+                                          &pixelBuffer);
+    
+    CVPixelBufferLockBaseAddress(pixelBuffer,0);
+    unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+    
+    // Here y_ch0 is Y-Plane of YUV(NV12) data.
+    
+    unsigned char *y_ch0 = pFrame->data[0];
+    unsigned char *y_ch1 = pFrame->data[1];
+    
+    memcpy(yDestPlane, y_ch0, w * h);
+    unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+    
+    // Here y_ch1 is UV-Plane of YUV(NV12) data.
+    memcpy(uvDestPlane, y_ch1, w * h / 2.0);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    
+    if (result != kCVReturnSuccess) {
+        NSLog(@"Unable to create cvpixelbuffer %d", result);
+    }
     
     return CFAutorelease(pixelBuffer);
 }
 
-- (void)openVideoStream
+- (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
-    [self openVideoStream:stream];
+    return [self openVideoStream:stream];
 }
 
-- (void)openVideoStream:(AVStream *)stream
+- (BOOL)openVideoStream:(AVStream *)stream
 {
     AVCodecContext *codecCtx = stream->codec;
     // find the decoder for the video stream
     AVCodec *codec = avcodec_find_decoder(codecCtx->codec_id);
-    if (!codec)
-        return;
+    if (!codec){
+        return NO;
+    }
+    
     // open codec
-    if (avcodec_open2(codecCtx, codec, NULL) < 0)
-        return;
+    if (avcodec_open2(codecCtx, codec, NULL) < 0){
+        return NO;
+    }
     
     _videoCodecCtx = codecCtx;
     
-    self.width = codecCtx->width;
-    self.height = codecCtx->height;
     float fps = 0;
     avStreamFPSTimeBase(stream, 0.04, &fps, &_videoTimeBase);
+    return YES;
 }
 
-static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
+static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS, float *pTimeBase)
 {
     CGFloat fps, timebase;
     
@@ -479,6 +622,12 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
                         ///视频流
                     case AVMEDIA_TYPE_VIDEO:
                     {
+                        ///画面宽度，单位像素
+                        self.vwidth = codec->width;
+                        ///画面高度，单位像素
+                        self.vheight = codec->height;
+                        //视频像素格式
+                        self.format  = codec->pix_fmt;
                         _stream_index_video = i;
                     }
                         break;

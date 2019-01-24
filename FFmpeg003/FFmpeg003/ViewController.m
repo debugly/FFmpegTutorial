@@ -23,13 +23,13 @@
 #define __strongSelf__   __strong __typeof($weakself) self = $weakself;
 #endif
 
-#define USEBITMAP 1
+#define USEBITMAP 0
 
 @interface ViewController ()
 
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
 @property (assign, nonatomic) AVFormatContext *formatCtx;
-@property (strong, nonatomic) dispatch_queue_t io_queue;
+@property (strong, nonatomic) dispatch_queue_t read_queue;
 @property (nonatomic,strong) NSMutableArray *videoFrames;
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) unsigned int stream_index_video;
@@ -104,7 +104,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
     moviePath = @"http://localhost/ffmpeg-test/test.mp4";
-    moviePath = @"http://localhost/root/mp4/test.mp4";
+    moviePath = @"http://10.7.36.117/root/mp4/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -149,7 +149,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, pix_fmt, self.vwidth, self.vheight);
                         
                         // 开始读包解码
-                        [self startReadFrames];
+                        [self startReadPackets];
                         // 播放驱动
                         [self videoTick];
                     }else{
@@ -229,15 +229,15 @@ static void fflog(void *context, int level, const char *format, va_list args){
 
 #pragma mark - read frame loop
 
-- (void)startReadFrames
+- (void)startReadPackets
 {
-    if (!self.io_queue) {
-        dispatch_queue_t io_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
-        self.io_queue = io_queue;
+    if (!self.read_queue) {
+        dispatch_queue_t read_queue = dispatch_queue_create("read_queue", DISPATCH_QUEUE_SERIAL);
+        self.read_queue = read_queue;
     }
     
     __weakSelf__
-    dispatch_async(self.io_queue, ^{
+    dispatch_async(self.read_queue, ^{
         
         while (1) {
             AVPacket pkt;
@@ -248,7 +248,6 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 // 只处理视频
                 if (pkt.stream_index == self.stream_index_video) {
                     
-                    __weakSelf__
                     // 解码
                     [self handleVideoPacket:&pkt completion:^(AVFrame *video_frame) {
                         __strongSelf__
@@ -387,7 +386,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 }
 
 //https://stackoverflow.com/questions/25659671/how-to-convert-from-yuv-to-ciimage-for-ios
-- (UIImage *)imageFromAVFrame:(AVFrame *)pFrame width:(int)width height:(int)height
+- (UIImage *)imageFromAVFrame:(AVFrame *)pFrame width:(int)w height:(int)h
 {
     // NV12数据转成 UIImage
     //YUV(NV12)-->CIImage--->UIImage Conversion

@@ -40,7 +40,7 @@
 @property (assign, nonatomic) CGSize videoDimensions;
 
 @property (weak, nonatomic) OpenGLView20 *glView;
-@property (assign, nonatomic) CGFloat videoTimeBase;
+@property (assign, nonatomic) float videoTimeBase;
 @property (strong, nonatomic) NSMutableArray<MRVideoFrame *> *videoPackets;
 @property (strong, nonatomic) NSMutableArray<MRVideoFrame *> *videoFrames;
 
@@ -255,7 +255,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     return YES;
 }
 
-static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *pFPS, CGFloat *pTimeBase)
+static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS, float *pTimeBase)
 {
     CGFloat fps, timebase;
     
@@ -317,7 +317,7 @@ static void avStreamFPSTimeBase(AVStream *st, CGFloat defaultTimeBase, CGFloat *
     self.readingAVFrame = YES;
     
     if (!self.read_queue) {
-        dispatch_queue_t read_queue = dispatch_queue_create("read-io", DISPATCH_QUEUE_SERIAL);
+        dispatch_queue_t read_queue = dispatch_queue_create("read_queue", DISPATCH_QUEUE_SERIAL);
         self.read_queue = read_queue;
     }
     

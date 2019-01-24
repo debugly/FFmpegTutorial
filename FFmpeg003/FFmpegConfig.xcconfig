@@ -8,7 +8,7 @@
 //
 
 //统一配置ffmpeg 库的路径，因为要写大量的demo，因此写个配置文件比较省事
-FFmpeg = ../FFmpeg/FFmpeg-2.6.6
+FFmpeg = ../FFmpeg/FFmpeg-2.8.2
 HEADER_SEARCH_PATHS = $(FFmpeg)/include
 LIBRARY_SEARCH_PATHS = $(inherited) $(FFmpeg)/lib
 ENABLE_BITCODE = NO
