@@ -16,9 +16,9 @@
 
 - 第 ④ 天：[将 avframe 转成 UIImage，使用 UIImageView 渲染](md/004.md) √
 
-- 第 ⑤ 天：[将 avframe 转成 CIImage，使用 GLKView 渲染](md/005.md)
+- 第 ⑤ 天：[将 avframe 转成 CIImage，使用 GLKView 渲染](md/005.md) √
 
-- 第 ⑥ 天：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染视频](md/006.md) 
+- 第 ⑥ 天：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染](md/006.md) √
 
 - 第 ⑦ 天：[使用 OpenGL 渲染视频](md/007.md)
 
