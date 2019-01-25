@@ -14,7 +14,7 @@
 
 - 第 ③ 天：[打造播放器核心驱动](md/003.md) √ 
 
-- 第 ④ 天：[将 avframe 转成 UIImage，使用 UIImageView 渲染](md/010.md) 
+- 第 ④ 天：[将 avframe 转成 UIImage，使用 UIImageView 渲染](md/010.md) √
 
 - 第 ⑤ 天：[将 avframe 转成 CIImage，使用 GLKView 渲染](md/011.md)
 
