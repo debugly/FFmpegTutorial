@@ -8,10 +8,11 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIImage.h>
+#import <libavutil/frame.h>
 
 @interface MRVideoFrame : NSObject
 
-@property (strong, nonatomic) UIImage *image;
+@property (assign, nonatomic) AVFrame *video_frame;
 @property (assign, nonatomic) float duration;
 @property (assign, nonatomic) BOOL eof;
 

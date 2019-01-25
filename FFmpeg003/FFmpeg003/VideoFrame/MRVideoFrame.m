@@ -10,4 +10,13 @@
 
 @implementation MRVideoFrame
 
+- (void)dealloc
+{
+    if (self.video_frame) {
+        //用完后记得释放掉
+        av_frame_free(&self->_video_frame);
+        self.video_frame = NULL;
+    }
+}
+
 @end
