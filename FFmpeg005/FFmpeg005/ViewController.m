@@ -17,7 +17,7 @@
 #import "MRVideoFrame.h"
 #import <AVFoundation/AVSampleBufferDisplayLayer.h>
 #import <GLKit/GLKit.h>
-#import <MRVideoPlayerFoundation/MRVideoPlayerFoundation.h>
+#import "MRPacketQueue.h"
 
 #ifndef __weakSelf__
 #define __weakSelf__     __weak   __typeof(self) $weakself = self;

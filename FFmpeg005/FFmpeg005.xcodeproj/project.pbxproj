@@ -16,7 +16,7 @@
 		B4FA67E1202DE8A600A6A120 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67D9202DE8A600A6A120 /* libavdevice.a */; };
 		B4FA67E2202DE8A600A6A120 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67DA202DE8A600A6A120 /* libswresample.a */; };
 		B4FA67E3202DE8A600A6A120 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4FA67DB202DE8A600A6A120 /* libswscale.a */; };
-		DD4CC9FD21F9599E00DBA163 /* MRVideoPlayerFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD4CC9FC21F9599E00DBA163 /* MRVideoPlayerFoundation.framework */; };
+		DD4CCA0021FAA51B00DBA163 /* MRPacketQueue.c in Sources */ = {isa = PBXBuildFile; fileRef = DD4CC9FE21FAA51B00DBA163 /* MRPacketQueue.c */; };
 		DD8AF2751F6F6DD4002B2DAB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */; };
 		DD8AF2781F6F6DD4002B2DAB /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8AF2771F6F6DD4002B2DAB /* ViewController.m */; };
 		DD8AF27B1F6F6DD4002B2DAB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DD8AF2791F6F6DD4002B2DAB /* Main.storyboard */; };
@@ -136,7 +136,8 @@
 		B4FA67D9202DE8A600A6A120 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavdevice.a; sourceTree = "<group>"; };
 		B4FA67DA202DE8A600A6A120 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		B4FA67DB202DE8A600A6A120 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
-		DD4CC9FC21F9599E00DBA163 /* MRVideoPlayerFoundation.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = MRVideoPlayerFoundation.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD4CC9FE21FAA51B00DBA163 /* MRPacketQueue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MRPacketQueue.c; sourceTree = "<group>"; };
+		DD4CC9FF21FAA51B00DBA163 /* MRPacketQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPacketQueue.h; sourceTree = "<group>"; };
 		DD8AF2701F6F6DD4002B2DAB /* FFmpeg005.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpeg005.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD8AF2731F6F6DD4002B2DAB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DD8AF2741F6F6DD4002B2DAB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -160,7 +161,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DD4CC9FD21F9599E00DBA163 /* MRVideoPlayerFoundation.framework in Frameworks */,
 				B4FA67DE202DE8A600A6A120 /* libavfilter.a in Frameworks */,
 				DD8AF6251F70E2DF002B2DAB /* AudioToolbox.framework in Frameworks */,
 				DD8AF6231F70E2D4002B2DAB /* CoreMedia.framework in Frameworks */,
@@ -183,6 +183,8 @@
 		B4105241201245FD000C1196 /* VideoPlayer */ = {
 			isa = PBXGroup;
 			children = (
+				DD4CC9FE21FAA51B00DBA163 /* MRPacketQueue.c */,
+				DD4CC9FF21FAA51B00DBA163 /* MRPacketQueue.h */,
 				B4DFC8D72001284C00FB3209 /* NSTimer+Util.h */,
 				B4DFC8D82001284C00FB3209 /* NSTimer+Util.m */,
 				B4105245201252CE000C1196 /* MRVideoFrame.h */,
@@ -409,7 +411,6 @@
 		DD8AF6191F70E26D002B2DAB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				DD4CC9FC21F9599E00DBA163 /* MRVideoPlayerFoundation.framework */,
 				DD8AF6241F70E2DF002B2DAB /* AudioToolbox.framework */,
 				DD8AF6221F70E2D4002B2DAB /* CoreMedia.framework */,
 				DD8AF6201F70E2BF002B2DAB /* VideoToolbox.framework */,
@@ -496,6 +497,7 @@
 				DD8AF2831F6F6DD4002B2DAB /* main.m in Sources */,
 				B4DFC8D92001284C00FB3209 /* NSTimer+Util.m in Sources */,
 				DD8AF2751F6F6DD4002B2DAB /* AppDelegate.m in Sources */,
+				DD4CCA0021FAA51B00DBA163 /* MRPacketQueue.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
