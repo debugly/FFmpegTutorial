@@ -46,7 +46,7 @@ static int kFrameCacheCount = 24 * 2;
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) MRPacketQueue packetQueue;
 
-@property (nonatomic,assign) unsigned int stream_index_video;
+@property (nonatomic,assign) int stream_index_video;
 
 @property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;

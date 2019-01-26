@@ -48,7 +48,7 @@ static int kFrameCacheCount = 24 * 2;
 @property (nonatomic,assign) AVCodecContext *videoCodecCtx;
 @property (nonatomic,assign) MRPacketQueue packetQueue;
 
-@property (nonatomic,assign) unsigned int stream_index_video;
+@property (nonatomic,assign) int stream_index_video;
 
 @property (assign, nonatomic) float videoTimeBase;
 @property (nonatomic,assign) BOOL bufferOk;
@@ -56,9 +56,11 @@ static int kFrameCacheCount = 24 * 2;
 
 ///画面高度，单位像素
 @property (nonatomic,assign) int vwidth;
+@property (nonatomic,assign) int aligned_width;
 @property (nonatomic,assign) int vheight;
 //视频像素格式
 @property (nonatomic,assign) enum AVPixelFormat format;
+@property (nonatomic,assign) enum AVPixelFormat target_pix_fmt;
 //格式转换
 @property (nonatomic,assign) uint8_t *out_buffer;
 @property (nonatomic,assign) struct SwsContext * img_convert_ctx;
@@ -138,6 +140,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
     //moviePath = @"http://localhost/ffmpeg-test/test.mp4";
     moviePath = @"http://10.7.36.117/root/mp4/test.mp4";
+    moviePath = @"http://192.168.3.2/ffmpeg-test/IMG_2914.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -173,14 +176,16 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             [self.view.layer addSublayer:self.sampleBufferDisplayLayer];
                         }
                         
-                        enum AVPixelFormat pix_fmt = PIX_FMT_NV12;
-                        const int picSize = avpicture_get_size(pix_fmt, self.vwidth, self.vheight);
+                        self.target_pix_fmt = PIX_FMT_NV12;
                         
-                        self.out_buffer = malloc(picSize);
-                        self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
-                        
+                        self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, self.target_pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
                         self.pFrameYUV = av_frame_alloc();
-                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, pix_fmt, self.vwidth, self.vheight);
+                        
+                        ///defaut: natural aligment
+                        self.aligned_width = self.vwidth;
+                        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
+                        self.out_buffer = av_malloc(picSize*sizeof(uint8_t));
+                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, self.target_pix_fmt, self.aligned_width, self.vheight);
                         
                         // 启动渲染驱动
                         [self videoTick];
@@ -374,6 +379,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 av_packet_unref(&pkt);
                 NSLog(@"decode packet:%@",video_frame!=NULL?@"succ":@"failed");
                 if (video_frame) {
+                    
+                    if (self.aligned_width != video_frame->linesize[0]) {
+                        self.aligned_width = video_frame->linesize[0];
+                        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
+                        av_realloc(self.out_buffer, picSize*sizeof(uint8_t));
+                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, self.target_pix_fmt, self.aligned_width, self.vheight);
+                    }
                     
                     // 根据配置把数据转换成 NV12 或者 RGB24
                     int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);

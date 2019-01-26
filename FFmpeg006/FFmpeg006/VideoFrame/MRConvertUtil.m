@@ -62,12 +62,12 @@
     } else {
         NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
         
-       result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                              w,
-                                              h,
-                                              kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
-                                              (__bridge CFDictionaryRef)(pixelAttributes),
-                                              &pixelBuffer);
+        result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                     w,
+                                     h,
+                                     kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                                     (__bridge CFDictionaryRef)(pixelAttributes),
+                                     &pixelBuffer);
     }
     
     if (kCVReturnSuccess == result) {
@@ -78,12 +78,12 @@
         
         unsigned char *y_ch0 = pFrame->data[0];
         unsigned char *y_ch1 = pFrame->data[1];
-        
-        memcpy(yDestPlane, y_ch0, w * h);
+        // important !! 这里不能使用 w ，因为ffmpeg对数据做了字节对齐！！会导致绿屏！如果视频宽度刚好就是一个对齐的大小时，w就和linesize[0]相等，所以没问题；
+        memcpy(yDestPlane, y_ch0, pFrame->linesize[0] * h);
         unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
         
         // Here y_ch1 is UV-Plane of YUV(NV12) data.
-        memcpy(uvDestPlane, y_ch1, w * h / 2.0);
+        memcpy(uvDestPlane, y_ch1, pFrame->linesize[1] * h / 2.0);
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     }
     
