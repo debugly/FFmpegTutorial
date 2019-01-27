@@ -18,19 +18,13 @@
 
 - 第 ⑤ 天：[将 avframe 转成 CIImage，使用 GLKView 渲染](md/005.md) √
 
-- 第 ⑥ 天：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染](md/006.md) √
-
-- 第 ⑦ 天：[使用 OpenGL 渲染视频](md/007.md)
-
-- 第 ⑧ 天：[封装视频播放器(不含音频)](md/008.md)
-
-- 第 ⑨ 天：[使用 AudioUnit 渲染音频](md/009.md)
-
-- 第 ⑩ 天：[使用 AudioQueue 渲染音频](md/010.md)
-
-- 第 ⑪ 天：[封装一个音频播放器](md/011.md)
-
-- 第 ⑫ 天：[封装 MRMoviePlayer 视频播放器](md/012.md)
+- 第 ⑥ 天：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps](md/006.md) √
+- 第 ⑦ 天：[使用 AudioUnit 渲染音频](md/007.md)
+- 第 ⑧ 天：[使用 AudioQueue 渲染音频](md/008.md)
+- 第 ⑨ 天：[封装 MRMoviePlayer 视频播放器](md/009.md)
+- 第 ⑩ 天：[拓展：使用 OpenGL 渲染视频](md/010.md)
+- 第 ⑪ 天：[移植到 Mac 平台](md/011.md)
+- 第 ⑫ 天：[移植到 Win 平台](md/012.md)
 
 # Usage
 
