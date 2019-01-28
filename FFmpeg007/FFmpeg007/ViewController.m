@@ -543,7 +543,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     if (self.aligned_width != video_frame->linesize[0]) {
                         self.aligned_width = video_frame->linesize[0];
                         const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
-                        av_realloc(self.out_buffer, picSize*sizeof(uint8_t));
+                        self.out_buffer = av_realloc(self.out_buffer, picSize*sizeof(uint8_t));
                         avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, self.target_pix_fmt, self.aligned_width, self.vheight);
                     }
                     
