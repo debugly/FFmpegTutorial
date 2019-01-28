@@ -21,6 +21,7 @@
 		B4D2CCF6202899FD00CF3516 /* libavdevice.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CCEE202899FD00CF3516 /* libavdevice.a */; };
 		B4D2CCF7202899FD00CF3516 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CCEF202899FD00CF3516 /* libswresample.a */; };
 		B4D2CCF8202899FD00CF3516 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = B4D2CCF0202899FD00CF3516 /* libswscale.a */; };
+		DD0A48AA21FED3F300950C1C /* MRVideoRenderView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0A48A921FED3F300950C1C /* MRVideoRenderView.m */; };
 		DD4CCA0321FAAE7100DBA163 /* MRPacketQueue.c in Sources */ = {isa = PBXBuildFile; fileRef = DD4CCA0121FAAE7100DBA163 /* MRPacketQueue.c */; };
 		DD4CCA0621FAE56500DBA163 /* MRConvertUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4CCA0521FAE56500DBA163 /* MRConvertUtil.m */; };
 		DD8AF61B1F70E26E002B2DAB /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD8AF61A1F70E26E002B2DAB /* libz.tbd */; };
@@ -143,6 +144,8 @@
 		B4D2CCEE202899FD00CF3516 /* libavdevice.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libavdevice.a; sourceTree = "<group>"; };
 		B4D2CCEF202899FD00CF3516 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswresample.a; sourceTree = "<group>"; };
 		B4D2CCF0202899FD00CF3516 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libswscale.a; sourceTree = "<group>"; };
+		DD0A48A821FED3F300950C1C /* MRVideoRenderView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderView.h; sourceTree = "<group>"; };
+		DD0A48A921FED3F300950C1C /* MRVideoRenderView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVideoRenderView.m; sourceTree = "<group>"; };
 		DD4CCA0121FAAE7100DBA163 /* MRPacketQueue.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = MRPacketQueue.c; sourceTree = "<group>"; };
 		DD4CCA0221FAAE7100DBA163 /* MRPacketQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPacketQueue.h; sourceTree = "<group>"; };
 		DD4CCA0421FAE56500DBA163 /* MRConvertUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRConvertUtil.h; sourceTree = "<group>"; };
@@ -206,6 +209,8 @@
 				B4D2CC68202899B000CF3516 /* MRVideoFrame.m */,
 				DD4CCA0421FAE56500DBA163 /* MRConvertUtil.h */,
 				DD4CCA0521FAE56500DBA163 /* MRConvertUtil.m */,
+				DD0A48A821FED3F300950C1C /* MRVideoRenderView.h */,
+				DD0A48A921FED3F300950C1C /* MRVideoRenderView.m */,
 			);
 			path = VideoFrame;
 			sourceTree = "<group>";
@@ -497,6 +502,7 @@
 				B4D2CC7E202899B000CF3516 /* main.m in Sources */,
 				B4D2CC7B202899B000CF3516 /* ViewController.m in Sources */,
 				DD4CCA0621FAE56500DBA163 /* MRConvertUtil.m in Sources */,
+				DD0A48AA21FED3F300950C1C /* MRVideoRenderView.m in Sources */,
 				B4D2CC7F202899B000CF3516 /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

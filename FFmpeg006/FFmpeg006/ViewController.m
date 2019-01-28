@@ -16,7 +16,7 @@
 #import "MRVideoFrame.h"
 #import "MRPacketQueue.h"
 #import "MRConvertUtil.h"
-#import <AVFoundation/AVSampleBufferDisplayLayer.h>
+#import "MRVideoRenderView.h"
 
 #ifndef __weakSelf__
 #define __weakSelf__     __weak   __typeof(self) $weakself = self;
@@ -28,7 +28,7 @@
 
 // 按照fps=24计算，缓存20s的视频包；缓存2s的解码帧;
 static int kPacketCacheCount = 24 * 20;
-static float kMinBufferDuration = 2;
+static float kMinBufferDuration = 1;
 static int kFrameCacheCount = 24 * 2;
 
 #define USE_PIXEL_BUFFER_POLL 1
@@ -66,7 +66,7 @@ static int kFrameCacheCount = 24 * 2;
 @property (nonatomic,assign) struct SwsContext * img_convert_ctx;
 @property (nonatomic,assign) AVFrame *pFrameYUV;
 
-@property (strong, nonatomic) AVSampleBufferDisplayLayer *sampleBufferDisplayLayer;
+@property (strong, nonatomic) MRVideoRenderView *renderView;
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 
 @end
@@ -138,9 +138,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
-    //moviePath = @"http://localhost/ffmpeg-test/test.mp4";
-    moviePath = @"http://10.7.36.117/root/mp4/test.mp4";
-    moviePath = @"http://192.168.3.2/ffmpeg-test/IMG_2914.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3149.mov";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2879.mp4";
+//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2914.mp4";
+//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3190.mp4";
+//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/sintel.mp4";
+//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2899.mp4";
+    
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -166,14 +170,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     if (succ) {
                         
                         // 渲染Layer
-                        if(!self.sampleBufferDisplayLayer){
+                        if(!self.renderView){
                             
-                            self.sampleBufferDisplayLayer = [[AVSampleBufferDisplayLayer alloc] init];
-                            self.sampleBufferDisplayLayer.frame = self.view.bounds;
-                            self.sampleBufferDisplayLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-                            self.sampleBufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-                            self.sampleBufferDisplayLayer.opaque = YES;
-                            [self.view.layer addSublayer:self.sampleBufferDisplayLayer];
+                            self.renderView = [[MRVideoRenderView alloc] init];
+                            self.renderView.frame = self.view.bounds;
+                            self.renderView.contentMode = UIViewContentModeScaleAspectFit;
+                            self.renderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+                            [self.view addSubview:self.renderView];
                         }
                         
                         self.target_pix_fmt = PIX_FMT_NV12;
@@ -307,7 +310,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 
 - (void)displayVideoFrame:(MRVideoFrame *)frame
 {
-    [self.sampleBufferDisplayLayer enqueueSampleBuffer:frame.sampleBuffer];
+    [self.renderView enqueueSampleBuffer:frame.sampleBuffer];
 }
 
 #pragma mark - 解码线程
