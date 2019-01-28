@@ -17,7 +17,7 @@
 #import "MRVideoFrame.h"
 #import "MRPacketQueue.h"
 #import "MRConvertUtil.h"
-#import <AVFoundation/AVSampleBufferDisplayLayer.h>
+#import "MRVideoRenderView.h"
 
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
@@ -81,15 +81,14 @@ static int kAudioFrameCacheCount = 24 * 60;
 @property (nonatomic,assign) int vwidth;
 @property (nonatomic,assign) int aligned_width;
 @property (nonatomic,assign) int vheight;
-//视频像素格式
-@property (nonatomic,assign) enum AVPixelFormat format;
+//视频目标像素格式
 @property (nonatomic,assign) enum AVPixelFormat target_pix_fmt;
 //格式转换
 @property (nonatomic,assign) uint8_t *out_buffer;
 @property (nonatomic,assign) struct SwsContext * img_convert_ctx;
 @property (nonatomic,assign) AVFrame *pFrameYUV;
 
-@property (strong, nonatomic) AVSampleBufferDisplayLayer *sampleBufferDisplayLayer;
+@property (strong, nonatomic) MRVideoRenderView *renderView;
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 
 
@@ -192,6 +191,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
     moviePath = @"http://debugly.cn/repository/test.mp4";
+    
     moviePath = @"http://192.168.3.2/ffmpeg-test/test.mp4";
     moviePath = @"http://192.168.3.2/ffmpeg-test/xp5.mp4";
     moviePath = @"http://192.168.3.2/ffmpeg-test/IMG_2914.mp4";
@@ -200,8 +200,19 @@ static void fflog(void *context, int level, const char *format, va_list args){
     moviePath = @"http://192.168.3.2/ffmpeg-test/IMG_3123.mov";
     moviePath = @"http://192.168.3.2/ffmpeg-test/IMG_3149.mov";
     
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/test.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/4K2160p.120fps.mkv";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/Fascination.Nature.Seven.Seasons.ts";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/Opera.480p.x264.AAC.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3149.mov";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2879.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2914.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3190.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/sintel.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2899.mp4";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/50846a5f8f8518b5ed957ce01a8adafa.f4v";
+    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/huoshan_2.mp4";
     
-//    moviePath = @"http://10.7.36.117/root/mp4/test.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
@@ -263,19 +274,17 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (void)setUPAudioAndVideo
 {
     // 渲染Layer
-    if(!self.sampleBufferDisplayLayer){
-        
-        self.sampleBufferDisplayLayer = [[AVSampleBufferDisplayLayer alloc] init];
-        self.sampleBufferDisplayLayer.frame = self.view.bounds;
-        self.sampleBufferDisplayLayer.position = CGPointMake(CGRectGetMidX(self.view.bounds), CGRectGetMidY(self.view.bounds));
-        self.sampleBufferDisplayLayer.videoGravity = AVLayerVideoGravityResizeAspect;
-        self.sampleBufferDisplayLayer.opaque = YES;
-        [self.view.layer addSublayer:self.sampleBufferDisplayLayer];
+    if(!self.renderView){
+        self.renderView = [[MRVideoRenderView alloc] init];
+        self.renderView.frame = self.view.bounds;
+        self.renderView.contentMode = UIViewContentModeScaleAspectFit;
+        self.renderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.view addSubview:self.renderView];
     }
     
     self.target_pix_fmt = PIX_FMT_NV12;
     
-    self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, self.target_pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
+    self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.videoCodecCtx->pix_fmt, self.vwidth, self.vheight, self.target_pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
     self.pFrameYUV = av_frame_alloc();
     
     ///defaut: natural aligment
@@ -428,7 +437,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 
 - (void)displayVideoFrame:(MRVideoFrame *)frame
 {
-    [self.sampleBufferDisplayLayer enqueueSampleBuffer:frame.sampleBuffer];
+    [self.renderView enqueueSampleBuffer:frame.sampleBuffer];
 }
 
 - (void)playAudio
@@ -476,7 +485,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 {
     bool full = [self checkAudioFrameFull];
     if (!full) {
-        //[self startDecodeAudioPacketToFrames];
+        [self startDecodeAudioPacketToFrames];
     }
 }
 
@@ -866,6 +875,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     _videoCodecCtx = codecCtx;
     
+    ///画面宽度，单位像素
+    self.vwidth = codecCtx->width;
+    ///画面高度，单位像素
+    self.vheight = codecCtx->height;
+    
     float fps = 0;
     avStreamFPSTimeBase(stream, 0.04, &fps, &_videoTimeBase);
     return YES;
@@ -906,7 +920,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     if (![self audioCodecIsSupported:_audioCodecCtx]) {
         
         int64_t out_ch_layout = av_get_default_channel_layout(_audioCodecCtx->channels);
-        int64_t in_ch_layout = av_get_default_channel_layout((int)_numOutputChannels);
+        int64_t in_ch_layout  = av_get_default_channel_layout((int)_numOutputChannels);
         
         SwrContext *swrContext = swr_alloc_set_opts(NULL,
                                                     in_ch_layout,
@@ -993,14 +1007,11 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
             }
         }else{
             ///用于查看详细信息，调试的时候打出来看下很有必要
-            av_dump_format(formatCtx, 0, [moviePath.lastPathComponent cStringUsingEncoding: NSUTF8StringEncoding], false);
-            
-            /* 接下来，尝试找到我们关心的信息*/
-            
-            NSMutableString *text = [[NSMutableString alloc]init];
-            
+#ifdef DEBUG
+            av_dump_format(formatCtx, 0, [moviePath.lastPathComponent cStringUsingEncoding: NSUTF8StringEncoding], 0);
+#endif
             /*AVFormatContext 的 streams 变量是个数组，里面存放了 nb_streams 个元素，每个元素都是一个 AVStream */
-            [text appendFormat:@"共%u个流，%llds",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
+ 
             //遍历所有的流
             for (unsigned int  i = 0; i < formatCtx->nb_streams; i++) {
                 
@@ -1008,18 +1019,13 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
                 AVCodecContext *codec = stream->codec;
                 
                 switch (codec->codec_type) {
-                        ///视频流
+                    ///视频流
                     case AVMEDIA_TYPE_VIDEO:
                     {
-                        ///画面宽度，单位像素
-                        self.vwidth = codec->width;
-                        ///画面高度，单位像素
-                        self.vheight = codec->height;
-                        //视频像素格式
-                        self.format  = codec->pix_fmt;
                         _stream_index_video = i;
                     }
                         break;
+                    ///音频流
                     case AVMEDIA_TYPE_AUDIO:
                     {
                         _stream_index_audio = i;
