@@ -14,7 +14,16 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (assign, nonatomic) float position;
 @property (assign, nonatomic) float duration;
-@property (nonatomic, strong) NSData *samples;
+///for packet
+@property (strong, nonatomic) NSData *samples;
+@property (assign, nonatomic) UInt32 offset;
+///for planer
+@property (strong, nonatomic) NSData *left;
+@property (strong, nonatomic) NSData *right;
+@property (assign, nonatomic) UInt32 leftOffset;
+@property (assign, nonatomic) UInt32 rightOffset;
+
+
 
 @end
 
