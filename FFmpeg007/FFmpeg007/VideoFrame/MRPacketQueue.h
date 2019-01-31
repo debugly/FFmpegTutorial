@@ -32,6 +32,4 @@ typedef struct MRPacketQueue {
 int mr_packet_queue_put(MRPacketQueue *q, AVPacket *pkt);
 int mr_packet_queue_get(MRPacketQueue *q, AVPacket *pkt);
                             
-
-
 #endif /* MRPacketQueue_h */

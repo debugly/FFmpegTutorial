@@ -79,4 +79,10 @@
     [layer enqueueSampleBuffer:buffer];
 }
 
+- (void)cleanScreen
+{
+    AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
+    [layer flushAndRemoveImage];
+}
+
 @end

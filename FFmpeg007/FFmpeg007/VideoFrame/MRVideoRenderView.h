@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MRVideoRenderView : UIView
 
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)buffer;
+- (void)cleanScreen;
 
 @end
 
