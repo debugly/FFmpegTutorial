@@ -5,6 +5,9 @@
       location = "group:FFmpeg007/FFmpeg007.xcodeproj">
    </FileRef>
    <FileRef
+      location = "group:FFmpeg006-1/FFmpeg006-1.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:FFmpeg006/FFmpeg006.xcodeproj">
    </FileRef>
    <FileRef

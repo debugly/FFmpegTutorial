@@ -9,6 +9,8 @@
 #import "MRConvertUtil.h"
 #import <CoreGraphics/CoreGraphics.h>
 
+#define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
+
 @implementation MRConvertUtil
 
 + (UIImage *)imageFromAVFrameV2:(AVFrame*)video_frame w:(int)w h:(int)h
@@ -74,7 +76,7 @@
     unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
     
     // Here y_ch1 is UV-Plane of YUV(NV12) data.
-    memcpy(uvDestPlane, y_ch1, w * h / 2.0);
+    memcpy(uvDestPlane, y_ch1, w * BYTE_ALIGN_2(h) / 2);
     CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     
     if (result != kCVReturnSuccess) {

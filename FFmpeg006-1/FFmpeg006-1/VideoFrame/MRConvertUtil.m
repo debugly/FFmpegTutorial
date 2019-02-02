@@ -1,6 +1,6 @@
 //
 //  MRConvertUtil.m
-//  FFmpeg006
+//  FFmpeg006-1
 //
 //  Created by Matt Reach on 2019/1/25.
 //  Copyright © 2019 Awesome FFmpeg Study Demo. All rights reserved.
@@ -64,12 +64,12 @@
     } else {
         NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
         
-       result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                              w,
-                                              h,
-                                              kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
-                                              (__bridge CFDictionaryRef)(pixelAttributes),
-                                              &pixelBuffer);
+        result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                     w,
+                                     h,
+                                     kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                                     (__bridge CFDictionaryRef)(pixelAttributes),
+                                     &pixelBuffer);
     }
     
     if (kCVReturnSuccess == result) {
@@ -85,7 +85,43 @@
         unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
         
         // Here y_ch1 is UV-Plane of YUV(NV12) data.
-        memcpy(uvDestPlane, y_ch1, pFrame->linesize[1] * BYTE_ALIGN_2(h) / 2);
+        memcpy(uvDestPlane, y_ch1, BYTE_ALIGN_2(h)/2 * pFrame->linesize[1]);
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    }
+    
+    return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
+}
+
++ (CVPixelBufferRef)snowPixelBuffer:(int)w linesize:(int)linesize h:(int)h opt:(CVPixelBufferPoolRef)poolRef
+{
+    CVPixelBufferRef pixelBuffer = NULL;
+    CVReturn result = kCVReturnError;
+    
+    if (poolRef) {
+        result = CVPixelBufferPoolCreatePixelBuffer(NULL, poolRef, &pixelBuffer);
+    } else {
+        NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
+        
+        result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                     w,
+                                     h,
+                                     kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                                     (__bridge CFDictionaryRef)(pixelAttributes),
+                                     &pixelBuffer);
+    }
+    
+    if (kCVReturnSuccess == result) {
+        CVPixelBufferLockBaseAddress(pixelBuffer,0);
+        unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+    
+        for (int i = 0; i < linesize * h; i ++) {
+            unsigned char *dest = yDestPlane + i;
+            memset(dest, random()%256, 1);
+        }
+        
+        unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+        //奇数高度时(比如667)，那么UV应该是 334 行；如果按照 333.5计算会导致最后一行的右侧一半绿屏!
+        memset(uvDestPlane, 128, BYTE_ALIGN_2(h)/2 * linesize);
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     }
     

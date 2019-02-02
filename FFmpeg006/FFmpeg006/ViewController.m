@@ -140,6 +140,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
     moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3149.mov";
     moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2879.mp4";
+    moviePath = @"http://192.168.3.2/ffmpeg-test/easy/IMG_2879.mp4";
 //    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2914.mp4";
 //    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3190.mp4";
 //    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/sintel.mp4";
