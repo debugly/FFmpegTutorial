@@ -22,8 +22,6 @@
 
 #import <AVFoundation/AVFoundation.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import <AudioUnit/AudioUnit.h>
-#import <Accelerate/Accelerate.h>
 #import "MRAudioFrame.h"
 #import <libswresample/swresample.h>
 
@@ -51,7 +49,7 @@ static int kAudioFrameCacheCount = 43 * 2;
 static float kVideoMinBufferDuration = 1;
 static float kAudioMinBufferDuration = 1;
 
-const int  kMax_Frame_Size = 4096;
+const int  kMax_Frame_Size = 1024;
 const int  kAudio_Channel = 2;
 const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 
@@ -60,13 +58,19 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
 
+#define QUEUE_BUFFER_SIZE 3
+#define MIN_SIZE_PER_FRAME 4096
+
 @interface ViewController ()
 {
 #if DEBUG_RECORD_PCM_TO_FILE
     FILE * file_pcm_l;
     FILE * file_pcm_r;
 #endif
+    
+    AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
 }
+
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
 
 //解封装上下文
@@ -128,12 +132,10 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 //声音大小
 @property (nonatomic,assign) float outputVolume;
 //音频播放器
-@property (nonatomic,assign) AudioUnit audioUnit;
+@property (nonatomic,assign) AudioQueueRef audioQueue;
 //音频信息结构体
 @property (nonatomic,assign) AudioStreamBasicDescription outputFormat;
 @property (nonatomic,assign) NSInteger numOutputChannels;
-//为S16 类型创建一个buffer
-@property (nonatomic,assign) SInt16 *outData;
 //当前音频帧
 @property (nonatomic,strong) MRAudioFrame *currentAudioFrame;
 //音频重采样上下文
@@ -195,18 +197,14 @@ static void fflog(void *context, int level, const char *format, va_list args){
         swr_free(&_audio_convert_ctx);
     }
     
-    if (_outData) {
-        free(_outData);
-        _outData = NULL;
-    }
 #if DEBUG_RECORD_PCM_TO_FILE
     fclose(file_pcm_l);
     fclose(file_pcm_r);
 #endif
     
-    if(_audioUnit){
-        AudioComponentInstanceDispose(_audioUnit);
-        _audioUnit = NULL;
+    if(_audioQueue){
+        AudioQueueDispose(_audioQueue, YES);
+        _audioQueue = NULL;
     }
     
     if (_swrBuffer) {
@@ -385,89 +383,44 @@ static void fflog(void *context, int level, const char *format, va_list args){
     }
     
     {
-        // ----- Audio Unit Setup -----
-        
-#define kOutputBus 0 //Bus 0 is used for the output side
-#define kInputBus  1 //Bus 0 is used for the output side
-        
-        // Describe the output unit.
-        
-        AudioComponentDescription desc = {0};
-        desc.componentType = kAudioUnitType_Output;
-        desc.componentSubType = kAudioUnitSubType_RemoteIO;
-        desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-        
-        // Get component
-        AudioComponent component = AudioComponentFindNext(NULL, &desc);
-        OSStatus status = AudioComponentInstanceNew(component, &_audioUnit);
-        NSAssert(noErr == status, @"AudioComponentInstanceNew");
-        
-        UInt32 size = sizeof(self.outputFormat);
-        /// 获取默认的输入信息
-        AudioUnitGetProperty(_audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, kOutputBus, &_outputFormat, &size);
+        // ----- Audio Queue Setup -----
         
         _samplingRate = _audioCodecCtx -> sample_rate;
         _outputFormat.mSampleRate = _samplingRate;
         _outputFormat.mChannelsPerFrame = _audioCodecCtx->channels;
-        
-#if TARGET_OS_SIMULATOR
-        if (av_sample_fmt_is_planar((enum AVSampleFormat)_audioCodecCtx->sample_fmt)) {
-            _outputFormat.mFormatFlags = kAudioFormatFlagIsNonInterleaved;
-        } else {
-            _outputFormat.mFormatFlags = kAudioFormatFlagIsPacked;
-        }
-        
+        _outputFormat.mFormatID = kAudioFormatLinearPCM;
+        _outputFormat.mFormatFlags = kLinearPCMFormatFlagIsPacked;
+
         if (_audioCodecCtx->sample_fmt == AV_SAMPLE_FMT_S16 || _audioCodecCtx->sample_fmt == AV_SAMPLE_FMT_S16P){
-            _outputFormat.mFormatFlags |= kAudioFormatFlagIsSignedInteger;
-            NSAssert(NO, @"=======需要测试！");
+            
+            _outputFormat.mFormatFlags = kLinearPCMFormatFlagIsSignedInteger;
+            _outputFormat.mFramesPerPacket = 1;
+            _outputFormat.mBitsPerChannel = sizeof(SInt16) * 8;
+            self.target_sample_fmt = AV_SAMPLE_FMT_S16;
         } else if (_audioCodecCtx->sample_fmt == AV_SAMPLE_FMT_FLT || _audioCodecCtx->sample_fmt == AV_SAMPLE_FMT_FLTP){
-            _outputFormat.mFormatID = kAudioFormatLinearPCM;
+            
             _outputFormat.mFormatFlags |= kAudioFormatFlagIsFloat;
             _outputFormat.mFramesPerPacket = 1;
-            _outputFormat.mBitsPerChannel = 32;
-            _outputFormat.mBytesPerFrame = 4;
-            _outputFormat.mBytesPerPacket = 4;
+            _outputFormat.mBitsPerChannel = sizeof(float) * 8;
+            self.target_sample_fmt = AV_SAMPLE_FMT_FLT;
         } else {
             NSAssert(NO, @"=======需要重采样！");
         }
-        self.target_sample_fmt = _audioCodecCtx->sample_fmt;
-#elif TARGET_OS_IPHONE
-        self.target_sample_fmt = AV_SAMPLE_FMT_S16;
-        _outputFormat.mFormatID = kAudioFormatLinearPCM;
-        _outputFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger | kAudioFormatFlagIsPacked;
-        _outputFormat.mFramesPerPacket = 1;
-        _outputFormat.mBitsPerChannel = 16;
+        
         _outputFormat.mBytesPerFrame = (_outputFormat.mBitsPerChannel / 8) * _outputFormat.mChannelsPerFrame;
         _outputFormat.mBytesPerPacket = _outputFormat.mBytesPerFrame * _outputFormat.mFramesPerPacket;
-#endif
+        _outputFormat.mReserved = 0;
+        OSStatus status = AudioQueueNewOutput(&self->_outputFormat, MRAudioQueueOutputCallback, (__bridge void *)self, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &self->_audioQueue);
         
-        status = AudioUnitSetProperty(_audioUnit,
-                             kAudioUnitProperty_StreamFormat,
-                             kAudioUnitScope_Input,
-                             kOutputBus,
-                             &_outputFormat, size);
-        NSAssert(noErr == status, @"AudioUnitSetProperty");
+        NSAssert(noErr == status, @"AudioQueueNewOutput");
+        
         _numOutputChannels = _outputFormat.mChannelsPerFrame;
         
-        UInt32 flag = 0;
-        AudioUnitSetProperty(_audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, kInputBus, &flag, sizeof(flag));
-        AudioUnitSetProperty(_audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, kInputBus, &flag, sizeof(flag));
-        // Slap a render callback on the unit
-        AURenderCallbackStruct callbackStruct;
-        callbackStruct.inputProc = MRRenderCallback;
-        callbackStruct.inputProcRefCon = (__bridge void *)(self);
-        
-        status = AudioUnitSetProperty(_audioUnit,
-                             kAudioUnitProperty_SetRenderCallback,
-                             kAudioUnitScope_Input,
-                             kOutputBus,
-                             &callbackStruct,
-                             sizeof(callbackStruct));
-        NSAssert(noErr == status, @"AudioUnitSetProperty");
-        status = AudioUnitInitialize(_audioUnit);
-        NSAssert(noErr == status, @"AudioUnitInitialize");
-#undef kOutputBus
-#undef kInputBus
+        // //初始化音频缓冲区--audioQueueBuffers为结构体数组
+        for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
+            int result = AudioQueueAllocateBuffer(self.audioQueue,MIN_SIZE_PER_FRAME, &self->audioQueueBuffers[i]);
+            NSAssert(noErr == result, @"AudioQueueAllocateBuffer");
+        }
     }
     
     if (![self audioCodecIsSupported:_audioCodecCtx]) {
@@ -662,7 +615,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (void)playAudio
 {
     if (!self.isPalying) {
-        OSStatus status = AudioOutputUnitStart(_audioUnit);
+        
+        for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
+            AudioQueueBufferRef ref = self->audioQueueBuffers[i];
+            [self renderFramesToBuffer:ref];
+        }
+        
+        OSStatus status = AudioQueueStart(self.audioQueue, NULL);
         if(noErr == status){
             self.isPalying = YES;
         }
@@ -673,7 +632,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (void)pauseAudio
 {
     if (self.isPalying) {
-        AudioOutputUnitStop(_audioUnit);
+        AudioQueueStop(self.audioQueue,YES);
         self.isPalying = NO;
     }
 }
@@ -905,7 +864,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         const int bufSize = av_samples_get_buffer_size(NULL,
                                                                        (int)self.numOutputChannels,
                                                                        audio_frame->nb_samples * ratio,
-                                                                       AV_SAMPLE_FMT_S16,
+                                                                       self.target_sample_fmt,
                                                                        1);
                         
                         if (!self.swrBuffer || self.swrBufferSize < bufSize) {
@@ -931,9 +890,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         //    LoggerAudio(0, @"resample delay %lld", delay);
                         
                         const NSUInteger numElements = numFrames * numChannels;
-                        
-                        NSMutableData *data = [NSMutableData dataWithLength:numElements * sizeof(SInt16)];
-                        memcpy(data.mutableBytes, self.swrBuffer, numElements * sizeof(SInt16));
+                        UInt32 size4Packet = self.outputFormat.mBitsPerChannel / 8;
+                        NSMutableData *data = [NSMutableData dataWithLength:numElements * size4Packet];
+                        memcpy(data.mutableBytes, self.swrBuffer, numElements * size4Packet);
                         frame.samples = [data copy];
                         
                     } else {
@@ -1238,125 +1197,33 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
 #pragma mark - 音频
 
 ///音频渲染回调；
-static inline OSStatus MRRenderCallback(void *inRefCon,
-                                        AudioUnitRenderActionFlags    * ioActionFlags,
-                                        const AudioTimeStamp          * inTimeStamp,
-                                        UInt32                        inOutputBusNumber,
-                                        UInt32                        inNumberFrames,
-                                        AudioBufferList                * ioData)
+
+static void MRAudioQueueOutputCallback(
+                                 void * __nullable       inUserData,
+                                 AudioQueueRef           inAQ,
+                                 AudioQueueBufferRef     inBuffer)
 {
-    ViewController *am = (__bridge ViewController *)inRefCon;
-    return [am renderFrames:inNumberFrames ioData:ioData];
+    ViewController *am = (__bridge ViewController *)inUserData;
+    [am renderFramesToBuffer:inBuffer];
 }
 
-- (bool) renderFrames: (UInt32) wantFrames
-               ioData: (AudioBufferList *) ioData
+- (UInt32)renderFramesToBuffer: (AudioQueueBufferRef) inBuffer
 {
-    // 1. 将buffer数组全部置为0；
-    for (int iBuffer=0; iBuffer < ioData->mNumberBuffers; ++iBuffer) {
-        AudioBuffer audioBuffer = ioData->mBuffers[iBuffer];
-        bzero(audioBuffer.mData, audioBuffer.mDataByteSize);
-    }
+    //1、填充数据
+    UInt32 gotBytes = [self fetchData:inBuffer->mAudioData wantBytes:inBuffer->mAudioDataBytesCapacity];
+    inBuffer->mAudioDataByteSize = gotBytes;
     
-    ///一般真机走这
-    if(self.target_sample_fmt == AV_SAMPLE_FMT_S16){
-    
-        //    numFrames = 1115
-        //    SInt16 = 2;
-        //    mNumberChannels = 2;
-        //    ioData->mBuffers[iBuffer].mDataByteSize = 4460
-        // 4460 = numFrames x SInt16 * mNumberChannels = 1115 x 2 x 2;
-        
-        ///为 S16 类型创建一个buffer，用于临时存储音频帧
-        if (NULL == _outData) {
-            _outData = (SInt16 *)calloc(kAudio_Frame_Buffer_Size, sizeof(SInt16));
-        }
-    
-        // 2. 向缓存的音频帧索要音频采样点: numFrames x _numOutputChannels
-        NSInteger gotFrame = [self fetchData:_outData wantFrames:wantFrames numChannels:_numOutputChannels];
-        
-        // 3.从临时存储里倒手给 AudioUnit
-        int numberBuffers = ioData->mNumberBuffers;
-        
-        // AudioUnit 对于 packet 形式的PCM，只会提供一个 AudioBuffer
-        if (numberBuffers >= 1) {
-            
-            AudioBuffer audioBuffer = ioData->mBuffers[0];
-            //这个是 AudioUnit 给我们提供的用于存放采样点的buffer
-            SInt16 *buffer = (SInt16 *)audioBuffer.mData;
-            
-            int thisNumChannels = audioBuffer.mNumberChannels;
-            int offset = 0;
-            
-            if (thisNumChannels == 2) {
-                /* 对于 AV_SAMPLE_FMT_S16 而言，采样点是这么分布的:
-                 S16_L,S16_R,S16_L,S16_R,……
-                 AudioBuffer 也需要这样的排列格式，因此直接copy即可；
-                 */
-                memcpy(buffer, _outData, gotFrame * _numOutputChannels * sizeof(SInt16));
-//                如果你要限制左右声道，或者对某个声道做处理，那么下面memcpy之前应该是个好时机！
-//                for (int i = 0; i < gotFrame; i++) {
-//                    //copy L; 把这行注释掉，左声道就没音了
-//                    memcpy(buffer+offset, _outData+offset, sizeof(SInt16));
-//                    offset += 1;
-//                    //copy R; 把这行注释掉，右声道就没音了
-//                    memcpy(buffer+offset, _outData+offset, sizeof(SInt16));
-//                    offset += 1;
-//                }
-            }
-            //即使 iPhone 上只有一个扬声器，也没有走这里，目前没遇到这种case！也有可能永远不会走，因为AudioUnit也不知道他的目标输出的设备支持几个声道！
-            else if (thisNumChannels == 1){
-                for (int i = 0; i < gotFrame; i++) {
-                    //copy L+R to one
-                    memcpy(buffer+offset, _outData+offset, sizeof(SInt16));
-                    memcpy(buffer+offset, _outData+offset+1, sizeof(SInt16));
-                    offset += 2;
-                }
-            } else {
-                NSLog(@"what's wrong?");
-            }
-        } else {
-            NSLog(@"what's wrong?");
-        }
-    }
-    
-    ///一般模拟器走这，Mac平台支持整形和浮点型，交错和二维平面
-    else if (self.target_sample_fmt == AV_SAMPLE_FMT_FLTP){
-        
-        //    numFrames = 558
-        //    float = 4;
-        //    ioData->mBuffers[iBuffer].mDataByteSize = 2232
-        // 2232 = numFrames x float = 558 x 4;
-        // FLTP = FLOAT + Planar;
-        // FLOAT: 具体含义是使用 float 类型存储量化的采样点，比 SInt16 精度要高出很多！当然空间也大些！
-        // Planar: 二维的，所以会把左右声道使用两个数组分开存储，每个数组里的元素是同一个声道的！
-        
-        //双声道
-        if (ioData->mNumberBuffers == 2) {
-            // 2. 向缓存的音频帧索要 ioData->mBuffers[0].mDataByteSize 个字节的数据
-            /*
-             Float_L,Float_L,Float_L,Float_L,……  -> mBuffers[0].mData
-             Float_R,Float_R,Float_R,Float_R,……  -> mBuffers[1].mData
-             左对左，右对右
-             */
-            [self fetchPCMLeft:ioData->mBuffers[0].mData sizeLeft:ioData->mBuffers[0].mDataByteSize right:ioData->mBuffers[1].mData sizeRight:ioData->mBuffers[1].mDataByteSize];
-        }
-        //单声道: L+R to one
-        else if (ioData->mNumberBuffers == 1) {
-            [self fetchPCMLeft:ioData->mBuffers[0].mData sizeLeft:ioData->mBuffers[0].mDataByteSize right:ioData->mBuffers[0].mData sizeRight:ioData->mBuffers[0].mDataByteSize];
-        } else {
-            NSLog(@"what's wrong?");
-        }
-    }
-    return noErr;
+    // 2、通知 AudioQueue 有可以播放的 buffer 了
+    AudioQueueEnqueueBuffer(self.audioQueue, inBuffer, 0, NULL);
+    return gotBytes;
 }
 
-- (NSInteger)fetchData:(SInt16 *)outData wantFrames:(NSInteger) wantFrames numChannels:(NSInteger) numChannels
+- (UInt32)fetchData:(void *)outData wantBytes:(const NSInteger) wantBytes
 {
-    NSInteger giveFrames = 0;
+    UInt32 giveBytes = 0;
     @autoreleasepool {
         //没给够
-        while (giveFrames < wantFrames) {
+        while (giveBytes < wantBytes) {
             
             if (!_currentAudioFrame) {
                 
@@ -1381,21 +1248,11 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
                 NSData *samples = _currentAudioFrame.samples;
                 const void *from = (Byte *)samples.bytes + _currentAudioFrame.offset;
                 NSUInteger bytesLeft = (samples.length - _currentAudioFrame.offset);
-                ///每个采样点占用的字节数，ffmpeg解码出来是SInt16类型的
-                NSUInteger bytesPrePack = sizeof(SInt16);
-                ///Audio的Frame是包括所有声道的，所以要乘以声道数；
-                const NSUInteger frameSizeOf = numChannels * bytesPrePack;
                 ///根据剩余数据长度和需要数据长度算出应当copy的长度
-                NSUInteger bytesToCopy = MIN((wantFrames - giveFrames) * frameSizeOf, bytesLeft);
-                ///计算出copy多少个 Audio unit frame
-                const NSUInteger framesToCopy  = bytesToCopy / frameSizeOf;
-                
+                NSUInteger bytesToCopy = MIN(wantBytes - giveBytes, bytesLeft);
                 memcpy(outData, from, bytesToCopy);
-                // outData = (SInt16 *)((char *)outData + bytesToCopy);
-                //计算出copy多少个 SInt16 类型的数据
-                const NSUInteger packetsToCopy = bytesToCopy / bytesPrePack;
-                outData += packetsToCopy;
-                giveFrames += framesToCopy;
+                giveBytes += bytesToCopy;
+                outData = (void *)((char *)outData + bytesToCopy);
                 
                 if (bytesToCopy < bytesLeft){
                     //剩余的比copy走的多，则修改偏移量
@@ -1428,7 +1285,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
             }
         }
     }
-    return giveFrames;
+    return giveBytes;
 }
 
 - (void)fetchPCMLeft:(void*)leftBuffer sizeLeft:(UInt32)leftSize right:(void*)rightBuffer sizeRight:(UInt32)rightSize

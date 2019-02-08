@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "DD8AF26F1F6F6DD4002B2DAB"
-               BuildableName = "FFmpeg005.app"
-               BlueprintName = "FFmpeg005"
-               ReferencedContainer = "container:FFmpeg005.xcodeproj">
+               BuildableName = "FFmpeg008.app"
+               BlueprintName = "FFmpeg008"
+               ReferencedContainer = "container:FFmpeg008.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -33,9 +33,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD8AF26F1F6F6DD4002B2DAB"
-            BuildableName = "FFmpeg005.app"
-            BlueprintName = "FFmpeg005"
-            ReferencedContainer = "container:FFmpeg005.xcodeproj">
+            BuildableName = "FFmpeg008.app"
+            BlueprintName = "FFmpeg008"
+            ReferencedContainer = "container:FFmpeg008.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -56,9 +56,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD8AF26F1F6F6DD4002B2DAB"
-            BuildableName = "FFmpeg005.app"
-            BlueprintName = "FFmpeg005"
-            ReferencedContainer = "container:FFmpeg005.xcodeproj">
+            BuildableName = "FFmpeg008.app"
+            BlueprintName = "FFmpeg008"
+            ReferencedContainer = "container:FFmpeg008.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
       <AdditionalOptions>
@@ -75,9 +75,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "DD8AF26F1F6F6DD4002B2DAB"
-            BuildableName = "FFmpeg005.app"
-            BlueprintName = "FFmpeg005"
-            ReferencedContainer = "container:FFmpeg005.xcodeproj">
+            BuildableName = "FFmpeg008.app"
+            BlueprintName = "FFmpeg008"
+            ReferencedContainer = "container:FFmpeg008.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
