@@ -438,6 +438,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
         // 测试目标输出: FLOATP
 //        isFloat = true; isS16 = false; isPlanar = true;
         
+        if (!isS16 && !isFloat){
+            isFloat = false;
+            isS16 = YES;
+            isPlanar = false;
+            NSLog(@"其他格式，默认重采样为S16！");
+        }
+        
         if (isS16){
             _outputFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger;
             _outputFormat.mFramesPerPacket = 1;
@@ -446,11 +453,6 @@ static void fflog(void *context, int level, const char *format, va_list args){
             _outputFormat.mFormatFlags = kAudioFormatFlagIsFloat;
             _outputFormat.mFramesPerPacket = 1;
             _outputFormat.mBitsPerChannel = sizeof(float) * 8;
-        } else {
-            isFloat = false;
-            isS16 = YES;
-            isPlanar = false;
-            NSLog(@"其他格式，默认重采样为S16！");
         }
         
         if (isPlanar) {
@@ -947,7 +949,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     MRAudioFrame *frame = [MRAudioFrame new];
                     
                     bool is_planar = av_sample_fmt_is_planar((enum AVSampleFormat)self.target_sample_fmt);
-                    const NSUInteger numChannels = self.outputFormat.mChannelsPerFrame;
+                    const int numChannels = (int)self.outputFormat.mChannelsPerFrame;
                     
                     ///需要重采样
                     if (self.audio_convert_ctx) {

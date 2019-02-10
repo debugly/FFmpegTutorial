@@ -128,7 +128,6 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 @property (nonatomic,assign) AudioQueueRef audioQueue;
 //音频信息结构体
 @property (nonatomic,assign) AudioStreamBasicDescription outputFormat;
-@property (nonatomic,assign) UInt32 numOutputChannels;
 //当前音频帧
 @property (nonatomic,strong) MRAudioFrame *currentAudioFrame;
 //音频重采样上下文
@@ -225,7 +224,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/Opera.480p.x264.AAC.mp4",
                         @"ffmpeg-test/sintel.mp4",
                         ];
-    NSString *movieName = [movies objectAtIndex:2];
+    NSString *movieName = [movies objectAtIndex:11];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
@@ -319,8 +318,8 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)audioCodecIsSupported:(AVCodecContext *)audio
 {
     if (audio->sample_fmt == self.target_sample_fmt) {
-        return  (int)_targetSampleRate == audio->sample_rate &&
-        _numOutputChannels == audio->channels;
+        return  (int)self.targetSampleRate == audio->sample_rate &&
+        (int)self.outputFormat.mChannelsPerFrame == audio->channels;
     }
     return NO;
 }
@@ -347,8 +346,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         self.targetVideoFrameBuffer = av_malloc(picSize*sizeof(uint8_t));
         avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, self.target_pix_fmt, self.aligned_width, self.vheight);
     }
-    
-    _numOutputChannels = [[AVAudioSession sharedInstance]outputNumberOfChannels];
+
     _targetSampleRate = [[AVAudioSession sharedInstance]sampleRate];
     _outputVolume = [[AVAudioSession sharedInstance]outputVolume];
     
@@ -362,11 +360,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     {
         // ----- Audio Queue Setup -----
-        
-        _targetSampleRate = _audioCodecCtx -> sample_rate;
-        
+    
         _outputFormat.mSampleRate = _targetSampleRate;
-        _outputFormat.mChannelsPerFrame = _audioCodecCtx->channels;
+        /**不使用视频的原声道数_audioCodecCtx->channels;
+         mChannelsPerFrame 这个值决定了后续AudioUnit索要数据时 ioData->mNumberBuffers 的值！
+         如果写成1会影响Planar类型，就不会开两个buffer了！！因此这里写死为2！
+         */
+        _outputFormat.mChannelsPerFrame = 2;
         _outputFormat.mFormatID = kAudioFormatLinearPCM;
         _outputFormat.mReserved = 0;
         
@@ -374,22 +374,26 @@ static void fflog(void *context, int level, const char *format, va_list args){
         bool isS16 = _audioCodecCtx->sample_fmt == AV_SAMPLE_FMT_S16 || _audioCodecCtx->sample_fmt == AV_SAMPLE_FMT_S16P;
     
         // 测试目标输出: S16
-        //        isFloat = false; isS16 = true; isPlanar = false;
+//                isFloat = false; isS16 = true;
         // 测试目标输出: FLOAT
-        //        isFloat = true; isS16 = false; isPlanar = false;
+//                isFloat = true; isS16 = false;
+        
+        if (!isS16 && !isFloat){
+            isFloat = false;
+            isS16 = YES;
+            NSLog(@"其他格式，默认重采样为S16！");
+        }
         
         if (isS16){
             _outputFormat.mFormatFlags |= kAudioFormatFlagIsSignedInteger;
             _outputFormat.mFramesPerPacket = 1;
             _outputFormat.mBitsPerChannel = sizeof(SInt16) * 8;
+            self.target_sample_fmt = AV_SAMPLE_FMT_S16;
         } else if (isFloat){
             _outputFormat.mFormatFlags = kAudioFormatFlagIsFloat;
             _outputFormat.mFramesPerPacket = 1;
             _outputFormat.mBitsPerChannel = sizeof(float) * 8;
-        } else {
-            isFloat = false;
-            isS16 = YES;
-            NSLog(@"其他格式，默认重采样为S16！");
+            self.target_sample_fmt = AV_SAMPLE_FMT_FLT;
         }
         
         //packed only!
@@ -397,17 +401,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
         _outputFormat.mBytesPerFrame = (_outputFormat.mBitsPerChannel / 8) * _outputFormat.mChannelsPerFrame;
         _outputFormat.mBytesPerPacket = _outputFormat.mBytesPerFrame * _outputFormat.mFramesPerPacket;
         
-        if (isFloat) {
-            self.target_sample_fmt = AV_SAMPLE_FMT_FLT;
-        } else {
-            self.target_sample_fmt = AV_SAMPLE_FMT_S16;
-        }
-        
         OSStatus status = AudioQueueNewOutput(&self->_outputFormat, MRAudioQueueOutputCallback, (__bridge void *)self, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &self->_audioQueue);
         
         NSAssert(noErr == status, @"AudioQueueNewOutput");
-        
-        _numOutputChannels = _outputFormat.mChannelsPerFrame;
         
         // //初始化音频缓冲区--audioQueueBuffers为结构体数组
         for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
@@ -418,7 +414,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     if (![self audioCodecIsSupported:_audioCodecCtx]) {
         
-        int64_t dst_ch_layout = av_get_default_channel_layout((int)_numOutputChannels);
+        int64_t dst_ch_layout = av_get_default_channel_layout((int)self.outputFormat.mChannelsPerFrame);
         int64_t src_ch_layout = av_get_default_channel_layout(_audioCodecCtx->channels);
         
         int src_rate = _audioCodecCtx->sample_rate;
@@ -861,14 +857,23 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 NSLog(@"decode audio packet:%@",audio_frame!=NULL?@"succ":@"failed");
                 if (audio_frame) {
                     
-                    const NSUInteger numChannels = self.numOutputChannels;
-                    NSInteger numFrames = 0;
+                    const int numChannels = (int)self.outputFormat.mChannelsPerFrame;
+                    int numFrames = 0;
                     
                     MRAudioFrame *frame = [MRAudioFrame new];
                     
                     //需要重采样
                     if (self.audio_convert_ctx) {
-                        const int bufSize = av_samples_get_buffer_size(NULL, (int)numChannels, audio_frame->nb_samples, self.target_sample_fmt, 1);
+                        
+                        int src_nb_samples = audio_frame->nb_samples;
+                        int dst_nb_channels = self.outputFormat.mChannelsPerFrame;
+                        int dst_rate = (int)self.targetSampleRate;
+                        int src_rate = audio_frame->sample_rate;
+                        enum AVSampleFormat dst_sample_fmt = self.target_sample_fmt;
+                        
+                        int max_dst_nb_samples = (int)av_rescale_rnd(src_nb_samples, dst_rate, src_rate, AV_ROUND_UP);
+                        
+                        const int bufSize = av_samples_get_buffer_size(NULL, dst_nb_channels, max_dst_nb_samples, self.target_sample_fmt, 1);
                         
                         if (!self.audioBuffer4Packet || self.audioBuffer4PacketSize < bufSize) {
                             self.audioBuffer4PacketSize = bufSize;
@@ -889,14 +894,15 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             break;
                         }
                         
-                        //int64_t delay = swr_get_delay(_swrContext, audioManager.samplingRate);
-                        //if (delay > 0)
-                        //    LoggerAudio(0, @"resample delay %lld", delay);
+                        int dst_bufsize = av_samples_get_buffer_size(NULL, dst_nb_channels,
+                                                                     numFrames, dst_sample_fmt, 1);
+                        //                            也可以这么计算得出：
+                        //                            const NSUInteger numElements = numFrames * numChannels;
+                        //                            UInt32 size4Packet = self.outputFormat.mBitsPerChannel / 8;
+                        //                            int dst_bufsize = numElements * size4Packet;
                         
-                        const NSUInteger numElements = numFrames * numChannels;
-                        UInt32 size4Packet = self.outputFormat.mBitsPerChannel / 8;
-                        NSMutableData *data = [NSMutableData dataWithLength:numElements * size4Packet];
-                        memcpy(data.mutableBytes, self.audioBuffer4Packet, numElements * size4Packet);
+                        NSMutableData *data = [NSMutableData dataWithLength:dst_bufsize];
+                        memcpy(data.mutableBytes, self.audioBuffer4Packet, dst_bufsize);
                         frame.samples4packet = [data copy];
                         
                     }
