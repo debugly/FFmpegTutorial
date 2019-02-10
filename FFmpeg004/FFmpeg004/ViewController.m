@@ -59,9 +59,9 @@ static int kFrameCacheCount = 24 * 2;
 //视频像素格式
 @property (nonatomic,assign) enum AVPixelFormat format;
 //格式转换
-@property (nonatomic,assign) uint8_t *out_buffer;
+@property (nonatomic,assign) uint8_t *targetVideoFrameBuffer;
 @property (nonatomic,assign) struct SwsContext * img_convert_ctx;
-@property (nonatomic,assign) AVFrame *pFrameYUV;
+@property (nonatomic,assign) AVFrame *targetVideoFrame;
 
 @property (weak, nonatomic) UIImageView *renderView;
 
@@ -94,13 +94,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
         sws_freeContext(self.img_convert_ctx);
     }
     
-    if (self.pFrameYUV) {
-        av_frame_free(&self->_pFrameYUV);
+    if (self.targetVideoFrame) {
+        av_frame_free(&self->_targetVideoFrame);
     }
     
-    if(self.out_buffer){
-        free(self.out_buffer);
-        self.out_buffer = NULL;
+    if(self.targetVideoFrameBuffer){
+        free(self.targetVideoFrameBuffer);
+        self.targetVideoFrameBuffer = NULL;
     }
 }
 
@@ -170,11 +170,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
 #endif
                         const int picSize = avpicture_get_size(pix_fmt, self.vwidth, self.vheight);
                         
-                        self.out_buffer = malloc(picSize);
+                        self.targetVideoFrameBuffer = malloc(picSize);
                         self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
                         
-                        self.pFrameYUV = av_frame_alloc();
-                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, pix_fmt, self.vwidth, self.vheight);
+                        self.targetVideoFrame = av_frame_alloc();
+                        avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, pix_fmt, self.vwidth, self.vheight);
                         
                         // 启动渲染驱动
                         [self videoTick];
@@ -356,14 +356,14 @@ static void fflog(void *context, int level, const char *format, va_list args){
                 if (video_frame) {
                     
                     // 根据配置把数据转换成 NV12 或者 RGB24
-                    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);
+                    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.targetVideoFrame->data, self.targetVideoFrame->linesize);
                     
                     if (pictRet <= 0) {
                         av_frame_free(&video_frame);
                         return ;
                     }
                     
-                    UIImage *img = [self imageFromAVFrame:self.pFrameYUV w:self.vwidth h:self.vheight];
+                    UIImage *img = [self imageFromAVFrame:self.targetVideoFrame w:self.vwidth h:self.vheight];
                     
                     // 获取时长
                     const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
@@ -489,10 +489,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
-    return [self openVideoStream:stream];
+    return [self doOpenVideoStream:stream];
 }
 
-- (BOOL)openVideoStream:(AVStream *)stream
+- (BOOL)doOpenVideoStream:(AVStream *)stream
 {
     AVCodecContext *codecCtx = stream->codec;
     // find the decoder for the video stream

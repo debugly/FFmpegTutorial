@@ -1,8 +1,8 @@
 //
 //  MRVideoFrame.h
-//  FFmpeg006
+//  FFmpeg008
 //
-//  Created by Matt Reach on 2017/10/20.
+//  Created by Matt Reach on 2019/2/8.
 //  Copyright © 2018年 Awesome FFmpeg Study Demo. All rights reserved.
 //
 

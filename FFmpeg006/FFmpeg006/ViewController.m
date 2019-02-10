@@ -62,9 +62,9 @@ static int kFrameCacheCount = 24 * 2;
 @property (nonatomic,assign) enum AVPixelFormat format;
 @property (nonatomic,assign) enum AVPixelFormat target_pix_fmt;
 //格式转换
-@property (nonatomic,assign) uint8_t *out_buffer;
+@property (nonatomic,assign) uint8_t *targetVideoFrameBuffer;
 @property (nonatomic,assign) struct SwsContext * img_convert_ctx;
-@property (nonatomic,assign) AVFrame *pFrameYUV;
+@property (nonatomic,assign) AVFrame *targetVideoFrame;
 
 @property (strong, nonatomic) MRVideoRenderView *renderView;
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
@@ -98,13 +98,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
         sws_freeContext(self.img_convert_ctx);
     }
     
-    if (self.pFrameYUV) {
-        av_frame_free(&self->_pFrameYUV);
+    if (self.targetVideoFrame) {
+        av_frame_free(&self->_targetVideoFrame);
     }
     
-    if(self.out_buffer){
-        free(self.out_buffer);
-        self.out_buffer = NULL;
+    if(self.targetVideoFrameBuffer){
+        free(self.targetVideoFrameBuffer);
+        self.targetVideoFrameBuffer = NULL;
     }
     
     if(self.pixelBufferPool){
@@ -183,13 +183,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         self.target_pix_fmt = PIX_FMT_NV12;
                         
                         self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, self.target_pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
-                        self.pFrameYUV = av_frame_alloc();
+                        self.targetVideoFrame = av_frame_alloc();
                         
                         ///defaut: natural aligment
                         self.aligned_width = self.vwidth;
                         const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
-                        self.out_buffer = av_malloc(picSize*sizeof(uint8_t));
-                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, self.target_pix_fmt, self.aligned_width, self.vheight);
+                        self.targetVideoFrameBuffer = av_malloc(picSize*sizeof(uint8_t));
+                        avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, self.target_pix_fmt, self.aligned_width, self.vheight);
                         
                         // 启动渲染驱动
                         [self videoTick];
@@ -387,19 +387,19 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     if (self.aligned_width != video_frame->linesize[0]) {
                         self.aligned_width = video_frame->linesize[0];
                         const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
-                        self.out_buffer = av_realloc(self.out_buffer, picSize*sizeof(uint8_t));
-                        avpicture_fill((AVPicture *)self.pFrameYUV, self.out_buffer, self.target_pix_fmt, self.aligned_width, self.vheight);
+                        self.targetVideoFrameBuffer = av_realloc(self.targetVideoFrameBuffer, picSize*sizeof(uint8_t));
+                        avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, self.target_pix_fmt, self.aligned_width, self.vheight);
                     }
                     
                     // 根据配置把数据转换成 NV12 或者 RGB24
-                    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.pFrameYUV->data, self.pFrameYUV->linesize);
+                    int pictRet = sws_scale(self.img_convert_ctx, (const uint8_t* const*)video_frame->data, video_frame->linesize, 0, self.vheight, self.targetVideoFrame->data, self.targetVideoFrame->linesize);
                     
                     if (pictRet <= 0) {
                         av_frame_free(&video_frame);
                         return ;
                     }
                     
-                    CMSampleBufferRef sampleBuffer = [self sampleBufferFromAVFrame:self.pFrameYUV w:self.vwidth h:self.vheight];
+                    CMSampleBufferRef sampleBuffer = [self sampleBufferFromAVFrame:self.targetVideoFrame w:self.vwidth h:self.vheight];
                     
                     // 获取时长
                     const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
@@ -525,10 +525,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
-    return [self openVideoStream:stream];
+    return [self doOpenVideoStream:stream];
 }
 
-- (BOOL)openVideoStream:(AVStream *)stream
+- (BOOL)doOpenVideoStream:(AVStream *)stream
 {
     AVCodecContext *codecCtx = stream->codec;
     // find the decoder for the video stream

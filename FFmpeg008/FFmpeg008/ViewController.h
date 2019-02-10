@@ -1,9 +1,9 @@
 //
 //  ViewController.h
-//  FFmpeg006
+//  FFmpeg008
 //
-//  Created by Matt Reach on 2017/10/20.
-//  Copyright © 2017年 Awesome FFmpeg Study Demo. All rights reserved.
+//  Created by Matt Reach on 2019/2/8.
+//  Copyright © 2019年 Awesome FFmpeg Study Demo. All rights reserved.
 //  开源地址: https://github.com/debugly/StudyFFmpeg
 //
 

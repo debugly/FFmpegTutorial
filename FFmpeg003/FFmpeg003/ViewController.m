@@ -426,10 +426,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
 - (BOOL)openVideoStream
 {
     AVStream *stream = _formatCtx->streams[_stream_index_video];
-    return [self openVideoStream:stream];
+    return [self doOpenVideoStream:stream];
 }
 
-- (BOOL)openVideoStream:(AVStream *)stream
+- (BOOL)doOpenVideoStream:(AVStream *)stream
 {
     AVCodecContext *codecCtx = stream->codec;
     // find the decoder for the video stream

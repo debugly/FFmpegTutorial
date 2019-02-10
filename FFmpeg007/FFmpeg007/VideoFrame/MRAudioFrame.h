@@ -15,11 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign, nonatomic) float position;
 @property (assign, nonatomic) float duration;
 ///for packet
-@property (strong, nonatomic) NSData *samples;
-@property (assign, nonatomic) NSUInteger offset;
-///for planer
-@property (strong, nonatomic) NSData *left;
-@property (strong, nonatomic) NSData *right;
+@property (strong, nonatomic) NSData *samples4packet;
+@property (assign, nonatomic) NSUInteger samplesOffset;
+///for planar
+@property (strong, nonatomic) NSData *leftPlanar;
+@property (strong, nonatomic) NSData *rightPlanar;
 @property (assign, nonatomic) NSUInteger leftOffset;
 @property (assign, nonatomic) NSUInteger rightOffset;
 
