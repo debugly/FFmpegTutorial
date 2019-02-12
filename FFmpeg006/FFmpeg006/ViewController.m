@@ -138,13 +138,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *moviePath = nil;//[[NSBundle mainBundle]pathForResource:@"test" ofType:@"mp4"];
     ///该地址可以是网络的也可以是本地的；
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
-    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3149.mov";
-    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2879.mp4";
+    moviePath = @"http://10.7.36.50:8080/ffmpeg-test/IMG_3149.mov";
+    moviePath = @"http://10.7.36.50:8080/ffmpeg-test/IMG_2879.mp4";
     moviePath = @"http://192.168.3.2/ffmpeg-test/easy/IMG_2879.mp4";
-//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2914.mp4";
-//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_3190.mp4";
-//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/sintel.mp4";
-//    moviePath = @"http://10.7.36.117:8080/ffmpeg-test/IMG_2899.mp4";
+//    moviePath = @"http://10.7.36.50:8080/ffmpeg-test/IMG_2914.mp4";
+//    moviePath = @"http://10.7.36.50:8080/ffmpeg-test/IMG_3190.mp4";
+//    moviePath = @"http://10.7.36.50:8080/ffmpeg-test/sintel.mp4";
+//    moviePath = @"http://10.7.36.50:8080/ffmpeg-test/IMG_2899.mp4";
     
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.

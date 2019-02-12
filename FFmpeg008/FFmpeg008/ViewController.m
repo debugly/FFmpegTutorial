@@ -208,7 +208,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     NSString *host = @"debugly.cn";
     host = @"192.168.3.2";
-//    host = @"10.7.36.117:8080";
+//    host = @"10.7.36.50:8080";
     
     NSArray *movies = @[@"repository/test.mp4",
                         @"ffmpeg-test/4K2160p.120fps.mkv",

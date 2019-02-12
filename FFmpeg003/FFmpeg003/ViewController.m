@@ -109,7 +109,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     //    moviePath = @"http://debugly.cn/repository/test.mp4";
     //moviePath = @"http://localhost/ffmpeg-test/test.mp4";
-    moviePath = @"http://10.7.36.117/root/mp4/test2.mp4";
+    moviePath = @"http://10.7.36.50/root/mp4/test2.mp4";
     if ([moviePath hasPrefix:@"http"]) {
         //Using network protocols without global network initialization. Please use avformat_network_init(), this will become mandatory later.
         //播放网络视频的时候，要首先初始化下网络模块。
