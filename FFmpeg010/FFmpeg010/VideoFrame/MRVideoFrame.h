@@ -17,6 +17,7 @@
 @property (assign, nonatomic) AVFrame *video_frame;
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) CIImage *ciImage;
+//当前帧的持续时间
 @property (assign, nonatomic) float duration;
 @property (assign, nonatomic) BOOL eof;
 @property (assign, nonatomic) CMSampleBufferRef sampleBuffer;

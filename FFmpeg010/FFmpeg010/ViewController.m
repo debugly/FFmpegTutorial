@@ -103,8 +103,12 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 @property (nonatomic,assign) int stream_index_audio;
 //视频时钟基
 @property (nonatomic,assign) float videoTimeBase;
+//视频播放到当前帧时的已播放的时间长度
+@property (nonatomic,assign) double video_clock;
 //音频时钟基
 @property (nonatomic,assign) float audioTimeBase;
+//音频播放到当前帧时的已播放的时间长度
+@property (nonatomic,assign) double audio_clock;
 //读包到结束标志位
 @property (nonatomic,assign) BOOL eof;
 ///画面原始宽高，单位像素
@@ -146,6 +150,7 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 
 //Audio Unit 是否开始
 @property (nonatomic,assign) BOOL isPalying;
+@property (nonatomic,assign) AudioTimeStamp audioTimeStamp;
 
 @end
 
@@ -699,6 +704,22 @@ static void fflog(void *context, int level, const char *format, va_list args){
         OSStatus status = AudioOutputUnitStart(_audioUnit);
         if(noErr == status){
             self.isPalying = YES;
+            __weakSelf__
+            [NSTimer scheduledTimerWithTimeInterval:1 repeats:YES block:^(NSTimer * _Nonnull timer) {
+                __strongSelf__
+                AudioTimeStamp ts;
+                UInt32 size = sizeof(ts);
+                //https://stackoverflow.com/questions/14514277/ios-audio-unit-get-current-time-stamp
+                OSStatus status = AudioUnitGetProperty(self.audioUnit,
+                                     kAudioUnitProperty_CurrentPlayTime,
+                                     kAudioUnitScope_Global,
+                                     0, &ts, &size);
+                if (status == noErr) {
+                    Float64 duration = ts.mSampleTime / self.targetSampleRate;
+                    
+                    NSLog(@"audio played duration:%0.2f",duration);
+                }
+            }];
         }
         NSAssert(noErr == status, @"AudioOutputUnitStart");
     }
@@ -854,7 +875,30 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         sampleBuffer = [self sampleBufferFromAVFrame:&pic w:self.vwidth h:self.vheight];
                     }
                     
-                    // 获取视频时长
+                        //已流中的时间为基础预估的时间戳
+                    int64_t pts = av_frame_get_best_effort_timestamp(video_frame);
+                    if (pts == AV_NOPTS_VALUE) {
+                        pts = 0;
+                    }
+                    //该帧在视频中的时间位置（秒为单位）
+                    pts *= self.videoTimeBase;
+                    
+                    ///处理pts为0的情况
+                    {
+                        double frame_delay;
+                        //如果没有得到该帧的PTS就用当前的video_clock来近似
+                        if (pts != 0)
+                            self.video_clock = pts; // Get pts,then set video clock to it
+                        else
+                            pts = self.video_clock; // Don't get pts,set it to video clock
+                        
+                        frame_delay = self.videoTimeBase;
+                        frame_delay += video_frame->repeat_pict * (frame_delay * 0.5);
+                        //记得更新video_clock的值
+                        self.video_clock += frame_delay;
+                    }
+                    
+                    // 获取当前帧的持续时间
                     const double frameDuration = av_frame_get_pkt_duration(video_frame) * self.videoTimeBase;
                     av_frame_free(&video_frame);
                     // 构造模型
@@ -1000,7 +1044,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
             if (ok) {
                 AVFrame *audio_frame = [self decodeAudioPacket:&pkt];
                 if (audio_frame) {
-                
+                    int64_t pts = pkt.pts;
+                    if (pts != AV_NOPTS_VALUE) {
+                        self.audio_clock = self.audioTimeBase * pts;
+                    }
+                    
                     MRAudioFrame *frame = [MRAudioFrame new];
                     
                     bool is_planar = av_sample_fmt_is_planar((enum AVSampleFormat)self.target_sample_fmt);
@@ -1412,6 +1460,8 @@ static void avStreamFPSTimeBase(AVStream *st, AVCodecContext *codecCtx, float de
 
 #pragma mark - 音频
 
+
+
 ///音频渲染回调；
 static inline OSStatus MRRenderCallback(void *inRefCon,
                                         AudioUnitRenderActionFlags    * ioActionFlags,
@@ -1421,6 +1471,16 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
                                         AudioBufferList                * ioData)
 {
     ViewController *am = (__bridge ViewController *)inRefCon;
+//    static bool flag = false;
+//    if (!flag) {
+//        flag = true;
+//        am.audioTimeStamp = *inTimeStamp;
+//    }
+//    AudioTimeStamp audioTimeStamp = *inTimeStamp;
+//    NSLog(@"=====%g",audioTimeStamp.mSampleTime - am.audioTimeStamp.mSampleTime);
+//    NSLog(@"=====%lu",audioTimeStamp.mHostTime - am.audioTimeStamp.mHostTime);
+//    NSLog(@"=====%lu",audioTimeStamp.mWordClockTime - am.audioTimeStamp.mWordClockTime);
+//
     return [am renderFrames:inNumberFrames ioData:ioData];
 }
 
