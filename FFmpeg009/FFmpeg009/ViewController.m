@@ -15,6 +15,7 @@
 #import <libavutil/opt.h>
 #import <libswscale/swscale.h>
 #import <libavutil/imgutils.h>
+#import <libavutil/dict.h>
 
 #import "MRVideoFrame.h"
 #import "MRPacketQueue.h"
@@ -144,6 +145,8 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 @property (nonatomic,assign) uint8_t     *audioBuffer4PlanarR;
 @property (nonatomic,assign) NSUInteger  audioBuffer4PlanarSize;
 
+@property (nonatomic,assign) AVDictionary *format_opts;
+
 //Audio Unit 是否开始
 @property (nonatomic,assign) BOOL isPalying;
 
@@ -152,11 +155,20 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 @implementation ViewController
 
 static void fflog(void *context, int level, const char *format, va_list args){
-    //    @autoreleasepool {
-    //        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-    //
-    //        NSLog(@"ff:%d%@",level,message);
-    //    }
+        @autoreleasepool {
+            NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+    
+            NSLog(@"ff:%d,%@",level,message);
+        }
+}
+
+static void ff_show_dict(const char *tag, AVDictionary *dict)
+{
+    AVDictionaryEntry *t = NULL;
+    
+    while ((t = av_dict_get(dict, "", t, AV_DICT_IGNORE_SUFFIX))) {
+        av_log(NULL,AV_LOG_INFO, "%-*s: %-*s = %s\n", 12, tag, 28, t->key, t->value);
+    }
 }
 
 - (void)dealloc
@@ -223,6 +235,8 @@ static void fflog(void *context, int level, const char *format, va_list args){
         free(self.pictureBuffer);
         self.pictureBuffer = NULL;
     }
+    
+    av_dict_free(&self->_format_opts);
 }
 
 # pragma mark - Movie Play Path
@@ -234,9 +248,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     NSString *host = @"debugly.cn";
     host = @"192.168.3.2";
-    host = @"10.7.36.50:8080";
-    
+    host = @"10.7.36.50";
+
     NSArray *movies = @[@"repository/test.mp4",
+                        @"ffmpeg-test/ff-concat/test.ffcat",
+                        @"ffmpeg-test/ff-concat-2/test.ffcat",
                         @"ffmpeg-test/4K2160p.120fps.mkv",
                         @"ffmpeg-test/test.mp4",
                         @"ffmpeg-test/xp5.mp4",
@@ -250,7 +266,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/Opera.480p.x264.AAC.mp4",
                         @"ffmpeg-test/sintel.mp4",
                         ];
-    NSString *movieName = [movies objectAtIndex:3];
+    NSString *movieName = [movies objectAtIndex:2];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
@@ -275,7 +291,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
     _audioFrames = [NSMutableArray array];
     
     av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
-    //av_log_set_flags(AV_LOG_SKIP_REPEATED);
+//    av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    
+//    av_dict_set(&self->_format_opts, "protocol_whitelist", "concat,http,tcp,https,tls,file", 0);
+    av_dict_set(&self->_format_opts, "safe", "0", 0);
     
     ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
     av_register_all();
@@ -1256,6 +1275,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     int ret = avcodec_parameters_to_context(codecCtx, stream->codecpar);
     if (ret < 0){
+        avcodec_free_context(&codecCtx);
         return NULL;
     }
     
@@ -1352,8 +1372,11 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
     /*
      打开输入流，读取文件头信息，不会打开解码器；
      */
+    
+    ff_show_dict("format-opts", self.format_opts);
+    
     ///低版本是 av_open_input_file 方法
-    if (0 != avformat_open_input(&formatCtx, [moviePath cStringUsingEncoding:NSUTF8StringEncoding], NULL, NULL)) {
+    if (0 != avformat_open_input(&formatCtx, [moviePath cStringUsingEncoding:NSUTF8StringEncoding], NULL, &self->_format_opts)) {
         ///关闭，释放内存，置空
         avformat_close_input(&formatCtx);
         if (completion) {
@@ -1653,6 +1676,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
 
 @end
 

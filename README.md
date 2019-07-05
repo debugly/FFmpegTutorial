@@ -6,7 +6,7 @@
 
 # Matt Reach's Awesome FFmpeg Study Demo
 
-- 第 〇 天：[编译 FFmpeg，简单了解在 Mac 平台如何使用](md/000.md) √
+- 第 〇 天：[编译 iOS 平台的 FFmpeg 库，简单了解在 Mac 平台如何使用](md/000.md) √
 
 - 第 ① 天：[查看编译 config，支持的协议](md/001.md) √
 
@@ -35,6 +35,8 @@
 
 ### 跨平台
 
+- [使用 MetalKit 渲染视频]()
+- [使用 VideoToolbox 硬件解码H264]()
 - [移植到 Mac 平台](md/012.md)
 - [使用 OpenGL 渲染视频](md/013.md)
 - [使用 OpenAL 渲染音频](md/014.md)
