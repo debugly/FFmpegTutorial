@@ -1,6 +1,6 @@
 # 从 2月 20 号起项目里不在包含包含FFmpeg库，需要执行改脚本下载！
 
-iOSFFmpeg[0]="FFmpeg-2.8.2"
+iOSFFmpeg[0]="FFmpeg-3.1.11"
 # iOSFFmpeg[1]="FFmpeg-"
 
 #$cp=$PWD
