@@ -20,9 +20,9 @@
 
 - 第 ⑥ 天：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps](md/006.md) √
 
-- 第 ⑦ 天：[使用 AudioUnit 渲染音频](md/007.md)
+- 第 ⑦ 天：[使用 AudioUnit 渲染音频](md/007.md) √
 
-- 第 ⑧ 天：[使用 AudioQueue 渲染音频](md/008.md)
+- 第 ⑧ 天：[使用 AudioQueue 渲染音频](md/008.md) √
 
 - 第 ⑨ 天：[将 FFmpeg 升级到 3.x 版本](md/009.md)
 

@@ -208,11 +208,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
     
     NSString *host = @"debugly.cn";
     host = @"192.168.3.2";
-//    host = @"10.7.36.50:8080";
+    host = @"10.7.36.50:8080";
+    host = @"localhost";
     
     NSArray *movies = @[@"repository/test.mp4",
                         @"ffmpeg-test/4K2160p.120fps.mkv",
                         @"ffmpeg-test/test.mp4",
+                        @"ffmpeg-test/sintel.mp4",
                         @"ffmpeg-test/xp5.mp4",
                         @"ffmpeg-test/IMG_2879.mp4",
                         @"ffmpeg-test/IMG_2899.mp4",
@@ -221,10 +223,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/IMG_3123.mov",
                         @"ffmpeg-test/IMG_3149.mov",
                         @"ffmpeg-test/IMG_3190.mp4",
-                        @"ffmpeg-test/Opera.480p.x264.AAC.mp4",
-                        @"ffmpeg-test/sintel.mp4",
+                        @"ffmpeg-test/Opera.480p.x264.AAC.mp4"
                         ];
-    NSString *movieName = [movies objectAtIndex:11];
+    NSString *movieName = [movies objectAtIndex:3];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
