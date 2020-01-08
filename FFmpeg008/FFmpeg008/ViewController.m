@@ -142,11 +142,14 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 @implementation ViewController
 
 static void fflog(void *context, int level, const char *format, va_list args){
-    //    @autoreleasepool {
-    //        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-    //
-    //        NSLog(@"ff:%d%@",level,message);
-    //    }
+    if (level > AV_LOG_TRACE){
+        return;
+    } else {
+        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            NSLog(@"ffmpeg:[%d]%@",level,message);
+        });
+    }
 }
 
 - (void)dealloc
@@ -207,9 +210,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     
     NSString *host = @"debugly.cn";
-    host = @"192.168.3.2";
-    host = @"10.7.36.50:8080";
-    host = @"localhost";
+//    host = @"192.168.3.2";
+//    host = @"10.7.36.50:8080";
+//    host = @"localhost";
     
     NSArray *movies = @[@"repository/test.mp4",
                         @"ffmpeg-test/4K2160p.120fps.mkv",
@@ -225,7 +228,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/IMG_3190.mp4",
                         @"ffmpeg-test/Opera.480p.x264.AAC.mp4"
                         ];
-    NSString *movieName = [movies objectAtIndex:3];
+    NSString *movieName = [movies objectAtIndex:0];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
@@ -249,8 +252,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
     _videoFrames = [NSMutableArray array];
     _audioFrames = [NSMutableArray array];
     
-    av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
-    //av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    //自定义日志输出，默认是 av_log_default_callback
+    av_log_set_callback(fflog);
+    av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    av_log_set_level(AV_LOG_TRACE);//只对av_log_default_callback有效
+    printf("av_log_get_level:%d\n",av_log_get_level());
     
     ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
     av_register_all();

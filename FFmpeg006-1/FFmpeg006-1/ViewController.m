@@ -31,7 +31,6 @@
 
 @interface ViewController ()
 
-
 ///画面高度，单位像素
 @property (nonatomic,assign) int vwidth;
 @property (nonatomic,assign) int aligned_width;

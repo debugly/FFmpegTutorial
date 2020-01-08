@@ -38,10 +38,10 @@
 
 // 按照fps=24计算，缓存20s的视频包；缓存1s的解码帧;
 static int kVideoPacketCacheCount = 24 * 20;
-static int kVidoFrameCacheCount = 24 * 2;
+static int kVidoFrameCacheCount = 24 * 5;
 // 按照每个声道包含1024个采样点，44.1KHz采样率计算，1s 需要 44100/1024 = 43个包; 缓存20s的视频包；缓存1s的解码帧;
 static int kAudioPacketCacheCount = 43 * 20;
-static int kAudioFrameCacheCount = 43 * 2;
+static int kAudioFrameCacheCount = 43 * 5;
 /*
  音频包和视频包不是均匀的，所以读包线程会在把视频和音频包buffer都读满后停止；
  停止后可能音频包缓存数据已经大于设定的最大值了；
@@ -49,8 +49,8 @@ static int kAudioFrameCacheCount = 43 * 2;
  */
 
 //缓存多久才能播？避免缓存一帧卡一帧的情况
-static float kVideoMinBufferDuration = 1;
-static float kAudioMinBufferDuration = 1;
+static float kVideoMinBufferDuration = 3;
+static float kAudioMinBufferDuration = 3;
 
 const int  kMax_Frame_Size = 4096;
 const int  kAudio_Channel = 2;
@@ -157,11 +157,14 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 @implementation ViewController
 
 static void fflog(void *context, int level, const char *format, va_list args){
-    //    @autoreleasepool {
-    //        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
-    //
-    //        NSLog(@"ff:%d%@",level,message);
-    //    }
+    if (level > AV_LOG_TRACE){
+        return;
+    } else {
+        NSString* message = [[NSString alloc] initWithFormat: [NSString stringWithUTF8String: format] arguments: args];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_LOW, 0), ^{
+            NSLog(@"ffmpeg:[%d]%@",level,message);
+        });
+    }
 }
 
 - (void)dealloc
@@ -238,7 +241,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     ///该地址可以是网络的也可以是本地的；
     
     NSString *host = @"debugly.cn";
-    host = @"192.168.3.2";
+//    host = @"192.168.3.2";
 //    host = @"10.7.36.50:8080";
     
     NSArray *movies = @[@"repository/test.mp4",
@@ -255,7 +258,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/Opera.480p.x264.AAC.mp4",
                         @"ffmpeg-test/sintel.mp4",
                         ];
-    NSString *movieName = [movies objectAtIndex:3];
+    NSString *movieName = [movies objectAtIndex:0];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
@@ -279,9 +282,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
     _videoFrames = [NSMutableArray array];
     _audioFrames = [NSMutableArray array];
     
-    av_log_set_callback(fflog);//日志比较多，打开日志后会阻塞当前线程
-    //av_log_set_flags(AV_LOG_SKIP_REPEATED);
-    
+    //自定义日志输出，默认是 av_log_default_callback
+    av_log_set_callback(fflog);
+    av_log_set_flags(AV_LOG_SKIP_REPEATED);
+    av_log_set_level(AV_LOG_TRACE);//只对av_log_default_callback有效
+    printf("av_log_get_level:%d\n",av_log_get_level());
     ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
     av_register_all();
     
