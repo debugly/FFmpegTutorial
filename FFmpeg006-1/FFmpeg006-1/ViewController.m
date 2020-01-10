@@ -7,26 +7,10 @@
 //  开源地址: https://github.com/debugly/StudyFFmpeg
 
 #import "ViewController.h"
-//#import <libavutil/log.h>
-//#import <libavformat/avformat.h>
-//#import <libavcodec/avcodec.h>
-//#import <libavutil/pixdesc.h>
-//#import <libavutil/samplefmt.h>
-//#import <libswscale/swscale.h>
 #import "MRVideoFrame.h"
-//#import "MRPacketQueue.h"
 #import "MRConvertUtil.h"
 #import "MRVideoRenderView.h"
 
-#ifndef __weakSelf__
-#define __weakSelf__     __weak   __typeof(self) $weakself = self;
-#endif
-
-#ifndef __strongSelf__
-#define __strongSelf__   __strong __typeof($weakself) self = $weakself;
-#endif
-
-#define USE_PIXEL_BUFFER_POLL 1
 #define BYTE_ALIGN_64(_s_) (( _s_ + 63)/64 * 64)
 
 @interface ViewController ()

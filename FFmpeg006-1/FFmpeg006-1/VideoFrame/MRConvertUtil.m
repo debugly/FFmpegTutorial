@@ -36,16 +36,38 @@
         unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
         size_t y_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
         
+        //luma=[0,255] chroma=[1,255]
+        
         for (int i = 0; i < y_bytesPerRow * h; i ++) {
             unsigned char *dest = yDestPlane + i;
-            memset(dest, random()%256, 1);
+            size_t luma = arc4random()%256;
+            memset(dest, luma, 1);
         }
         
         unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
         
         size_t uv_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1);
+//        YUV420P -> RGB24
+//        R = Y + ( 1.4075 * (V - 128) );
+//        G = Y - ( 0.3455 * (U - 128) - 0.7169 * (V - 128) );
+//        B = Y + ( 1.7790 * (U - 128) );
+        
+        static int chroma = 128;
+//        测试UV使用其他值得效果
+//        static int counter = 0;
+//        counter++;
+//        if (counter % 3 == 0) {
+//            counter = 0;
+//            chroma++;
+//            printf("\t%d",chroma);
+//        }
+//
+//        if (chroma > 255) {
+//            chroma = 1;
+//        }
+        
         //奇数高度时(比如667)，那么UV应该是 334 行；如果按照 333.5计算会导致最后一行的右侧一半绿屏!
-        memset(uvDestPlane, 128, BYTE_ALIGN_2(h)/2 * uv_bytesPerRow);
+        memset(uvDestPlane, chroma, BYTE_ALIGN_2(h)/2 * uv_bytesPerRow);
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     }
     
