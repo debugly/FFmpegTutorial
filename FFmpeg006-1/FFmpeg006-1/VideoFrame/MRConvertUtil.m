@@ -74,6 +74,65 @@
     return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
 }
 
+static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,int w,int h)
+{
+    int barnum = 6;
+    int color_b = 0;
+    int color_w = 255;
+    int deltaC = (color_w - color_b)/barnum;
+    
+    int bytePerBar = w/barnum;
+    
+    unsigned char *y_dest = y;
+    //按行遍历
+    for (int i = 0; i < h; i ++) {
+        //每行分为barnum各块
+        for (int j = 0; j < barnum; j++) {
+            int luma = color_b + deltaC * j;
+            int size = bytePerBar;
+            if(j == barnum-1){
+                size = bytesPerRow - (barnum-1)*bytePerBar;
+            }
+            memset(y_dest, luma, size);
+            y_dest += size;
+        }
+    }
+    
+    memset(uv, 128, BYTE_ALIGN_2(h)/2 * bytesPerRow);
+}
+
++ (CVPixelBufferRef)grayColorBarPixelBuffer:(int)w h:(int)h opt:(CVPixelBufferPoolRef)poolRef
+{
+    CVPixelBufferRef pixelBuffer = NULL;
+    CVReturn result = kCVReturnError;
+    
+    if (poolRef) {
+        result = CVPixelBufferPoolCreatePixelBuffer(NULL, poolRef, &pixelBuffer);
+    } else {
+        NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
+        
+        result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                     w,
+                                     h,
+                                     kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
+                                     (__bridge CFDictionaryRef)(pixelAttributes),
+                                     &pixelBuffer);
+    }
+    
+    if (kCVReturnSuccess == result) {
+        CVPixelBufferLockBaseAddress(pixelBuffer,0);
+        unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+        unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+        size_t y_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
+        
+        fillGrayBar(y_bytesPerRow,yDestPlane,uvDestPlane,w,h);
+        
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    }
+    
+    return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
+}
+
 + (UIImage *)imageFromCVPixelBuffer:(CVPixelBufferRef)pixelBuffer w:(int)w h:(int)h
 {
     // CIImage Conversion

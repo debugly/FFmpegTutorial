@@ -71,8 +71,9 @@
         }
     }
     
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil snowPixelBuffer:w h:h opt:self.pixelBufferPool];
+//    CVPixelBufferRef pixelBuffer = [MRConvertUtil snowPixelBuffer:w h:h opt:self.pixelBufferPool];
     
+    CVPixelBufferRef pixelBuffer = [MRConvertUtil grayColorBarPixelBuffer:w h:h opt:self.pixelBufferPool];
     return [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
 }
 
