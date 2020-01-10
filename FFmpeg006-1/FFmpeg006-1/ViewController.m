@@ -7,14 +7,14 @@
 //  开源地址: https://github.com/debugly/StudyFFmpeg
 
 #import "ViewController.h"
-#import <libavutil/log.h>
-#import <libavformat/avformat.h>
-#import <libavcodec/avcodec.h>
-#import <libavutil/pixdesc.h>
-#import <libavutil/samplefmt.h>
-#import <libswscale/swscale.h>
+//#import <libavutil/log.h>
+//#import <libavformat/avformat.h>
+//#import <libavcodec/avcodec.h>
+//#import <libavutil/pixdesc.h>
+//#import <libavutil/samplefmt.h>
+//#import <libswscale/swscale.h>
 #import "MRVideoFrame.h"
-#import "MRPacketQueue.h"
+//#import "MRPacketQueue.h"
 #import "MRConvertUtil.h"
 #import "MRVideoRenderView.h"
 
@@ -33,7 +33,6 @@
 
 ///画面高度，单位像素
 @property (nonatomic,assign) int vwidth;
-@property (nonatomic,assign) int aligned_width;
 @property (nonatomic,assign) int vheight;
 
 @property (strong, nonatomic) MRVideoRenderView *renderView;
@@ -63,7 +62,6 @@
     
     self.vwidth = CGRectGetWidth(self.view.bounds);
     self.vheight = CGRectGetHeight(self.view.bounds);
-    self.aligned_width = BYTE_ALIGN_64(self.vwidth);
     
     // 启动渲染驱动
     [self videoTick];
@@ -73,12 +71,14 @@
 {
     CVReturn theError;
     if (!self.pixelBufferPool){
-        int linesize = self.aligned_width;
+        
         NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
         [attributes setObject:[NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange] forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
         [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
         [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
+//        不设置也行，也没有查到具体的资料，如何计算该值，按64对齐是之前猜出来的😶
+//        int linesize = BYTE_ALIGN_64(self.vwidth);
+//        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
         [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
         
         theError = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef) attributes, &_pixelBufferPool);
@@ -87,7 +87,7 @@
         }
     }
     
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil snowPixelBuffer:w linesize:self.aligned_width h:h opt:self.pixelBufferPool];
+    CVPixelBufferRef pixelBuffer = [MRConvertUtil snowPixelBuffer:w h:h opt:self.pixelBufferPool];
     
     return [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
 }

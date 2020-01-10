@@ -12,11 +12,6 @@
 
 - (void)dealloc
 {
-    if (_video_frame) {
-        //用完后记得释放掉
-        av_frame_free(&_video_frame);
-        _video_frame = NULL;
-    }
     if (_sampleBuffer) {
         CFRelease(_sampleBuffer);
         _sampleBuffer = NULL;

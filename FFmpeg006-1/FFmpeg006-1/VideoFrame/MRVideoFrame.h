@@ -7,14 +7,12 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <libavutil/frame.h>
 #import <UIKit/UIImage.h>
 #import <CoreImage/CIImage.h>
 #import <CoreMedia/CMSampleBuffer.h>
 
 @interface MRVideoFrame : NSObject
 
-@property (assign, nonatomic) AVFrame *video_frame;
 @property (strong, nonatomic) UIImage *image;
 @property (strong, nonatomic) CIImage *ciImage;
 @property (assign, nonatomic) float duration;

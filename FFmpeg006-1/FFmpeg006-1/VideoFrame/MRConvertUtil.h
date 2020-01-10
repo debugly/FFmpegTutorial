@@ -9,21 +9,14 @@
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
 #import <CoreVideo/CVPixelBuffer.h>
-#import <libavutil/frame.h>
 #import <CoreMedia/CMSampleBuffer.h>
 
 @interface MRConvertUtil : NSObject
 
-+ (CVPixelBufferRef)pixelBufferFromAVFrame:(AVFrame*)pFrame w:(int)w h:(int)h;
-+ (CVPixelBufferRef)pixelBufferFromAVFrame:(AVFrame*)pFrame w:(int)w h:(int)h opt:(CVPixelBufferPoolRef)poolRef;
 //黑白电视机雪花屏
-+ (CVPixelBufferRef)snowPixelBuffer:(int)w linesize:(int)linesize h:(int)h opt:(CVPixelBufferPoolRef)poolRef;
++ (CVPixelBufferRef)snowPixelBuffer:(int)w h:(int)h opt:(CVPixelBufferPoolRef)poolRef;
 
 + (UIImage *)imageFromCVPixelBuffer:(CVPixelBufferRef)pixelBuffer w:(int)w h:(int)h;
-
-+ (UIImage *)imageFromAVFrame:(AVFrame*)video_frame w:(int)w h:(int)h;
-
-+ (UIImage *)imageFromAVFrameV2:(AVFrame*)video_frame w:(int)w h:(int)h;
 
 + (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;
 

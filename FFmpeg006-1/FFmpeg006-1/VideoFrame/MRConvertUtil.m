@@ -13,48 +13,7 @@
 
 @implementation MRConvertUtil
 
-+ (UIImage *)imageFromAVFrameV2:(AVFrame*)video_frame w:(int)w h:(int)h
-{
-    const UInt8 *rgb = video_frame->data[0];
-    size_t bytesPerRow = video_frame->linesize[0];
-    CFIndex length = bytesPerRow*h;
-    
-    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
-    ///需要copy！因为video_frame是重复利用的；里面的数据会变化！
-    CFDataRef data = CFDataCreate(kCFAllocatorDefault, rgb, length);
-    CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
-    CGImageRef cgImage = CGImageCreate(w,
-                                       h,
-                                       8,
-                                       24,
-                                       bytesPerRow,
-                                       colorSpace,
-                                       bitmapInfo,
-                                       provider,
-                                       NULL,
-                                       NO,
-                                       kCGRenderingIntentDefault);
-    CGColorSpaceRelease(colorSpace);
-    
-    UIImage *image = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    CGDataProviderRelease(provider);
-    CFRelease(data);
-    
-    return image;
-}
-
-#pragma mark - YUV(NV12)-->CVPixelBufferRef Conversion
-
-//https://stackoverflow.com/questions/25659671/how-to-convert-from-yuv-to-ciimage-for-ios
-+ (CVPixelBufferRef)pixelBufferFromAVFrame:(AVFrame*)pFrame w:(int)w h:(int)h
-{
-    return [self pixelBufferFromAVFrame:pFrame w:w h:h opt:NULL];
-}
-
-+ (CVPixelBufferRef)pixelBufferFromAVFrame:(AVFrame*)pFrame w:(int)w h:(int)h opt:(CVPixelBufferPoolRef _Nullable)poolRef
++ (CVPixelBufferRef)snowPixelBuffer:(int)w h:(int)h opt:(CVPixelBufferPoolRef)poolRef
 {
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result = kCVReturnError;
@@ -75,53 +34,18 @@
     if (kCVReturnSuccess == result) {
         CVPixelBufferLockBaseAddress(pixelBuffer,0);
         unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
+        size_t y_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
         
-        // Here y_ch0 is Y-Plane of YUV(NV12) data.
-        
-        unsigned char *y_ch0 = pFrame->data[0];
-        unsigned char *y_ch1 = pFrame->data[1];
-        // important !! 这里不能使用 w ，因为ffmpeg对数据做了字节对齐！！会导致绿屏！如果视频宽度刚好就是一个对齐的大小时，w就和linesize[0]相等，所以没问题；
-        memcpy(yDestPlane, y_ch0, pFrame->linesize[0] * h);
-        unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
-        
-        // Here y_ch1 is UV-Plane of YUV(NV12) data.
-        memcpy(uvDestPlane, y_ch1, BYTE_ALIGN_2(h)/2 * pFrame->linesize[1]);
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-    }
-    
-    return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
-}
-
-+ (CVPixelBufferRef)snowPixelBuffer:(int)w linesize:(int)linesize h:(int)h opt:(CVPixelBufferPoolRef)poolRef
-{
-    CVPixelBufferRef pixelBuffer = NULL;
-    CVReturn result = kCVReturnError;
-    
-    if (poolRef) {
-        result = CVPixelBufferPoolCreatePixelBuffer(NULL, poolRef, &pixelBuffer);
-    } else {
-        NSDictionary *pixelAttributes = @{(NSString*)kCVPixelBufferIOSurfacePropertiesKey:@{}};
-        
-        result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                     w,
-                                     h,
-                                     kCVPixelFormatType_420YpCbCr8BiPlanarFullRange,
-                                     (__bridge CFDictionaryRef)(pixelAttributes),
-                                     &pixelBuffer);
-    }
-    
-    if (kCVReturnSuccess == result) {
-        CVPixelBufferLockBaseAddress(pixelBuffer,0);
-        unsigned char *yDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-    
-        for (int i = 0; i < linesize * h; i ++) {
+        for (int i = 0; i < y_bytesPerRow * h; i ++) {
             unsigned char *dest = yDestPlane + i;
             memset(dest, random()%256, 1);
         }
         
         unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
+        
+        size_t uv_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1);
         //奇数高度时(比如667)，那么UV应该是 334 行；如果按照 333.5计算会导致最后一行的右侧一半绿屏!
-        memset(uvDestPlane, 128, BYTE_ALIGN_2(h)/2 * linesize);
+        memset(uvDestPlane, 128, BYTE_ALIGN_2(h)/2 * uv_bytesPerRow);
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
     }
     
@@ -146,15 +70,6 @@
     NSLog(@"decode an image cost :%g",end-begin);
     CGImageRelease(cgImage);
     return uiImage;
-}
-
-+ (UIImage *)imageFromAVFrame:(AVFrame*)video_frame w:(int)w h:(int)h
-{
-    CVPixelBufferRef pixelBuffer = [self pixelBufferFromAVFrame:video_frame w:w h:h];
-    if (pixelBuffer) {
-        return [self imageFromCVPixelBuffer:pixelBuffer w:w h:h];
-    }
-    return nil;
 }
 
 #pragma mark - CVPixelBufferRef-->CMSampleBufferRef
