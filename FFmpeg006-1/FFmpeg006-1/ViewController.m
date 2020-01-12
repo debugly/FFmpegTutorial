@@ -18,6 +18,8 @@
 ///画面高度，单位像素
 @property (nonatomic,assign) int vwidth;
 @property (nonatomic,assign) int vheight;
+//0，1
+@property (nonatomic,assign) int type;
 
 @property (strong, nonatomic) MRVideoRenderView *renderView;
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
@@ -43,12 +45,25 @@
     self.renderView.contentMode = UIViewContentModeScaleAspectFit;
     self.renderView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     [self.view addSubview:self.renderView];
+    [self.view sendSubviewToBack:self.renderView];
     
     self.vwidth = CGRectGetWidth(self.view.bounds);
     self.vheight = CGRectGetHeight(self.view.bounds);
     
     // 启动渲染驱动
     [self videoTick];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(exchange)];
+    [self.view addGestureRecognizer:tapGesture];
+}
+
+- (void)exchange
+{
+    if (self.type == 0) {
+        self.type = 1;
+    } else {
+        self.type = 0;
+    }
 }
 
 - (CMSampleBufferRef)sampleBuffer:(int)w h:(int)h
@@ -71,9 +86,14 @@
         }
     }
     
-//    CVPixelBufferRef pixelBuffer = [MRConvertUtil snowPixelBuffer:w h:h opt:self.pixelBufferPool];
+    CVPixelBufferRef pixelBuffer = NULL;
     
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil grayColorBarPixelBuffer:w h:h opt:self.pixelBufferPool];
+    if (self.type == 1) {
+        pixelBuffer = [MRConvertUtil grayColorBarPixelBuffer:w h:h opt:self.pixelBufferPool];
+    } else {
+        pixelBuffer = [MRConvertUtil snowPixelBuffer:w h:h opt:self.pixelBufferPool];
+    }
+
     return [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
 }
 

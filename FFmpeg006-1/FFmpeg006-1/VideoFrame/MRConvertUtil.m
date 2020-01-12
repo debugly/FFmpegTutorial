@@ -74,6 +74,13 @@
     return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
 }
 
+
+/// 填充灰色色阶
+/// @param bytesPerRow 每行多少个字节/像素
+/// @param y luma 分量内存指针
+/// @param uv chroma 分量内存指针
+/// @param w 渲染视图宽度
+/// @param h 渲染视图高度
 static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,int w,int h)
 {
     int barnum = 6;
@@ -89,7 +96,7 @@ static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,in
         //每行分为barnum各块
         for (int j = 0; j < barnum; j++) {
             int luma = color_b + deltaC * j;
-            int size = bytePerBar;
+            size_t size = bytePerBar;
             if(j == barnum-1){
                 size = bytesPerRow - (barnum-1)*bytePerBar;
             }
