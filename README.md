@@ -38,12 +38,12 @@
 
 后面没打勾是指对应的博客文档还没写好，demo是OK的。
 
-# 学习计划
+# Learning plan
 
 - 第 ⑩ 天：[将音视频同步，为封装播放器做准备](md/010.md)
 - 第 ⑪ 天：[封装 MRMoviePlayer 播放器](md/011.md)
 
-### 跨平台
+### Cross-platform
 
 - [使用 MetalKit 渲染视频]()
 - [使用 VideoToolbox 硬件解码H264]()
@@ -52,20 +52,47 @@
 - [使用 OpenAL 渲染音频](md/014.md)
 - [移植到 Win 平台](md/016.md)
 
-# 趣味拓展学习
+# Fun learning
 
-- 第 ⑥-① 天：[黑白电视机雪花屏](md/006-1.md) √
+- 第 ⑥-① 天：[黑白电视机雪花屏、灰色色阶图](md/006-1.md) √
 
-# 使用
+# Usage
 
-克隆该仓库之后，项目并不能运行起来，因为项目依赖的 FFmpeg 库还没有下载下来，需要执行**一次**脚本:
+克隆该仓库之后，项目并不能运行起来，因为项目依赖的 FFmpeg 库还没有下载下来，需要执行
+
+**pod install**
 
 ```
-sh init.sh
+----------------------------------------
+Target:FFmpeg001 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg002 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg003 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg004 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg005 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg006 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg006-1 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg007 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg008 will use FFmpeg:3.4.7
+----------------
+Target:FFmpeg009 will use FFmpeg:3.4.7
+----------------------------------------
+Analyzing dependencies
+Downloading dependencies
+Generating Pods project
+Integrating client projects
+Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
 ```
 
-执行后就会自动下载并且解压，然后就可以打开工程运行了，支持模拟器和真机！
+成功后就可以打开 **StudyFFmpeg.xcworkspace** 运行了，支持模拟器和真机！
 
-# FFmpeg Libraries
+# MRFFmpeg Pod
 
-编译好的 FFmpeg 库放在 [这里](https://github.com/debugly/FFmpeg-iOS-build-script/tree/source)，需要的话可以单独下载使用！
+编译好的 FFmpeg 库在这里 [https://github.com/debugly/MRFFmpeg-Libs](https://github.com/debugly/MRFFmpeg-Libs)，需要的话可以单独下载使用！
