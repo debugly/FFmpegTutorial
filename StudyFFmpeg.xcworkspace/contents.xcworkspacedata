@@ -31,4 +31,7 @@
    <FileRef
       location = "group:FFmpeg001/FFmpeg001.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:Pods/Pods.xcodeproj">
+   </FileRef>
 </Workspace>

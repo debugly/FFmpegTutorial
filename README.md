@@ -2,7 +2,17 @@
 ![](md/imgs/MR-16-9.png)[![](md/imgs/ffmpeg.png)](http://ffmpeg.org/) 
 
 
-> 我对 FFmpeg 充满了兴趣，因此抽时间找些资料自己学习下，最终目标是自己能够封装出一个 iOS 版的播放器。
+> 我对 **FFmpeg** 充满了兴趣，因此会抽时间出来找些相关资料自己学习下，最终的目标是凭借一己之力封装出一个 **跨平台播放器**。
+
+# Foreword
+
+该工程是笔者 2017 年创建的，当时的打算是前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API 。
+
+但是 3 年过去了，我的目标还没实现😅😅😅说来惭愧，毕竟现在是 2020 年了，研究 2.x 版本没有实际意义了，所以 demo 将改为 3.x -> 4.x 版本。
+
+2020 年工程将不再使用 xcconfig 配置 FFmpeg 路径，改用制作 Pod 库的，使用 CocoaPod 来管理，这样更加方便。
+
+如果您对如何将 FFmpeg 的静态库制作成 Pod 库感兴趣，可移步这里 [MRFFmpegPod](MRFFmpegPod)。
 
 # Matt Reach's Awesome FFmpeg Study Demo
 
