@@ -377,7 +377,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
         [self.view addSubview:self.renderView];
     }
     
-    self.target_pix_fmt = PIX_FMT_NV12;
+    self.target_pix_fmt = AV_PIX_FMT_NV12;
     ///defaut: natural aligment
     self.aligned_width = self.vwidth;
     //判断是否需要转换格式

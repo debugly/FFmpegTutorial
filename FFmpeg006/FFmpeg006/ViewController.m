@@ -178,7 +178,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             [self.view addSubview:self.renderView];
                         }
                         
-                        self.target_pix_fmt = PIX_FMT_NV12;
+                        self.target_pix_fmt = AV_PIX_FMT_NV12;
                         
                         self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.format, self.vwidth, self.vheight, self.target_pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
                         self.targetVideoFrame = av_frame_alloc();

@@ -173,7 +173,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             [self.view addSubview:self.glView];
                         }
 
-                        enum AVPixelFormat pix_fmt = PIX_FMT_NV12;
+                        enum AVPixelFormat pix_fmt = AV_PIX_FMT_NV12;
                         const int picSize = avpicture_get_size(pix_fmt, self.vwidth, self.vheight);
                         
                         self.targetVideoFrameBuffer = malloc(picSize);

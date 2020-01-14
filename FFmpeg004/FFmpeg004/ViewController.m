@@ -168,9 +168,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
                             self.renderView = render;
                         }
 #if USEBITMAP
-                        enum AVPixelFormat pix_fmt = PIX_FMT_RGB24;
+                        enum AVPixelFormat pix_fmt = AV_PIX_FMT_RGB24;
 #else
-                        enum AVPixelFormat pix_fmt = PIX_FMT_NV12;
+                        enum AVPixelFormat pix_fmt = AV_PIX_FMT_NV12;
 #endif
                         const int picSize = avpicture_get_size(pix_fmt, self.vwidth, self.vheight);
                         
