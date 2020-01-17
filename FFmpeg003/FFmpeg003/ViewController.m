@@ -522,18 +522,30 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
             for (unsigned int  i = 0; i < formatCtx->nb_streams; i++) {
                 
                 AVStream *stream = formatCtx->streams[i];
-                AVCodecContext *codec = stream->codec;
                 
-                switch (codec->codec_type) {
+                AVCodecContext *codecCtx = avcodec_alloc_context3(NULL);
+                if (!codecCtx){
+                    continue;
+                }
+                
+                int ret = avcodec_parameters_to_context(codecCtx, stream->codecpar);
+                if (ret < 0){
+                    avcodec_free_context(&codecCtx);
+                    continue;
+                }
+                
+                av_codec_set_pkt_timebase(codecCtx, stream->time_base);
+                //AVCodecContext *codec = stream->codec;
+                switch (codecCtx->codec_type) {
                         ///视频流
                     case AVMEDIA_TYPE_VIDEO:
                     {
                         ///画面宽度，单位像素
-                        self.vwidth = codec->width;
+                        self.vwidth = codecCtx->width;
                         ///画面高度，单位像素
-                        self.vheight = codec->height;
+                        self.vheight = codecCtx->height;
                         //视频像素格式
-                        self.format  = codec->pix_fmt;
+                        self.format  = codecCtx->pix_fmt;
                         _stream_index_video = i;
                     }
                         break;
@@ -558,3 +570,4 @@ static void avStreamFPSTimeBase(AVStream *st, float defaultTimeBase, float *pFPS
 }
 
 @end
+

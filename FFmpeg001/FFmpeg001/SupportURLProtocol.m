@@ -21,7 +21,7 @@
     [super viewDidLoad];
     
     ///ffmpeg v3不需要；
-    av_register_all();
+    //av_register_all();
     
     NSString *inputProtocol = [self supportProtocols:YES];
     NSString *outputProtocol = [self supportProtocols:NO];

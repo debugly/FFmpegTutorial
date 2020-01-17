@@ -59,9 +59,16 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 #define QUEUE_BUFFER_SIZE 3
 #define MIN_SIZE_PER_FRAME 4096
 
+//将音频裸流PCM写入到文件
+#define DEBUG_RECORD_PCM_TO_FILE 1
+    
 @interface ViewController ()
 {
     AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
+    #if DEBUG_RECORD_PCM_TO_FILE
+        FILE * file_pcm;
+    #endif
+
 }
 
 @property (weak, nonatomic) UIActivityIndicatorView *indicatorView;
@@ -212,7 +219,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *host = @"debugly.cn";
 //    host = @"192.168.3.2";
 //    host = @"10.7.36.50:8080";
-//    host = @"localhost";
+    host = @"localhost";
     
     NSArray *movies = @[@"repository/test.mp4",
                         @"ffmpeg-test/4K2160p.120fps.mkv",
@@ -228,7 +235,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/IMG_3190.mp4",
                         @"ffmpeg-test/Opera.480p.x264.AAC.mp4"
                         ];
-    NSString *movieName = [movies objectAtIndex:0];
+    NSString *movieName = [movies objectAtIndex:4];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
@@ -271,7 +278,13 @@ static void fflog(void *context, int level, const char *format, va_list args){
         avformat_network_init();
         has_init_network = true;
     }
-    
+    #if DEBUG_RECORD_PCM_TO_FILE
+    if (file_pcm == NULL) {
+        const char *l = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"Packet.pcm"]UTF8String];
+        NSLog(@"file_pcm:%s",l);
+        file_pcm = fopen(l, "wb+");
+    }
+    #endif
     NSLog(@"load movie:%@",moviePath);
 
     __weakSelf__
@@ -586,6 +599,9 @@ static void fflog(void *context, int level, const char *format, va_list args){
             [self.renderView cleanScreen];
             [_indicatorView stopAnimating];
             NSLog(@"视频播放结束");
+            #if DEBUG_RECORD_PCM_TO_FILE
+                fclose(file_pcm);
+            #endif
         }else{
             NSLog(@"loading");
             ///播放势必要消耗帧，所以检查下是否需要解码更多帧
@@ -1225,6 +1241,14 @@ static void MRAudioQueueOutputCallback(
     //1、填充数据
     UInt32 gotBytes = [self fetchPCMPacketData:inBuffer->mAudioData wantBytes:inBuffer->mAudioDataBytesCapacity];
     inBuffer->mAudioDataByteSize = gotBytes;
+    
+    #if DEBUG_RECORD_PCM_TO_FILE
+
+    if (gotBytes > 0) {
+        fwrite(inBuffer->mAudioData, 1, gotBytes, file_pcm);
+    }
+    
+    #endif
     
     // 2、通知 AudioQueue 有可以播放的 buffer 了
     AudioQueueEnqueueBuffer(self.audioQueue, inBuffer, 0, NULL);

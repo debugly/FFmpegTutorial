@@ -58,7 +58,7 @@ const int  kAudio_Frame_Buffer_Size = kMax_Frame_Size * kAudio_Channel;
 
 #define USE_PIXEL_BUFFER_POLL 1
 //将音频裸流PCM写入到文件
-#define DEBUG_RECORD_PCM_TO_FILE 0
+#define DEBUG_RECORD_PCM_TO_FILE 1
 
 @interface ViewController ()
 {
@@ -237,11 +237,11 @@ static void fflog(void *context, int level, const char *format, va_list args){
     NSString *host = @"debugly.cn";
 //    host = @"192.168.3.2";
 //    host = @"10.7.36.50:8080";
-//    host = @"localhost";
+    host = @"localhost";
     
     NSArray *movies = @[@"repository/test.mp4",
-                        @"ffmpeg-test/4K2160p.120fps.mkv",
                         @"ffmpeg-test/test.mp4",
+                        @"ffmpeg-test/test2.mp4",
                         @"ffmpeg-test/sintel.mp4",
                         @"ffmpeg-test/xp5.mp4",
                         @"ffmpeg-test/IMG_2879.mp4",
@@ -253,7 +253,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         @"ffmpeg-test/IMG_3190.mp4",
                         @"ffmpeg-test/Opera.480p.x264.AAC.mp4"
                         ];
-    NSString *movieName = [movies objectAtIndex:0];
+    NSString *movieName = [movies objectAtIndex:1];
     moviePath = [NSString stringWithFormat:@"http://%@/%@",host,movieName];
     return moviePath;
 }
@@ -680,6 +680,10 @@ static void fflog(void *context, int level, const char *format, va_list args){
             [self.renderView cleanScreen];
             [_indicatorView stopAnimating];
             NSLog(@"视频播放结束");
+            #if DEBUG_RECORD_PCM_TO_FILE
+                fclose(file_pcm_l);
+                fclose(file_pcm_r);
+            #endif
         }else{
             NSLog(@"loading");
             ///播放势必要消耗帧，所以检查下是否需要解码更多帧

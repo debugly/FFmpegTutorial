@@ -123,26 +123,40 @@ static void fflog(void *context, int level, const char *format, va_list args){
             for (NSInteger i = 0; i < formatCtx->nb_streams; i++) {
                 
                 AVStream *stream = formatCtx->streams[i];
-                AVCodecContext *codec = stream->codec;
-                enum AVMediaType codec_type = codec->codec_type;
+                
+                AVCodecContext *codecCtx = avcodec_alloc_context3(NULL);
+                if (!codecCtx){
+                    continue;
+                }
+                
+                int ret = avcodec_parameters_to_context(codecCtx, stream->codecpar);
+                if (ret < 0){
+                    avcodec_free_context(&codecCtx);
+                    continue;
+                }
+                
+                av_codec_set_pkt_timebase(codecCtx, stream->time_base);
+                
+                //AVCodecContext *codec = stream->codec;
+                enum AVMediaType codec_type = codecCtx->codec_type;
                 switch (codec_type) {
                         ///音频流
                     case AVMEDIA_TYPE_AUDIO:
                     {
                         //采样率
-                        int sample_rate = codec->sample_rate;
+                        int sample_rate = codecCtx->sample_rate;
                         //声道数
-                        int channels = codec->channels;
+                        int channels = codecCtx->channels;
                         //平均比特率
-                        int64_t brate = codec->bit_rate;
+                        int64_t brate = codecCtx->bit_rate;
                         //时长
                         int64_t duration = stream->duration;
                         //解码器id
-                        enum AVCodecID codecID = codec->codec_id;
+                        enum AVCodecID codecID = codecCtx->codec_id;
                         //根据解码器id找到对应名称
                         const char *codecDesc = avcodec_get_name(codecID);
                         //音频采样格式
-                        enum AVSampleFormat format = codec->sample_fmt;
+                        enum AVSampleFormat format = codecCtx->sample_fmt;
                         //获取音频采样格式名称
                         const char * formatDesc = av_get_sample_fmt_name(format);
                         
@@ -153,17 +167,17 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     case AVMEDIA_TYPE_VIDEO:
                     {
                         ///画面宽度，单位像素
-                        int vwidth = codec->width;
+                        int vwidth = codecCtx->width;
                         ///画面高度，单位像素
-                        int vheight = codec->height;
+                        int vheight = codecCtx->height;
                         //比特率
-                        int64_t brate = codec->bit_rate;
+                        int64_t brate = codecCtx->bit_rate;
                         //解码器id
-                        enum AVCodecID codecID = codec->codec_id;
+                        enum AVCodecID codecID = codecCtx->codec_id;
                         //根据解码器id找到对应名称
                         const char *codecDesc = avcodec_get_name(codecID);
                         //视频像素格式
-                        enum AVPixelFormat format = codec->pix_fmt;
+                        enum AVPixelFormat format = codecCtx->pix_fmt;
                         //获取视频像素格式名称
                         const char * formatDesc = av_get_pix_fmt_name(format);
                         ///帧率
