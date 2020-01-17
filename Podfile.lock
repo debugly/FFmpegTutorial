@@ -12,17 +12,22 @@ PODS:
   - MRFFmpegPod/libavutil (3.4.7)
   - MRFFmpegPod/libswresample (3.4.7)
   - MRFFmpegPod/libswscale (3.4.7)
+  - MRLamePod (3.100)
 
 DEPENDENCIES:
-  - MRFFmpegPod (from `https://raw.githubusercontent.com/debugly/MRFFmpeg-Libs/master/MRFFmpeg3.4.7.podspec`)
+  - MRFFmpegPod (from `https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRFFmpeg3.4.7.podspec`)
+  - MRLamePod (from `https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRLamePod3.100.podspec`)
 
 EXTERNAL SOURCES:
   MRFFmpegPod:
-    :podspec: https://raw.githubusercontent.com/debugly/MRFFmpeg-Libs/master/MRFFmpeg3.4.7.podspec
+    :podspec: https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRFFmpeg3.4.7.podspec
+  MRLamePod:
+    :podspec: https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRLamePod3.100.podspec
 
 SPEC CHECKSUMS:
-  MRFFmpegPod: 95a791c2e446d4cdf5bb3214f16e00f039761404
+  MRFFmpegPod: 4910874940956bb45d3d64d64e2b29d360f3fea9
+  MRLamePod: fc8e8958c59c7f92266f011c2cf832e2e9f9bc48
 
-PODFILE CHECKSUM: 4d029736df73c3d096a0c86c0498e7c4b5cc17a2
+PODFILE CHECKSUM: e102cecca930e254966f676270254705315b44bb
 
 COCOAPODS: 1.8.4

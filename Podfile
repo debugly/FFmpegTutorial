@@ -62,3 +62,8 @@ Pod_FF_Target('FFmpeg008')
 line(16)
 Pod_FF_Target('FFmpeg009')
 line(40)
+line(0)
+line(40)
+Pod_Target('Mp3Encoder','MRLamePod','MRLamePod3.100','Lame/')
+line(40)
+

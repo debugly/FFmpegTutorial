@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:Lame/Mp3Encoder/Mp3Encoder.xcodeproj">
+   </FileRef>
+   <FileRef
       location = "group:FFmpeg009/FFmpeg009.xcodeproj">
    </FileRef>
    <FileRef
