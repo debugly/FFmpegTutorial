@@ -362,7 +362,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
     if (self.videoCodecCtx->pix_fmt != self.target_pix_fmt) {
         self.img_convert_ctx = sws_getContext(self.vwidth, self.vheight, self.videoCodecCtx->pix_fmt, self.vwidth, self.vheight, self.target_pix_fmt, SWS_BICUBIC, NULL, NULL, NULL);
         self.targetVideoFrame = av_frame_alloc();
-        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
+        const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight, 1);
         self.targetVideoFrameBuffer = av_malloc(picSize*sizeof(uint8_t));
         avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, self.target_pix_fmt, self.aligned_width, self.vheight);
     }
@@ -747,7 +747,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     ///对齐宽度与视频宽度不等
                     if (self.aligned_width != video_frame->linesize[0]) {
                         self.aligned_width = video_frame->linesize[0];
-                        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
+                        const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight, 1);
                         self.targetVideoFrameBuffer = av_realloc(self.targetVideoFrameBuffer, picSize*sizeof(uint8_t));
                         
                         

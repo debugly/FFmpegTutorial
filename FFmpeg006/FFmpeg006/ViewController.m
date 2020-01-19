@@ -12,6 +12,7 @@
 #import <libavcodec/avcodec.h>
 #import <libavutil/pixdesc.h>
 #import <libavutil/samplefmt.h>
+#import <libavutil/imgutils.h>
 #import <libswscale/swscale.h>
 #import "MRVideoFrame.h"
 #import "MRPacketQueue.h"
@@ -185,7 +186,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                         
                         ///defaut: natural aligment
                         self.aligned_width = self.vwidth;
-                        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
+                        const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight, 1);
                         self.targetVideoFrameBuffer = av_malloc(picSize*sizeof(uint8_t));
                         avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, self.target_pix_fmt, self.aligned_width, self.vheight);
                         
@@ -384,7 +385,7 @@ static void fflog(void *context, int level, const char *format, va_list args){
                     
                     if (self.aligned_width != video_frame->linesize[0]) {
                         self.aligned_width = video_frame->linesize[0];
-                        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
+                        const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight, 1);
                         self.targetVideoFrameBuffer = av_realloc(self.targetVideoFrameBuffer, picSize*sizeof(uint8_t));
                         avpicture_fill((AVPicture *)self.targetVideoFrame, self.targetVideoFrameBuffer, self.target_pix_fmt, self.aligned_width, self.vheight);
                     }

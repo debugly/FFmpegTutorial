@@ -847,8 +847,7 @@ static void ff_show_dict(const char *tag, AVDictionary *dict)
                     }
                     
                     if (self.img_convert_ctx) {
-                        //                        const int picSize = avpicture_get_size(self.target_pix_fmt, self.aligned_width, self.vheight);
-                        //const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight,1);
+                        //                        const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight, 1);                        //const int picSize = av_image_get_buffer_size(self.target_pix_fmt, self.aligned_width, self.vheight,1);
                         
                         //                        self.targetVideoFrameBuffer = av_realloc(self.targetVideoFrameBuffer, picSize*sizeof(uint8_t));
                         
