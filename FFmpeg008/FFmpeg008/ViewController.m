@@ -13,6 +13,7 @@
 #import <libavutil/pixdesc.h>
 #import <libavutil/samplefmt.h>
 #import <libavutil/opt.h>
+#import <libavutil/imgutils.h>
 #import <libswscale/swscale.h>
 
 #import "MRVideoFrame.h"

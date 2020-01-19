@@ -103,16 +103,24 @@ static void fflog(void *context, int level, const char *format, va_list args){
         /* 刚才只是打开了文件，检测了下文件头而已，并没有去找流信息；因此开始读包以获取流信息
          测试发现，读了很多包，耗时很厉害！
          */
+        formatCtx->probesize = 500 * 1024;
+        formatCtx->max_analyze_duration = 5 * AV_TIME_BASE;
+        
+        NSTimeInterval begin = [[NSDate date] timeIntervalSinceReferenceDate];
+        
         if (0 != avformat_find_stream_info(formatCtx, NULL)) {
             avformat_close_input(&formatCtx);
             if (completion) {
                 completion(@"不能找到流！");
             }
         }else{
-         
+            
+            NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
+            
             ///用于查看详细信息，调试的时候打出来看下很有必要
             av_dump_format(formatCtx, 0, [moviePath.lastPathComponent cStringUsingEncoding: NSUTF8StringEncoding], false);
             
+            NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
             /* 接下来，尝试找到我们关心的信息*/
             
             NSMutableString *text = [[NSMutableString alloc]init];
