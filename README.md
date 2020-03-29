@@ -10,7 +10,7 @@
 
 但是 3 年过去了，我的目标还没实现😅😅😅说来惭愧，毕竟现在是 2020 年了，研究 2.x 版本没有实际意义了，所以 demo 将改为 3.x -> 4.x 版本。
 
-2020 年工程将不再使用 xcconfig 配置 FFmpeg 路径，改用制作 Pod 库的，使用 CocoaPod 来管理，这样更加方便。
+2020 年工程将不再使用 xcconfig 配置 FFmpeg 路径，我将 FFmpeg 相关的库都做成了 pod 库，直接使用 CocoaPod 来集成，这样做更加方便也更加现代化，减少在工程配置方面浪费不必要的时间。
 
 制作好的 FFmpeg Pod 库放在这里 [MRFFToolChainPod](https://github.com/debugly/MRFFToolChainPod) ，简单的说就是为编译好的静态库编写了配套的 podspec 文件，感兴趣的话可以看下。
 
@@ -94,7 +94,9 @@ Integrating client projects
 Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
 ```
 
-成功后就可以打开 **StudyFFmpeg.xcworkspace** 运行了，支持模拟器和真机！
+成功安装后就可以打开 **StudyFFmpeg.xcworkspace** 运行了，支持模拟器和真机！
+
+由于 Github 在国内不稳定，pod install 的过程需要将 FFmpeg 几十兆的库下载下来，安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决。
 
 ## Ends
 
