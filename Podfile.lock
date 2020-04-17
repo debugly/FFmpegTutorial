@@ -1,12 +1,14 @@
 PODS:
   - MRFFmpegPod (3.4.7):
     - MRFFmpegPod/libavcodec (= 3.4.7)
+    - MRFFmpegPod/libavdevice (= 3.4.7)
     - MRFFmpegPod/libavfilter (= 3.4.7)
     - MRFFmpegPod/libavformat (= 3.4.7)
     - MRFFmpegPod/libavutil (= 3.4.7)
     - MRFFmpegPod/libswresample (= 3.4.7)
     - MRFFmpegPod/libswscale (= 3.4.7)
   - MRFFmpegPod/libavcodec (3.4.7)
+  - MRFFmpegPod/libavdevice (3.4.7)
   - MRFFmpegPod/libavfilter (3.4.7)
   - MRFFmpegPod/libavformat (3.4.7)
   - MRFFmpegPod/libavutil (3.4.7)
@@ -25,8 +27,8 @@ EXTERNAL SOURCES:
     :podspec: https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRLamePod3.100.podspec
 
 SPEC CHECKSUMS:
-  MRFFmpegPod: 4910874940956bb45d3d64d64e2b29d360f3fea9
-  MRLamePod: fc8e8958c59c7f92266f011c2cf832e2e9f9bc48
+  MRFFmpegPod: a65bd44d1225e9ebfb0d4bf958d79d1a5e699b8c
+  MRLamePod: 7d61b19fdd857522b22db608c9162e186dd948a4
 
 PODFILE CHECKSUM: e102cecca930e254966f676270254705315b44bb
 
