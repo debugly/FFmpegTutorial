@@ -1,0 +1,10 @@
+use_frameworks!
+
+platform :ios, '8.0'
+FF_3_4_7='3.4.7'
+
+target 'FFmpegTutorial-iOS' do
+  pod 'FFmpegTutorial', :path => '../../'
+  puts "will install MRFFmpeg#{FF_3_4_7}"
+  pod 'MRFFmpegPod', :podspec => "https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRFFmpeg#{FF_3_4_7}.podspec"
+end

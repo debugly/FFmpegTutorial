@@ -6,45 +6,45 @@
 
 # Foreword
 
-该工程是笔者 2017 年创建的，当时的打算是前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API 。
+该工程是笔者 2017 年创建的，当时的打算是前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API。
 
-但是 3 年过去了，我的目标还没实现😅😅😅说来惭愧，毕竟现在是 2020 年了，研究 2.x 版本没有实际意义了，所以 demo 将改为 3.x -> 4.x 版本。
+但是 3 年过去了，我的目标还没实现😅😅😅说来惭愧，毕竟现在是 2020 年了，研究 2.x 版本没有实际意义了，因此该教程将会先使用 3.x 版本，然后升级到 4.x 版本。
 
-2020 年工程将不再使用 xcconfig 配置 FFmpeg 路径，我将 FFmpeg 相关的库都做成了 pod 库，直接使用 CocoaPod 来集成，这样做更加方便也更加现代化，减少在工程配置方面浪费不必要的时间。
+2020 年开始工程将不再使用 xcconfig 配置 FFmpeg 路径，取而代之的是使用 CocoaPod 来集成，这样做更加方便也更加现代化，减少在工程配置方面浪费不必要的时间。
 
-制作好的 FFmpeg Pod 库放在这里 [MRFFToolChainPod](https://github.com/debugly/MRFFToolChainPod) ，简单的说就是为编译好的静态库编写了配套的 podspec 文件，感兴趣的话可以看下。
+制作好的 MRFFmpegPod 库放在这里 [MRFFToolChainPod](https://github.com/debugly/MRFFToolChainPod) ，简单的说就是为编译好的静态库编写了配套的 podspec 文件，感兴趣的话可以看下。如果您对如何编译 FFmpeg 工具库感兴趣，可移步这里 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell) 查看具体的编译脚本。
 
-如果您对如何编译 FFmpeg 工具库感兴趣，可移步这里 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell) 查看具体的编译脚本。
+工程完全采用 Pod 库的形式，也就是说我会把所有的封装代码都放在 FFmpegTutorial 这个 Pod 库里，该库依赖了 MRFFmpegPod 库，相应的配套 Demo 工程放在 Example 文件夹里，光 Pod 库就用了两个呢，所以学习本教程一点都不吃亏，即使对 FFmpeg 教程本身不感兴趣，也可以学习下如何去制作 Pod 库，如何开发 Pod 库的一些相关技巧哈，这个在实际项目中是很实用的（我负责的公司项目完全都是用 Pod 库管理的，其中有一半都是 Development Pods）。
 
+# Matt Reach's Awesome FFmpeg Tutorial
 
-# Matt Reach's Awesome FFmpeg Study Demo
+- 0x00：[编译 iOS 平台的 FFmpeg 库，简单了解 FFMpeg 在 Mac 平台的使用](md/0x00.md) 
 
-- 第 〇 天：[编译 iOS 平台的 FFmpeg 库，简单了解在 Mac 平台如何使用](md/000.md) √
+- 0x01：[查看编译时配置信息和支持的协议](md/0x01.md)
 
-- 第 ① 天：[查看编译 config，支持的协议](md/001.md) √
+# TODO
 
-- 第 ② 天：[查看音视频流信息](md/002.md) √
+为了提升代码质量，决定重新编写教程，因此以下为 TODO List！
 
-- 第 ③ 天：[打造播放器核心驱动](md/003.md) √ 
+- 0x02：[查看音视频流信息]
 
-- 第 ④ 天：[将 avframe 转成 UIImage，使用 UIImageView 渲染](md/004.md) √
+- 0x03：[打造播放器核心驱动]
 
-- 第 ⑤ 天：[将 avframe 转成 CIImage，使用 GLKView 渲染](md/005.md) √
+- 0x04：[将 avframe 转成 UIImage，使用 UIImageView 渲染]
 
-- 第 ⑥ 天：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps](md/006.md) √
+- 0x05：[将 avframe 转成 CIImage，使用 GLKView 渲染]
 
-- 第 ⑦ 天：[使用 AudioUnit 渲染音频](md/007.md) √
+- 0x06：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps]
 
-- 第 ⑧ 天：[使用 AudioQueue 渲染音频](md/008.md) √
+- 0x07：[使用 AudioUnit 渲染音频]
 
-- 第 ⑨ 天：[将 FFmpeg 升级到 3.x 版本](md/009.md)
+- 0x08：[使用 AudioQueue 渲染音频]
 
-后面没打勾是指对应的博客文档还没写好，demo是OK的。
+- 0x09：[将 FFmpeg 升级到 3.x 版本]
 
-# Learning plan
+- 0x10：[将音视频同步，为封装播放器做准备]
 
-- 第 ⑩ 天：[将音视频同步，为封装播放器做准备](md/010.md)
-- 第 ⑪ 天：[封装 MRMoviePlayer 播放器](md/011.md)
+- 0x11：[封装 MRMoviePlayer 播放器]
 
 ### Cross-platform
 
@@ -55,51 +55,34 @@
 - [使用 OpenAL 渲染音频](md/014.md)
 - [移植到 Win 平台](md/016.md)
 
-# Fun learning
+# Just For Fun
 
-- 第 ⑥-① 天：[黑白电视机雪花屏、灰色色阶图](md/006-1.md) √
+- 0xF0：[黑白电视机雪花屏、灰色色阶图](md/006-1.md) √
 
 # Usage
 
-克隆该仓库之后，项目并不能运行起来，因为项目依赖的 FFmpeg 库还没有下载下来，需要执行
+克隆该仓库之后，项目并不能运行起来，因为项目依赖的 MRFFmpegPod 库还没有下载下来，需要执行
 
 **pod install**
 
 ```
-----------------------------------------
-Target:FFmpeg001 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg002 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg003 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg004 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg005 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg006 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg006-1 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg007 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg008 will use FFmpeg:3.4.7
-----------------
-Target:FFmpeg009 will use FFmpeg:3.4.7
-----------------------------------------
+➜  StudyFFmpeg git:(0x00) ✗ cd Example/iOS 
+➜  iOS git:(0x00) ✗ pod install
+will install MRFFmpeg3.4.7
 Analyzing dependencies
 Downloading dependencies
 Generating Pods project
-Integrating client projects
-Pod installation complete! There is 1 dependency from the Podfile and 1 total pod installed.
+Integrating client project
+Pod installation complete! There are 2 dependencies from the Podfile and 2 total pods installed.
 ```
 
-成功安装后就可以打开 **StudyFFmpeg.xcworkspace** 运行了，支持模拟器和真机！
+成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
 
-由于 Github 在国内不稳定，pod install 的过程需要将 FFmpeg 几十兆的库下载下来，安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决。
+由于 Github 在国内不稳定，pod install 的过程需要将几十兆的 FFmpeg 库下载下来，安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决。
 
 ## Ends
 
-Good Luck！Welcome give me an issue or a star or pull request！
+- Please give me an issue or a star or pull request！
+- New members are always welcome!
 
-Thank you！
+Good Luck,Thank you！
