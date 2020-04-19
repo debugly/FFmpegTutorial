@@ -1,21 +1,21 @@
 //
-//  MRViewController.m
+//  MR0x01ViewController.m
 //  FFmpegTutotial
 //
 //  Created by qianlongxu on 04/18/2020.
 //  Copyright (c) 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MRViewController.h"
+#import "MR0x01ViewController.h"
 #import <FFmpegTutorial/FFVersionHelper.h>
 
-@interface MRViewController ()
+@interface MR0x01ViewController ()
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 
 @end
 
-@implementation MRViewController
+@implementation MR0x01ViewController
 
 - (void)viewDidLoad
 {
@@ -43,6 +43,28 @@
     }
     
     self.textView.text = txt;
+    NSLog(@"viewDidLoad:%@",self);
+}
+
+- (void)viewWillAppear:(BOOL)animated
+{
+    NSLog(@"viewWillAppear:%@",self);
+    [super viewWillAppear:animated];
+}
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    NSLog(@"viewDidAppear:%@",self);
+    [super viewDidAppear:animated];
+}
+
+- (BOOL)shouldAutorotate
+{
+    return YES;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
+    return UIInterfaceOrientationLandscapeRight;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

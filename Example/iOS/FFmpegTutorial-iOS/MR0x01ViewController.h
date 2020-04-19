@@ -1,5 +1,5 @@
 //
-//  MRViewController.h
+//  MR0x01ViewController.h
 //  FFmpegTutotial
 //
 //  Created by qianlongxu on 04/18/2020.
@@ -8,6 +8,6 @@
 
 @import UIKit;
 
-@interface MRViewController : UIViewController
+@interface MR0x01ViewController : UIViewController
 
 @end
