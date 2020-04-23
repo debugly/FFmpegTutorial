@@ -43,19 +43,6 @@
     }
     
     self.textView.text = txt;
-    NSLog(@"viewDidLoad:%@",self);
-}
-
-- (void)viewWillAppear:(BOOL)animated
-{
-    NSLog(@"viewWillAppear:%@",self);
-    [super viewWillAppear:animated];
-}
-
-- (void)viewDidAppear:(BOOL)animated
-{
-    NSLog(@"viewDidAppear:%@",self);
-    [super viewDidAppear:animated];
 }
 
 - (BOOL)shouldAutorotate
@@ -64,7 +51,7 @@
 }
 
 - (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return UIInterfaceOrientationLandscapeRight;
+    return UIInterfaceOrientationLandscapeLeft;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations

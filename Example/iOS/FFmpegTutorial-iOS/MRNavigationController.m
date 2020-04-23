@@ -87,18 +87,14 @@ static UIDeviceOrientation UIInterfaceToDeviceOrientation(UIInterfaceOrientation
     }
     
     if ([[UIDevice currentDevice] respondsToSelector:@selector(setOrientation:)]) {
-//        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationUnknown) forKey:@"orientation"];
+        [[UIDevice currentDevice] setValue:@(UIDeviceOrientationUnknown) forKey:@"orientation"];
         [[UIDevice currentDevice] setValue:@(UIInterfaceToDeviceOrientation(orientation)) forKey:@"orientation"];
     }
 }
 
-
 - (void)navigationController:(UINavigationController *)navigationController willShowViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    NSLog(@"willShowViewController:%@",viewController);
-    
     UIInterfaceOrientationMask currentStatusBarMask = 1 << [[UIApplication sharedApplication] statusBarOrientation];
-    UIInterfaceOrientation currentDeviceOrientation = UIDeviceToInterfaceOrientation([[UIDevice currentDevice]orientation]);
     UIInterfaceOrientationMask supportedMask = [viewController supportedInterfaceOrientations];
     
     ///是否横屏 -> 横屏？
@@ -110,18 +106,8 @@ static UIDeviceOrientation UIInterfaceToDeviceOrientation(UIInterfaceOrientation
     if (!ok) {
         
         UIInterfaceOrientation wantOritation = [viewController preferredInterfaceOrientationForPresentation];
-//        if (UIInterfaceOrientationIsLandscape(wantOritation) && UIInterfaceOrientationIsLandscape(currentDeviceOrientation)) {
-//            [self setInterfaceOrientation:currentDeviceOrientation];
-//        } else {
-//            [self setInterfaceOrientation:wantOritation];
-//        }
         [self setInterfaceOrientation:wantOritation];
     }
-}
-
-- (void)navigationController:(UINavigationController *)navigationController didShowViewController:(UIViewController *)viewController animated:(BOOL)animated
-{
-    NSLog(@"didShowViewController:%@",viewController);
 }
 
 - (BOOL)shouldAutorotate
@@ -131,7 +117,6 @@ static UIDeviceOrientation UIInterfaceToDeviceOrientation(UIInterfaceOrientation
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
 {
-    NSLog(@"visibleViewController:%@",[self visibleViewController]);
     return [[self visibleViewController]supportedInterfaceOrientations];
 }
 

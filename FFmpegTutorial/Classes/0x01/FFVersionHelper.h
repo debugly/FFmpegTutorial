@@ -11,18 +11,25 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FFVersionHelper : NSObject
 
+///libavutil's version 57.78.100
 + (NSString *)libavutilVersion;
 
+///libavcodec's version 57.107.100
 + (NSString *)libavcodecVersion;
 
+///libavformat's version 57.83.100
 + (NSString *)libavformatVersion;
 
+///libavformat's version 57.10.100
 + (NSString *)libavdeviceVersion;
 
+///libavfilter's version 6.107.100
 + (NSString *)libavfilterVersion;
 
+///libswscale's version 4.8.100
 + (NSString *)libswscaleVersion;
 
+///libswresample's version 2.9.100
 + (NSString *)libswresampleVersion;
 
 //all libs version

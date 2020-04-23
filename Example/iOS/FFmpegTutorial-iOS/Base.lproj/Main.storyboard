@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--FFmpeg Tutotial-->
         <scene sceneID="kfP-Nd-Hrg">
             <objects>
                 <tableViewController id="cR7-4z-k62" customClass="MRTableViewController" sceneMemberID="viewController">
@@ -69,7 +69,7 @@
                             <outlet property="delegate" destination="cR7-4z-k62" id="RjL-TG-aSQ"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="T98-Su-lS6"/>
+                    <navigationItem key="navigationItem" title="FFmpeg Tutotial" id="T98-Su-lS6"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Luy-Dm-4nJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
