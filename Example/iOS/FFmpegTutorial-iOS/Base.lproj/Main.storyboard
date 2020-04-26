@@ -343,9 +343,33 @@
                     <view key="view" contentMode="scaleToFill" id="aqt-0z-61v">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="eIq-Qf-kW6">
+                                <rect key="frame" x="31" y="59" width="313" height="593"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="EIj-i4-ZJa">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="eIq-Qf-kW6" firstAttribute="leading" secondItem="aqt-0z-61v" secondAttribute="leadingMargin" constant="15" id="4iM-xB-Nve"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="eIq-Qf-kW6" secondAttribute="trailing" constant="15" id="QYV-JC-0Y1"/>
+                            <constraint firstItem="hLf-ef-M5G" firstAttribute="top" secondItem="eIq-Qf-kW6" secondAttribute="bottom" constant="15" id="Tcs-7G-nIs"/>
+                            <constraint firstItem="eIq-Qf-kW6" firstAttribute="top" secondItem="MBp-5j-qjT" secondAttribute="bottom" constant="15" id="iCS-on-NyA"/>
+                            <constraint firstItem="EIj-i4-ZJa" firstAttribute="centerX" secondItem="aqt-0z-61v" secondAttribute="centerX" id="lPv-M5-P9V"/>
+                            <constraint firstItem="EIj-i4-ZJa" firstAttribute="centerY" secondItem="aqt-0z-61v" secondAttribute="centerY" id="tfI-M0-q5L"/>
+                        </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="iKv-Qd-Dr9"/>
+                    <connections>
+                        <outlet property="indicatorView" destination="EIj-i4-ZJa" id="4bz-uw-Sj2"/>
+                        <outlet property="textView" destination="eIq-Qf-kW6" id="J1a-fU-o0t"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wXZ-hg-miQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

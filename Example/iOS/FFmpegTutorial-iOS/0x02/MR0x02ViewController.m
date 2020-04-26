@@ -7,8 +7,13 @@
 //
 
 #import "MR0x02ViewController.h"
+#import <FFmpegTutorial/FFPlayer.h>
 
 @interface MR0x02ViewController ()
+
+@property (nonatomic, strong) FFPlayer *player;
+@property (weak, nonatomic) IBOutlet UITextView *textView;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 
 @end
 
@@ -17,16 +22,19 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
+    [self.indicatorView startAnimating];
+    FFPlayer *player = [[FFPlayer alloc] init];
+    player.contentPath = @"http://data.vod.itc.cn/?new=/73/15/oFed4wzSTZe8HPqHZ8aF7J.mp4&vid=77972299&plat=14&mkey=XhSpuZUl_JtNVIuSKCB05MuFBiqUP7rB&ch=null&user=api&qd=8001&cv=3.13&uid=F45C89AE5BC3&ca=2&pg=5&pt=1&prod=ifox";
+    [player prepareToPlay];
+    [player openStream:^(NSError * _Nullable error, NSString * _Nullable info) {
+        [self.indicatorView stopAnimating];
+        if (error) {
+            self.textView.text = [error localizedDescription];
+        } else {
+            self.textView.text = info;
+        }
+    }];
+    self.player = player;
 }
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end

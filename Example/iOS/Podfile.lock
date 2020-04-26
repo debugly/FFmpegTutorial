@@ -1,8 +1,11 @@
 PODS:
   - FFmpegTutorial (0.1.0):
     - FFmpegTutorial/0x01 (= 0.1.0)
+    - FFmpegTutorial/0x02 (= 0.1.0)
     - MRFFmpegPod
   - FFmpegTutorial/0x01 (0.1.0):
+    - MRFFmpegPod
+  - FFmpegTutorial/0x02 (0.1.0):
     - MRFFmpegPod
   - MRFFmpegPod (3.4.7):
     - MRFFmpegPod/libavcodec (= 3.4.7)
@@ -27,9 +30,9 @@ EXTERNAL SOURCES:
     :podspec: https://qipai.56.com/dev/ifox/ffpods//MRFFmpeg3.4.7.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: db8ee7f5a55ee2d03cb3f83132f7dcf62b95457e
+  FFmpegTutorial: 3cfd372109ec1097aeaaa0ef10d2b0216c385fdc
   MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 
 PODFILE CHECKSUM: cb62c2b397b309d4f730c9319afb7edab7805249
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.8.4

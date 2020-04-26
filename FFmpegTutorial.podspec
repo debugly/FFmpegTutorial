@@ -36,6 +36,11 @@ TODO: Add long description of the pod here.
     ss.public_header_files = 'FFmpegTutorial/Classes/FFVersionHelper.h'
   end
   
+  s.subspec '0x02' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/FFPlayer.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/FFPlayer.h'
+  end
+
   # s.source_files = 'FFmpegTutorial/Classes/**/*'
   # s.resource_bundles = {
   #   'FFmpegTutorial' => ['FFmpegTutorial/Assets/*.png']
