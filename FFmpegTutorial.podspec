@@ -33,7 +33,7 @@ TODO: Add long description of the pod here.
   
   s.subspec '0x01' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/FFVersionHelper.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/FFVersionHelper.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/FFVersionHelper.h'
   end
   
   # s.source_files = 'FFmpegTutorial/Classes/**/*'
