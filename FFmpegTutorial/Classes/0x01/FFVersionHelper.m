@@ -9,8 +9,8 @@
 #include <libavutil/version.h>
 #include <libavcodec/version.h>
 #include <libavformat/version.h>
-#include <libavdevice/version.h>
-#include <libavfilter/version.h>
+//#include <libavdevice/version.h>
+//#include <libavfilter/version.h>
 #include <libswscale/version.h>
 #include <libswresample/version.h>
 
@@ -40,12 +40,14 @@
 
 + (NSString *)libavdeviceVersion
 {
-    return STRINGME2OC(LIBAVDEVICE_VERSION);
+//    return STRINGME2OC(LIBAVDEVICE_VERSION);
+    return @"unsupported";
 }
 
 + (NSString *)libavfilterVersion
 {
-    return STRINGME2OC(LIBAVFILTER_VERSION);
+//    return STRINGME2OC(LIBAVFILTER_VERSION);
+    return @"unsupported";
 }
 
 + (NSString *)libswscaleVersion

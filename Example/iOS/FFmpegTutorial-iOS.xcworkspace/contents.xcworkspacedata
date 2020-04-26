@@ -2,12 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:/Users/qianlongxu/Documents/GitWorkspace/StudyFFmpeg/Example/iOS/FFmpegTutorial-iOS.xcodeproj">
+      location = "group:FFmpegTutorial-iOS.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
-   </FileRef>
-   <FileRef
-      location = "group:FFmpegTutorial-iOS.xcodeproj">
    </FileRef>
 </Workspace>

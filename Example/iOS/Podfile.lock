@@ -6,15 +6,11 @@ PODS:
     - MRFFmpegPod
   - MRFFmpegPod (3.4.7):
     - MRFFmpegPod/libavcodec (= 3.4.7)
-    - MRFFmpegPod/libavdevice (= 3.4.7)
-    - MRFFmpegPod/libavfilter (= 3.4.7)
     - MRFFmpegPod/libavformat (= 3.4.7)
     - MRFFmpegPod/libavutil (= 3.4.7)
     - MRFFmpegPod/libswresample (= 3.4.7)
     - MRFFmpegPod/libswscale (= 3.4.7)
   - MRFFmpegPod/libavcodec (3.4.7)
-  - MRFFmpegPod/libavdevice (3.4.7)
-  - MRFFmpegPod/libavfilter (3.4.7)
   - MRFFmpegPod/libavformat (3.4.7)
   - MRFFmpegPod/libavutil (3.4.7)
   - MRFFmpegPod/libswresample (3.4.7)
@@ -22,18 +18,18 @@ PODS:
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
-  - MRFFmpegPod (from `https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRFFmpeg3.4.7.podspec`)
+  - MRFFmpegPod (from `https://qipai.56.com/dev/ifox/ffpods//MRFFmpeg3.4.7.podspec`)
 
 EXTERNAL SOURCES:
   FFmpegTutorial:
     :path: "../../"
   MRFFmpegPod:
-    :podspec: https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRFFmpeg3.4.7.podspec
+    :podspec: https://qipai.56.com/dev/ifox/ffpods//MRFFmpeg3.4.7.podspec
 
 SPEC CHECKSUMS:
   FFmpegTutorial: db8ee7f5a55ee2d03cb3f83132f7dcf62b95457e
-  MRFFmpegPod: a65bd44d1225e9ebfb0d4bf958d79d1a5e699b8c
+  MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 
-PODFILE CHECKSUM: a7d60aba5df0b7deb3dfa25467e411f7a1577f47
+PODFILE CHECKSUM: cb62c2b397b309d4f730c9319afb7edab7805249
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
