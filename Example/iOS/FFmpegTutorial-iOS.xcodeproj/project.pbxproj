@@ -69,6 +69,8 @@
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
 		DDE702592454574A00DA8A08 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDE7025A2454574A00DA8A08 /* MR0x01ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
+		DDE7025D2454577300DA8A08 /* MR0x02ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x02ViewController.h; sourceTree = "<group>"; };
+		DDE7025E2454577300DA8A08 /* MR0x02ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x02ViewController.m; sourceTree = "<group>"; };
 		F51DF2E8EB7607DA7709BDF6 /* Pods-FFmpegTutorial-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -134,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				DDE702582454574A00DA8A08 /* 0x01 */,
+				DDE7025B2454574A00DA8A08 /* 0x02 */,
 				6003F59C195388D20070C39A /* MRAppDelegate.h */,
 				6003F59D195388D20070C39A /* MRAppDelegate.m */,
 				DD2EADF4244C923600B057DE /* MRNavigationController.h */,
@@ -206,6 +209,13 @@
 			path = 0x01;
 			sourceTree = "<group>";
 		};
+		DDE7025B2454574A00DA8A08 /* 0x02 */ = {
+			isa = PBXGroup;
+			children = (
+				DDE7025D2454577300DA8A08 /* MR0x02ViewController.h */,
+				DDE7025E2454577300DA8A08 /* MR0x02ViewController.m */,
+			);
+			path = 0x02;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -338,6 +348,7 @@
 				DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				DDE7025F2454577300DA8A08 /* MR0x02ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
