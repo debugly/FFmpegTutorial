@@ -32,8 +32,8 @@ TODO: Add long description of the pod here.
   s.static_framework = true
   
   s.subspec '0x01' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x01/**/*'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x01/**/*.h'
+    ss.source_files = 'FFmpegTutorial/Classes/FFVersionHelper.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/FFVersionHelper.{h,m}'
   end
   
   # s.source_files = 'FFmpegTutorial/Classes/**/*'

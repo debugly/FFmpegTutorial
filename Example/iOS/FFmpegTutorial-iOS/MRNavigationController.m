@@ -14,7 +14,7 @@
 
 @implementation MRNavigationController
 
-static UIInterfaceOrientation UIDeviceToInterfaceOrientation(UIDeviceOrientation orientation)
+__unused static UIInterfaceOrientation UIDeviceToInterfaceOrientation(UIDeviceOrientation orientation)
 {
     switch (orientation) {
         case UIDeviceOrientationFaceUp:
