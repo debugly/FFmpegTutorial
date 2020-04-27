@@ -1,22 +1,22 @@
 //
-//  FFPlayer.h
+//  FFPlayer0x03.m
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/4/26.
+//  Created by qianlongxu on 2020/4/27.
 //
 
-#import "FFPlayer.h"
+#import "FFPlayer0x03.h"
 #include <libavformat/avformat.h>
 #import <libavutil/pixdesc.h>
 
-@interface FFPlayer ()
+@interface  FFPlayer0x03 ()
 ///读包线程
 @property (nonatomic, strong) NSThread *readThread;
 @property (nonatomic, copy) void (^completionBlock)(NSError * _Nullable, NSString * _Nullable);
 
 @end
 
-@implementation FFPlayer
+@implementation  FFPlayer0x03
 
 ///准备
 - (void)prepareToPlay

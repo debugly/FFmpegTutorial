@@ -24,6 +24,7 @@
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
+		DDDFD49E2456ECFF00C02D8E /* MR0x03ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */; };
 		DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE702592454574A00DA8A08 /* MR0x01ViewController.m */; };
 		DDE7025F2454577300DA8A08 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE7025E2454577300DA8A08 /* MR0x02ViewController.m */; };
 /* End PBXBuildFile section */
@@ -67,6 +68,8 @@
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
+		DDDFD49C2456ECFF00C02D8E /* MR0x03ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x03ViewController.h; sourceTree = "<group>"; };
+		DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x03ViewController.m; sourceTree = "<group>"; };
 		DDE702592454574A00DA8A08 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDE7025A2454574A00DA8A08 /* MR0x01ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDE7025D2454577300DA8A08 /* MR0x02ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x02ViewController.h; sourceTree = "<group>"; };
@@ -135,8 +138,9 @@
 		6003F593195388D20070C39A /* FFmpegTutorial-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				DDE702582454574A00DA8A08 /* 0x01 */,
+				DDDFD49B2456ECFF00C02D8E /* 0x03 */,
 				DDE7025B2454574A00DA8A08 /* 0x02 */,
+				DDE702582454574A00DA8A08 /* 0x01 */,
 				6003F59C195388D20070C39A /* MRAppDelegate.h */,
 				6003F59D195388D20070C39A /* MRAppDelegate.m */,
 				DD2EADF4244C923600B057DE /* MRNavigationController.h */,
@@ -198,6 +202,15 @@
 				8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DDDFD49B2456ECFF00C02D8E /* 0x03 */ = {
+			isa = PBXGroup;
+			children = (
+				DDDFD49C2456ECFF00C02D8E /* MR0x03ViewController.h */,
+				DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */,
+			);
+			path = 0x03;
 			sourceTree = "<group>";
 		};
 		DDE702582454574A00DA8A08 /* 0x01 */ = {
@@ -344,6 +357,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				DDDFD49E2456ECFF00C02D8E /* MR0x03ViewController.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,

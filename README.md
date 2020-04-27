@@ -36,8 +36,6 @@
 
 **如果想看之前的代码可以通过 git 切到 old 分支即可！**
 
-- 0x02：[查看音视频流信息]
-
 - 0x03：[打造播放器核心驱动]
 
 - 0x04：[将 avframe 转成 UIImage，使用 UIImageView 渲染]
@@ -73,11 +71,10 @@
 
 克隆该仓库之后，项目并不能运行起来，因为项目依赖的 MRFFmpegPod 库还没有下载下来，需要执行
 
-**pod install**
+**pod install --project-directory=Example/iOS**
 
-```
-➜  StudyFFmpeg git:(0x00) ✗ cd Example/iOS 
-➜  iOS git:(0x00) ✗ pod install
+```bash
+➜  StudyFFmpeg git:(03) ✗ pod install --project-directory=Example/iOS
 will install MRFFmpeg3.4.7
 Analyzing dependencies
 Downloading dependencies
@@ -88,7 +85,7 @@ Pod installation complete! There are 2 dependencies from the Podfile and 2 total
 
 成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
 
-由于 Github 在国内不稳定，pod install 的过程需要将几十兆的 FFmpeg 库下载下来，安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决。
+由于 Github 在国内不稳定，pod install 的过程需要将几十兆的 FFmpeg 库下载下来，~~安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决~~,最新代码版本不再从 github 下载，放到了测试机上，安装速度非常快！
 
 ## Ends
 

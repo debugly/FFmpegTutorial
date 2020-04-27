@@ -3,7 +3,7 @@
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -86,8 +86,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="szW-MY-2gk">
-                                                    <rect key="frame" x="292.5" y="12" width="47.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="设计播放器读包模块" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="szW-MY-2gk">
+                                                    <rect key="frame" x="184" y="12" width="156" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -95,6 +95,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="a4L-uM-WbY" kind="show" id="KmR-md-fUG"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="bQP-ss-7H5" detailTextLabel="rm7-pA-fXc" style="IBUITableViewCellStyleValue1" id="cgW-F5-v7j">
                                         <rect key="frame" x="0.0" y="158.5" width="375" height="43.5"/>
@@ -276,7 +279,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Luy-Dm-4nJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-113" y="476"/>
+            <point key="canvasLocation" x="-364" y="330"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="twm-OI-uvj">
@@ -306,10 +309,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Jn4-hN-F5H">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="..." translatesAutoresizingMaskIntoConstraints="NO" id="Jn4-hN-F5H">
                                 <rect key="frame" x="31" y="59" width="313" height="593"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
@@ -330,7 +332,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="tc2-Qw-aMS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="826" y="374"/>
+            <point key="canvasLocation" x="434" y="-898"/>
         </scene>
         <!--0x02 View Controller-->
         <scene sceneID="3oI-mS-Wvh">
@@ -373,7 +375,50 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wXZ-hg-miQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="825" y="1021"/>
+            <point key="canvasLocation" x="676" y="-614"/>
+        </scene>
+        <!--0x03 View Controller-->
+        <scene sceneID="aTn-Di-vXQ">
+            <objects>
+                <viewController id="a4L-uM-WbY" customClass="MR0x03ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="1wq-nv-80d"/>
+                        <viewControllerLayoutGuide type="bottom" id="UNc-ft-ygC"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="yDi-9y-hX4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6q-8K-DTZ">
+                                <rect key="frame" x="31" y="59" width="313" height="593"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="elN-JA-ZPr">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="O6q-8K-DTZ" firstAttribute="leading" secondItem="yDi-9y-hX4" secondAttribute="leadingMargin" constant="15" id="2VO-xe-E19"/>
+                            <constraint firstItem="O6q-8K-DTZ" firstAttribute="top" secondItem="1wq-nv-80d" secondAttribute="bottom" constant="15" id="IaE-W9-yqp"/>
+                            <constraint firstItem="elN-JA-ZPr" firstAttribute="centerY" secondItem="yDi-9y-hX4" secondAttribute="centerY" id="LLB-2R-gcz"/>
+                            <constraint firstItem="UNc-ft-ygC" firstAttribute="top" secondItem="O6q-8K-DTZ" secondAttribute="bottom" constant="15" id="Uvs-Kd-Cei"/>
+                            <constraint firstItem="elN-JA-ZPr" firstAttribute="centerX" secondItem="yDi-9y-hX4" secondAttribute="centerX" id="bgM-Nw-aPI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="O6q-8K-DTZ" secondAttribute="trailing" constant="15" id="xYj-1i-NeI"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="82u-uL-kTl"/>
+                    <connections>
+                        <outlet property="indicatorView" destination="elN-JA-ZPr" id="HFU-m0-fSD"/>
+                        <outlet property="textView" destination="O6q-8K-DTZ" id="kVg-li-tSH"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="nEA-uR-CXj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="852" y="-423"/>
         </scene>
     </scenes>
 </document>

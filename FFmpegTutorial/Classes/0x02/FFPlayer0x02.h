@@ -1,20 +1,16 @@
 //
-//  FFPlayer.h
+//  FFPlayer0x02.h
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2020/4/26.
 //
 
 #import <Foundation/Foundation.h>
+#import "FFPlayerHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef enum : NSUInteger {
-    FFPlayerErrorCode_OpenFileFaild,///文件打开失败
-    FFPlayerErrorCode_StreamNotFound///找不到音视频流
-} FFPlayerErrorCode;
-
-@interface FFPlayer : NSObject
+@interface FFPlayer0x02 : NSObject
 
 ///播放地址
 @property (nonatomic, copy) NSString *contentPath;
