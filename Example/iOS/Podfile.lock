@@ -21,18 +21,18 @@ PODS:
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
-  - MRFFmpegPod (from `https://qipai.56.com/dev/ifox/ffpods//MRFFmpeg3.4.7.podspec`)
+  - MRFFmpegPod (from `https://qipai.56.com/dev/ifox/ffpods/MRFFmpeg3.4.7.podspec`)
 
 EXTERNAL SOURCES:
   FFmpegTutorial:
     :path: "../../"
   MRFFmpegPod:
-    :podspec: https://qipai.56.com/dev/ifox/ffpods//MRFFmpeg3.4.7.podspec
+    :podspec: https://qipai.56.com/dev/ifox/ffpods/MRFFmpeg3.4.7.podspec
 
 SPEC CHECKSUMS:
   FFmpegTutorial: 3cfd372109ec1097aeaaa0ef10d2b0216c385fdc
   MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 
-PODFILE CHECKSUM: cb62c2b397b309d4f730c9319afb7edab7805249
+PODFILE CHECKSUM: a28cbe150e3638637a41c3536941a0c01fa14ad3
 
 COCOAPODS: 1.9.1
