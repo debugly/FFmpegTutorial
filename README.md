@@ -18,8 +18,12 @@
 
 # Matt Reach's Awesome FFmpeg Tutorial
 
-- 0x00：[FFmpeg简介及编译使用](md/0x00.md) 
+- 0x00：[FFmpeg简介及编译方法](md/0x00.md) 
 - 0x01：[查看编译时配置信息、支持的协议、版本号](md/0x01.md)
+
+# Anti-Illiteracy
+
+- 0x01：[常见封装格式介绍](md/illiteracy/0x01.md)
 
 # TODO
 
