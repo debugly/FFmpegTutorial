@@ -48,6 +48,7 @@ static void _init_net_work_once()
 {
     static int flag = 0;
     if (flag == 0) {
+        ///初始化网络模块
         avformat_network_init();
         flag = 1;
     }
@@ -73,8 +74,9 @@ static void _init_net_work_once()
     ///低版本是 av_open_input_file 方法
     const char *moviePath = [self.contentPath cStringUsingEncoding:NSUTF8StringEncoding];
     
-    ///初始化libavformat，注册所有文件格式，编解码库；这不是必须的，如果你能确定需要打开什么格式的文件，使用哪种编解码类型，也可以单独注册！
+    ///初始化 libavformat，注册所有的复用器，解复用器，协议协议！
     av_register_all();
+    //打开文件流，读取头信息；
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
         ///关闭，释放内存，置空
         avformat_close_input(&formatCtx);
@@ -82,23 +84,21 @@ static void _init_net_work_once()
         [self performResultOnMainThread:nil];
     } else {
      
-        /* 刚才只是打开了文件，检测了下文件头而已，并没有去找流信息；因此开始读包以获取流信息
-         测试发现，读了很多包，耗时很厉害！
+        /* 刚才只是打开了文件，检测了下文件头而已，并不知道流信息；因此开始读包以获取流信息
+         设置读包探测大小和最大时长，避免读太多的包！
          */
         formatCtx->probesize = 500 * 1024;
         formatCtx->max_analyze_duration = 5 * AV_TIME_BASE;
-        
+#if DEBUG
         NSTimeInterval begin = [[NSDate date] timeIntervalSinceReferenceDate];
-        
+#endif
         if (0 != avformat_find_stream_info(formatCtx, NULL)) {
             avformat_close_input(&formatCtx);
             self.error = _make_nserror_desc(FFPlayerErrorCode_StreamNotFound, @"不能找到流！");
             [self performResultOnMainThread:nil];
-        }else{
-            
-            NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
-            
+        } else {
 #if DEBUG
+            NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
             ///用于查看详细信息，调试的时候打出来看下很有必要
             av_dump_format(formatCtx, 0, moviePath, false);
             
