@@ -7,6 +7,8 @@
 
 #import "FFPlayer0x02.h"
 #import "MRRWeakProxy.h"
+#import "FFPlayerInternalHeader.h"
+
 #include <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
 
@@ -79,7 +81,7 @@ static void _init_net_work_once()
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
         ///关闭，释放内存，置空
         avformat_close_input(&formatCtx);
-        self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFaild, @"文件打开失败！");
+        self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
         [self performResultOnMainThread:nil];
     } else {
      

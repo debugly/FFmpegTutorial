@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface  FFPlayer0x03 : NSObject
+@interface FFPlayer0x03 : NSObject
 
 ///播放地址
 @property (nonatomic, copy) NSString *contentPath;
@@ -20,9 +20,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///准备
 - (void)prepareToPlay;
 ///读包
-- (void)openStream:(void(^)(NSError * _Nullable error,NSString * _Nullable info))completion;
+- (void)readPacket;
 ///停止读包
 - (void)stop;
+///发生错误，具体错误为 self.error
+- (void)onError:(dispatch_block_t)block;
 
 @end
 

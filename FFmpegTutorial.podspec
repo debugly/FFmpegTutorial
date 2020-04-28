@@ -32,6 +32,7 @@ TODO: Add long description of the pod here.
   s.subspec 'common' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/common/*.{h,m}'
     ss.public_header_files = 'FFmpegTutorial/Classes/common/*.h'
+    ss.private_header_files = 'FFmpegTutorial/Classes/common/FFPlayerInternalHeader.h'
   end
 
   s.subspec '0x01' do |ss|
