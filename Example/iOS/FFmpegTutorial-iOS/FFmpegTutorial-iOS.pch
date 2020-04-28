@@ -13,4 +13,21 @@
 #ifdef __OBJC__
     @import UIKit;
     @import Foundation;
+
+#ifndef __MRWS__
+#define __MRWS__
+
+#ifndef __weakSelf__
+#define __weakSelf__  __weak    typeof(self)weakSelf = self;
+#endif
+
+#ifndef __strongSelf__
+#define __strongSelf__ __strong typeof(weakSelf)self = weakSelf;
+#endif
+
+#define __weakObj(obj)   __weak   typeof(obj)weak##obj = obj;
+#define __strongObj(obj) __strong typeof(weak##obj)obj = weak##obj;
+
+#endif
+
 #endif

@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)prepareToPlay;
 ///读包
 - (void)openStream:(void(^)(NSError * _Nullable error,NSString * _Nullable info))completion;
+///停止读包
+- (void)stop;
 
 @end
 

@@ -6,8 +6,9 @@
 //
 
 #import "FFPlayer0x02.h"
+#import "MRRWeakProxy.h"
 #include <libavformat/avformat.h>
-#import <libavutil/pixdesc.h>
+#include <libavutil/pixdesc.h>
 
 @interface FFPlayer0x02 ()
 ///读包线程
@@ -18,25 +19,29 @@
 
 @implementation FFPlayer0x02
 
+- (void)_stop
+{
+    if ([self.readThread isExecuting]) {
+        [self.readThread cancel];
+        self.readThread = nil;
+    }
+}
+
+- (void)dealloc
+{
+    [self _stop];
+}
+
 ///准备
 - (void)prepareToPlay
 {
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
+    ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
+    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
     ///不允许重复准备
-    self.readThread = [[NSThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
-}
-
-static NSError * _make_nserror_desc(int code,NSString *desc)
-{
-    if (!desc || desc.length == 0) {
-        desc = @"";
-    }
-    
-    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:@{
-        NSLocalizedDescriptionKey:desc
-    }];
+    self.readThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(readPacketsFunc) object:nil];
 }
 
 static void _init_net_work_once()
@@ -54,7 +59,6 @@ static void _init_net_work_once()
 - (void)readPacketsFunc
 {
     NSParameterAssert(self.contentPath);
-    
     if (![self.contentPath hasPrefix:@"/"]) {
         _init_net_work_once();
     }
@@ -220,6 +224,11 @@ static void _init_net_work_once()
 {
     self.completionBlock = completion;
     [self.readThread start];
+}
+
+- (void)stop
+{
+    [self _stop];
 }
 
 @end
