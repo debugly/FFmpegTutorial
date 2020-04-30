@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.1.0'
+  s.version          = '0.1.3'
   s.summary          = 'A short description of FFmpegTutorial.'
 
 # This description is used to generate tags and improve search results.
@@ -22,32 +22,34 @@ TODO: Add long description of the pod here.
                        DESC
 
   s.homepage         = 'https://github.com/qianlongxu/FFmpegTutorial'
-  # s.screenshots     = 'www.example.com/screenshots_1', 'www.example.com/screenshots_2'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'MattReach' => 'qianlongxu@gmail.com' }
   s.source           = { :git => 'https://github.com/debugly/FFmpegTutorial.git', :tag => s.version.to_s }
-  # s.social_media_url = 'https://twitter.com/<TWITTER_USERNAME>'
 
   s.ios.deployment_target = '8.0'
   s.static_framework = true
   
+  s.subspec 'common' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/common/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/common/*.h'
+    ss.private_header_files = 'FFmpegTutorial/Classes/common/FFPlayerInternalHeader.h'
+  end
+
   s.subspec '0x01' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/FFVersionHelper.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/FFVersionHelper.h'
+    ss.source_files = 'FFmpegTutorial/Classes/0x01/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x01/*.h'
   end
   
   s.subspec '0x02' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/FFPlayer.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/FFPlayer.h'
+    ss.source_files = 'FFmpegTutorial/Classes/0x02/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x02/*.h'
   end
 
-  # s.source_files = 'FFmpegTutorial/Classes/**/*'
-  # s.resource_bundles = {
-  #   'FFmpegTutorial' => ['FFmpegTutorial/Assets/*.png']
-  # }
+  s.subspec '0x03' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x03/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x03/*.h'
+  end
 
-  # s.public_header_files = 'Pod/Classes/**/*.h'
-  # s.frameworks = 'UIKit', 'MapKit'
-  # s.dependency 'AFNetworking', '~> 2.3'
   s.dependency 'MRFFmpegPod'
+  
 end

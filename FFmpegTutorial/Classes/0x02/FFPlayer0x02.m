@@ -1,22 +1,38 @@
 //
-//  FFPlayer.h
+//  FFPlayer0x02.m
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2020/4/26.
 //
 
-#import "FFPlayer.h"
-#include <libavformat/avformat.h>
-#import <libavutil/pixdesc.h>
+#import "FFPlayer0x02.h"
+#import "MRRWeakProxy.h"
+#import "FFPlayerInternalHeader.h"
 
-@interface FFPlayer ()
+#include <libavformat/avformat.h>
+#include <libavutil/pixdesc.h>
+
+@interface FFPlayer0x02 ()
 ///读包线程
 @property (nonatomic, strong) NSThread *readThread;
 @property (nonatomic, copy) void (^completionBlock)(NSError * _Nullable, NSString * _Nullable);
 
 @end
 
-@implementation FFPlayer
+@implementation FFPlayer0x02
+
+- (void)_stop
+{
+    if ([self.readThread isExecuting]) {
+        [self.readThread cancel];
+        self.readThread = nil;
+    }
+}
+
+- (void)dealloc
+{
+    [self _stop];
+}
 
 ///准备
 - (void)prepareToPlay
@@ -24,24 +40,10 @@
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
+    ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
+    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
     ///不允许重复准备
-    self.readThread = [[NSThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
-}
-
-static NSError * _make_nserror(int code)
-{
-    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:nil];
-}
-
-static NSError * _make_nserror_desc(int code,NSString *desc)
-{
-    if (!desc || desc.length == 0) {
-        desc = @"";
-    }
-    
-    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:@{
-        NSLocalizedDescriptionKey:desc
-    }];
+    self.readThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(readPacketsFunc) object:nil];
 }
 
 static void _init_net_work_once()
@@ -59,7 +61,6 @@ static void _init_net_work_once()
 - (void)readPacketsFunc
 {
     NSParameterAssert(self.contentPath);
-    
     if (![self.contentPath hasPrefix:@"/"]) {
         _init_net_work_once();
     }
@@ -80,7 +81,7 @@ static void _init_net_work_once()
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
         ///关闭，释放内存，置空
         avformat_close_input(&formatCtx);
-        self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFaild, @"文件打开失败！");
+        self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
         [self performResultOnMainThread:nil];
     } else {
      
@@ -225,6 +226,11 @@ static void _init_net_work_once()
 {
     self.completionBlock = completion;
     [self.readThread start];
+}
+
+- (void)stop
+{
+    [self _stop];
 }
 
 @end
