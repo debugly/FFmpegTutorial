@@ -82,7 +82,7 @@ static void init_ffmpeg_once()
     packet_queue_init(&videoq);
     ///初始化音频包队列
     packet_queue_init(&audioq);
-    ///初始化ffmpeg先关
+    ///初始化ffmpeg相关函数
     init_ffmpeg_once();
     
     ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
