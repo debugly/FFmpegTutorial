@@ -69,7 +69,7 @@ static __inline__ int packet_queue_init(PacketQueue *q)
 }
 
 ///向队列追加入一个packet(非线程安全操作)
-static int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
+static __inline__ int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
 {
     MyAVPacketList *pkt1;
     //创建链表节点
@@ -90,7 +90,7 @@ static int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
     }
     ///更新尾结点为当前
     q->last_pkt = pkt1;
-    //更新相关信息
+    //更新队列相关记录信息
     q->nb_packets++;
     q->size += pkt1->pkt.size + sizeof(*pkt1);
     q->duration += pkt1->pkt.duration;
@@ -100,7 +100,7 @@ static int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
 }
 
 ///向队列加入一个packet(线程安全的操作)
-static int packet_queue_put(PacketQueue *q, AVPacket *pkt)
+static __inline__ int packet_queue_put(PacketQueue *q, AVPacket *pkt)
 {
     int ret;
     ///获取信号量
@@ -115,7 +115,7 @@ static int packet_queue_put(PacketQueue *q, AVPacket *pkt)
 }
 
 ///向队列加入一个空packet(线程安全的操作)
-static int packet_queue_put_nullpacket(PacketQueue *q, int stream_index)
+static __inline__ int packet_queue_put_nullpacket(PacketQueue *q, int stream_index)
 {
     AVPacket pkt1, *pkt = &pkt1;
     av_init_packet(pkt);
@@ -129,10 +129,73 @@ static int packet_queue_put_nullpacket(PacketQueue *q, int stream_index)
 /*
  AV_DISPOSITION_ATTACHED_PIC ：有些流存在 video stream，但是却只是一张图片而已，常见于 mp3 的封面。
  */
-static int stream_has_enough_packets(AVStream *st, int stream_id, PacketQueue *queue) {
+static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, PacketQueue *queue) {
     return stream_id < 0 ||
            (st->disposition & AV_DISPOSITION_ATTACHED_PIC) ||
     (queue->nb_packets > MIN_FRAMES && (!queue->duration || av_q2d(st->time_base) * queue->duration > 1.0));
+}
+
+static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *serial)
+{
+    assert(q);
+    assert(pkt);
+    //不阻塞
+    int block = 0;
+    int ret;
+
+    dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
+    for (;;) {
+        //队列的头结点存在？
+        MyAVPacketList *pkt1 = q->first_pkt;
+        if (pkt1) {
+            //修改队列头结点，将第二结点改为头结点
+            q->first_pkt = pkt1->next;
+            //头结点为空，则尾结点也置空，此时队列空了
+            if (!q->first_pkt) {
+                q->last_pkt = NULL;
+            }
+            //更新队列相关记录信息
+            q->nb_packets--;
+            q->size -= pkt1->pkt.size + sizeof(*pkt1);
+            q->duration -= pkt1->pkt.duration;
+            //给结果指针赋值
+            if (pkt) {
+                *pkt = pkt1->pkt;
+            }
+            if (serial) {
+                *serial = pkt1->serial;
+            }
+            av_free(pkt1);
+            ret = 1;
+            break;
+        } else if (!block) {
+            ret = 0;
+            break;
+        }
+//        else {
+//            SDL_CondWait(q->cond, q->mutex);
+//        }
+    }
+    dispatch_semaphore_signal(q->mutex);
+    return ret;
+}
+
+static __inline__ void packet_queue_flush(PacketQueue *q)
+{
+    MyAVPacketList *pkt, *pkt1;
+
+    dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
+    for (pkt = q->first_pkt; pkt; pkt = pkt1) {
+        pkt1 = pkt->next;
+        av_packet_unref(&pkt->pkt);
+        av_freep(&pkt);
+    }
+    q->last_pkt = NULL;
+    q->first_pkt = NULL;
+    q->nb_packets = 0;
+    q->size = 0;
+    q->duration = 0;
+    dispatch_semaphore_signal(q->mutex);
 }
 
 #endif /* FFPlayerInternalHeader_h */

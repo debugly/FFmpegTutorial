@@ -26,6 +26,17 @@ NS_ASSUME_NONNULL_BEGIN
 ///发生错误，具体错误为 self.error
 - (void)onError:(dispatch_block_t)block;
 
+- (void)onPacketBufferEmpty:(dispatch_block_t)block;
+- (void)onPacketBufferFull:(dispatch_block_t)block;
+
+///m/n 缓冲情况
+- (NSString *)peekPacketBufferStatus;
+
+///消耗缓存队列里的音视频packet各一个
+- (void)consumePackets;
+///消耗掉缓存队列里的所有packet
+- (void)consumeAllPackets;
+
 @end
 
 NS_ASSUME_NONNULL_END

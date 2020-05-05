@@ -216,8 +216,8 @@
 		DDE702582454574A00DA8A08 /* 0x01 */ = {
 			isa = PBXGroup;
 			children = (
-				DDE702592454574A00DA8A08 /* MR0x01ViewController.m */,
 				DDE7025A2454574A00DA8A08 /* MR0x01ViewController.h */,
+				DDE702592454574A00DA8A08 /* MR0x01ViewController.m */,
 			);
 			path = 0x01;
 			sourceTree = "<group>";
@@ -280,6 +280,9 @@
 				LastUpgradeCheck = 1140;
 				ORGANIZATIONNAME = "Matt Reach's Awesome FFmpeg Tutotial";
 				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = KCE7BVJLX3;
+					};
 					6003F5AD195388D20070C39A = {
 						TestTargetID = 6003F589195388D20070C39A;
 					};
@@ -518,6 +521,7 @@
 			baseConfigurationReference = F51DF2E8EB7607DA7709BDF6 /* Pods-FFmpegTutorial-iOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KCE7BVJLX3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/FFmpegTutorial-iOS/FFmpegTutorial-iOS.plist";
@@ -536,6 +540,7 @@
 			baseConfigurationReference = 8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				DEVELOPMENT_TEAM = KCE7BVJLX3;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/FFmpegTutorial-iOS/FFmpegTutorial-iOS.plist";

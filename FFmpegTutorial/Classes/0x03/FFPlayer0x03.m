@@ -31,6 +31,10 @@
 @property (nonatomic, strong) NSThread *readThread;
 @property (nonatomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
+@property (nonatomic, copy) dispatch_block_t onPacketBufferFullBlock;
+@property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
+@property (atomic, assign) BOOL packetBufferIsFull;
+@property (atomic, assign) BOOL packetBufferIsEmpty;
 
 @end
 
@@ -126,8 +130,8 @@ static int decode_interrupt_cb(void *ctx)
     
     //打开文件流，读取头信息；
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
-        ///关闭，释放内存，置空
-        avformat_close_input(&formatCtx);
+        ///释放内存
+        avformat_free_context(&formatCtx);
         self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
         [self performErrorResultOnMainThread];
         return;
@@ -201,6 +205,8 @@ static int decode_interrupt_cb(void *ctx)
             }
                 break;
         }
+        
+        avcodec_free_context(&codecCtx);
     }
     
     AVPacket pkt1, *pkt = &pkt1;
@@ -225,10 +231,18 @@ static int decode_interrupt_cb(void *ctx)
 //            SDL_LockMutex(wait_mutex);
 //            SDL_CondWaitTimeout(is->continue_read_thread, wait_mutex, 10);
 //            SDL_UnlockMutex(wait_mutex);
+            if (!self.packetBufferIsFull) {
+                self.packetBufferIsFull = YES;
+                if (self.onPacketBufferFullBlock) {
+                    self.onPacketBufferFullBlock();
+                }
+            }
+            
             usleep(10000);
             continue;
         }
         
+        self.packetBufferIsFull = NO;
         ///读包
         int ret = av_read_frame(formatCtx, pkt);
         ///读包出错
@@ -305,6 +319,57 @@ static int decode_interrupt_cb(void *ctx)
 - (void)onError:(dispatch_block_t)block
 {
     self.onErrorBlock = block;
+}
+
+- (void)onPacketBufferFull:(dispatch_block_t)block
+{
+    self.onPacketBufferFullBlock = block;
+}
+
+- (void)onPacketBufferEmpty:(dispatch_block_t)block
+{
+    self.onPacketBufferEmptyBlock = block;
+}
+
+- (NSString *)peekPacketBufferStatus
+{
+    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",audioq.nb_packets,videoq.nb_packets];
+}
+
+- (void)consumePackets
+{
+    AVPacket audio_pkt;
+    int audio_not_empty = packet_queue_get(&audioq, &audio_pkt, NULL);
+    if (audio_not_empty) {
+        av_packet_unref(&audio_pkt);
+    }
+    AVPacket video_pkt;
+    int video_not_empty = packet_queue_get(&videoq, &video_pkt, NULL);
+    if (video_not_empty) {
+        av_packet_unref(&video_pkt);
+    }
+    self.packetBufferIsFull = NO;
+    if (!self.packetBufferIsEmpty) {
+        if (!audio_not_empty && !video_not_empty) {
+            if (self.onPacketBufferEmptyBlock) {
+                self.onPacketBufferEmptyBlock();
+            }
+            self.packetBufferIsEmpty = YES;
+        }
+    }
+}
+
+- (void)consumeAllPackets
+{
+    packet_queue_flush(&audioq);
+    packet_queue_flush(&videoq);
+    self.packetBufferIsFull = NO;
+    if (!self.packetBufferIsEmpty) {
+        if (self.onPacketBufferEmptyBlock) {
+            self.onPacketBufferEmptyBlock();
+        }
+        self.packetBufferIsEmpty = YES;
+    }
 }
 
 @end

@@ -389,8 +389,22 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpD-kh-Ha4" userLabel="消耗音视频">
+                                <rect key="frame" x="128" y="59" width="119" height="30"/>
+                                <state key="normal" title="消耗音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumePackets:" destination="a4L-uM-WbY" eventType="touchUpInside" id="BDp-rK-PNW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nhR-7T-7HR" userLabel="消耗全部音视频">
+                                <rect key="frame" x="128" y="99" width="119" height="30"/>
+                                <state key="normal" title="消耗音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumeAllPackets:" destination="a4L-uM-WbY" eventType="touchUpInside" id="Qh6-ZA-Gdj"/>
+                                </connections>
+                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6q-8K-DTZ">
-                                <rect key="frame" x="31" y="59" width="313" height="593"/>
+                                <rect key="frame" x="16" y="139" width="343" height="528"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -402,12 +416,16 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="O6q-8K-DTZ" firstAttribute="leading" secondItem="yDi-9y-hX4" secondAttribute="leadingMargin" constant="15" id="2VO-xe-E19"/>
-                            <constraint firstItem="O6q-8K-DTZ" firstAttribute="top" secondItem="1wq-nv-80d" secondAttribute="bottom" constant="15" id="IaE-W9-yqp"/>
+                            <constraint firstItem="O6q-8K-DTZ" firstAttribute="leading" secondItem="yDi-9y-hX4" secondAttribute="leadingMargin" id="2VO-xe-E19"/>
+                            <constraint firstItem="fpD-kh-Ha4" firstAttribute="centerX" secondItem="yDi-9y-hX4" secondAttribute="centerX" id="2VS-QI-IzZ"/>
+                            <constraint firstItem="O6q-8K-DTZ" firstAttribute="top" secondItem="nhR-7T-7HR" secondAttribute="bottom" constant="10" id="IaE-W9-yqp"/>
                             <constraint firstItem="elN-JA-ZPr" firstAttribute="centerY" secondItem="yDi-9y-hX4" secondAttribute="centerY" id="LLB-2R-gcz"/>
-                            <constraint firstItem="UNc-ft-ygC" firstAttribute="top" secondItem="O6q-8K-DTZ" secondAttribute="bottom" constant="15" id="Uvs-Kd-Cei"/>
+                            <constraint firstItem="nhR-7T-7HR" firstAttribute="centerX" secondItem="fpD-kh-Ha4" secondAttribute="centerX" id="MTB-Ll-Q8U"/>
+                            <constraint firstItem="fpD-kh-Ha4" firstAttribute="top" secondItem="1wq-nv-80d" secondAttribute="bottom" constant="15" id="Run-tF-PUL"/>
+                            <constraint firstItem="UNc-ft-ygC" firstAttribute="top" secondItem="O6q-8K-DTZ" secondAttribute="bottom" id="Uvs-Kd-Cei"/>
+                            <constraint firstItem="nhR-7T-7HR" firstAttribute="top" secondItem="fpD-kh-Ha4" secondAttribute="bottom" constant="10" id="YMi-OC-hPa"/>
                             <constraint firstItem="elN-JA-ZPr" firstAttribute="centerX" secondItem="yDi-9y-hX4" secondAttribute="centerX" id="bgM-Nw-aPI"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="O6q-8K-DTZ" secondAttribute="trailing" constant="15" id="xYj-1i-NeI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="O6q-8K-DTZ" secondAttribute="trailing" id="xYj-1i-NeI"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="82u-uL-kTl"/>
