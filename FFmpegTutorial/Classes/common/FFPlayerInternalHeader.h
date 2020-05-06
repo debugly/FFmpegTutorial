@@ -135,6 +135,7 @@ static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, Pac
     (queue->nb_packets > MIN_FRAMES && (!queue->duration || av_q2d(st->time_base) * queue->duration > 1.0));
 }
 
+///从队列里获取一个 packet；正常获取时返回值大于0
 static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *serial)
 {
     assert(q);
@@ -165,6 +166,7 @@ static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *seria
             if (serial) {
                 *serial = pkt1->serial;
             }
+            //释放掉链表节点内存
             av_free(pkt1);
             ret = 1;
             break;
@@ -180,6 +182,7 @@ static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *seria
     return ret;
 }
 
+///清理队列里的全部缓存，重置队列；
 static __inline__ void packet_queue_flush(PacketQueue *q)
 {
     MyAVPacketList *pkt, *pkt1;
