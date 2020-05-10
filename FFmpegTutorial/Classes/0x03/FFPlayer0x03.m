@@ -131,7 +131,7 @@ static int decode_interrupt_cb(void *ctx)
     //打开文件流，读取头信息；
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
         ///释放内存
-        avformat_free_context(&formatCtx);
+        avformat_free_context(formatCtx);
         self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
         [self performErrorResultOnMainThread];
         return;
