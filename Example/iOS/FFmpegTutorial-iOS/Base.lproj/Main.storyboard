@@ -113,8 +113,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rm7-pA-fXc">
-                                                    <rect key="frame" x="292.5" y="12" width="47.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="设计播放器解码模块" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rm7-pA-fXc">
+                                                    <rect key="frame" x="184" y="12" width="156" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -122,6 +122,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="UgP-TB-aiD" kind="show" id="dSc-NT-Uzf"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="Ifu-Wi-nUl" detailTextLabel="lLj-3T-ADu" style="IBUITableViewCellStyleValue1" id="o37-o8-4bK">
                                         <rect key="frame" x="0.0" y="202" width="375" height="43.5"/>
@@ -437,6 +440,67 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nEA-uR-CXj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="852" y="-423"/>
+        </scene>
+        <!--0x04 View Controller-->
+        <scene sceneID="QBO-JI-G8n">
+            <objects>
+                <viewController id="UgP-TB-aiD" customClass="MR0x04ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="csb-Vg-a74"/>
+                        <viewControllerLayoutGuide type="bottom" id="xs1-Jr-1Dt"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="47f-Id-kuJ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwu-3U-TV8" userLabel="消耗音视频">
+                                <rect key="frame" x="128" y="59" width="119" height="30"/>
+                                <state key="normal" title="消耗音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumePackets:" destination="UgP-TB-aiD" eventType="touchUpInside" id="Esy-3M-4N5"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LP-Hh-uwg" userLabel="消耗全部音视频">
+                                <rect key="frame" x="128" y="99" width="119" height="30"/>
+                                <state key="normal" title="消耗音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumeAllPackets:" destination="UgP-TB-aiD" eventType="touchUpInside" id="PEO-Ya-aaQ"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V0o-Ni-5sW">
+                                <rect key="frame" x="16" y="139" width="343" height="528"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="EcY-wf-DL2">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="5LP-Hh-uwg" firstAttribute="top" secondItem="gwu-3U-TV8" secondAttribute="bottom" constant="10" id="9di-Ix-55R"/>
+                            <constraint firstItem="xs1-Jr-1Dt" firstAttribute="top" secondItem="V0o-Ni-5sW" secondAttribute="bottom" id="FyS-aq-hv9"/>
+                            <constraint firstItem="V0o-Ni-5sW" firstAttribute="leading" secondItem="47f-Id-kuJ" secondAttribute="leadingMargin" id="HrM-b8-8AX"/>
+                            <constraint firstItem="EcY-wf-DL2" firstAttribute="centerY" secondItem="47f-Id-kuJ" secondAttribute="centerY" id="J8J-d7-9j4"/>
+                            <constraint firstItem="V0o-Ni-5sW" firstAttribute="top" secondItem="5LP-Hh-uwg" secondAttribute="bottom" constant="10" id="S4h-c2-53G"/>
+                            <constraint firstItem="EcY-wf-DL2" firstAttribute="centerX" secondItem="47f-Id-kuJ" secondAttribute="centerX" id="VOU-tz-HTK"/>
+                            <constraint firstItem="gwu-3U-TV8" firstAttribute="centerX" secondItem="47f-Id-kuJ" secondAttribute="centerX" id="aGC-5j-CnN"/>
+                            <constraint firstItem="gwu-3U-TV8" firstAttribute="top" secondItem="csb-Vg-a74" secondAttribute="bottom" constant="15" id="dpC-sz-aKj"/>
+                            <constraint firstItem="5LP-Hh-uwg" firstAttribute="centerX" secondItem="gwu-3U-TV8" secondAttribute="centerX" id="gHf-sa-ke3"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="V0o-Ni-5sW" secondAttribute="trailing" id="nJ0-o5-k1S"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Q3J-np-nR4"/>
+                    <connections>
+                        <outlet property="indicatorView" destination="EcY-wf-DL2" id="pW4-rJ-P6c"/>
+                        <outlet property="textView" destination="V0o-Ni-5sW" id="ZYF-3a-aY0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5HL-NF-gDo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1018" y="-232"/>
         </scene>
     </scenes>
 </document>
