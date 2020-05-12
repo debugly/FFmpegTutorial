@@ -61,13 +61,11 @@
 }
 
 - (IBAction)onConsumePackets:(id)sender {
-    [self.player consumePackets];
-    [self appendMsg:[self.player peekPacketBufferStatus]];
+    
 }
 
 - (IBAction)onConsumeAllPackets:(id)sender {
-    [self.player consumeAllPackets];
-    [self appendMsg:[self.player peekPacketBufferStatus]];
+    
 }
 
 - (void)appendMsg:(NSString *)txt

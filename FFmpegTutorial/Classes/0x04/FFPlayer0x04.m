@@ -23,6 +23,10 @@
     
     AVStream *audio_st;
     AVStream *video_st;
+    
+    AVCodecContext *audioCodecCtx;
+    AVCodecContext *videoCodecCtx;
+    
     //读包完毕？
     int eof;
 }
@@ -32,11 +36,9 @@
 
 /// 视频解码线程
 @property (nonatomic, strong) NSThread *videoDecodeThread;
-@property (nonatomic, assign) AVCodecContext *videoCodecCtx;
 
 /// 音频解码线程
 @property (nonatomic, strong) NSThread *audioDecodeThread;
-@property (nonatomic, assign) AVCodecContext *audioCodecCtx;
 
 @property (nonatomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -59,6 +61,16 @@
 
 - (void)dealloc
 {
+    if (audioCodecCtx) {
+        avcodec_free_context(&audioCodecCtx);
+        audioCodecCtx = NULL;
+    }
+    
+    if (videoCodecCtx) {
+        avcodec_free_context(&videoCodecCtx);
+        videoCodecCtx = NULL;
+    }
+    
     [self _stop];
 }
 
@@ -102,6 +114,68 @@ static void init_ffmpeg_once()
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
     ///不允许重复准备
     self.readThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(readPacketsFunc) object:nil];
+}
+
+#pragma mark - Open Stream
+
+- (int)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+{
+    if (ic == NULL) {
+        return -1;
+    }
+    if (idx < 0 || idx >= ic->nb_streams){
+        return -1;
+    }
+    
+    AVStream *stream = ic->streams[idx];
+    AVCodecContext *avctx = avcodec_alloc_context3(NULL);
+    if (!avctx) {
+        return AVERROR(ENOMEM);
+    }
+    
+    if (avcodec_parameters_to_context(avctx, stream->codecpar)) {
+        avcodec_free_context(&avctx);
+        return -1;
+    }
+    
+    av_codec_set_pkt_timebase(avctx, stream->time_base);
+    
+    AVCodec *codec = avcodec_find_decoder(avctx->codec_id);
+    if (!codec){
+        avcodec_free_context(&avctx);
+        return -1;
+    }
+    
+    avctx->codec_id = codec->id;
+    
+    if (avcodec_open2(avctx, codec, NULL)) {
+        avcodec_free_context(&avctx);
+        return -1;
+    }
+    
+    stream->discard = AVDISCARD_DEFAULT;
+    
+    switch (avctx->codec_type) {
+        case AVMEDIA_TYPE_AUDIO:
+        {
+            audio_stream = idx;
+            audio_st = stream;
+            audioCodecCtx = avctx;
+            [self prepareAudioDecodeThread];
+        }
+            break;
+        case AVMEDIA_TYPE_VIDEO:
+        {
+            video_stream = stream->index;
+            video_st = stream;
+            videoCodecCtx = avctx;
+            [self prepareVideoDecodeThread];
+        }
+            break;
+        default:
+            break;
+    }
+    return 0;
 }
 
 #pragma -mark 读包线程
@@ -168,60 +242,58 @@ static int decode_interrupt_cb(void *ctx)
     
     NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
-    //遍历所有的流
-    for (NSInteger i = 0; i < formatCtx->nb_streams; i++) {
+    
+    int st_index[AVMEDIA_TYPE_NB];
+    memset(st_index, -1, sizeof(st_index));
+    
+    int first_video_stream = -1;
+    int first_h264_stream = -1;
+    
+    for (int i = 0; i < formatCtx->nb_streams; i++) {
+        AVStream *st = formatCtx->streams[i];
+        enum AVMediaType type = st->codecpar->codec_type;
+        st->discard = AVDISCARD_ALL;
         
-        AVStream *stream = formatCtx->streams[i];
-        
-        AVCodecContext *codecCtx = avcodec_alloc_context3(NULL);
-        if (!codecCtx){
-            continue;
+        if (type == AVMEDIA_TYPE_VIDEO) {
+            enum AVCodecID codec_id = st->codecpar->codec_id;
+            if (codec_id == AV_CODEC_ID_H264) {
+                if (first_h264_stream < 0) {
+                    first_h264_stream = i;
+                    break;
+                }
+                if (first_video_stream < 0) {
+                    first_video_stream = i;
+                }
+            }
         }
-        
-        int ret = avcodec_parameters_to_context(codecCtx, stream->codecpar);
-        if (ret < 0){
-            avcodec_free_context(&codecCtx);
-            continue;
-        }
-        
-        av_codec_set_pkt_timebase(codecCtx, stream->time_base);
-        
-        //AVCodecContext *codec = stream->codec;
-        enum AVMediaType codec_type = codecCtx->codec_type;
-        switch (codec_type) {
-                ///音频流
-            case AVMEDIA_TYPE_AUDIO:
-            {
-                audio_stream = stream->index;
-                audio_st = stream;
-                self.audioCodecCtx = codecCtx;
-                [self prepareAudioDecodeThread];
-            }
-                break;
-                ///视频流
-            case AVMEDIA_TYPE_VIDEO:
-            {
-                video_stream = stream->index;
-                video_st = stream;
-                self.videoCodecCtx = codecCtx;
-                [self prepareVideoDecodeThread];
-            }
-                break;
-            case AVMEDIA_TYPE_ATTACHMENT:
-            {
-                NSLog(@"附加信息流:%ld",i);
-            }
-                break;
-            default:
-            {
-                NSLog(@"其他流:%ld",i);
-            }
-                break;
-        }
-        
-        //avcodec_free_context(&codecCtx);
     }
     
+    if (st_index[AVMEDIA_TYPE_VIDEO] < 0) {
+        st_index[AVMEDIA_TYPE_VIDEO] = first_h264_stream != -1 ? first_h264_stream : first_video_stream;
+    }
+    
+    st_index[AVMEDIA_TYPE_VIDEO] = av_find_best_stream(formatCtx, AVMEDIA_TYPE_VIDEO, st_index[AVMEDIA_TYPE_VIDEO], -1, NULL, 0);
+    
+    st_index[AVMEDIA_TYPE_AUDIO] = av_find_best_stream(formatCtx, AVMEDIA_TYPE_AUDIO, st_index[AVMEDIA_TYPE_AUDIO], st_index[AVMEDIA_TYPE_VIDEO], NULL, 0);
+    
+    
+    if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
+        if([self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]]){
+            av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
+            [self performErrorResultOnMainThread];
+            return;
+        }
+    }
+    
+    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
+        if([self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]]){
+            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
+            [self performErrorResultOnMainThread];
+            return;
+        }
+    }
     
     [self.audioDecodeThread start];
     [self.videoDecodeThread start];
@@ -368,13 +440,15 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)audioDecodeFunc
 {
+    [[NSThread currentThread] setName:@"audio_decode"];
+    
     AVFrame *frame = av_frame_alloc();
     if (!frame) {
         av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
         return;
     }
     do {
-        int got_frame = [self decoder_decode_frame:self.audioCodecCtx queue:&audioq frame:frame];
+        int got_frame = [self decoder_decode_frame:audioCodecCtx queue:&audioq frame:frame];
         
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
@@ -385,7 +459,8 @@ static int decode_interrupt_cb(void *ctx)
             break;
         } else {
             //
-            av_log(NULL, AV_LOG_DEBUG, "decode a audio frame:%p",frame);
+            av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
+            sleep(1);
         }
     } while (1);
     
@@ -406,13 +481,14 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)videoDecodeFunc
 {
+    [[NSThread currentThread] setName:@"video_decode"];
     AVFrame *frame = av_frame_alloc();
     if (!frame) {
         av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
         return;
     }
     do {
-        int got_frame = [self decoder_decode_frame:self.videoCodecCtx queue:&videoq frame:frame];
+        int got_frame = [self decoder_decode_frame:videoCodecCtx queue:&videoq frame:frame];
         
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
@@ -423,7 +499,9 @@ static int decode_interrupt_cb(void *ctx)
             break;
         } else {
             //
-            av_log(NULL, AV_LOG_DEBUG, "decode a video frame:%p",frame);
+            av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
+            
+            sleep(2);
         }
     } while (1);
     
@@ -475,42 +553,6 @@ static int decode_interrupt_cb(void *ctx)
 - (NSString *)peekPacketBufferStatus
 {
     return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",audioq.nb_packets,videoq.nb_packets];
-}
-
-- (void)consumePackets
-{
-    AVPacket audio_pkt;
-    int audio_not_empty = packet_queue_get(&audioq, &audio_pkt, NULL);
-    if (audio_not_empty) {
-        av_packet_unref(&audio_pkt);
-    }
-    AVPacket video_pkt;
-    int video_not_empty = packet_queue_get(&videoq, &video_pkt, NULL);
-    if (video_not_empty) {
-        av_packet_unref(&video_pkt);
-    }
-    self.packetBufferIsFull = NO;
-    if (!self.packetBufferIsEmpty) {
-        if (!audio_not_empty && !video_not_empty) {
-            if (self.onPacketBufferEmptyBlock) {
-                self.onPacketBufferEmptyBlock();
-            }
-            self.packetBufferIsEmpty = YES;
-        }
-    }
-}
-
-- (void)consumeAllPackets
-{
-    packet_queue_flush(&audioq);
-    packet_queue_flush(&videoq);
-    self.packetBufferIsFull = NO;
-    if (!self.packetBufferIsEmpty) {
-        if (self.onPacketBufferEmptyBlock) {
-            self.onPacketBufferEmptyBlock();
-        }
-        self.packetBufferIsEmpty = YES;
-    }
 }
 
 @end
