@@ -14,7 +14,7 @@
 #include <libswscale/version.h>
 #include <libswresample/version.h>
 
-#include <libavcodec/avcodec.h>
+#import <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 
 #define STRINGME_(x)    #x

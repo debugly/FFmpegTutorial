@@ -8,8 +8,8 @@
 #import "FFPlayer0x03.h"
 #import "MRRWeakProxy.h"
 #import "FFPlayerInternalHeader.h"
+#import "FFPlayerPacketHeader.h"
 
-#include <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
 
 

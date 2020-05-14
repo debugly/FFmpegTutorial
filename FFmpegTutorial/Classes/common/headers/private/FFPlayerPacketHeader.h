@@ -1,34 +1,18 @@
 //
-//  FFPlayerInternalHeader.h
+//  FFPlayerPacketHeader.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/4/28.
+//  Created by Matt Reach on 2020/5/14.
 //
 
-#ifndef FFPlayerInternalHeader_h
-#define FFPlayerInternalHeader_h
+#ifndef FFPlayerPacketHeader_h
+#define FFPlayerPacketHeader_h
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 
 #define MAX_QUEUE_SIZE (15 * 1024 * 1024)
 #define MIN_FRAMES 25
-
-static __inline__ NSError * _make_nserror(int code)
-{
-    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:nil];
-}
-
-static __inline__ NSError * _make_nserror_desc(int code,NSString *desc)
-{
-    if (!desc || desc.length == 0) {
-        desc = @"";
-    }
-    
-    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:@{
-        NSLocalizedDescriptionKey:desc
-    }];
-}
 
 ///packet 链表
 typedef struct MyAVPacketList {
@@ -201,4 +185,4 @@ static __inline__ void packet_queue_flush(PacketQueue *q)
     dispatch_semaphore_signal(q->mutex);
 }
 
-#endif /* FFPlayerInternalHeader_h */
+#endif /* FFPlayerPacketHeader_h */
