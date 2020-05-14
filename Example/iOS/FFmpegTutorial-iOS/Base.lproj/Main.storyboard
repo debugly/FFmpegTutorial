@@ -86,8 +86,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="设计播放器读包模块" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="szW-MY-2gk">
-                                                    <rect key="frame" x="184" y="12" width="156" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="读包与packet缓存队列" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="szW-MY-2gk">
+                                                    <rect key="frame" x="167" y="12" width="173" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -113,8 +113,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="设计播放器解码模块" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rm7-pA-fXc">
-                                                    <rect key="frame" x="184" y="12" width="156" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="多线程解码" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="rm7-pA-fXc">
+                                                    <rect key="frame" x="253" y="12" width="87" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -140,8 +140,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lLj-3T-ADu">
-                                                    <rect key="frame" x="292.5" y="12" width="47.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="设计frame缓存队列" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="lLj-3T-ADu">
+                                                    <rect key="frame" x="191.5" y="12" width="148.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -149,6 +149,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="yyp-A4-fBx" kind="show" id="KWX-Xb-kPP"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="xdn-DU-ed5" detailTextLabel="AgU-fy-zcd" style="IBUITableViewCellStyleValue1" id="Mb6-Ky-JFa">
                                         <rect key="frame" x="0.0" y="245.5" width="375" height="43.5"/>
@@ -501,6 +504,67 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5HL-NF-gDo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1018" y="-232"/>
+        </scene>
+        <!--0x05 View Controller-->
+        <scene sceneID="gr5-RK-c6t">
+            <objects>
+                <viewController id="yyp-A4-fBx" customClass="MR0x05ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="FTl-d8-vy7"/>
+                        <viewControllerLayoutGuide type="bottom" id="n3q-Bn-6aD"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="F5h-MX-w4x">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="1rU-R4-s7G" userLabel="消耗音视频">
+                                <rect key="frame" x="128" y="59" width="119" height="30"/>
+                                <state key="normal" title="消耗音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumePackets:" destination="yyp-A4-fBx" eventType="touchUpInside" id="nN9-8V-hnl"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5wV-fL-koA" userLabel="消耗全部音视频">
+                                <rect key="frame" x="128" y="99" width="119" height="30"/>
+                                <state key="normal" title="消耗音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumeAllPackets:" destination="yyp-A4-fBx" eventType="touchUpInside" id="FC5-vQ-ToK"/>
+                                </connections>
+                            </button>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="f5S-a1-uSs">
+                                <rect key="frame" x="16" y="139" width="343" height="518"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="8bv-Bk-IVk">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="f5S-a1-uSs" firstAttribute="top" secondItem="5wV-fL-koA" secondAttribute="bottom" constant="10" id="9so-Sv-XpL"/>
+                            <constraint firstItem="8bv-Bk-IVk" firstAttribute="centerY" secondItem="F5h-MX-w4x" secondAttribute="centerY" id="EhS-g8-vdY"/>
+                            <constraint firstItem="f5S-a1-uSs" firstAttribute="bottom" secondItem="n3q-Bn-6aD" secondAttribute="top" constant="-10" id="HWE-ue-DAu"/>
+                            <constraint firstItem="1rU-R4-s7G" firstAttribute="centerX" secondItem="F5h-MX-w4x" secondAttribute="centerX" id="SKM-Ru-8pR"/>
+                            <constraint firstItem="1rU-R4-s7G" firstAttribute="top" secondItem="FTl-d8-vy7" secondAttribute="bottom" constant="15" id="UGR-sq-brx"/>
+                            <constraint firstItem="8bv-Bk-IVk" firstAttribute="centerX" secondItem="F5h-MX-w4x" secondAttribute="centerX" id="WQs-un-cTh"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="f5S-a1-uSs" secondAttribute="trailing" id="l6Y-fw-rQH"/>
+                            <constraint firstItem="5wV-fL-koA" firstAttribute="centerX" secondItem="1rU-R4-s7G" secondAttribute="centerX" id="nae-G8-Orb"/>
+                            <constraint firstItem="f5S-a1-uSs" firstAttribute="leading" secondItem="F5h-MX-w4x" secondAttribute="leadingMargin" id="pTT-be-27x"/>
+                            <constraint firstItem="5wV-fL-koA" firstAttribute="top" secondItem="1rU-R4-s7G" secondAttribute="bottom" constant="10" id="y8r-ib-Dii"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="oTb-7x-Pw2"/>
+                    <connections>
+                        <outlet property="indicatorView" destination="8bv-Bk-IVk" id="avZ-aU-5fZ"/>
+                        <outlet property="textView" destination="f5S-a1-uSs" id="X8d-O1-O5z"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="NkW-sU-aTC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1199" y="-66"/>
         </scene>
     </scenes>
 </document>
