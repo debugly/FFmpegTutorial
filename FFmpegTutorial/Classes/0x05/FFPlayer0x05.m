@@ -48,11 +48,14 @@
 ///读包线程
 @property (nonatomic, strong) NSThread *readThread;
 
-/// 视频解码线程
+///视频解码线程
 @property (nonatomic, strong) NSThread *videoDecodeThread;
 
-/// 音频解码线程
+///音频解码线程
 @property (nonatomic, strong) NSThread *audioDecodeThread;
+
+///渲染线程
+@property (nonatomic, strong) NSThread *rendererThread;
 
 @property (nonatomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -314,8 +317,13 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
+    //音视频解码线程开始工作
     [self.audioDecodeThread start];
     [self.videoDecodeThread start];
+    //准备渲染线程
+    [self prepareRendererThread];
+    //渲染线程开始工作
+    [self.rendererThread start];
     
     AVPacket pkt1, *pkt = &pkt1;
     ///循环读包
@@ -471,9 +479,9 @@ static int decode_interrupt_cb(void *ctx)
         
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
-                av_log(NULL, AV_LOG_ERROR, "decode frame eof.");
+                av_log(NULL, AV_LOG_ERROR, "decode frame eof.\n");
             } else {
-                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
+                av_log(NULL, AV_LOG_ERROR, "can't decode frame.\n");
             }
             break;
         } else {
@@ -515,7 +523,7 @@ static int decode_interrupt_cb(void *ctx)
     [[NSThread currentThread] setName:@"video_decode"];
     AVFrame *frame = av_frame_alloc();
     if (!frame) {
-        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
+        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.\n");
         return;
     }
     do {
@@ -523,9 +531,9 @@ static int decode_interrupt_cb(void *ctx)
         
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
-                av_log(NULL, AV_LOG_ERROR, "decode frame eof.");
+                av_log(NULL, AV_LOG_ERROR, "decode frame eof.\n");
             } else {
-                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
+                av_log(NULL, AV_LOG_ERROR, "can't decode frame.\n");
             }
             break;
         } else {
@@ -549,6 +557,40 @@ static int decode_interrupt_cb(void *ctx)
     
     if (frame) {
         av_frame_free(&frame);
+    }
+}
+
+#pragma mark - RendererThread
+
+- (void)prepareRendererThread
+{
+    ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
+    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
+    ///不允许重复准备
+    self.rendererThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(rendererThreadFunc) object:nil];
+}
+
+- (void)rendererThreadFunc
+{
+    [[NSThread currentThread] setName:@"renderer"];
+    
+    while (!self.abort_request) {
+        
+        //队列里缓存帧大于0，则取出
+        if (frame_queue_nb_remaining(&sampq) > 0) {
+            Frame *ap = frame_queue_peek(&sampq);
+            av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
+            //释放该节点存储的frame的内存
+            frame_queue_pop(&sampq);
+        }
+        
+        if (frame_queue_nb_remaining(&pictq) > 0) {
+            Frame *vp = frame_queue_peek(&pictq);
+            av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
+            frame_queue_pop(&pictq);
+        }
+        
+        usleep(1000 * 40);
     }
 }
 

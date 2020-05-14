@@ -42,10 +42,10 @@
 ///读包线程
 @property (nonatomic, strong) NSThread *readThread;
 
-/// 视频解码线程
+///视频解码线程
 @property (nonatomic, strong) NSThread *videoDecodeThread;
 
-/// 音频解码线程
+///音频解码线程
 @property (nonatomic, strong) NSThread *audioDecodeThread;
 
 @property (nonatomic, assign) int abort_request;

@@ -94,7 +94,6 @@ rindex
 //移动写指针位置，增加队列里已存储数量
 static __inline__ void frame_queue_push(FrameQueue *f)
 {
-    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size + 1);
     dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     
     //写指针超过了总长度时，将写指针归零，指向头部
@@ -103,6 +102,34 @@ static __inline__ void frame_queue_push(FrameQueue *f)
     }
     //队列已存储数量加1
     f->size ++;
+    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
+    dispatch_semaphore_signal(f->mutex);
+}
+
+// 获取队列里缓存帧的数量
+static __inline__ int frame_queue_nb_remaining(FrameQueue *f)
+{
+    return f->size;
+}
+
+// 获取当前读指针指向的节点
+static __inline__ Frame *frame_queue_peek(FrameQueue *f)
+{
+    return &f->queue[(f->rindex) % f->max_size];
+}
+
+// 移动读指针位置，减少队列里已存储数量
+static __inline__ void frame_queue_pop(FrameQueue *f)
+{
+    dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
+    
+    Frame *vp = &f->queue[f->rindex];
+    av_frame_unref(vp->frame);
+    if (++f->rindex == f->max_size){
+        f->rindex = 0;
+    }
+    f->size--;
+    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_pop %s (%d/%d)\n", f->name, f->windex, f->size);
     
     dispatch_semaphore_signal(f->mutex);
 }
