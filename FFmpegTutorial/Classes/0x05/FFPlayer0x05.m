@@ -9,23 +9,37 @@
 #import "MRRWeakProxy.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
+#import "FFPlayerFrameHeader.h"
 
 #include <libavutil/pixdesc.h>
 
 
 @interface  FFPlayer0x05 ()
 {
-    PacketQueue videoq;
+    //解码前的音频包缓存队列
     PacketQueue audioq;
+    //解码前的视频包缓存队列
+    PacketQueue videoq;
     
+    //音频流索引
     int audio_stream;
+    //视频流索引
     int video_stream;
     
+    //音频流
     AVStream *audio_st;
+    //视频流
     AVStream *video_st;
     
+    //音频流解码器上下文
     AVCodecContext *audioCodecCtx;
+    //视频流解码器上下文
     AVCodecContext *videoCodecCtx;
+    
+    //解码后的音频帧缓存队列
+    FrameQueue sampq;
+    //解码后的视频帧缓存队列
+    FrameQueue pictq;
     
     //读包完毕？
     int eof;
@@ -109,6 +123,11 @@ static void init_ffmpeg_once()
     packet_queue_init(&audioq);
     ///初始化ffmpeg相关函数
     init_ffmpeg_once();
+    
+    ///初始化视频帧队列
+    frame_queue_init(&pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq");
+    ///初始化音频帧队列
+    frame_queue_init(&sampq, SAMPLE_QUEUE_SIZE, "sampq");
     
     ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
@@ -460,7 +479,19 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //
             av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
-            sleep(1);
+            //获取一个可写的节点
+            Frame *af = frame_queue_peek_writable(&sampq);
+            if (NULL == af) {
+                break;
+            } else {
+                if (frame->pts != AV_NOPTS_VALUE) {
+                    af->pts = frame->pts;
+                }
+                //将解码后的frame以引用的形式copy到Frame节点里的frame里
+                av_frame_ref(af->frame, frame);
+                //修改写指针位置，为下一次获取可写节点做准备
+                frame_queue_push(&sampq);
+            }
         }
     } while (1);
     
@@ -500,8 +531,19 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //
             av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
-            
-            sleep(2);
+            //获取一个可写的节点
+            Frame *af = frame_queue_peek_writable(&pictq);
+            if (NULL == af) {
+                break;
+            } else {
+                if (frame->pts != AV_NOPTS_VALUE) {
+                    af->pts = frame->pts;
+                }
+                //将解码后的frame以引用的形式copy到Frame节点里的frame里
+                av_frame_ref(af->frame, frame);
+                //修改写指针位置，为下一次获取可写节点做准备
+                frame_queue_push(&pictq);
+            }
         }
     } while (1);
     

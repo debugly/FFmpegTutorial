@@ -15,16 +15,24 @@
 
 @interface  FFPlayer0x04 ()
 {
-    PacketQueue videoq;
+    //解码前的音频包缓存队列
     PacketQueue audioq;
+    //解码前的视频包缓存队列
+    PacketQueue videoq;
     
+    //音频流索引
     int audio_stream;
+    //视频流索引
     int video_stream;
     
+    //音频流
     AVStream *audio_st;
+    //视频流
     AVStream *video_st;
     
+    //音频流解码器上下文
     AVCodecContext *audioCodecCtx;
+    //视频流解码器上下文
     AVCodecContext *videoCodecCtx;
     
     //读包完毕？
