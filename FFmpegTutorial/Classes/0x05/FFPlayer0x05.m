@@ -76,23 +76,29 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)_stop
 {
-    [self.readThread cancel];
-    self.readThread = nil;
-    
-    [self.audioDecodeThread cancel];
-    self.audioDecodeThread = nil;
-    
-    [self.videoDecodeThread cancel];
-    self.videoDecodeThread = nil;
-    
-    [self.rendererThread cancel];
-    self.rendererThread = nil;
-    
-    self.abort_request = 1;
-    audioq.abort_request = 1;
-    videoq.abort_request = 1;
-    sampq.abort_request = 1;
-    pictq.abort_request = 1;
+    ///避免重复stop做无用功
+    if (self.readThread) {
+        [self.readThread cancel];
+        self.readThread = nil;
+        
+        [self.audioDecodeThread cancel];
+        self.audioDecodeThread = nil;
+        
+        [self.videoDecodeThread cancel];
+        self.videoDecodeThread = nil;
+        
+        [self.rendererThread cancel];
+        self.rendererThread = nil;
+        
+        self.abort_request = 1;
+        audioq.abort_request = 1;
+        videoq.abort_request = 1;
+        sampq.abort_request = 1;
+        pictq.abort_request = 1;
+        
+        packet_queue_destroy(&audioq);
+        packet_queue_destroy(&videoq);
+    }
 }
 
 - (void)dealloc
@@ -489,7 +495,7 @@ static int decode_interrupt_cb(void *ctx)
                         af->pts = frame->pts;
                     }
                     //将解码后的frame以引用的形式copy到Frame节点里的frame里
-                    av_frame_ref(af->frame, frame);
+                    av_frame_move_ref(af->frame, frame);
                     //修改写指针位置，为下一次获取可写节点做准备
                     frame_queue_push(&sampq);
                 }
@@ -503,6 +509,10 @@ static int decode_interrupt_cb(void *ctx)
         if (audioCodecCtx) {
             avcodec_free_context(&audioCodecCtx);
             audioCodecCtx = NULL;
+        }
+        
+        if (sampq.abort_request) {
+            frame_queue_destory(&sampq);
         }
     }
 }
@@ -557,8 +567,9 @@ static int decode_interrupt_cb(void *ctx)
                     if (frame->pts != AV_NOPTS_VALUE) {
                         af->pts = frame->pts;
                     }
+                    
                     //将解码后的frame以引用的形式copy到Frame节点里的frame里
-                    av_frame_ref(af->frame, frame);
+                    av_frame_move_ref(af->frame, frame);
                     //修改写指针位置，为下一次获取可写节点做准备
                     frame_queue_push(&pictq);
                 }
@@ -572,6 +583,10 @@ static int decode_interrupt_cb(void *ctx)
         if (videoCodecCtx) {
             avcodec_free_context(&videoCodecCtx);
             videoCodecCtx = NULL;
+        }
+        
+        if (pictq.abort_request) {
+            frame_queue_destory(&pictq);
         }
     }
 }
@@ -591,7 +606,7 @@ static int decode_interrupt_cb(void *ctx)
     if ([[NSThread currentThread] isCancelled]) {
         return;
     }
-      
+    
     @autoreleasepool {
         [[NSThread currentThread] setName:@"renderer"];
         

@@ -182,4 +182,10 @@ static __inline__ void packet_queue_flush(PacketQueue *q)
     dispatch_semaphore_signal(q->mutex);
 }
 
+///销毁队列
+static __inline__ void packet_queue_destroy(PacketQueue *q)
+{
+    packet_queue_flush(q);
+}
+
 #endif /* FFPlayerPacketHeader_h */

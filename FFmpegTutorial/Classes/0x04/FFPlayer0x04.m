@@ -67,18 +67,24 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)_stop
 {
-    [self.readThread cancel];
-    self.readThread = nil;
-    
-    [self.audioDecodeThread cancel];
-    self.audioDecodeThread = nil;
-       
-    [self.videoDecodeThread cancel];
-    self.videoDecodeThread = nil;
-    
-    self.abort_request = 1;
-    audioq.abort_request = 1;
-    videoq.abort_request = 1;
+    ///避免重复stop做无用功
+    if (self.readThread) {
+        [self.readThread cancel];
+        self.readThread = nil;
+        
+        [self.audioDecodeThread cancel];
+        self.audioDecodeThread = nil;
+           
+        [self.videoDecodeThread cancel];
+        self.videoDecodeThread = nil;
+        
+        self.abort_request = 1;
+        audioq.abort_request = 1;
+        videoq.abort_request = 1;
+        
+        packet_queue_destroy(&audioq);
+        packet_queue_destroy(&videoq);
+    }
 }
 
 - (void)dealloc

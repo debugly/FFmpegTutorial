@@ -55,11 +55,17 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)_stop
 {
-    ///不作过多判断，因为Thread有可能处于Pending状态，比如start之后立马stop！
-    //if ([self.readThread isExecuting]) {}
-    [self.readThread cancel];
-    self.readThread = nil;
-    self.abort_request = 1;
+    ///避免重复stop做无用功
+    if (self.readThread) {
+        ///不作过多判断，因为Thread有可能处于Pending状态，比如start之后立马stop！
+        //if ([self.readThread isExecuting]) {}
+        [self.readThread cancel];
+        self.readThread = nil;
+        self.abort_request = 1;
+        video_stream = audio_stream = -1;
+        packet_queue_destroy(&audioq);
+        packet_queue_destroy(&videoq);
+    }
 }
 
 - (void)dealloc

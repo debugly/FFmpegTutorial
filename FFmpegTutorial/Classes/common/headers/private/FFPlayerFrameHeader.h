@@ -145,4 +145,14 @@ static __inline__ void frame_queue_pop(FrameQueue *f)
     dispatch_semaphore_signal(f->mutex);
 }
 
+// 释放队列内存
+static __inline__ void frame_queue_destory(FrameQueue *f)
+{
+    for (int i = 0; i < f->max_size; i++) {
+        Frame *vp = &f->queue[i];
+        av_frame_unref(vp->frame);
+        av_frame_free(&vp->frame);
+    }
+}
+
 #endif /* FFPlayerFrameHeader_h */
