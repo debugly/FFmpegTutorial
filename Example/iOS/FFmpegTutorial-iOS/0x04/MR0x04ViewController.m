@@ -16,10 +16,24 @@
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
+@property (weak, nonatomic) NSTimer *timer;
 
 @end
 
 @implementation MR0x04ViewController
+
+- (void)dealloc
+{
+    if (self.timer) {
+        [self.timer invalidate];
+        self.timer = nil;
+    }
+    
+    if (self.player) {
+        [self.player stop];
+        self.player = nil;
+    }
+}
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -27,24 +41,28 @@
     [self.indicatorView startAnimating];
     self.textView.delegate = self;
     self.textView.layoutManager.allowsNonContiguousLayout = NO;
+    
     FFPlayer0x04 *player = [[FFPlayer0x04 alloc] init];
     player.contentPath = @"http://data.vod.itc.cn/?new=/73/15/oFed4wzSTZe8HPqHZ8aF7J.mp4&vid=77972299&plat=14&mkey=XhSpuZUl_JtNVIuSKCB05MuFBiqUP7rB&ch=null&user=api&qd=8001&cv=3.13&uid=F45C89AE5BC3&ca=2&pg=5&pt=1&prod=ifox";
-    player.contentPath = @"http://localhost/movies/%e5%82%b2%e6%85%a2%e4%b8%8e%e5%81%8f%e8%a7%81.BD1280%e8%b6%85%e6%b8%85%e5%9b%bd%e8%8b%b1%e5%8f%8c%e8%af%ad%e4%b8%ad%e8%8b%b1%e5%8f%8c%e5%ad%97.mp4";
+    
     __weakSelf__
     [player onError:^{
         __strongSelf__
         [self.indicatorView stopAnimating];
         self.textView.text = [self.player.error localizedDescription];
         self.player = nil;
+        [self.timer invalidate];
+        self.timer = nil;
     }];
-    
-    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     
     [player prepareToPlay];
     [player readPacket];
     self.player = player;
+    
+    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    self.timer = timer;
 }
 
 - (void)onTimer:(NSTimer *)sender

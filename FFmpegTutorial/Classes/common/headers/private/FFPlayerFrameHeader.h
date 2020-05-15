@@ -28,6 +28,8 @@ typedef struct FrameQueue {
     //锁
     dispatch_semaphore_t mutex;
     char *name;
+    //标记为停止
+    int abort_request;
 } FrameQueue;
 
 /*
@@ -52,8 +54,6 @@ static __inline__ int frame_queue_init(FrameQueue *f, int max_size, const char *
     return 0;
 }
 
-#warning TODO break while when abort!!
-
 /*
  size=3
  [1,1,1,0,0,0,0,0]
@@ -66,18 +66,29 @@ static __inline__ int frame_queue_init(FrameQueue *f, int max_size, const char *
 static __inline__ Frame *frame_queue_peek_writable(FrameQueue *f)
 {
     /* wait until we have space to put a new frame */
+    int ret = 0;
     dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     int is_loged = 0;//避免重复打日志
     while (f->size >= f->max_size) {
+        
+        if (f->abort_request) {
+            ret = -1;
+            break;
+        }
+        
         if (!is_loged) {
             is_loged = 1;
             av_log(NULL, AV_LOG_VERBOSE, "%s frame queue is full(%d)\n",f->name,f->size);
         }
+        
         dispatch_semaphore_signal(f->mutex);
         usleep(10000);
         dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     }
     dispatch_semaphore_signal(f->mutex);
+    if (ret < 0) {
+        return NULL;
+    }
     
     Frame *af = &f->queue[f->windex];
     return af;

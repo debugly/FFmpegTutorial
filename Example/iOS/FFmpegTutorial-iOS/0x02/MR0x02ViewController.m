@@ -19,6 +19,14 @@
 
 @implementation MR0x02ViewController
 
+- (void)dealloc
+{
+    if (self.player) {
+        [self.player stop];
+        self.player = nil;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.

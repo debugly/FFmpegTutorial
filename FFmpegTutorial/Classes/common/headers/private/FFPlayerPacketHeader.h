@@ -35,8 +35,8 @@ typedef struct PacketQueue {
     int serial;
     //锁
     dispatch_semaphore_t mutex;
-//    SDL_mutex *mutex;
-//    SDL_cond *cond;
+    //标记为停止
+    int abort_request;
 } PacketQueue;
 
 ///packet 队列初始化
@@ -44,11 +44,6 @@ static __inline__ int packet_queue_init(PacketQueue *q)
 {
     memset((void*)q, 0, sizeof(PacketQueue));
     q->mutex = dispatch_semaphore_create(1);
-//    q->cond = SDL_CreateCond();
-//    if (!q->cond) {
-//        av_log(NULL, AV_LOG_FATAL, "SDL_CreateCond(): %s\n", SDL_GetError());
-//        return AVERROR(ENOMEM);
-//    }
     return 0;
 }
 
@@ -78,8 +73,6 @@ static __inline__ int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
     q->nb_packets++;
     q->size += pkt1->pkt.size + sizeof(*pkt1);
     q->duration += pkt1->pkt.duration;
-    /* XXX: should duplicate packet data in DV case */
-//    SDL_CondSignal(q->cond);
     return 0;
 }
 
@@ -120,16 +113,18 @@ static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, Pac
 }
 
 ///从队列里获取一个 packet；正常获取时返回值大于0
-static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *serial)
+static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *serial, int block)
 {
     assert(q);
     assert(pkt);
-    //不阻塞
-    int block = 0;
     int ret;
 
     dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
     for (;;) {
+        if (q->abort_request) {
+            ret = -1;
+            break;
+        }
         //队列的头结点存在？
         MyAVPacketList *pkt1 = q->first_pkt;
         if (pkt1) {
@@ -158,9 +153,11 @@ static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *seria
             ret = 0;
             break;
         }
-//        else {
-//            SDL_CondWait(q->cond, q->mutex);
-//        }
+        else {
+            dispatch_semaphore_signal(q->mutex);
+            usleep(10000);
+            dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
+        }
     }
     dispatch_semaphore_signal(q->mutex);
     return ret;
