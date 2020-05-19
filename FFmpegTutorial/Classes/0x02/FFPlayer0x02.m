@@ -52,12 +52,13 @@
 
 - (void)readPacketsFunc
 {
+    ///取消了就直接返回，不再处理
     if ([[NSThread currentThread] isCancelled]) {
         return;
     }
     
     NSParameterAssert(self.contentPath);
-    
+    /// iOS 子线程需要显式创建 autoreleasepool 以释放 autorelease 对象
     @autoreleasepool {
         
         [[NSThread currentThread] setName:@"readPacket"];
@@ -198,7 +199,7 @@
                     
                     avcodec_free_context(&codecCtx);
                 }
-                
+                //关闭流
                 avformat_close_input(&formatCtx);
                 [self performResultOnMainThread:text];
             }

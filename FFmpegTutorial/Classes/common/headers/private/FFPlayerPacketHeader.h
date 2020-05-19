@@ -4,6 +4,7 @@
 //
 //  Created by Matt Reach on 2020/5/14.
 //
+// AVPacket 缓存队列
 
 #ifndef FFPlayerPacketHeader_h
 #define FFPlayerPacketHeader_h
@@ -14,16 +15,15 @@
 #define MAX_QUEUE_SIZE (15 * 1024 * 1024)
 #define MIN_FRAMES 25
 
-///packet 链表
+///packet 链表结点
 typedef struct MyAVPacketList {
     AVPacket pkt;
     struct MyAVPacketList *next;
-    int serial;
 } MyAVPacketList;
 
 ///packet 队列
 typedef struct PacketQueue {
-    ///头尾指针
+    ///指向队列头尾的结点
     MyAVPacketList *first_pkt, *last_pkt;
     //队列里包含了多少个包
     int nb_packets;
@@ -31,8 +31,6 @@ typedef struct PacketQueue {
     int size;
     //所有包总的时长，注意单位不是s
     int64_t duration;
-    //最后一个包的序号
-    int serial;
     //锁
     dispatch_semaphore_t mutex;
     //标记为停止
@@ -57,7 +55,6 @@ static __inline__ int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
         return -1;
     pkt1->pkt = *pkt;
     pkt1->next = NULL;
-    pkt1->serial = q->serial;
 
     ///队尾是空的，则说明队列为空，作为队首即可
     if (!q->last_pkt){
@@ -80,9 +77,10 @@ static __inline__ int packet_queue_put_private(PacketQueue *q, AVPacket *pkt)
 static __inline__ int packet_queue_put(PacketQueue *q, AVPacket *pkt)
 {
     int ret;
-    ///获取信号量
+    ///加锁
     dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
     ret = packet_queue_put_private(q, pkt);
+    ///解锁
     dispatch_semaphore_signal(q->mutex);
 
     if (ret < 0)
@@ -105,6 +103,7 @@ static __inline__ int packet_queue_put_nullpacket(PacketQueue *q, int stream_ind
 ///缓存队列是否满
 /*
  AV_DISPOSITION_ATTACHED_PIC ：有些流存在 video stream，但是却只是一张图片而已，常见于 mp3 的封面。
+ 包个数大于 25，并且总时长大于 1s。
  */
 static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, PacketQueue *queue) {
     return stream_id < 0 ||
@@ -112,8 +111,11 @@ static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, Pac
     (queue->nb_packets > MIN_FRAMES && (!queue->duration || av_q2d(st->time_base) * queue->duration > 1.0));
 }
 
-///从队列里获取一个 packet；正常获取时返回值大于0
-static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *serial, int block)
+/**
+ 从队列里获取一个 packet，正常获取时返回值大于0
+ block 为 1 时则阻塞等待
+ */
+static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int block)
 {
     assert(q);
     assert(pkt);
@@ -121,6 +123,8 @@ static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *seria
 
     dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
     for (;;) {
+        
+        //外部终止，则返回
         if (q->abort_request) {
             ret = -1;
             break;
@@ -142,17 +146,17 @@ static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int *seria
             if (pkt) {
                 *pkt = pkt1->pkt;
             }
-            if (serial) {
-                *serial = pkt1->serial;
-            }
             //释放掉链表节点内存
             av_free(pkt1);
             ret = 1;
             break;
-        } else if (!block) {
+        }
+        ///非阻塞形式，则立即返回
+        else if (!block) {
             ret = 0;
             break;
         }
+        ///阻塞形式，则休眠10ms后开始新一轮的检查
         else {
             dispatch_semaphore_signal(q->mutex);
             usleep(10000);
@@ -169,9 +173,12 @@ static __inline__ void packet_queue_flush(PacketQueue *q)
     MyAVPacketList *pkt, *pkt1;
 
     dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
+    //从头结点开始，遍历链表
     for (pkt = q->first_pkt; pkt; pkt = pkt1) {
         pkt1 = pkt->next;
+        //释放packet内存
         av_packet_unref(&pkt->pkt);
+        //释放结点内存
         av_freep(&pkt);
     }
     q->last_pkt = NULL;

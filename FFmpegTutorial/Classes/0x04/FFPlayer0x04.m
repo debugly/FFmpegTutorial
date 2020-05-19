@@ -176,14 +176,84 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma -mark 读包线程
 
+//读包循环
+- (void)readPacketLoop:(AVFormatContext *)formatCtx {
+    AVPacket pkt1, *pkt = &pkt1;
+    ///循环读包
+    for (;;) {
+        
+        ///调用了stop方法，线程被标记为取消了，则不再读包
+        if (self.abort_request || [[NSThread currentThread] isCancelled]) {
+            break;
+        }
+        
+        /* 队列不满继续读，满了则休眠10 ms */
+        if (audioq.size + videoq.size > MAX_QUEUE_SIZE
+            || (stream_has_enough_packets(audio_st, audio_stream, &audioq) &&
+                stream_has_enough_packets(video_st, video_stream, &videoq))) {
+            
+            if (!self.packetBufferIsFull) {
+                self.packetBufferIsFull = YES;
+                if (self.onPacketBufferFullBlock) {
+                    self.onPacketBufferFullBlock();
+                }
+            }
+            /* wait 10 ms */
+            usleep(10000);
+            continue;
+        }
+        
+        self.packetBufferIsFull = NO;
+        ///读包
+        int ret = av_read_frame(formatCtx, pkt);
+        ///读包出错
+        if (ret < 0) {
+            //读到最后结束了
+            if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !eof) {
+                ///最后放一个空包进去
+                if (video_stream >= 0) {
+                    packet_queue_put_nullpacket(&videoq, video_stream);
+                }
+                    
+                if (audio_stream >= 0) {
+                    packet_queue_put_nullpacket(&audioq, audio_stream);
+                }
+                //标志为读包结束
+                eof = 1;
+            }
+            
+            if (formatCtx->pb && formatCtx->pb->error) {
+                break;
+            }
+            /* wait 10 ms */
+            usleep(10000);
+            continue;
+        } else {
+            //音频包入音频队列
+            if (pkt->stream_index == audio_stream) {
+                packet_queue_put(&audioq, pkt);
+            }
+            //视频包入视频队列
+            else if (pkt->stream_index == video_stream) {
+                packet_queue_put(&videoq, pkt);
+            }
+            //其他包释放内存忽略掉
+            else {
+                av_packet_unref(pkt);
+            }
+        }
+    }
+}
+
 - (void)readPacketsFunc
 {
+    ///取消了就直接返回，不再处理
     if ([[NSThread currentThread] isCancelled]) {
         return;
     }
     
     NSParameterAssert(self.contentPath);
-    
+    /// iOS 子线程需要显式创建 autoreleasepool 以释放 autorelease 对象
     @autoreleasepool {
         
         [[NSThread currentThread] setName:@"readPacket"];
@@ -297,82 +367,13 @@ static int decode_interrupt_cb(void *ctx)
             }
         }
         
+        //开始解码线程
         [self.audioDecodeThread start];
         [self.videoDecodeThread start];
         
-        AVPacket pkt1, *pkt = &pkt1;
-        ///循环读包
-        for (;;) {
-            
-            ///调用了stop方法，线程被标记为取消了，则不再读包
-            if ([[NSThread currentThread] isCancelled]) {
-                break;
-            }
-            
-            ///
-            if (self.abort_request) {
-                break;
-            }
-            
-            /* 队列不满继续读，满了则休眠 */
-            if (audioq.size + videoq.size > MAX_QUEUE_SIZE
-                || (stream_has_enough_packets(audio_st, audio_stream, &audioq) &&
-                    stream_has_enough_packets(video_st, video_stream, &videoq))) {
-                
-                if (!self.packetBufferIsFull) {
-                    self.packetBufferIsFull = YES;
-                    if (self.onPacketBufferFullBlock) {
-                        self.onPacketBufferFullBlock();
-                    }
-                }
-                /* wait 10 ms */
-                usleep(10000);
-                continue;
-            }
-            
-            self.packetBufferIsFull = NO;
-            ///读包
-            int ret = av_read_frame(formatCtx, pkt);
-            ///读包出错
-            if (ret < 0) {
-                //读到最后结束了
-                if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !eof) {
-                    ///最后放一个空包进去
-                    if (video_stream >= 0) {
-                        packet_queue_put_nullpacket(&videoq, video_stream);
-                    }
-                        
-                    if (audio_stream >= 0) {
-                        packet_queue_put_nullpacket(&audioq, audio_stream);
-                    }
-                    //标志为读包结束
-                    eof = 1;
-                }
-                
-                if (formatCtx->pb && formatCtx->pb->error) {
-                    break;
-                }
-                /* wait 10 ms */
-                usleep(10000);
-                continue;
-            } else {
-                //音频包入音频队列
-                if (pkt->stream_index == audio_stream) {
-                    audioq.serial ++;
-                    packet_queue_put(&audioq, pkt);
-                }
-                //视频包入视频队列
-                else if (pkt->stream_index == video_stream) {
-                    videoq.serial ++;
-                    packet_queue_put(&videoq, pkt);
-                }
-                //其他包释放内存忽略掉
-                else {
-                    av_packet_unref(pkt);
-                }
-            }
-        }
-        ///读包线程结束了，销毁下相关结构体
+        //循环读包
+        [self readPacketLoop:formatCtx];
+        //读包线程结束了，销毁下相关结构体
         avformat_close_input(&formatCtx);
     }
 }
@@ -403,7 +404,7 @@ static int decode_interrupt_cb(void *ctx)
 
         AVPacket pkt;
                
-        int r = packet_queue_get(queue, &pkt, NULL, 1);
+        int r = packet_queue_get(queue, &pkt, 1);
        
         if (r < 0)
         {

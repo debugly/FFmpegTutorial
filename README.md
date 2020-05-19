@@ -21,9 +21,7 @@
 # Anti-Illiteracy
 
 - 0x01：[常见封装格式介绍](md/illiteracy/0x01.md)
-- 0x01：[播放器总体架构设计](md/illiteracy/0x02.md)
-
-
+- 0x02：[播放器总体架构设计](md/illiteracy/0x02.md)
 
 # Tutorial
 
@@ -31,8 +29,8 @@
 - 0x01：[查看编译时配置信息、支持的协议、版本号](md/0x01.md)
 - 0x02：[查看音视频码流基础信息](md/0x02.md)
 - 0x03：[读包线程与 AVPacket 缓存队列](md/0x03.md)
-
-
+- 0x04：[多线程解码]
+- 0x05：[设计 AVFrame 缓存队列]
 
 # TODO
 
@@ -44,21 +42,20 @@
 
 **之前的老代码实现了音视频的不同渲染方式，可以通过 git 将代码切到这次 36e4f8cdcf1f9a293426dea802a39560747fdeec 提交进行查看**
 
-- 0x04：[读包线程与 AVFrame 缓存队列]
 
-- 0x05：[将 avframe 转成 UIImage，使用 UIImageView 渲染]
+- 0x06：[将 avframe 转成 UIImage，使用 UIImageView 渲染]
 
-- 0x06：[将 avframe 转成 CIImage，使用 GLKView 渲染]
+- 0x07：[将 avframe 转成 CIImage，使用 GLKView 渲染]
 
-- 0x07：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps]
+- 0x08：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps]
 
-- 0x08：[使用 AudioUnit 渲染音频]
+- 0x09：[使用 AudioUnit 渲染音频]
 
-- 0x09：[使用 AudioQueue 渲染音频]
+- 0x10：[使用 AudioQueue 渲染音频]
 
-- 0x10：[将音视频同步，为封装播放器做准备]
+- 0x11：[将音视频同步，为封装播放器做准备]
 
-- 0x11：[封装 MRMoviePlayer 播放器]
+- 0x12：[封装 MRMoviePlayer 播放器]
 
 ### Just For Fun
 

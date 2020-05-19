@@ -32,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 ///m/n 缓冲情况
 - (NSString *)peekPacketBufferStatus;
 
+//模拟消耗
+
 ///消耗缓存队列里的音视频packet各一个
 - (void)consumePackets;
 ///消耗掉缓存队列里的所有packet
