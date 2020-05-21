@@ -456,22 +456,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gwu-3U-TV8" userLabel="消耗音视频">
-                                <rect key="frame" x="128" y="59" width="119" height="30"/>
-                                <state key="normal" title="消耗音视频buffer"/>
-                                <connections>
-                                    <action selector="onConsumePackets:" destination="UgP-TB-aiD" eventType="touchUpInside" id="Esy-3M-4N5"/>
-                                </connections>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="5LP-Hh-uwg" userLabel="消耗全部音视频">
-                                <rect key="frame" x="128" y="99" width="119" height="30"/>
-                                <state key="normal" title="消耗音视频buffer"/>
-                                <connections>
-                                    <action selector="onConsumeAllPackets:" destination="UgP-TB-aiD" eventType="touchUpInside" id="PEO-Ya-aaQ"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="V0o-Ni-5sW">
-                                <rect key="frame" x="16" y="139" width="343" height="518"/>
+                                <rect key="frame" x="16" y="54" width="343" height="603"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -483,16 +469,12 @@
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="5LP-Hh-uwg" firstAttribute="top" secondItem="gwu-3U-TV8" secondAttribute="bottom" constant="10" id="9di-Ix-55R"/>
                             <constraint firstItem="V0o-Ni-5sW" firstAttribute="bottom" secondItem="xs1-Jr-1Dt" secondAttribute="top" constant="-10" id="FyS-aq-hv9"/>
                             <constraint firstItem="V0o-Ni-5sW" firstAttribute="leading" secondItem="47f-Id-kuJ" secondAttribute="leadingMargin" id="HrM-b8-8AX"/>
                             <constraint firstItem="EcY-wf-DL2" firstAttribute="centerY" secondItem="47f-Id-kuJ" secondAttribute="centerY" id="J8J-d7-9j4"/>
-                            <constraint firstItem="V0o-Ni-5sW" firstAttribute="top" secondItem="5LP-Hh-uwg" secondAttribute="bottom" constant="10" id="S4h-c2-53G"/>
                             <constraint firstItem="EcY-wf-DL2" firstAttribute="centerX" secondItem="47f-Id-kuJ" secondAttribute="centerX" id="VOU-tz-HTK"/>
-                            <constraint firstItem="gwu-3U-TV8" firstAttribute="centerX" secondItem="47f-Id-kuJ" secondAttribute="centerX" id="aGC-5j-CnN"/>
-                            <constraint firstItem="gwu-3U-TV8" firstAttribute="top" secondItem="csb-Vg-a74" secondAttribute="bottom" constant="15" id="dpC-sz-aKj"/>
-                            <constraint firstItem="5LP-Hh-uwg" firstAttribute="centerX" secondItem="gwu-3U-TV8" secondAttribute="centerX" id="gHf-sa-ke3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="V0o-Ni-5sW" secondAttribute="trailing" id="nJ0-o5-k1S"/>
+                            <constraint firstItem="V0o-Ni-5sW" firstAttribute="top" secondItem="csb-Vg-a74" secondAttribute="bottom" constant="10" id="sSM-KL-cq2"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Q3J-np-nR4"/>

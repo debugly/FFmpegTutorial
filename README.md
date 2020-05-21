@@ -8,13 +8,13 @@
 
 本工程是笔者 2017 年创建的，当时的目的是为了消化下 kxmovie 的源码，将封装好的代码给他精简下，比葫芦画瓢自己写一边，前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API。
 
-谁曾想 3 年过去了，我的目标还差很远，虽然研究出了音视频的渲染但里目标还差很远，考虑到现在是 2020 年了，研究 2.x 版本没有实际意义了，因此该教程将会先使用 3.x 版本，然后升级到 4.x 版本。
+谁曾想 3 年过去了，我的目标还差很远，虽然研究出了音视频的渲染但离目标还差得远，考虑到现在是 2020 年了，研究 2.x 版本没有实际意义了，因此本系列教程将会先使用 3.x 版本，然后升级到 4.x 版本。
 
-从 2020 年开始本工程将不再使用 xcconfig 配置 FFmpeg 路径，取而代之的是使用 CocoaPod 来集成，这样做更加方便也更加现代化，减少在工程配置方面浪费不必要的时间。
+从 2020 年开始本工程将不再使用 xcconfig 配置 FFmpeg 路径，取而代之的是使用 CocoaPod 来集成，工程管理上更加方便也更加现代化，避免在工程配置方面浪费时间。
 
-制作好的 MRFFmpegPod 库放在这里 [MRFFToolChainPod](https://github.com/debugly/MRFFToolChainPod) ，简单的说就是为编译好的静态库编写了配套的 podspec 文件，感兴趣的话可以看下。如果您对如何编译 FFmpeg 工具库感兴趣，可移步这里 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell) 查看具体的编译脚本。
+我已经把编译好的 FFmpeg 库制作成了 MRFFmpegPod 库，这个库是 [MRFFToolChainPod](https://github.com/debugly/MRFFToolChainPod) 的组成部分，后续会根据需要增加更多的库。简单的说就是为编译好的静态库编写了配套的 podspec 文件，感兴趣的话可以去看下。如果您对如何编译 FFmpeg 工具库感兴趣，可移步这里 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell) 查看具体的编译脚本。
 
-工程完全采用 Pod lib 的形式开发，也就是说我会把所有的封装代码都放在 FFmpegTutorial 这个 Pod 库里，该库依赖了 MRFFmpegPod 库，相应的配套 Demo 工程放在 Example 文件夹里，光 Pod 库就用了两个呢，所以学习本教程一点都不吃亏，即使对 FFmpeg 教程本身不感兴趣，也可以学习下如何去制作 Pod 库，如何开发 Pod 库的一些相关技巧，在开发实际项目时是很实用（我负责的公司项目完全都是用 Pod 库管理的，其中有一半都是 Development Pods，另一半则是编译好的 Pod Binary）。
+工程完全采用 Pod lib 的形式开发，也就是说我会把所有的封装代码都放在 FFmpegTutorial 这个 Pod 库里，该库依赖了 MRFFmpegPod 库，相应的配套 Demo 工程放在 Example 文件夹里，光 Pod 库就用了两个呢，所以学习本教程一点都不吃亏，即使对 FFmpeg 教程本身不感兴趣，也可以学习下如何去制作 Pod 库，如何开发 Pod 库的一些相关技巧，在开发实际项目时是很实用的（我负责的项目完全都是用 Pod 库管理的，其中有一半都是 Development Pods，另一半则是编译好的 Pod Binary）。
 
 
 
@@ -29,7 +29,7 @@
 - 0x01：[查看编译时配置信息、支持的协议、版本号](md/0x01.md)
 - 0x02：[查看音视频码流基础信息](md/0x02.md)
 - 0x03：[读包线程与 AVPacket 缓存队列](md/0x03.md)
-- 0x04：[多线程解码]
+- 0x04：[多线程解码](md/0x04.md)
 - 0x05：[设计 AVFrame 缓存队列]
 
 # TODO

@@ -200,12 +200,12 @@ static int decode_interrupt_cb(void *ctx)
             
             //打开文件流，读取头信息；
             if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
+                ///释放内存
+                avformat_free_context(formatCtx);
                 //当取消掉时，不给上层回调
                 if (self.abort_request) {
                     return;
                 }
-                ///释放内存
-                avformat_free_context(formatCtx);
                 self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
                 [self performErrorResultOnMainThread];
                 return;
@@ -223,6 +223,8 @@ static int decode_interrupt_cb(void *ctx)
                 avformat_close_input(&formatCtx);
                 self.error = _make_nserror_desc(FFPlayerErrorCode_StreamNotFound, @"不能找到流！");
                 [self performErrorResultOnMainThread];
+                //出错了，销毁下相关结构体
+                avformat_close_input(&formatCtx);
                 return;
             }
             
