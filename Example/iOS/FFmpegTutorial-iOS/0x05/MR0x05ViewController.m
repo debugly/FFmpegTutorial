@@ -78,14 +78,6 @@
     }
 }
 
-- (IBAction)onConsumePackets:(id)sender {
-    
-}
-
-- (IBAction)onConsumeAllPackets:(id)sender {
-    
-}
-
 - (void)appendMsg:(NSString *)txt
 {
     self.textView.text = [self.textView.text stringByAppendingFormat:@"\n%@",txt];
