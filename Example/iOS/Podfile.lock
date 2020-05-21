@@ -5,6 +5,7 @@ PODS:
     - FFmpegTutorial/0x03 (= 0.1.5)
     - FFmpegTutorial/0x04 (= 0.1.5)
     - FFmpegTutorial/0x05 (= 0.1.5)
+    - FFmpegTutorial/0x06 (= 0.1.5)
     - FFmpegTutorial/common (= 0.1.5)
     - MRFFmpegPod
   - FFmpegTutorial/0x01 (0.1.5):
@@ -16,6 +17,8 @@ PODS:
   - FFmpegTutorial/0x04 (0.1.5):
     - MRFFmpegPod
   - FFmpegTutorial/0x05 (0.1.5):
+    - MRFFmpegPod
+  - FFmpegTutorial/0x06 (0.1.5):
     - MRFFmpegPod
   - FFmpegTutorial/common (0.1.5):
     - MRFFmpegPod
@@ -42,7 +45,7 @@ EXTERNAL SOURCES:
     :podspec: https://qipai.56.com/dev/ifox/ffpods/MRFFmpeg3.4.7.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: 63e2835b6524054d670d2ca5a07e3f93a6155869
+  FFmpegTutorial: 2d61edde5ce8df2050bed6656f7dd1696209bb86
   MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 
 PODFILE CHECKSUM: a28cbe150e3638637a41c3536941a0c01fa14ad3

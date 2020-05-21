@@ -60,6 +60,11 @@ TODO: Add long description of the pod here.
     ss.public_header_files = 'FFmpegTutorial/Classes/0x05/*.h'
   end
 
+  s.subspec '0x06' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x06/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x06/*.h'
+  end
+
   s.dependency 'MRFFmpegPod'
   
 end

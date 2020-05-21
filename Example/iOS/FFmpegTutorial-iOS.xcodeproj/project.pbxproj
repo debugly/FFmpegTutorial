@@ -26,6 +26,7 @@
 		DD0CE9F4246CEFB0004E1E7C /* MR0x05ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD0CE9F3246CEFB0004E1E7C /* MR0x05ViewController.m */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
+		DD7F1A71247683EC00A98553 /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */; };
 		DDDFD49E2456ECFF00C02D8E /* MR0x03ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */; };
 		DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE702592454574A00DA8A08 /* MR0x01ViewController.m */; };
 		DDE7025F2454577300DA8A08 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE7025E2454577300DA8A08 /* MR0x02ViewController.m */; };
@@ -74,6 +75,8 @@
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
+		DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x06ViewController.m; sourceTree = "<group>"; };
+		DD7F1A70247683EC00A98553 /* MR0x06ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x06ViewController.h; sourceTree = "<group>"; };
 		DDDFD49C2456ECFF00C02D8E /* MR0x03ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x03ViewController.h; sourceTree = "<group>"; };
 		DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x03ViewController.m; sourceTree = "<group>"; };
 		DDE702592454574A00DA8A08 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
@@ -144,6 +147,7 @@
 		6003F593195388D20070C39A /* FFmpegTutorial-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				DD7F1A6E247683EC00A98553 /* 0x06 */,
 				DD0CE9F1246CEFB0004E1E7C /* 0x05 */,
 				DD06051824684B8500FBE179 /* 0x04 */,
 				DDDFD49B2456ECFF00C02D8E /* 0x03 */,
@@ -228,6 +232,15 @@
 				DD0CE9F3246CEFB0004E1E7C /* MR0x05ViewController.m */,
 			);
 			path = 0x05;
+			sourceTree = "<group>";
+		};
+		DD7F1A6E247683EC00A98553 /* 0x06 */ = {
+			isa = PBXGroup;
+			children = (
+				DD7F1A70247683EC00A98553 /* MR0x06ViewController.h */,
+				DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */,
+			);
+			path = 0x06;
 			sourceTree = "<group>";
 		};
 		DDDFD49B2456ECFF00C02D8E /* 0x03 */ = {
@@ -392,6 +405,7 @@
 				DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */,
 				DD0CE9F4246CEFB0004E1E7C /* MR0x05ViewController.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
+				DD7F1A71247683EC00A98553 /* MR0x06ViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DDE7025F2454577300DA8A08 /* MR0x02ViewController.m in Sources */,
 			);
