@@ -203,6 +203,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="jVR-uU-Y0i" kind="show" id="LIY-M5-hc2"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="xmB-0d-IxH" detailTextLabel="UtY-zH-deA" style="IBUITableViewCellStyleValue1" id="IFF-HJ-dUe">
                                         <rect key="frame" x="0.0" y="332.5" width="375" height="43.5"/>
@@ -575,6 +578,49 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0nT-bf-Jcg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="4084" y="54"/>
+        </scene>
+        <!--0x07 View Controller-->
+        <scene sceneID="ODo-hZ-TtT">
+            <objects>
+                <viewController id="jVR-uU-Y0i" customClass="MR0x07ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="DJz-xY-XEb"/>
+                        <viewControllerLayoutGuide type="bottom" id="J4f-Kl-hlq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="jti-Z0-5ro">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hxd-Fr-bgk">
+                                <rect key="frame" x="16" y="54" width="343" height="603"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="qh5-iF-Fpg">
+                                <rect key="frame" x="169" y="315" width="37" height="37"/>
+                            </activityIndicatorView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="hxd-Fr-bgk" firstAttribute="leading" secondItem="jti-Z0-5ro" secondAttribute="leadingMargin" id="193-pP-8hA"/>
+                            <constraint firstItem="qh5-iF-Fpg" firstAttribute="centerX" secondItem="jti-Z0-5ro" secondAttribute="centerX" id="8bA-gN-gOT"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hxd-Fr-bgk" secondAttribute="trailing" id="fZr-tP-8Aj"/>
+                            <constraint firstItem="hxd-Fr-bgk" firstAttribute="bottom" secondItem="J4f-Kl-hlq" secondAttribute="top" constant="-10" id="m3p-DM-Ewi"/>
+                            <constraint firstItem="hxd-Fr-bgk" firstAttribute="top" secondItem="DJz-xY-XEb" secondAttribute="bottom" constant="10" id="nhs-Mg-UkL"/>
+                            <constraint firstItem="qh5-iF-Fpg" firstAttribute="centerY" secondItem="jti-Z0-5ro" secondAttribute="centerY" id="yGh-IA-17R"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="QMN-8u-iQc"/>
+                    <connections>
+                        <outlet property="indicatorView" destination="qh5-iF-Fpg" id="vQM-Ld-xKl"/>
+                        <outlet property="textView" destination="hxd-Fr-bgk" id="HNT-he-Cdn"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="iWk-wS-NLz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="4153" y="717"/>
         </scene>
     </scenes>
 </document>

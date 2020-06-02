@@ -7,5 +7,5 @@ target 'FFmpegTutorial-iOS' do
   pod 'FFmpegTutorial', :path => '../../'
   puts "will install MRFFmpeg#{FF_3_4_7}"
   # pod 'MRFFmpegPod', :podspec => "https://raw.githubusercontent.com/debugly/MRFFToolChainPod/master/MRFFmpeg#{FF_3_4_7}.podspec"
-  pod 'MRFFmpegPod', :podspec => "https://qipai.56.com/dev/ifox/ffpods/MRFFmpeg#{FF_3_4_7}.podspec"
+  pod 'MRFFmpegPod', :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg#{FF_3_4_7}.podspec"
 end

@@ -93,7 +93,7 @@ Pod installation complete! There are 2 dependencies from the Podfile and 2 total
 
 成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
 
-由于 Github 在国内不稳定，pod install 的过程需要将几十兆的 FFmpeg 库下载下来，~~安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决~~,最新代码版本不再从 github 下载，放到了测试机上，安装速度非常快！
+由于 Github 在国内不稳定，pod install 的过程需要将几十兆的 FFmpeg 库下载下来，~~安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决~~,最新代码已经不再从 github 下载，放到了测试机上，安装速度非常快！
 
 ## Ends
 
