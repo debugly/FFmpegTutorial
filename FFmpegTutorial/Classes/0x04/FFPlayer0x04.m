@@ -6,7 +6,7 @@
 //
 
 #import "FFPlayer0x04.h"
-#import "MRRWeakProxy.h"
+#import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 
@@ -40,15 +40,15 @@
 }
 
 ///读包线程
-@property (nonatomic, strong) NSThread *readThread;
+@property (nonatomic, strong) MRThread *readThread;
 
 ///视频解码线程
-@property (nonatomic, strong) NSThread *videoDecodeThread;
+@property (nonatomic, strong) MRThread *videoDecodeThread;
 
 ///音频解码线程
-@property (nonatomic, strong) NSThread *audioDecodeThread;
+@property (nonatomic, strong) MRThread *audioDecodeThread;
 
-@property (nonatomic, assign) int abort_request;
+@property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
 @property (nonatomic, copy) dispatch_block_t onPacketBufferFullBlock;
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
@@ -69,18 +69,22 @@ static int decode_interrupt_cb(void *ctx)
 {
     ///避免重复stop做无用功
     if (self.readThread) {
-        [self.readThread cancel];
-        self.readThread = nil;
-        
-        [self.audioDecodeThread cancel];
-        self.audioDecodeThread = nil;
-           
-        [self.videoDecodeThread cancel];
-        self.videoDecodeThread = nil;
         
         self.abort_request = 1;
         audioq.abort_request = 1;
         videoq.abort_request = 1;
+        
+        [self.readThread cancel];
+        [self.readThread join];
+        self.readThread = nil;
+        
+        [self.audioDecodeThread cancel];
+        [self.audioDecodeThread join];
+        self.audioDecodeThread = nil;
+           
+        [self.videoDecodeThread cancel];
+        [self.videoDecodeThread join];
+        self.videoDecodeThread = nil;
         
         packet_queue_destroy(&audioq);
         packet_queue_destroy(&videoq);
@@ -106,10 +110,8 @@ static int decode_interrupt_cb(void *ctx)
     ///初始化ffmpeg相关函数
     init_ffmpeg_once();
     
-    ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
-    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    ///不允许重复准备
-    self.readThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(readPacketsFunc) object:nil];
+    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
+    self.readThread.name = @"readPackets";
 }
 
 #pragma mark - 打开解码器创建解码线程
@@ -191,8 +193,8 @@ static int decode_interrupt_cb(void *ctx)
     ///循环读包
     for (;;) {
         
-        ///调用了stop方法，线程被标记为取消了，则不再读包
-        if (self.abort_request || [[NSThread currentThread] isCancelled]) {
+        ///调用了stop方法，则不再读包
+        if (self.abort_request) {
             break;
         }
         
@@ -288,18 +290,9 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)readPacketsFunc
 {
-    ///取消了就直接返回，不再处理
-    if ([[NSThread currentThread] isCancelled]) {
-        return;
-    }
-    
     NSParameterAssert(self.contentPath);
-    /// iOS 子线程需要显式创建 autoreleasepool 以释放 autorelease 对象
-    @autoreleasepool {
-        
-        [[NSThread currentThread] setName:@"readPacket"];
-        
-        if (![self.contentPath hasPrefix:@"/"]) {
+    
+    if (![self.contentPath hasPrefix:@"/"]) {
             _init_net_work_once();
         }
         
@@ -396,7 +389,6 @@ static int decode_interrupt_cb(void *ctx)
         [self readPacketLoop:formatCtx];
         //读包线程结束了，销毁下相关结构体
         avformat_close_input(&formatCtx);
-    }
 }
 
 #pragma mark - 音视频通用解码方法
@@ -449,59 +441,49 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)prepareAudioDecodeThread
 {
-    ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
-    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    ///不允许重复准备
-    self.audioDecodeThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(audioDecodeFunc) object:nil];
+    self.audioDecodeThread = [[MRThread alloc] initWithTarget:self selector:@selector(audioDecodeFunc) object:nil];
+    self.audioDecodeThread.name = @"audioDecode";
 }
 
 #pragma mark - 音频解码线程
 
 - (void)audioDecodeFunc
 {
-    if ([[NSThread currentThread] isCancelled]) {
-       return;
+    //创建一个frame就行了，可以复用
+    AVFrame *frame = av_frame_alloc();
+    if (!frame) {
+        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
+        return;
     }
-       
-    @autoreleasepool {
-        [[NSThread currentThread] setName:@"audio_decode"];
-        
-        //创建一个frame就行了，可以复用
-        AVFrame *frame = av_frame_alloc();
-        if (!frame) {
-            av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
-            return;
-        }
-        do {
-            //使用通用方法解码音频队列
-            int got_frame = [self decoder_decode_frame:audioCodecCtx queue:&audioq frame:frame];
-            //解码出错
-            if (got_frame < 0) {
-                if (got_frame == AVERROR_EOF) {
-                    av_log(NULL, AV_LOG_ERROR, "decode frame eof.");
-                } else if (self.abort_request){
-                    av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
-                } else {
-                    av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
-                }
-                break;
+    do {
+        //使用通用方法解码音频队列
+        int got_frame = [self decoder_decode_frame:audioCodecCtx queue:&audioq frame:frame];
+        //解码出错
+        if (got_frame < 0) {
+            if (got_frame == AVERROR_EOF) {
+                av_log(NULL, AV_LOG_ERROR, "decode frame eof.");
+            } else if (self.abort_request){
+                av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
             } else {
-                //正常解码
-                av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
-                sleep(1);
+                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
             }
-        } while (1);
-        
-        //释放内存
-        if (frame) {
-            av_frame_free(&frame);
+            break;
+        } else {
+            //正常解码
+            av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
+            sleep(1);
         }
-        
-        //释放解码器上下文
-        if (audioCodecCtx) {
-            avcodec_free_context(&audioCodecCtx);
-            audioCodecCtx = NULL;
-        }
+    } while (1);
+    
+    //释放内存
+    if (frame) {
+        av_frame_free(&frame);
+    }
+    
+    //释放解码器上下文
+    if (audioCodecCtx) {
+        avcodec_free_context(&audioCodecCtx);
+        audioCodecCtx = NULL;
     }
 }
 
@@ -509,60 +491,50 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)prepareVideoDecodeThread
 {
-    ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
-    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    ///不允许重复准备
-    self.videoDecodeThread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(videoDecodeFunc) object:nil];
+    self.videoDecodeThread = [[MRThread alloc] initWithTarget:self selector:@selector(videoDecodeFunc) object:nil];
+    self.videoDecodeThread.name = @"videoDecode";
 }
 
 #pragma mark - 视频解码线程
 
 - (void)videoDecodeFunc
 {
-    if ([[NSThread currentThread] isCancelled]) {
-       return;
+    //创建一个frame就行了，可以复用
+    AVFrame *frame = av_frame_alloc();
+    if (!frame) {
+        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.\n");
+        return;
     }
-       
-    @autoreleasepool {
-        [[NSThread currentThread] setName:@"video_decode"];
-        
-        //创建一个frame就行了，可以复用
-        AVFrame *frame = av_frame_alloc();
-        if (!frame) {
-            av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.\n");
-            return;
-        }
-        do {
-            //使用通用方法解码音频队列
-            int got_frame = [self decoder_decode_frame:videoCodecCtx queue:&videoq frame:frame];
-            //解码出错
-            if (got_frame < 0) {
-                if (got_frame == AVERROR_EOF) {
-                    av_log(NULL, AV_LOG_ERROR, "decode frame eof.\n");
-                } else if (self.abort_request){
-                    av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
-                } else {
-                    av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
-                }
-                break;
+    do {
+        //使用通用方法解码音频队列
+        int got_frame = [self decoder_decode_frame:videoCodecCtx queue:&videoq frame:frame];
+        //解码出错
+        if (got_frame < 0) {
+            if (got_frame == AVERROR_EOF) {
+                av_log(NULL, AV_LOG_ERROR, "decode frame eof.\n");
+            } else if (self.abort_request){
+                av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
             } else {
-                //正常解码
-                av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
-                
-                sleep(2);
+                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
             }
-        } while (1);
-        
-        //释放内存
-        if (frame) {
-            av_frame_free(&frame);
+            break;
+        } else {
+            //正常解码
+            av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
+            
+            sleep(2);
         }
-        
-        //释放解码器上下文
-        if (videoCodecCtx) {
-            avcodec_free_context(&videoCodecCtx);
-            videoCodecCtx = NULL;
-        }
+    } while (1);
+    
+    //释放内存
+    if (frame) {
+        av_frame_free(&frame);
+    }
+    
+    //释放解码器上下文
+    if (videoCodecCtx) {
+        avcodec_free_context(&videoCodecCtx);
+        videoCodecCtx = NULL;
     }
 }
 

@@ -22,6 +22,7 @@
 
 - 0x01：[常见封装格式介绍](md/illiteracy/0x01.md)
 - 0x02：[播放器总体架构设计](md/illiteracy/0x02.md)
+- 0x03：[封装 NSThread，支持 join](md/illiteracy/0x03.md)
 
 # Tutorial
 
