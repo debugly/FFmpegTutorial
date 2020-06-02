@@ -75,14 +75,15 @@ static int decode_interrupt_cb(void *ctx)
         videoq.abort_request = 1;
         
         [self.readThread cancel];
+        [self.audioDecodeThread cancel];
+        [self.videoDecodeThread cancel];
+        
         [self.readThread join];
         self.readThread = nil;
         
-        [self.audioDecodeThread cancel];
         [self.audioDecodeThread join];
         self.audioDecodeThread = nil;
            
-        [self.videoDecodeThread cancel];
         [self.videoDecodeThread join];
         self.videoDecodeThread = nil;
         
@@ -452,7 +453,7 @@ static int decode_interrupt_cb(void *ctx)
     //创建一个frame就行了，可以复用
     AVFrame *frame = av_frame_alloc();
     if (!frame) {
-        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
+        av_log(NULL, AV_LOG_ERROR, "audioDecoder can't alloc a frame.");
         return;
     }
     do {
@@ -461,11 +462,11 @@ static int decode_interrupt_cb(void *ctx)
         //解码出错
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
-                av_log(NULL, AV_LOG_ERROR, "decode frame eof.");
+                av_log(NULL, AV_LOG_ERROR, "audioDecoder eof.\n");
             } else if (self.abort_request){
-                av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
+                av_log(NULL, AV_LOG_ERROR, "audioDecoder cancel.\n");
             } else {
-                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
+                av_log(NULL, AV_LOG_ERROR, "audioDecoder decode err %d.\n",got_frame);
             }
             break;
         } else {
@@ -502,7 +503,7 @@ static int decode_interrupt_cb(void *ctx)
     //创建一个frame就行了，可以复用
     AVFrame *frame = av_frame_alloc();
     if (!frame) {
-        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.\n");
+        av_log(NULL, AV_LOG_ERROR, "videoDecoder can't alloc a frame.\n");
         return;
     }
     do {
@@ -511,11 +512,11 @@ static int decode_interrupt_cb(void *ctx)
         //解码出错
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
-                av_log(NULL, AV_LOG_ERROR, "decode frame eof.\n");
+                av_log(NULL, AV_LOG_ERROR, "videoDecoder eof.\n");
             } else if (self.abort_request){
-                av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
+                av_log(NULL, AV_LOG_ERROR, "videoDecoder cancel.\n");
             } else {
-                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
+                av_log(NULL, AV_LOG_ERROR, "videoDecoder decode err %d.\n",got_frame);
             }
             break;
         } else {

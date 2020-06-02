@@ -10,168 +10,10 @@
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
-
+#import "FFDecoder0x06.h"
 #include <libavutil/pixdesc.h>
 
-@class FFDecoder0x06;
-@protocol FFDecoderDelegate0x06 <NSObject>
-
-- (int)decoder:(FFDecoder0x06 *)decoder fetchPacket:(AVPacket * )packet;
-
-@end
-
-@interface FFDecoder0x06 : NSObject
-
-@property (atomic, assign) int streamIdx;
-@property (nonatomic, assign) AVStream * stream;
-@property (nonatomic, assign) AVCodecContext * avctx;
-///解码线程
-@property (nonatomic, strong) MRThread * workThread;
-@property (nonatomic, copy) NSString * name;
-@property (atomic, assign) int abort_request;
-
-@property (nonatomic, weak) id <FFDecoderDelegate0x06> delegate;
-
-//开始解码
-- (void)start;
-//取消解码
-- (void)cancel;
-//解码前的准备
-- (void)prepare;
-
-@end
-
-@implementation FFDecoder0x06
-
-- (void)dealloc
-{
-    //释放解码器上下文
-    if (_avctx) {
-        avcodec_free_context(&_avctx);
-        _avctx = NULL;
-    }
-}
-
-- (instancetype)init
-{
-    self = [super init];
-    if (self) {
-        _streamIdx = -1;
-    }
-    return self;
-}
-
-- (void)start
-{
-    if (self.workThread) {
-        self.workThread.name = self.name;
-        [self.workThread start];
-    }
-}
-
-- (void)cancel
-{
-    if (self.workThread) {
-        [self.workThread cancel];
-        [self.workThread join];
-        self.workThread = nil;
-    }
-}
-
-- (void)prepare
-{
-    self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
-}
-
-#pragma mark - 音视频通用解码方法
-
-- (int)decodeAFrame:(AVCodecContext *)avctx result:(AVFrame*)frame
-{
-    for (;;) {
-        int ret;
-        do {
-            //停止时，直接返回
-            if (self.abort_request){
-                return -1;
-            }
-            
-            //先尝试接收帧
-            ret = avcodec_receive_frame(avctx, frame);
-            
-            //成功接收到一个解码帧
-            if (ret >= 0){
-                return 1;
-            }
-            
-            //结束标志，此次并没有获取到frame！
-            if (ret == AVERROR_EOF) {
-                avcodec_flush_buffers(avctx);
-                return AVERROR_EOF;
-            }
-            
-        } while (ret != AVERROR(EAGAIN)/*需要更多packet数据*/);
-        
-        AVPacket pkt;
-        
-        //[阻塞等待]直到获取一个packet
-        int r = -1;
-        if ([self.delegate respondsToSelector:@selector(decoder:fetchPacket:)]) {
-            r = [self.delegate decoder:self fetchPacket:&pkt];
-        }
-        
-        if (r < 0)
-        {
-            return -1;
-        }
-        
-        //发送给解码器去解码
-        if (avcodec_send_packet(avctx, &pkt) == AVERROR(EAGAIN)) {
-            av_log(avctx, AV_LOG_ERROR, "Receive_frame and send_packet both returned EAGAIN, which is an API violation.\n");
-        }
-        //释放内存
-        av_packet_unref(&pkt);
-    }
-}
-
-#pragma mark - 解码线程
-
-- (void)workFunc
-{
-    //创建一个frame就行了，可以复用
-    AVFrame *frame = av_frame_alloc();
-    if (!frame) {
-        av_log(NULL, AV_LOG_ERROR, "can't alloc a frame.");
-        return;
-    }
-    do {
-        //使用通用方法解码音频队列
-        int got_frame = [self decodeAFrame:self.avctx result:frame];
-        //解码出错
-        if (got_frame < 0) {
-            if (got_frame == AVERROR_EOF) {
-                av_log(NULL, AV_LOG_ERROR, "decode frame eof.");
-            } else if (self.abort_request){
-                av_log(NULL, AV_LOG_ERROR, "cancel decoder.");
-            } else {
-                av_log(NULL, AV_LOG_ERROR, "can't decode frame.");
-            }
-            break;
-        } else {
-            //正常解码
-            av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
-            sleep(1);
-        }
-    } while (1);
-    
-    //释放内存
-    if (frame) {
-        av_frame_free(&frame);
-    }
-}
-
-@end
-
-@interface  FFPlayer0x06 ()<FFDecoderDelegate0x06>
+@interface FFPlayer0x06 ()<FFDecoderDelegate0x06>
 {
     //解码前的音频包缓存队列
     PacketQueue audioq;
@@ -226,16 +68,22 @@ static int decode_interrupt_cb(void *ctx)
         sampq.abort_request = 1;
         pictq.abort_request = 1;
         
+        [self.audioDecoder cancel];
+        [self.videoDecoder cancel];
         [self.readThread cancel];
+        [self.rendererThread cancel];
+        
+        [self.audioDecoder join];
+        self.audioDecoder = nil;
+        
+        [self.videoDecoder join];
+        self.videoDecoder = nil;
+        
         [self.readThread join];
         self.readThread = nil;
         
-        [self.rendererThread cancel];
         [self.rendererThread join];
         self.rendererThread = nil;
-        
-        [self.audioDecoder cancel];
-        [self.videoDecoder cancel];
         
         packet_queue_destroy(&audioq);
         packet_queue_destroy(&videoq);
@@ -275,67 +123,16 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 打开解码器创建解码线程
 
-- (int)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (FFDecoder0x06 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
-    if (ic == NULL) {
-        return -1;
+    FFDecoder0x06 *decoder = [FFDecoder0x06 new];
+    decoder.ic = ic;
+    decoder.streamIdx = idx;
+    if ([decoder open] == 0) {
+        return decoder;
+    } else {
+        return nil;
     }
-    
-    if (idx < 0 || idx >= ic->nb_streams){
-        return -1;
-    }
-    
-    AVStream *stream = ic->streams[idx];
-    
-    //创建解码器上下文
-    AVCodecContext *avctx = avcodec_alloc_context3(NULL);
-    if (!avctx) {
-        return AVERROR(ENOMEM);
-    }
-    
-    //填充下相关参数
-    if (avcodec_parameters_to_context(avctx, stream->codecpar)) {
-        avcodec_free_context(&avctx);
-        return -1;
-    }
-    
-    av_codec_set_pkt_timebase(avctx, stream->time_base);
-    
-    //查找解码器
-    AVCodec *codec = avcodec_find_decoder(avctx->codec_id);
-    if (!codec){
-        avcodec_free_context(&avctx);
-        return -1;
-    }
-    
-    avctx->codec_id = codec->id;
-    
-    //打开解码器
-    if (avcodec_open2(avctx, codec, NULL)) {
-        avcodec_free_context(&avctx);
-        return -1;
-    }
-    
-    stream->discard = AVDISCARD_DEFAULT;
-    
-    //根据流类型，准备相关线程
-    switch (avctx->codec_type) {
-        case AVMEDIA_TYPE_AUDIO:
-        {
-            //创建音频解码器
-            [self prepareAudioDecoder:stream->index stream:stream avctx:avctx];
-        }
-            break;
-        case AVMEDIA_TYPE_VIDEO:
-        {
-            //创建视频解码器
-           [self prepareVideoDecoder:stream->index stream:stream avctx:avctx];
-        }
-            break;
-        default:
-            break;
-    }
-    return 0;
 }
 
 #pragma -mark 读包线程
@@ -507,9 +304,15 @@ static int decode_interrupt_cb(void *ctx)
         memset(st_index, -1, sizeof(st_index));
         [self findBestStreams:formatCtx result:&st_index];
         
-        //打开解码器，创建解码线程
+        //打开音频解码器，创建解码线程
         if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
-            if([self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]]){
+            
+            self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
+            
+            if(self.audioDecoder){
+                self.audioDecoder.delegate = self;
+                self.audioDecoder.name = @"audioDecoder";
+            } else {
                 av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
                 self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
                 [self performErrorResultOnMainThread];
@@ -518,9 +321,14 @@ static int decode_interrupt_cb(void *ctx)
                 return;
             }
         }
-        
+    
+        //打开视频解码器，创建解码线程
         if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
-            if([self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]]){
+            self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+            if(self.videoDecoder){
+                self.videoDecoder.delegate = self;
+                self.videoDecoder.name = @"videoDecoder";
+            } else {
                 av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
                 self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
                 [self performErrorResultOnMainThread];
@@ -545,7 +353,7 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - FFDecoderDelegate0x06
 
-- (int)decoder:(FFDecoder0x06 *)decoder fetchPacket:(AVPacket *)pkt
+- (int)decoder:(FFDecoder0x06 *)decoder wantAPacket:(AVPacket *)pkt
 {
     if (decoder == self.audioDecoder) {
         return packet_queue_get(&audioq, pkt, 1);
@@ -556,30 +364,22 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-#pragma mark - 音视频解码器
-
-- (void)prepareAudioDecoder:(int)idx stream:(AVStream *)stream avctx:(AVCodecContext *)avctx
+- (void)decoder:(FFDecoder0x06 *)decoder reveivedAFrame:(AVFrame *)frame
 {
-    FFDecoder0x06 *decoder = [FFDecoder0x06 new];
-    decoder.avctx = avctx;
-    decoder.stream = stream;
-    decoder.streamIdx = idx;
-    decoder.delegate = self;
-    decoder.name = @"audioDecoder";
-    [decoder prepare];
-    self.audioDecoder = decoder;
-}
-
-- (void)prepareVideoDecoder:(int)idx stream:(AVStream *)stream avctx:(AVCodecContext *)avctx
-{
-    FFDecoder0x06 *decoder = [FFDecoder0x06 new];
-    decoder.avctx = avctx;
-    decoder.stream = stream;
-    decoder.streamIdx = idx;
-    decoder.delegate = self;
-    decoder.name = @"videoDecoder";
-    [decoder prepare];
-    self.videoDecoder = decoder;
+    FrameQueue *fq = NULL;
+    if (decoder == self.audioDecoder) {
+        fq = &sampq;
+    } else if (decoder == self.videoDecoder) {
+        fq = &pictq;
+    }
+    
+    if (fq != NULL) {
+        Frame *af = NULL;
+        if (NULL != (af = frame_queue_peek_writable(fq))) {
+            av_frame_ref(af->frame, frame);
+            frame_queue_push(fq);
+        }
+    }
 }
 
 #pragma mark - RendererThread
