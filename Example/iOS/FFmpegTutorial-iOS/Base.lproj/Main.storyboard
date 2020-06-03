@@ -230,6 +230,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="ZDJ-tD-zUw" kind="show" id="Nwv-FR-JPb"/>
+                                        </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="ZNi-xd-4v9" detailTextLabel="iDg-Jx-LJW" style="IBUITableViewCellStyleValue1" id="Fy7-dv-nqV">
                                         <rect key="frame" x="0.0" y="376" width="568" height="43.5"/>
@@ -291,7 +294,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Luy-Dm-4nJ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-364" y="330"/>
+            <point key="canvasLocation" x="-632" y="-204"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="twm-OI-uvj">
@@ -307,7 +310,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4ev-Yj-ZnQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1065" y="476"/>
+            <point key="canvasLocation" x="-1709" y="-204"/>
         </scene>
         <!--0x01 View Controller-->
         <scene sceneID="wQg-tq-qST">
@@ -387,7 +390,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wXZ-hg-miQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1017" y="-1187"/>
+            <point key="canvasLocation" x="521" y="-823"/>
         </scene>
         <!--0x03 View Controller-->
         <scene sceneID="aTn-Di-vXQ">
@@ -448,7 +451,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="nEA-uR-CXj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1894" y="-1015"/>
+            <point key="canvasLocation" x="701" y="-131"/>
         </scene>
         <!--0x04 View Controller-->
         <scene sceneID="QBO-JI-G8n">
@@ -491,7 +494,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="5HL-NF-gDo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2750" y="-782"/>
+            <point key="canvasLocation" x="1318" y="231"/>
         </scene>
         <!--0x05 View Controller-->
         <scene sceneID="gr5-RK-c6t">
@@ -534,7 +537,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NkW-sU-aTC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3401" y="-378"/>
+            <point key="canvasLocation" x="1369" y="1089"/>
         </scene>
         <!--0x06 View Controller-->
         <scene sceneID="NPd-Yq-KcE">
@@ -577,7 +580,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="0nT-bf-Jcg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4084" y="54"/>
+            <point key="canvasLocation" x="735" y="1316"/>
         </scene>
         <!--0x07 View Controller-->
         <scene sceneID="ODo-hZ-TtT">
@@ -631,7 +634,61 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iWk-wS-NLz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="4152.8000000000002" y="716.49175412293857"/>
+            <point key="canvasLocation" x="80" y="1314"/>
+        </scene>
+        <!--0x08 View Controller-->
+        <scene sceneID="AzJ-rX-thJ">
+            <objects>
+                <viewController id="ZDJ-tD-zUw" customClass="MR0x08ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cuI-4Z-lrl"/>
+                        <viewControllerLayoutGuide type="bottom" id="GeS-44-gZR"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="SMi-21-Bi5">
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="knj-h3-ygV">
+                                <rect key="frame" x="360" y="0.0" width="188" height="320"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="7lL-zW-Ado">
+                                <rect key="frame" x="265.5" y="141.5" width="37" height="37"/>
+                            </activityIndicatorView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NHN-DX-aem">
+                                <rect key="frame" x="0.0" y="32" width="360" height="288"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="NHN-DX-aem" secondAttribute="height" multiplier="16:9" priority="750" id="6kH-6I-43J"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="clL-p1-bd4"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="NHN-DX-aem" firstAttribute="leading" secondItem="SMi-21-Bi5" secondAttribute="leading" id="2Bg-Yz-sMV"/>
+                            <constraint firstItem="7lL-zW-Ado" firstAttribute="centerY" secondItem="SMi-21-Bi5" secondAttribute="centerY" id="H6e-3u-ch0"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="knj-h3-ygV" secondAttribute="trailing" id="SPz-DQ-9Fw"/>
+                            <constraint firstItem="knj-h3-ygV" firstAttribute="bottom" secondItem="GeS-44-gZR" secondAttribute="top" id="W9J-pF-xk5"/>
+                            <constraint firstItem="NHN-DX-aem" firstAttribute="top" secondItem="cuI-4Z-lrl" secondAttribute="bottom" id="Y15-YQ-pqQ"/>
+                            <constraint firstItem="7lL-zW-Ado" firstAttribute="centerX" secondItem="SMi-21-Bi5" secondAttribute="centerX" id="eqb-5p-V3L"/>
+                            <constraint firstItem="knj-h3-ygV" firstAttribute="leading" secondItem="NHN-DX-aem" secondAttribute="trailing" id="lYl-fe-2tF"/>
+                            <constraint firstAttribute="bottom" secondItem="NHN-DX-aem" secondAttribute="bottom" id="r7H-CH-je8"/>
+                            <constraint firstItem="knj-h3-ygV" firstAttribute="top" secondItem="cuI-4Z-lrl" secondAttribute="bottom" constant="-32" id="rHk-gC-HVY"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="Tb1-um-jB5"/>
+                    <connections>
+                        <outlet property="imgView" destination="NHN-DX-aem" id="b1V-8O-Szr"/>
+                        <outlet property="indicatorView" destination="7lL-zW-Ado" id="kNM-gM-rFS"/>
+                        <outlet property="textView" destination="knj-h3-ygV" id="emJ-dY-gwr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="baa-w0-D8q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-583" y="1376"/>
         </scene>
     </scenes>
 </document>

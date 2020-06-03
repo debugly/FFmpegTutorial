@@ -28,6 +28,7 @@
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
 		DD5BA0F724865E1C0093D46C /* MR0x07ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5BA0F524865E1C0093D46C /* MR0x07ViewController.m */; };
 		DD7F1A71247683EC00A98553 /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */; };
+		DD7FAA932487EDE800FAD531 /* MR0x08ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7FAA912487EDE800FAD531 /* MR0x08ViewController.m */; };
 		DDDFD49E2456ECFF00C02D8E /* MR0x03ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */; };
 		DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE702592454574A00DA8A08 /* MR0x01ViewController.m */; };
 		DDE7025F2454577300DA8A08 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE7025E2454577300DA8A08 /* MR0x02ViewController.m */; };
@@ -44,8 +45,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		132EB98194A20AAF547D7732 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
-		3F24D6C32421181E9078111C /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* FFmpegTutotial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpegTutotial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -63,7 +62,6 @@
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
-		61FDA0CE27AAB9CC0078C266 /* FFmpegTutorial.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = file; name = FFmpegTutorial.podspec; path = ../FFmpegTutorial.podspec; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.release.xcconfig"; sourceTree = "<group>"; };
@@ -80,6 +78,8 @@
 		DD5BA0F624865E1C0093D46C /* MR0x07ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x07ViewController.h; sourceTree = "<group>"; };
 		DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x06ViewController.m; sourceTree = "<group>"; };
 		DD7F1A70247683EC00A98553 /* MR0x06ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x06ViewController.h; sourceTree = "<group>"; };
+		DD7FAA912487EDE800FAD531 /* MR0x08ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x08ViewController.m; sourceTree = "<group>"; };
+		DD7FAA922487EDE800FAD531 /* MR0x08ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x08ViewController.h; sourceTree = "<group>"; };
 		DDDFD49C2456ECFF00C02D8E /* MR0x03ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x03ViewController.h; sourceTree = "<group>"; };
 		DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x03ViewController.m; sourceTree = "<group>"; };
 		DDE702592454574A00DA8A08 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
@@ -117,7 +117,6 @@
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* FFmpegTutorial-iOS */,
 				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
@@ -150,6 +149,7 @@
 		6003F593195388D20070C39A /* FFmpegTutorial-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				DD7FAA902487EDE800FAD531 /* 0x08 */,
 				DD5BA0F424865E1C0093D46C /* 0x07 */,
 				DD7F1A6E247683EC00A98553 /* 0x06 */,
 				DD0CE9F1246CEFB0004E1E7C /* 0x05 */,
@@ -201,16 +201,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		60FF7A9C1954A5C5007DD14C /* Podspec Metadata */ = {
-			isa = PBXGroup;
-			children = (
-				61FDA0CE27AAB9CC0078C266 /* FFmpegTutorial.podspec */,
-				3F24D6C32421181E9078111C /* README.md */,
-				132EB98194A20AAF547D7732 /* LICENSE */,
-			);
-			name = "Podspec Metadata";
-			sourceTree = "<group>";
-		};
 		CF60E7891F87B97CC29DD34F /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -254,6 +244,15 @@
 				DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */,
 			);
 			path = 0x06;
+			sourceTree = "<group>";
+		};
+		DD7FAA902487EDE800FAD531 /* 0x08 */ = {
+			isa = PBXGroup;
+			children = (
+				DD7FAA912487EDE800FAD531 /* MR0x08ViewController.m */,
+				DD7FAA922487EDE800FAD531 /* MR0x08ViewController.h */,
+			);
+			path = 0x08;
 			sourceTree = "<group>";
 		};
 		DDDFD49B2456ECFF00C02D8E /* 0x03 */ = {
@@ -422,6 +421,7 @@
 				DD7F1A71247683EC00A98553 /* MR0x06ViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DDE7025F2454577300DA8A08 /* MR0x02ViewController.m in Sources */,
+				DD7FAA932487EDE800FAD531 /* MR0x08ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
