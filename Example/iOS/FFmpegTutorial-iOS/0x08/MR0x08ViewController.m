@@ -9,13 +9,17 @@
 #import "MR0x08ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x08.h>
 #import <FFmpegTutorial/MRRWeakProxy.h>
+#import <GLKit/GLKit.h>
 
 @interface MR0x08ViewController ()<UITextViewDelegate,FFPlayer0x08Delegate>
 
 @property (nonatomic, strong) FFPlayer0x08 *player;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
-@property (weak, nonatomic) IBOutlet UIImageView *imgView;
+
+@property (weak, nonatomic) IBOutlet GLKView *glView;
+@property (nonatomic, strong) EAGLContext *glContext;
+@property (nonatomic, strong) CIContext *ciContext;
 
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
@@ -56,7 +60,7 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
@@ -68,10 +72,26 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(UIImage *)img
+- (void)reveiveFrameToRenderer:(CIImage *)ciimage
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.imgView.image = img;
+        
+        if (!self.glContext) {
+            self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+            self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
+            [self.glView setContext:self.glContext];
+        }
+        
+        if (self.glContext != [EAGLContext currentContext]){
+            [EAGLContext setCurrentContext:self.glContext];
+        }
+        
+        [self.glView bindDrawable];
+        CGFloat scale = [[UIScreen mainScreen]scale];
+        
+        [self.ciContext drawImage:ciimage inRect:CGRectMake(0, 0, self.glView.bounds.size.width*scale, self.glView.bounds.size.height*scale) fromRect:ciimage.extent];
+        
+        [self.glView display];
     });
 }
 

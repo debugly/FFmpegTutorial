@@ -649,7 +649,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="knj-h3-ygV">
-                                <rect key="frame" x="360" y="0.0" width="188" height="320"/>
+                                <rect key="frame" x="380" y="32" width="168" height="288"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <color key="textColor" systemColor="labelColor" cocoaTouchSystemColor="darkTextColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -658,30 +658,30 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="7lL-zW-Ado">
                                 <rect key="frame" x="265.5" y="141.5" width="37" height="37"/>
                             </activityIndicatorView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="NHN-DX-aem">
-                                <rect key="frame" x="0.0" y="32" width="360" height="288"/>
+                            <glkView opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" enableSetNeedsDisplay="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ugg-76-tXa">
+                                <rect key="frame" x="20" y="32" width="360" height="288"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" secondItem="NHN-DX-aem" secondAttribute="height" multiplier="16:9" priority="750" id="6kH-6I-43J"/>
-                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="clL-p1-bd4"/>
+                                    <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="9GX-yt-5ti"/>
+                                    <constraint firstAttribute="width" secondItem="ugg-76-tXa" secondAttribute="height" multiplier="16:9" priority="750" id="ire-Gx-xey"/>
                                 </constraints>
-                            </imageView>
+                            </glkView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstItem="NHN-DX-aem" firstAttribute="leading" secondItem="SMi-21-Bi5" secondAttribute="leading" id="2Bg-Yz-sMV"/>
+                            <constraint firstItem="GeS-44-gZR" firstAttribute="top" secondItem="ugg-76-tXa" secondAttribute="bottom" id="ADF-Bl-7nj"/>
                             <constraint firstItem="7lL-zW-Ado" firstAttribute="centerY" secondItem="SMi-21-Bi5" secondAttribute="centerY" id="H6e-3u-ch0"/>
+                            <constraint firstItem="knj-h3-ygV" firstAttribute="leading" secondItem="ugg-76-tXa" secondAttribute="trailing" id="KLi-Dq-aP3"/>
                             <constraint firstAttribute="trailingMargin" secondItem="knj-h3-ygV" secondAttribute="trailing" id="SPz-DQ-9Fw"/>
+                            <constraint firstItem="ugg-76-tXa" firstAttribute="leading" secondItem="SMi-21-Bi5" secondAttribute="leadingMargin" id="Vmr-62-3ZD"/>
                             <constraint firstItem="knj-h3-ygV" firstAttribute="bottom" secondItem="GeS-44-gZR" secondAttribute="top" id="W9J-pF-xk5"/>
-                            <constraint firstItem="NHN-DX-aem" firstAttribute="top" secondItem="cuI-4Z-lrl" secondAttribute="bottom" id="Y15-YQ-pqQ"/>
                             <constraint firstItem="7lL-zW-Ado" firstAttribute="centerX" secondItem="SMi-21-Bi5" secondAttribute="centerX" id="eqb-5p-V3L"/>
-                            <constraint firstItem="knj-h3-ygV" firstAttribute="leading" secondItem="NHN-DX-aem" secondAttribute="trailing" id="lYl-fe-2tF"/>
-                            <constraint firstAttribute="bottom" secondItem="NHN-DX-aem" secondAttribute="bottom" id="r7H-CH-je8"/>
-                            <constraint firstItem="knj-h3-ygV" firstAttribute="top" secondItem="cuI-4Z-lrl" secondAttribute="bottom" constant="-32" id="rHk-gC-HVY"/>
+                            <constraint firstItem="ugg-76-tXa" firstAttribute="top" secondItem="cuI-4Z-lrl" secondAttribute="bottom" id="kSh-ju-xbE"/>
+                            <constraint firstItem="knj-h3-ygV" firstAttribute="top" secondItem="cuI-4Z-lrl" secondAttribute="bottom" id="rHk-gC-HVY"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="Tb1-um-jB5"/>
                     <connections>
-                        <outlet property="imgView" destination="NHN-DX-aem" id="b1V-8O-Szr"/>
+                        <outlet property="glView" destination="ugg-76-tXa" id="1qR-cL-jhI"/>
                         <outlet property="indicatorView" destination="7lL-zW-Ado" id="kNM-gM-rFS"/>
                         <outlet property="textView" destination="knj-h3-ygV" id="emJ-dY-gwr"/>
                     </connections>

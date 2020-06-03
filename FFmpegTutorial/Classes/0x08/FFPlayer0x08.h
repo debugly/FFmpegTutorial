@@ -9,11 +9,11 @@
 #import "FFPlayerHeader.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
+@class CIImage;
 @protocol FFPlayer0x08Delegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(UIImage *)img;
+- (void)reveiveFrameToRenderer:(CIImage *)img;
 
 @end
 

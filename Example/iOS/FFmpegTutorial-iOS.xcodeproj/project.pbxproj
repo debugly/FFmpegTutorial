@@ -249,8 +249,8 @@
 		DD7FAA902487EDE800FAD531 /* 0x08 */ = {
 			isa = PBXGroup;
 			children = (
-				DD7FAA912487EDE800FAD531 /* MR0x08ViewController.m */,
 				DD7FAA922487EDE800FAD531 /* MR0x08ViewController.h */,
+				DD7FAA912487EDE800FAD531 /* MR0x08ViewController.m */,
 			);
 			path = 0x08;
 			sourceTree = "<group>";

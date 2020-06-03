@@ -466,8 +466,12 @@ static int decode_interrupt_cb(void *ctx)
             Frame *vp = frame_queue_peek(&pictq);
             av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
             if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
-                UIImage *img = [MRConvertUtil imageFromRGB24Frame:vp->frame];
-                [self.delegate reveiveFrameToRenderer:img];
+                CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:vp->frame];
+                CIImage *ciImage = nil;
+                if (pixelBuffer) {
+                    ciImage = [CIImage imageWithCVPixelBuffer:pixelBuffer];
+                }
+                [self.delegate reveiveFrameToRenderer:ciImage];
             }
             frame_queue_pop(&pictq);
         }
