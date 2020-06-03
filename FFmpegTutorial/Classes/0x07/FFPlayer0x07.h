@@ -10,14 +10,22 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+@protocol FFPlayer0x07Delegate <NSObject>
+
+@optional
+- (void)reveiveFrameToRenderer:(UIImage *)img;
+
+@end
+
 @interface FFPlayer0x07 : NSObject
 
 ///播放地址
 @property (nonatomic, copy) NSString *contentPath;
 ///code is FFPlayerErrorCode enum.
 @property (nonatomic, strong, nullable) NSError *error;
+///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
-
+@property (nonatomic, weak) id <FFPlayer0x07Delegate> delegate;
 ///准备
 - (void)prepareToPlay;
 ///读包

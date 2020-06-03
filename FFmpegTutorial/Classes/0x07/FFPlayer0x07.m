@@ -12,7 +12,7 @@
 #import "FFPlayerFrameHeader.h"
 #import "FFDecoder0x07.h"
 #import "FFVideoScale0x07.h"
-
+#import "MRConvertUtil.h"
 
 @interface FFPlayer0x07 ()<FFDecoderDelegate0x07>
 {
@@ -242,8 +242,8 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 视频像素格式转换
 
-- (FFVideoScale0x07 *)createVideoScaleIfNeed{
-    //未指定期望像素格式则不转换
+- (FFVideoScale0x07 *)createVideoScaleIfNeed {
+    //未指定期望像素格式
     if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
         NSAssert(NO, @"supportedPixelFormats can't be none!");
         return nil;
@@ -425,12 +425,9 @@ static int decode_interrupt_cb(void *ctx)
         FrameQueue *fq = &pictq;
         
         AVFrame *outP = nil;
-        BOOL scaled = NO;
         if (self.videoScale) {
             if (![self.videoScale rescaleFrame:frame out:&outP]) {
 #warning TODO handle sacle error
-            } else {
-                scaled = YES;
             }
         } else {
             outP = frame;
@@ -440,10 +437,6 @@ static int decode_interrupt_cb(void *ctx)
         if (NULL != (af = frame_queue_peek_writable(fq))) {
             av_frame_ref(af->frame, outP);
             frame_queue_push(fq);
-        }
-        if (scaled) {
-            av_freep(outP->data);
-            av_frame_free(&outP);
         }
     }
 }
@@ -472,11 +465,14 @@ static int decode_interrupt_cb(void *ctx)
         if (frame_queue_nb_remaining(&pictq) > 0) {
             Frame *vp = frame_queue_peek(&pictq);
             av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
-            
+            if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
+                UIImage *img = [MRConvertUtil imageFromRGB24Frame:vp->frame];
+                [self.delegate reveiveFrameToRenderer:img];
+            }
             frame_queue_pop(&pictq);
         }
         
-        usleep(1000 * 40);
+        usleep(1000 * 20);
     }
 }
 

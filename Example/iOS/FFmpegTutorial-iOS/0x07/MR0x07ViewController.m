@@ -10,11 +10,13 @@
 #import <FFmpegTutorial/FFPlayer0x07.h>
 #import <FFmpegTutorial/MRRWeakProxy.h>
 
-@interface MR0x07ViewController ()<UITextViewDelegate>
+@interface MR0x07ViewController ()<UITextViewDelegate,FFPlayer0x07Delegate>
 
 @property (nonatomic, strong) FFPlayer0x07 *player;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
+@property (weak, nonatomic) IBOutlet UIImageView *imgView;
+
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
 
@@ -55,6 +57,7 @@
         self.timer = nil;
     }];
     player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;
+    player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
     self.player = player;
@@ -63,6 +66,13 @@
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
+}
+
+- (void)reveiveFrameToRenderer:(UIImage *)img
+{
+    dispatch_async(dispatch_get_main_queue(), ^{
+        self.imgView.image = img;
+    });
 }
 
 - (void)onTimer:(NSTimer *)sender
