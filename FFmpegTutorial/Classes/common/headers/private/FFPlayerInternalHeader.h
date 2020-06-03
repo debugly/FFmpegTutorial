@@ -9,6 +9,45 @@
 #define FFPlayerInternalHeader_h
 
 #import <libavformat/avformat.h>
+#include <libavutil/pixdesc.h>
+
+static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
+    switch (avpf) {
+        case AV_PIX_FMT_YUV420P:
+            return MR_PIX_FMT_YUV420P;
+        case AV_PIX_FMT_NV12:
+            return MR_PIX_FMT_NV12;
+        case AV_PIX_FMT_NV21:
+            return MR_PIX_FMT_NV21;
+        case AV_PIX_FMT_RGB24:
+            return MR_PIX_FMT_RGB24;
+        default:
+        {
+            assert(0);
+            return MR_PIX_FMT_NONE;
+        }
+            break;
+    }
+}
+
+static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
+    switch (mrpf) {
+        case MR_PIX_FMT_YUV420P:
+            return AV_PIX_FMT_YUV420P;
+        case MR_PIX_FMT_NV12:
+            return AV_PIX_FMT_NV12;
+        case MR_PIX_FMT_NV21:
+            return AV_PIX_FMT_NV21;
+        case MR_PIX_FMT_RGB24:
+            return AV_PIX_FMT_RGB24;
+        default:
+        {
+            assert(0);
+            return AV_PIX_FMT_NONE;
+        }
+            break;
+    }
+}
 
 static __inline__ NSError * _make_nserror(int code)
 {

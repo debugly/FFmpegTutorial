@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *contentPath;
 ///code is FFPlayerErrorCode enum.
 @property (nonatomic, strong, nullable) NSError *error;
+@property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
 
 ///准备
 - (void)prepareToPlay;

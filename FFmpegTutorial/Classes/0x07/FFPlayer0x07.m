@@ -11,7 +11,8 @@
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
 #import "FFDecoder0x07.h"
-#include <libavutil/pixdesc.h>
+#import "FFVideoScale0x07.h"
+
 
 @interface FFPlayer0x07 ()<FFDecoderDelegate0x07>
 {
@@ -38,7 +39,8 @@
 @property (nonatomic, strong) FFDecoder0x07 *audioDecoder;
 //视频解码器
 @property (nonatomic, strong) FFDecoder0x07 *videoDecoder;
-
+//图像格式转换/缩放器
+@property (nonatomic, strong) FFVideoScale0x07 *videoScale;
 
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -238,6 +240,51 @@ static int decode_interrupt_cb(void *ctx)
     (*st_index)[AVMEDIA_TYPE_AUDIO] = av_find_best_stream(formatCtx, AVMEDIA_TYPE_AUDIO, (*st_index)[AVMEDIA_TYPE_AUDIO], (*st_index)[AVMEDIA_TYPE_VIDEO], NULL, 0);
 }
 
+#pragma mark - 视频像素格式转换
+
+- (FFVideoScale0x07 *)createVideoScaleIfNeed{
+    //未指定期望像素格式则不转换
+    if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
+        NSAssert(NO, @"supportedPixelFormats can't be none!");
+        return nil;
+    }
+    
+    //当前视频的像素格式
+    const enum AVPixelFormat format = self.videoDecoder.pix_fmt;
+    
+    bool matched = false;
+    MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
+    MRPixelFormat allFmts[] = {MR_PIX_FMT_YUV420P, MR_PIX_FMT_NV12, MR_PIX_FMT_NV21, MR_PIX_FMT_RGB24};
+    for (int i = 0; i < sizeof(allFmts)/sizeof(MRPixelFormat); i ++) {
+        const MRPixelFormat fmt = allFmts[i];
+        const MRPixelFormatMask mask = 1 << fmt;
+        if (self.supportedPixelFormats & mask) {
+            if (firstSupportedFmt == MR_PIX_FMT_NONE) {
+                firstSupportedFmt = fmt;
+            }
+            
+            if (format == MRPixelFormat2AV(fmt)) {
+                matched = true;
+                break;
+            }
+        }
+    }
+    
+    if (matched) {
+        //期望像素格式包含了当前视频像素格式，则直接使用当前格式，不再转换。
+        return nil;
+    }
+    
+    if (firstSupportedFmt == MR_PIX_FMT_NONE) {
+        NSAssert(NO, @"supportedPixelFormats is invalid!");
+        return nil;
+    }
+    
+    ///创建像素格式转换上下文
+    FFVideoScale0x07 *scale = [[FFVideoScale0x07 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
+    return scale;
+}
+
 - (void)readPacketsFunc
 {
     if (![self.contentPath hasPrefix:@"/"]) {
@@ -328,6 +375,7 @@ static int decode_interrupt_cb(void *ctx)
             if(self.videoDecoder){
                 self.videoDecoder.delegate = self;
                 self.videoDecoder.name = @"videoDecoder";
+                self.videoScale = [self createVideoScaleIfNeed];
             } else {
                 av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
                 self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
@@ -366,18 +414,36 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)decoder:(FFDecoder0x07 *)decoder reveivedAFrame:(AVFrame *)frame
 {
-    FrameQueue *fq = NULL;
     if (decoder == self.audioDecoder) {
-        fq = &sampq;
-    } else if (decoder == self.videoDecoder) {
-        fq = &pictq;
-    }
-    
-    if (fq != NULL) {
+        FrameQueue *fq = &sampq;
         Frame *af = NULL;
         if (NULL != (af = frame_queue_peek_writable(fq))) {
             av_frame_ref(af->frame, frame);
             frame_queue_push(fq);
+        }
+    } else if (decoder == self.videoDecoder) {
+        FrameQueue *fq = &pictq;
+        
+        AVFrame *outP = nil;
+        BOOL scaled = NO;
+        if (self.videoScale) {
+            if (![self.videoScale rescaleFrame:frame out:&outP]) {
+#warning TODO handle sacle error
+            } else {
+                scaled = YES;
+            }
+        } else {
+            outP = frame;
+        }
+
+        Frame *af = NULL;
+        if (NULL != (af = frame_queue_peek_writable(fq))) {
+            av_frame_ref(af->frame, outP);
+            frame_queue_push(fq);
+        }
+        if (scaled) {
+            av_freep(outP->data);
+            av_frame_free(&outP);
         }
     }
 }
@@ -406,6 +472,7 @@ static int decode_interrupt_cb(void *ctx)
         if (frame_queue_nb_remaining(&pictq) > 0) {
             Frame *vp = frame_queue_peek(&pictq);
             av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
+            
             frame_queue_pop(&pictq);
         }
         

@@ -17,6 +17,10 @@
 @property (nonatomic, assign, readwrite) AVStream * stream;
 @property (nonatomic, assign) AVCodecContext * avctx;
 @property (nonatomic, assign) int abort_request;
+///for video
+@property (nonatomic, assign, readwrite) enum AVPixelFormat pix_fmt;
+@property (nonatomic, assign, readwrite) int picWidth;
+@property (nonatomic, assign, readwrite) int picHeight;
 
 @end
 
@@ -84,6 +88,10 @@
     stream->discard = AVDISCARD_DEFAULT;
     self.stream = stream;
     self.avctx = avctx;
+    self.pix_fmt = avctx->pix_fmt;
+    self.picWidth = avctx->width;
+    self.picHeight = avctx->height;
+    
     self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
     
     return 0;

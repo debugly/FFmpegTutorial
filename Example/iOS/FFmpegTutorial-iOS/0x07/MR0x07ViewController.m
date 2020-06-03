@@ -54,7 +54,7 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
-    
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;
     [player prepareToPlay];
     [player readPacket];
     self.player = player;
