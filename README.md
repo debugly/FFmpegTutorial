@@ -32,20 +32,19 @@
 - 0x03：[读包线程与 AVPacket 缓存队列](md/0x03.md)
 - 0x04：[多线程解码](md/0x04.md)
 - 0x05：[渲染线程与 AVFrame 缓存队列](md/0x05.md)
-- 0x06:   [整理代码，封装解码器](md/0x06.md)
+- 0x06：[整理代码，封装解码器](md/0x06.md)
+- 0x07：[使用 UIImageView 渲染视频帧](md/0x07.md)
 
 # TODO
 
-**为了提升代码质量，决定重新编写教程，因此以下为 TODO List！**
+**为了提升代码质量，决定重新编写教程，下面是 TODO List！**
 
-**为了提升代码质量，决定重新编写教程，因此以下为 TODO List！**
+**为了提升代码质量，决定重新编写教程，下面是 TODO List！**
 
-**为了提升代码质量，决定重新编写教程，因此以下为 TODO List！**
+**为了提升代码质量，决定重新编写教程，下面是 TODO List！**
 
 **之前的老代码实现了音视频的不同渲染方式，可以通过 git 将代码切到这次 36e4f8cdcf1f9a293426dea802a39560747fdeec 提交进行查看**
 
-
-- 0x07：[将 avframe 转成 UIImage，使用 UIImageView 渲染]
 
 - 0x08：[将 avframe 转成 CIImage，使用 GLKView 渲染]
 

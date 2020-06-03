@@ -4,6 +4,8 @@
 //
 //  Created by Matt Reach on 2020/6/2.
 //
+// 自定义解码器类
+// 通过代理衔接输入输出
 
 #import <Foundation/Foundation.h>
 

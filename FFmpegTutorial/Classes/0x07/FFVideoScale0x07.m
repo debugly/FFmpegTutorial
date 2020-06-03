@@ -12,11 +12,11 @@
 
 @interface FFVideoScale0x07()
 
-@property (nonatomic, assign) enum AVPixelFormat srcPixFmt;
 @property (nonatomic, assign) enum AVPixelFormat dstPixFmt;
 @property (nonatomic, assign) struct SwsContext *sws_ctx;
 @property (nonatomic, assign) int picWidth;
 @property (nonatomic, assign) int picHeight;
+//复用一个，效率更高些
 @property (nonatomic, assign) AVFrame *frame;
 
 @end
@@ -40,7 +40,6 @@
 {
     self = [super init];
     if (self) {
-        self.srcPixFmt = srcPixFmt;
         self.dstPixFmt = dstPixFmt;
         self.picWidth  = picWidth;
         self.picHeight = picHeight;
