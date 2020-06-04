@@ -28,6 +28,7 @@ PODS:
     - MRFFmpegPod
   - FFmpegTutorial/common (0.1.8):
     - MRFFmpegPod
+  - GDPerformanceView-Swift (2.0.3)
   - MRFFmpegPod (3.4.7):
     - MRFFmpegPod/libavcodec (= 3.4.7)
     - MRFFmpegPod/libavformat (= 3.4.7)
@@ -42,7 +43,12 @@ PODS:
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
+  - GDPerformanceView-Swift
   - MRFFmpegPod (from `https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg3.4.7.podspec`)
+
+SPEC REPOS:
+  trunk:
+    - GDPerformanceView-Swift
 
 EXTERNAL SOURCES:
   FFmpegTutorial:
@@ -52,8 +58,9 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   FFmpegTutorial: 397f61a38c77ebc24caaa6067ebb296f7066601f
+  GDPerformanceView-Swift: ef3d05deb103e472a5494d3f60aeca5a58b88a7d
   MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 
-PODFILE CHECKSUM: 11d287a1426a62f3ae1341c1e576319b35a2877c
+PODFILE CHECKSUM: 9a36a700a4c4ff83ae86f862c6b7814a944220cc
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1

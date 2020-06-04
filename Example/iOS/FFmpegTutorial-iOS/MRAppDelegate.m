@@ -7,6 +7,7 @@
 //
 
 #import "MRAppDelegate.h"
+#import "FFmpegTutorial-Swift.h"
 
 @interface MRAppDelegate ()
 
@@ -18,6 +19,7 @@
 {
     // Override point for customization after application launch.
     [self.window setBackgroundColor:[UIColor whiteColor]];
+    [PerformanceWrapper show];
     return YES;
 }
 
