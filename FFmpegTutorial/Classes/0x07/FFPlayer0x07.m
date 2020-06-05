@@ -254,7 +254,7 @@ static int decode_interrupt_cb(void *ctx)
     
     bool matched = false;
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    MRPixelFormat allFmts[] = {MR_PIX_FMT_YUV420P, MR_PIX_FMT_NV12, MR_PIX_FMT_NV21, MR_PIX_FMT_RGB24, MR_PIX_FMT_RGBA};
+    MRPixelFormat allFmts[] = {MR_PIX_FMT_YUV420P, MR_PIX_FMT_NV12, MR_PIX_FMT_NV21, MR_PIX_FMT_RGB24, MR_PIX_FMT_RGBA, MR_PIX_FMT_RGB555BE, MR_PIX_FMT_RGB555LE};
     for (int i = 0; i < sizeof(allFmts)/sizeof(MRPixelFormat); i ++) {
         const MRPixelFormat fmt = allFmts[i];
         const MRPixelFormatMask mask = 1 << fmt;
@@ -474,7 +474,7 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&pictq);
         }
         
-        usleep(1000 * 20);
+        usleep(1000 * 40);
     }
 }
 

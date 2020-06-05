@@ -10,22 +10,12 @@
 
 #define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
 
-#define USE_BITMAP 1
+#define USE_BITMAP 0
 
 @implementation MRConvertUtil
 
 + (CGImageRef)cgImageFromRGBFrame:(AVFrame*)frame
 {
-    BOOL alpha = NO;
-    if (frame->format == AV_PIX_FMT_RGB24) {
-        alpha = NO;
-    } else if (frame->format == AV_PIX_FMT_RGBA) {
-        alpha = YES;
-    } else {
-        NSAssert(NO, @"not support [%d] Pixel format,use RGB24 or RGBA please!",frame->format);
-    }
-    
-    const UInt8 *rgb = frame->data[0];
     const size_t bytesPerRow = frame->linesize[0];
     const int w = frame->width;
     const int h = frame->height;
@@ -33,27 +23,122 @@
     ///颜色空间与 AV_PIX_FMT_RGBA 对应
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
 #if USE_BITMAP
+    BOOL alpha = NO;
+    if (frame->format == AV_PIX_FMT_RGB555BE || frame->format == AV_PIX_FMT_RGB555LE) {
+        alpha = NO;
+    } else if (frame->format == AV_PIX_FMT_RGBA) {
+        alpha = YES;
+    } else {
+        /*
+         AV_PIX_FMT_RGB24 crash:
+         2020-06-06 00:08:20.245208+0800 FFmpegTutorial[23649:2335631] [Unknown process name] CGBitmapContextCreate: unsupported parameter combination: set CGBITMAP_CONTEXT_LOG_ERRORS environmental variable to see the details
+         2020-06-06 00:08:20.245417+0800 FFmpegTutorial[23649:2335631] [Unknown process name] CGBitmapContextCreateImage: invalid context 0x0. If you want to see the backtrace, please set CG_CONTEXT_SHOW_BACKTRACE environmental variable.
+         */
+        NSAssert(NO, @"not support [%d] Pixel format,use RGB555BE/RGB555LE or RGBA please!",frame->format);
+    }
+//    https://stackoverflow.com/questions/1579631/converting-rgb-data-into-a-bitmap-in-objective-c-cocoa
+    //https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB
+    
+//    RGB
+//
+//    16 bpp, 5 bpc, kCGImageAlphaNoneSkipFirst
+//
+//    Mac OS X, iOS
+//
+//    RGB
+//
+//    32 bpp, 8 bpc, kCGImageAlphaNoneSkipFirst
+//
+//    Mac OS X, iOS
+//
+//    RGB
+//
+//    32 bpp, 8 bpc, kCGImageAlphaNoneSkipLast
+//
+//    Mac OS X, iOS
+//
+//    RGB
+//
+//    32 bpp, 8 bpc, kCGImageAlphaPremultipliedFirst
+//
+//    Mac OS X, iOS
+//
+//    RGB
+//
+//    32 bpp, 8 bpc, kCGImageAlphaPremultipliedLast
+//
+//    Mac OS X, iOS
+    
+    CGBitmapInfo bitMapInfo = 0;
+    int bpc = 0;
+    if (frame->format == AV_PIX_FMT_RGB555BE) {
+        bitMapInfo = kCGBitmapByteOrder16Big | kCGImageAlphaNoneSkipFirst;
+        bpc = 5;
+    } else if (frame->format == AV_PIX_FMT_RGB555LE) {
+        bitMapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
+        bpc = 5;
+    } else if (frame->format == AV_PIX_FMT_RGB24) {
+        alpha = NO;
+        bpc = 8;
+//        bpp = 24;
+        bitMapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
+    }
+    else {
+        bitMapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
+        bpc = 8;
+    }
+    
+    void *rgba = frame->data[0];
     CGContextRef bitmapContext = CGBitmapContextCreate(
-        rgb,
+        rgba,
         w,
         h,
-        8, // bitsPerComponent
-        bytesPerRow, // bytesPerRow
+        bpc,
+        bytesPerRow,
         colorSpace,
-        kCGImageAlphaPremultipliedLast
+        bitMapInfo
     );
     CGImageRef cgImage = CGBitmapContextCreateImage(bitmapContext);
 #else
+    BOOL alpha = NO;
+    int bpc = 0;
+    int bpp = 0;
+    CGBitmapInfo bitMapInfo = 0;
+    
+    if (frame->format == AV_PIX_FMT_RGB24) {
+        alpha = NO;
+        bpc = 8;
+        bpp = 24;
+        bitMapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
+    } else if (frame->format == AV_PIX_FMT_RGB555BE || frame->format == AV_PIX_FMT_RGB555LE) {
+        alpha = NO;
+        bpc = 5;
+        bpp = 16;
+        
+        if (frame->format == AV_PIX_FMT_RGB555BE) {
+            bitMapInfo = kCGBitmapByteOrder16Big | kCGImageAlphaNoneSkipFirst;
+        } else if (frame->format == AV_PIX_FMT_RGB555LE) {
+            bitMapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
+        }
+    } else if (frame->format == AV_PIX_FMT_RGBA) {
+        alpha = YES;
+        bpc = 8;
+        bpp = 32;
+        bitMapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
+    } else {
+        NSAssert(NO, @"not support [%d] Pixel format,use RGB24 or RGBA please!",frame->format);
+    }
+    
+    const UInt8 *rgb = frame->data[0];
     const CFIndex length = bytesPerRow * h;
-    CGBitmapInfo bitMapInfo = (alpha ? kCGImageAlphaPremultipliedLast : kCGImageAlphaNone) | kCGBitmapByteOrderDefault;
     ///需要copy！因为frame是重复利用的；里面的数据会变化！
     CFDataRef data = CFDataCreate(kCFAllocatorDefault, rgb, length);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
     CFRelease(data);
     CGImageRef cgImage = CGImageCreate(w,
                                        h,
-                                       8,
-                                       alpha ? 32 : 24,
+                                       bpc,
+                                       bpp,
                                        bytesPerRow,
                                        colorSpace,
                                        bitMapInfo,

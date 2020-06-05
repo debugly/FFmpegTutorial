@@ -63,12 +63,11 @@
     
     #if USE_UIIMAGE_DISPLAY
         [self.videoRenderer setHidden:YES];
-        player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
-    #else
-        player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
     #endif
-
     
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_RGB555LE | MR_PIX_FMT_MASK_RGB555BE | MR_PIX_FMT_MASK_RGBA;
+
+
     player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
