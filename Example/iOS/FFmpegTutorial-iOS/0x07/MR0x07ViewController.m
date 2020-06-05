@@ -9,6 +9,7 @@
 #import "MR0x07ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x07.h>
 #import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MR0x07VideoRenderer.h"
 
 @interface MR0x07ViewController ()<UITextViewDelegate,FFPlayer0x07Delegate>
 
@@ -16,11 +17,14 @@
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
+@property (weak, nonatomic) IBOutlet MR0x07VideoRenderer *videoRenderer;
 
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
 
 @end
+
+#define USE_UIIMAGE_DISPLAY 0
 
 @implementation MR0x07ViewController
 
@@ -56,7 +60,15 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;
+    
+    #if USE_UIIMAGE_DISPLAY
+        [self.videoRenderer setHidden:YES];
+        player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;
+    #else
+        player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
+    #endif
+
+    
     player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
@@ -68,11 +80,22 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(UIImage *)img
+- (void)reveiveFrameToRenderer:(CGImageRef)cgImage
 {
+#if USE_UIIMAGE_DISPLAY
+    UIImage *image = [UIImage imageWithCGImage:cgImage];
+    
     dispatch_async(dispatch_get_main_queue(), ^{
-        self.imgView.image = img;
+        self.imgView.image = image;
     });
+#else
+    CFRetain(cgImage);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        [self.videoRenderer dispalyCGImage:cgImage];
+        CFRelease(cgImage);
+    });
+#endif
+
 }
 
 - (void)onTimer:(NSTimer *)sender

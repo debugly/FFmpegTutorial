@@ -254,7 +254,7 @@ static int decode_interrupt_cb(void *ctx)
     
     bool matched = false;
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    MRPixelFormat allFmts[] = {MR_PIX_FMT_YUV420P, MR_PIX_FMT_NV12, MR_PIX_FMT_NV21, MR_PIX_FMT_RGB24};
+    MRPixelFormat allFmts[] = {MR_PIX_FMT_YUV420P, MR_PIX_FMT_NV12, MR_PIX_FMT_NV21, MR_PIX_FMT_RGB24, MR_PIX_FMT_RGBA};
     for (int i = 0; i < sizeof(allFmts)/sizeof(MRPixelFormat); i ++) {
         const MRPixelFormat fmt = allFmts[i];
         const MRPixelFormatMask mask = 1 << fmt;
@@ -466,8 +466,10 @@ static int decode_interrupt_cb(void *ctx)
             Frame *vp = frame_queue_peek(&pictq);
             av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
             if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
-                UIImage *img = [MRConvertUtil imageFromRGB24Frame:vp->frame];
-                [self.delegate reveiveFrameToRenderer:img];
+                @autoreleasepool {
+                    CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:vp->frame];
+                    [self.delegate reveiveFrameToRenderer:img];
+                }
             }
             frame_queue_pop(&pictq);
         }

@@ -611,6 +611,10 @@
                                     <constraint firstAttribute="width" relation="lessThanOrEqual" constant="360" id="qHo-87-gZB"/>
                                 </constraints>
                             </imageView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0dp-CK-EJX" customClass="MR0x07VideoRenderer">
+                                <rect key="frame" x="0.0" y="32" width="360" height="288"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -618,10 +622,14 @@
                             <constraint firstItem="hxd-Fr-bgk" firstAttribute="leading" secondItem="rXt-9j-b2v" secondAttribute="trailing" id="Fpo-co-iEX"/>
                             <constraint firstItem="hxd-Fr-bgk" firstAttribute="top" secondItem="DJz-xY-XEb" secondAttribute="bottom" constant="-32" id="Kvt-e4-ocw"/>
                             <constraint firstItem="rXt-9j-b2v" firstAttribute="top" secondItem="DJz-xY-XEb" secondAttribute="bottom" id="LlS-pc-bdf"/>
+                            <constraint firstItem="0dp-CK-EJX" firstAttribute="top" secondItem="rXt-9j-b2v" secondAttribute="top" id="P9m-SZ-GiS"/>
                             <constraint firstAttribute="bottom" secondItem="rXt-9j-b2v" secondAttribute="bottom" id="Q8w-qB-4v6"/>
+                            <constraint firstItem="0dp-CK-EJX" firstAttribute="leading" secondItem="rXt-9j-b2v" secondAttribute="leading" id="QIn-C4-VGY"/>
+                            <constraint firstItem="0dp-CK-EJX" firstAttribute="bottom" secondItem="rXt-9j-b2v" secondAttribute="bottom" id="dSk-Lf-wf4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="hxd-Fr-bgk" secondAttribute="trailing" id="fZr-tP-8Aj"/>
                             <constraint firstItem="hxd-Fr-bgk" firstAttribute="bottom" secondItem="J4f-Kl-hlq" secondAttribute="top" id="m3p-DM-Ewi"/>
                             <constraint firstItem="rXt-9j-b2v" firstAttribute="leading" secondItem="jti-Z0-5ro" secondAttribute="leading" id="oYm-1m-gP8"/>
+                            <constraint firstItem="0dp-CK-EJX" firstAttribute="trailing" secondItem="rXt-9j-b2v" secondAttribute="trailing" id="wm3-Uy-ujw"/>
                             <constraint firstItem="qh5-iF-Fpg" firstAttribute="centerY" secondItem="jti-Z0-5ro" secondAttribute="centerY" id="yGh-IA-17R"/>
                         </constraints>
                     </view>
@@ -630,11 +638,12 @@
                         <outlet property="imgView" destination="rXt-9j-b2v" id="JyI-N7-0y4"/>
                         <outlet property="indicatorView" destination="qh5-iF-Fpg" id="vQM-Ld-xKl"/>
                         <outlet property="textView" destination="hxd-Fr-bgk" id="HNT-he-Cdn"/>
+                        <outlet property="videoRenderer" destination="0dp-CK-EJX" id="3aJ-90-apb"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iWk-wS-NLz" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="80" y="1314"/>
+            <point key="canvasLocation" x="79.225352112676063" y="1312.5"/>
         </scene>
         <!--0x08 View Controller-->
         <scene sceneID="AzJ-rX-thJ">

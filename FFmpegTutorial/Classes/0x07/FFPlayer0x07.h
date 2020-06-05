@@ -7,13 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
+#import <CoreGraphics/CGImage.h>
 
 NS_ASSUME_NONNULL_BEGIN
-
 @protocol FFPlayer0x07Delegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(UIImage *)img;
+- (void)reveiveFrameToRenderer:(CGImageRef)img;
 
 @end
 

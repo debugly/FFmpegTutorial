@@ -12,9 +12,16 @@
 
 @implementation MRConvertUtil
 
-+ (UIImage *)imageFromRGB24Frame:(AVFrame*)frame
++ (CGImageRef)cgImageFromRGBFrame:(AVFrame*)frame
 {
-    NSAssert(frame->format == AV_PIX_FMT_RGB24, @"not support [%d] Pixel format,use RGB24 please!",frame->format);
+    BOOL alpha = NO;
+    if (frame->format == AV_PIX_FMT_RGB24) {
+        alpha = NO;
+    } else if (frame->format == AV_PIX_FMT_RGBA) {
+        alpha = YES;
+    } else {
+        NSAssert(NO, @"not support [%d] Pixel format,use RGB24 or RGBA please!",frame->format);
+    }
     
     const UInt8 *rgb = frame->data[0];
     const size_t bytesPerRow = frame->linesize[0];
@@ -22,7 +29,7 @@
     const int h = frame->height;
     const CFIndex length = bytesPerRow * h;
     
-    CGBitmapInfo bitmapInfo = kCGBitmapByteOrderDefault;
+    CGBitmapInfo bitMapInfo = (alpha ? kCGImageAlphaPremultipliedLast : kCGImageAlphaNone) | kCGBitmapByteOrderDefault;
     ///需要copy！因为frame是重复利用的；里面的数据会变化！
     CFDataRef data = CFDataCreate(kCFAllocatorDefault, rgb, length);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
@@ -33,20 +40,17 @@
     CGImageRef cgImage = CGImageCreate(w,
                                        h,
                                        8,
-                                       24,
+                                       alpha ? 32 : 24,
                                        bytesPerRow,
                                        colorSpace,
-                                       bitmapInfo,
+                                       bitMapInfo,
                                        provider,
                                        NULL,
                                        NO,
                                        kCGRenderingIntentDefault);
     CGColorSpaceRelease(colorSpace);
     CGDataProviderRelease(provider);
-    
-    UIImage *image = [UIImage imageWithCGImage:cgImage];
-    CGImageRelease(cgImage);
-    return image;
+    return CFAutorelease((void *)cgImage);
 }
 
 #pragma mark - YUV(NV12)-->CVPixelBufferRef Conversion

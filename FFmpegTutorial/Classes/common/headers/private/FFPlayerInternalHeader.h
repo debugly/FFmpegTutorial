@@ -21,6 +21,8 @@ static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
             return MR_PIX_FMT_NV21;
         case AV_PIX_FMT_RGB24:
             return MR_PIX_FMT_RGB24;
+        case AV_PIX_FMT_RGBA:
+            return MR_PIX_FMT_RGBA;
         default:
         {
             assert(0);
@@ -40,6 +42,8 @@ static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
             return AV_PIX_FMT_NV21;
         case MR_PIX_FMT_RGB24:
             return AV_PIX_FMT_RGB24;
+        case MR_PIX_FMT_RGBA:
+            return AV_PIX_FMT_RGBA;
         default:
         {
             assert(0);
