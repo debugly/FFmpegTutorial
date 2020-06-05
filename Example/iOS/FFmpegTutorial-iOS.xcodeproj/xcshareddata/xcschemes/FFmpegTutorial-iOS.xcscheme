@@ -15,7 +15,7 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "6003F589195388D20070C39A"
-               BuildableName = "FFmpegTutotial.app"
+               BuildableName = "FFmpegTutorial.app"
                BlueprintName = "FFmpegTutorial-iOS"
                ReferencedContainer = "container:FFmpegTutorial-iOS.xcodeproj">
             </BuildableReference>
@@ -45,7 +45,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "FFmpegTutotial.app"
+            BuildableName = "FFmpegTutorial.app"
             BlueprintName = "FFmpegTutorial-iOS"
             ReferencedContainer = "container:FFmpegTutorial-iOS.xcodeproj">
          </BuildableReference>
@@ -62,7 +62,7 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "6003F589195388D20070C39A"
-            BuildableName = "FFmpegTutotial.app"
+            BuildableName = "FFmpegTutorial.app"
             BlueprintName = "FFmpegTutorial-iOS"
             ReferencedContainer = "container:FFmpegTutorial-iOS.xcodeproj">
          </BuildableReference>
