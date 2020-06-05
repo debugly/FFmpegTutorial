@@ -88,9 +88,34 @@
         
         [self.glView bindDrawable];
         CGFloat scale = [[UIScreen mainScreen]scale];
+        CGSize aspectRatio = ciimage.extent.size;
+            
+        CGFloat maxWidth  = CGRectGetWidth(self.glView.bounds);
+        CGFloat maxHeight = CGRectGetHeight(self.glView.bounds);
         
-        [self.ciContext drawImage:ciimage inRect:CGRectMake(0, 0, self.glView.bounds.size.width*scale, self.glView.bounds.size.height*scale) fromRect:ciimage.extent];
+        maxWidth  *= scale;
+        maxHeight *= scale;
         
+        CGFloat aspectWidth = maxHeight / aspectRatio.height * aspectRatio.width;
+        CGFloat aspectHeight = maxWidth / aspectRatio.width * aspectRatio.height;
+        
+        CGFloat width,height = 0;
+        
+        if (aspectWidth < maxWidth) {
+            width = aspectWidth;
+            height = maxHeight;
+        } else {
+            width = maxWidth;
+            height = aspectHeight;
+        }
+        
+        CGRect inRect = CGRectMake((maxWidth-width)/2.0, (maxHeight-height)/2.0,width, height);
+        
+//        inRect = CGRectMake(0, 0, maxWidth, maxHeight);
+//        inRect = CGRectMake(0, 0, self.glView.bounds.size.width*scale, self.glView.bounds.size.height*scale);
+        [self.ciContext drawImage:ciimage
+                           inRect:inRect
+                         fromRect:ciimage.extent];
         [self.glView display];
     });
 }
