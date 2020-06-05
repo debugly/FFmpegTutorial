@@ -10,6 +10,8 @@
 
 #define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
 
+#define USE_BITMAP 1
+
 @implementation MRConvertUtil
 
 + (CGImageRef)cgImageFromRGBFrame:(AVFrame*)frame
@@ -27,16 +29,27 @@
     const size_t bytesPerRow = frame->linesize[0];
     const int w = frame->width;
     const int h = frame->height;
-    const CFIndex length = bytesPerRow * h;
     
+    ///颜色空间与 AV_PIX_FMT_RGBA 对应
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+#if USE_BITMAP
+    CGContextRef bitmapContext = CGBitmapContextCreate(
+        rgb,
+        w,
+        h,
+        8, // bitsPerComponent
+        bytesPerRow, // bytesPerRow
+        colorSpace,
+        kCGImageAlphaPremultipliedLast
+    );
+    CGImageRef cgImage = CGBitmapContextCreateImage(bitmapContext);
+#else
+    const CFIndex length = bytesPerRow * h;
     CGBitmapInfo bitMapInfo = (alpha ? kCGImageAlphaPremultipliedLast : kCGImageAlphaNone) | kCGBitmapByteOrderDefault;
     ///需要copy！因为frame是重复利用的；里面的数据会变化！
     CFDataRef data = CFDataCreate(kCFAllocatorDefault, rgb, length);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
     CFRelease(data);
-    ///颜色空间与 AV_PIX_FMT_RGB24 对应
-    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-    
     CGImageRef cgImage = CGImageCreate(w,
                                        h,
                                        8,
@@ -48,8 +61,11 @@
                                        NULL,
                                        NO,
                                        kCGRenderingIntentDefault);
-    CGColorSpaceRelease(colorSpace);
     CGDataProviderRelease(provider);
+#endif
+    
+    CGColorSpaceRelease(colorSpace);
+    
     return CFAutorelease((void *)cgImage);
 }
 

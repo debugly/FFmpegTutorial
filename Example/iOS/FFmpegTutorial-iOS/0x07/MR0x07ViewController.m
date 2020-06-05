@@ -24,7 +24,7 @@
 
 @end
 
-#define USE_UIIMAGE_DISPLAY 0
+#define USE_UIIMAGE_DISPLAY 1
 
 @implementation MR0x07ViewController
 
@@ -63,7 +63,7 @@
     
     #if USE_UIIMAGE_DISPLAY
         [self.videoRenderer setHidden:YES];
-        player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;
+        player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
     #else
         player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
     #endif
