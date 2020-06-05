@@ -68,9 +68,10 @@
         }
         
         if (self.joinModeName.length > 0) {
-            while (![[NSRunLoop currentRunLoop] runMode:self.joinModeName beforeDate:[NSDate distantFuture]]) {
-                NSLog(@"%@ waiting join!",[[NSThread currentThread] name]);
-            }
+            ///增加一个 port，让 RunLoop run 起来
+            [[NSRunLoop currentRunLoop] addPort:[NSPort port] forMode:self.joinModeName];
+            [[NSRunLoop currentRunLoop] runMode:self.joinModeName beforeDate:[NSDate distantFuture]];
+            
             NSLog(@"%@ joined!",[[NSThread currentThread] name]);
         }
     }
