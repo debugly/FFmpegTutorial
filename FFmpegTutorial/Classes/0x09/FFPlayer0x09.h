@@ -1,23 +1,23 @@
 //
-//  FFPlayer0x08.h
+//  FFPlayer0x09.h
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/6/5.
+//  Created by qianlongxu on 2020/6/6.
 //
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
-#import <CoreGraphics/CGImage.h>
 
 NS_ASSUME_NONNULL_BEGIN
-@protocol FFPlayer0x08Delegate <NSObject>
+@class CIImage;
+@protocol FFPlayer0x09Delegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(CGImageRef)img;
+- (void)reveiveFrameToRenderer:(CIImage *)img;
 
 @end
 
-@interface FFPlayer0x08 : NSObject
+@interface FFPlayer0x09 : NSObject
 
 ///播放地址
 @property (nonatomic, copy) NSString *contentPath;
@@ -25,7 +25,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong, nullable) NSError *error;
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
-@property (nonatomic, weak) id <FFPlayer0x08Delegate> delegate;
+@property (nonatomic, weak) id <FFPlayer0x09Delegate> delegate;
 ///准备
 - (void)prepareToPlay;
 ///读包

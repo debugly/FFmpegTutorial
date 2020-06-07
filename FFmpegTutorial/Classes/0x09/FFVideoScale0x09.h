@@ -1,8 +1,8 @@
 //
-//  FFVideoScale0x08.h
+//  FFVideoScale0x09.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/6/5.
+//  Created by Matt Reach on 2020/6/6.
 //
 // 像素格式转换类
 
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef struct AVFrame AVFrame;
 
-@interface FFVideoScale0x08 : NSObject
+@interface FFVideoScale0x09 : NSObject
 
 /// @param srcPixFmt 原帧像素格式
 /// @param dstPixFmt 目标帧像素格式

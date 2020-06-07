@@ -2,7 +2,7 @@
 //  FFPlayer0x08.m
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/6/3.
+//  Created by qianlongxu on 2020/6/5.
 //
 
 #import "FFPlayer0x08.h"
@@ -13,10 +13,6 @@
 #import "FFDecoder0x08.h"
 #import "FFVideoScale0x08.h"
 #import "MRConvertUtil.h"
-#import <CoreVideo/CVPixelBufferPool.h>
-
-//是否使用POOL
-#define USE_PIXEL_BUFFER_POOL 1
 
 @interface FFPlayer0x08 ()<FFDecoderDelegate0x08>
 {
@@ -45,8 +41,7 @@
 @property (nonatomic, strong) FFDecoder0x08 *videoDecoder;
 //图像格式转换/缩放器
 @property (nonatomic, strong) FFVideoScale0x08 *videoScale;
-//PixelBuffer池可提升效率
-@property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
+
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
 @property (nonatomic, copy) dispatch_block_t onPacketBufferFullBlock;
@@ -97,11 +92,6 @@ static int decode_interrupt_cb(void *ctx)
         
         frame_queue_destory(&pictq);
         frame_queue_destory(&sampq);
-    }
-    
-    if (self.pixelBufferPool){
-        CVPixelBufferPoolRelease(self.pixelBufferPool);
-        self.pixelBufferPool = NULL;
     }
 }
 
@@ -264,9 +254,8 @@ static int decode_interrupt_cb(void *ctx)
     
     bool matched = false;
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    MRPixelFormat allFmts[] = {MR_PIX_FMT_YUV420P, MR_PIX_FMT_NV12, MR_PIX_FMT_NV21, MR_PIX_FMT_RGB24};
-    for (int i = 0; i < sizeof(allFmts)/sizeof(MRPixelFormat); i ++) {
-        const MRPixelFormat fmt = allFmts[i];
+    for (int i = 0; i < sizeof(ALL_MR_PIX_FMTS)/sizeof(MRPixelFormat); i ++) {
+        const MRPixelFormat fmt = ALL_MR_PIX_FMTS[i];
         const MRPixelFormatMask mask = 1 << fmt;
         if (self.supportedPixelFormats & mask) {
             if (firstSupportedFmt == MR_PIX_FMT_NONE) {
@@ -459,38 +448,6 @@ static int decode_interrupt_cb(void *ctx)
     self.rendererThread.name = @"renderer";
 }
 
-- (CIImage * _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
-{
-#if USE_PIXEL_BUFFER_POOL
-    CVReturn theError;
-    if (!self.pixelBufferPool){
-        const int linesize = 32;//FFMpeg 解码数据对齐是32，这里期望CVPixelBuffer也能使用32对齐，但实际来看却是64！
-        int w = frame->width;
-        int h = frame->height;
-        OSType pixelFormatType = frame->color_range == AVCOL_RANGE_MPEG ? kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange : kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
-        
-        NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-        [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-        [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
-        [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
-        [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
-        
-        theError = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef) attributes, &_pixelBufferPool);
-        if (theError != kCVReturnSuccess){
-            NSLog(@"CVPixelBufferPoolCreate Failed");
-        }
-    }
-#endif
-    
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
-    
-    if (pixelBuffer) {
-        return [CIImage imageWithCVPixelBuffer:pixelBuffer];
-    }
-    return nil;
-}
-
 - (void)rendererThreadFunc
 {
     ///调用了stop方法，，则不再渲染
@@ -509,16 +466,14 @@ static int decode_interrupt_cb(void *ctx)
             av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
             if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
                 @autoreleasepool {
-                    CIImage *ciImage = [self pixelBufferFromAVFrame:vp->frame];
-                    if (ciImage) {
-                        [self.delegate reveiveFrameToRenderer:ciImage];
-                    }
+                    CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:vp->frame];
+                    [self.delegate reveiveFrameToRenderer:img];
                 }
             }
             frame_queue_pop(&pictq);
         }
         
-        usleep(1000 * 20);
+        usleep(1000 * 40);
     }
 }
 

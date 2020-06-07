@@ -10,148 +10,121 @@
 
 #define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
 
-#define USE_BITMAP 0
-
 @implementation MRConvertUtil
 
-+ (CGImageRef)cgImageFromRGBFrame:(AVFrame*)frame
+CGImageRef _CreateCGImageFromBitMap(void *pixels,size_t w, size_t h,
+size_t bpc, size_t bpp, size_t bpr, int bmi)
 {
-    const size_t bytesPerRow = frame->linesize[0];
-    const int w = frame->width;
-    const int h = frame->height;
+    assert(bpp != 24);
+    /*
+     AV_PIX_FMT_RGB24 bpp is 24! not supported!
+     Crash:
+     2020-06-06 00:08:20.245208+0800 FFmpegTutorial[23649:2335631] [Unknown process name] CGBitmapContextCreate: unsupported parameter combination: set CGBITMAP_CONTEXT_LOG_ERRORS environmental variable to see the details
+     2020-06-06 00:08:20.245417+0800 FFmpegTutorial[23649:2335631] [Unknown process name] CGBitmapContextCreateImage: invalid context 0x0. If you want to see the backtrace, please set CG_CONTEXT_SHOW_BACKTRACE environmental variable.
+     */
     
-    ///颜色空间与 AV_PIX_FMT_RGBA 对应
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
-#if USE_BITMAP
-    BOOL alpha = NO;
-    if (frame->format == AV_PIX_FMT_RGB555BE || frame->format == AV_PIX_FMT_RGB555LE) {
-        alpha = NO;
-    } else if (frame->format == AV_PIX_FMT_RGBA) {
-        alpha = YES;
-    } else {
-        /*
-         AV_PIX_FMT_RGB24 crash:
-         2020-06-06 00:08:20.245208+0800 FFmpegTutorial[23649:2335631] [Unknown process name] CGBitmapContextCreate: unsupported parameter combination: set CGBITMAP_CONTEXT_LOG_ERRORS environmental variable to see the details
-         2020-06-06 00:08:20.245417+0800 FFmpegTutorial[23649:2335631] [Unknown process name] CGBitmapContextCreateImage: invalid context 0x0. If you want to see the backtrace, please set CG_CONTEXT_SHOW_BACKTRACE environmental variable.
-         */
-        NSAssert(NO, @"not support [%d] Pixel format,use RGB555BE/RGB555LE or RGBA please!",frame->format);
-    }
-//    https://stackoverflow.com/questions/1579631/converting-rgb-data-into-a-bitmap-in-objective-c-cocoa
-    //https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB
     
-//    RGB
-//
-//    16 bpp, 5 bpc, kCGImageAlphaNoneSkipFirst
-//
-//    Mac OS X, iOS
-//
-//    RGB
-//
-//    32 bpp, 8 bpc, kCGImageAlphaNoneSkipFirst
-//
-//    Mac OS X, iOS
-//
-//    RGB
-//
-//    32 bpp, 8 bpc, kCGImageAlphaNoneSkipLast
-//
-//    Mac OS X, iOS
-//
-//    RGB
-//
-//    32 bpp, 8 bpc, kCGImageAlphaPremultipliedFirst
-//
-//    Mac OS X, iOS
-//
-//    RGB
-//
-//    32 bpp, 8 bpc, kCGImageAlphaPremultipliedLast
-//
-//    Mac OS X, iOS
-    
-    CGBitmapInfo bitMapInfo = 0;
-    int bpc = 0;
-    if (frame->format == AV_PIX_FMT_RGB555BE) {
-        bitMapInfo = kCGBitmapByteOrder16Big | kCGImageAlphaNoneSkipFirst;
-        bpc = 5;
-    } else if (frame->format == AV_PIX_FMT_RGB555LE) {
-        bitMapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
-        bpc = 5;
-    } else if (frame->format == AV_PIX_FMT_RGB24) {
-        alpha = NO;
-        bpc = 8;
-//        bpp = 24;
-        bitMapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
-    }
-    else {
-        bitMapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
-        bpc = 8;
-    }
-    
-    void *rgba = frame->data[0];
     CGContextRef bitmapContext = CGBitmapContextCreate(
-        rgba,
+        pixels,
         w,
         h,
         bpc,
-        bytesPerRow,
+        bpr,
         colorSpace,
-        bitMapInfo
+        bmi
     );
+    
     CGImageRef cgImage = CGBitmapContextCreateImage(bitmapContext);
-#else
-    BOOL alpha = NO;
-    int bpc = 0;
-    int bpp = 0;
-    CGBitmapInfo bitMapInfo = 0;
+    CGColorSpaceRelease(colorSpace);
+    return CFAutorelease(cgImage);
+}
+
+CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h,
+size_t bpc, size_t bpp, size_t bpr, int bmi)
+{
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
     
-    if (frame->format == AV_PIX_FMT_RGB24) {
-        alpha = NO;
-        bpc = 8;
-        bpp = 24;
-        bitMapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
-    } else if (frame->format == AV_PIX_FMT_RGB555BE || frame->format == AV_PIX_FMT_RGB555LE) {
-        alpha = NO;
-        bpc = 5;
-        bpp = 16;
-        
-        if (frame->format == AV_PIX_FMT_RGB555BE) {
-            bitMapInfo = kCGBitmapByteOrder16Big | kCGImageAlphaNoneSkipFirst;
-        } else if (frame->format == AV_PIX_FMT_RGB555LE) {
-            bitMapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
-        }
-    } else if (frame->format == AV_PIX_FMT_RGBA) {
-        alpha = YES;
-        bpc = 8;
-        bpp = 32;
-        bitMapInfo = kCGImageAlphaPremultipliedLast | kCGBitmapByteOrderDefault;
-    } else {
-        NSAssert(NO, @"not support [%d] Pixel format,use RGB24 or RGBA please!",frame->format);
-    }
-    
-    const UInt8 *rgb = frame->data[0];
-    const CFIndex length = bytesPerRow * h;
+    const UInt8 *rgb = pixels;
+    const CFIndex length = bpr * h;
     ///需要copy！因为frame是重复利用的；里面的数据会变化！
     CFDataRef data = CFDataCreate(kCFAllocatorDefault, rgb, length);
     CGDataProviderRef provider = CGDataProviderCreateWithCFData(data);
     CFRelease(data);
+    
     CGImageRef cgImage = CGImageCreate(w,
                                        h,
                                        bpc,
                                        bpp,
-                                       bytesPerRow,
+                                       bpr,
                                        colorSpace,
-                                       bitMapInfo,
+                                       bmi,
                                        provider,
                                        NULL,
                                        NO,
                                        kCGRenderingIntentDefault);
     CGDataProviderRelease(provider);
-#endif
-    
     CGColorSpaceRelease(colorSpace);
     
-    return CFAutorelease((void *)cgImage);
+    return CFAutorelease(cgImage);
+}
+
+
++ (CGImageRef)cgImageFromRGBFrame:(AVFrame*)frame
+{
+    if (frame->format == AV_PIX_FMT_RGB555BE || frame->format == AV_PIX_FMT_RGB555LE || frame->format == AV_PIX_FMT_RGB24 || frame->format == AV_PIX_FMT_RGBA || frame->format == AV_PIX_FMT_0RGB || frame->format == AV_PIX_FMT_RGB0 || frame->format == AV_PIX_FMT_ARGB || frame->format == AV_PIX_FMT_RGBA) {
+        //these are supported!
+    } else {
+        NSAssert(NO, @"not support [%d] Pixel format,use RGB555BE/RGB555LE/RGBA/ARGB/0RGB/RGB24 please!",frame->format);
+    }
+//    https://stackoverflow.com/questions/1579631/converting-rgb-data-into-a-bitmap-in-objective-c-cocoa
+    //https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB
+    
+    int bpc = 0;
+    int bpp = 0;
+    CGBitmapInfo bitMapInfo = 0;
+    if (frame->format == AV_PIX_FMT_RGB555BE) {
+        bpc = 5;
+        bpp = 16;
+        bitMapInfo = kCGBitmapByteOrder16Big | kCGImageAlphaNoneSkipFirst;
+    } else if (frame->format == AV_PIX_FMT_RGB555LE) {
+        bpc = 5;
+        bpp = 16;
+        bitMapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
+    } else if (frame->format == AV_PIX_FMT_RGB24) {
+        bpc = 8;
+        bpp = 24;
+        bitMapInfo = kCGImageAlphaNone | kCGBitmapByteOrderDefault;
+    } else if (frame->format == AV_PIX_FMT_0RGB) {
+        //AV_PIX_FMT_0RGB 当做已经预乘好的 AV_PIX_FMT_ARGB 也可以渲染出来，总之不让 GPU 再次计算就行了
+        bpc = 8;
+        bpp = 32;
+        bitMapInfo = kCGBitmapByteOrderDefault |kCGImageAlphaNoneSkipFirst;
+    } else if (frame->format == AV_PIX_FMT_RGB0) {
+       //AV_PIX_FMT_RGB0 当做已经预乘好的 AV_PIX_FMT_RGBA 也可以渲染出来，总之不让 GPU 再次计算就行了
+       bpc = 8;
+       bpp = 32;
+       bitMapInfo = kCGBitmapByteOrderDefault |kCGImageAlphaNoneSkipLast;
+    } else if (frame->format == AV_PIX_FMT_ARGB) {
+        bpc = 8;
+        bpp = 32;
+        bitMapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedFirst;
+    } else if (frame->format == AV_PIX_FMT_RGBA) {
+        bpc = 8;
+        bpp = 32;
+        ///已经预乘好的，不让GPU再次计算，直接渲染就行了
+        bitMapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
+    } else {
+        NSAssert(NO, @"WTF!");
+    }
+    void *pixels = frame->data[0];
+    const size_t bpr = frame->linesize[0];
+    const int w = frame->width;
+    const int h = frame->height;
+    
+    return _CreateCGImage(pixels, w, h, bpc, bpp, bpr, bitMapInfo);
+    //not support bpp = 24;
+    return _CreateCGImageFromBitMap(pixels, w, h, bpc, bpp, bpr, bitMapInfo);
 }
 
 #pragma mark - YUV(NV12)-->CVPixelBufferRef Conversion

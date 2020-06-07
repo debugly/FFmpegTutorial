@@ -106,6 +106,8 @@ static __inline__ int packet_queue_put_nullpacket(PacketQueue *q, int stream_ind
  包个数大于 25，并且总时长大于 1s。
  */
 static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, PacketQueue *queue) {
+    
+    //printf("queue->nb_packets:%d,duration:%0.2f\n",queue->nb_packets,av_q2d(st->time_base) * queue->duration);
     return stream_id < 0 ||
            (st->disposition & AV_DISPOSITION_ATTACHED_PIC) ||
     (queue->nb_packets > MIN_FRAMES && (!queue->duration || av_q2d(st->time_base) * queue->duration > 1.0));
