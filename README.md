@@ -5,7 +5,7 @@
 
 # Foreword
 
-本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一边，前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API，了解播放器内部实现的细节，后续萌生了自己封装播放器的想法...
+本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API，了解播放器内部实现的细节，后续萌生了自己封装播放器的想法...
 
 3 年过去了，我仅仅摸索出了音视频的渲染而已，离目标相差很远，决定 2020 年重启该项目，并且使用 3.x 版本，等 iOS 版本的播放器完成后，专门写一篇如何升级到 4.x 版本的教程。工程采用 Pod 开发库（Development Pod）的形式来组织，所有的封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 库。
 

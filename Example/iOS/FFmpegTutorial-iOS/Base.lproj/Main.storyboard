@@ -275,8 +275,8 @@
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jfv-rR-MEq">
-                                                    <rect key="frame" x="481.5" y="12" width="47.5" height="20.5"/>
+                                                <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="使用  Core Media 渲染视频桢" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="jfv-rR-MEq">
+                                                    <rect key="frame" x="306.5" y="12" width="222.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -284,6 +284,9 @@
                                                 </label>
                                             </subviews>
                                         </tableViewCellContentView>
+                                        <connections>
+                                            <segue destination="e9J-KQ-rpj" kind="show" id="Mze-io-pOO"/>
+                                        </connections>
                                     </tableViewCell>
                                 </cells>
                             </tableViewSection>
@@ -744,6 +747,60 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="wIl-LB-An0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="37" y="1721"/>
+        </scene>
+        <!--0x10 View Controller-->
+        <scene sceneID="ZTQ-BB-6rj">
+            <objects>
+                <viewController id="e9J-KQ-rpj" customClass="MR0x10ViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="bzf-cd-AdR"/>
+                        <viewControllerLayoutGuide type="bottom" id="1vb-5F-Bn8"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="He8-Zb-QDD">
+                        <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qld-4p-VS5" customClass="MR0x10VideoRenderer">
+                                <rect key="frame" x="0.0" y="32" width="568" height="288"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                            </view>
+                            <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="tyW-nR-aXq">
+                                <rect key="frame" x="265.5" y="141.5" width="37" height="37"/>
+                            </activityIndicatorView>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jRJ-ax-FiA">
+                                <rect key="frame" x="0.0" y="32" width="568" height="50"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ZNZ-8N-gal"/>
+                                </constraints>
+                                <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="jRJ-ax-FiA" firstAttribute="top" secondItem="bzf-cd-AdR" secondAttribute="bottom" id="2LV-5J-lFb"/>
+                            <constraint firstAttribute="trailing" secondItem="qld-4p-VS5" secondAttribute="trailing" id="5vW-gG-vjI"/>
+                            <constraint firstItem="qld-4p-VS5" firstAttribute="top" secondItem="bzf-cd-AdR" secondAttribute="bottom" id="Ano-if-gsh"/>
+                            <constraint firstItem="1vb-5F-Bn8" firstAttribute="top" secondItem="qld-4p-VS5" secondAttribute="bottom" id="BuK-uY-Woo"/>
+                            <constraint firstItem="tyW-nR-aXq" firstAttribute="centerX" secondItem="He8-Zb-QDD" secondAttribute="centerX" id="KDR-yb-W57"/>
+                            <constraint firstItem="jRJ-ax-FiA" firstAttribute="trailing" secondItem="He8-Zb-QDD" secondAttribute="trailing" id="LR1-bB-SEm"/>
+                            <constraint firstItem="tyW-nR-aXq" firstAttribute="centerY" secondItem="He8-Zb-QDD" secondAttribute="centerY" id="TTk-qR-jOJ"/>
+                            <constraint firstItem="jRJ-ax-FiA" firstAttribute="leading" secondItem="He8-Zb-QDD" secondAttribute="leading" id="hEX-mW-Onv"/>
+                            <constraint firstItem="qld-4p-VS5" firstAttribute="leading" secondItem="He8-Zb-QDD" secondAttribute="leading" id="tvh-3T-ikR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="fvT-Nz-2vy"/>
+                    <connections>
+                        <outlet property="indicatorView" destination="tyW-nR-aXq" id="k5F-F4-6Va"/>
+                        <outlet property="renderView" destination="qld-4p-VS5" id="yaM-nZ-NkY"/>
+                        <outlet property="textView" destination="jRJ-ax-FiA" id="BZD-kB-UAr"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="9Fh-C0-wq0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="37" y="2475"/>
         </scene>
     </scenes>
 </document>

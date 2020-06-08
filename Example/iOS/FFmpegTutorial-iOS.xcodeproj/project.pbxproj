@@ -31,6 +31,8 @@
 		DD7F1A71247683EC00A98553 /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7F1A6F247683EC00A98553 /* MR0x06ViewController.m */; };
 		DDB11A36248BE8530059BC0E /* MR0x09ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB11A34248BE8530059BC0E /* MR0x09ViewController.m */; };
 		DDB11A3C248BE9810059BC0E /* MR0x08ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB11A39248BE9810059BC0E /* MR0x08ViewController.m */; };
+		DDB11A41248E75EC0059BC0E /* MR0x10ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB11A3F248E75EC0059BC0E /* MR0x10ViewController.m */; };
+		DDB11A44248E77170059BC0E /* MR0x10VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB11A42248E77160059BC0E /* MR0x10VideoRenderer.m */; };
 		DDC92063248A317E00896D5E /* MR0x07VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC92062248A317E00896D5E /* MR0x07VideoRenderer.m */; };
 		DDDFD49E2456ECFF00C02D8E /* MR0x03ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDDFD49D2456ECFF00C02D8E /* MR0x03ViewController.m */; };
 		DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE702592454574A00DA8A08 /* MR0x01ViewController.m */; };
@@ -87,6 +89,10 @@
 		DDB11A35248BE8530059BC0E /* MR0x09ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x09ViewController.h; sourceTree = "<group>"; };
 		DDB11A39248BE9810059BC0E /* MR0x08ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x08ViewController.m; sourceTree = "<group>"; };
 		DDB11A3A248BE9810059BC0E /* MR0x08ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x08ViewController.h; sourceTree = "<group>"; };
+		DDB11A3F248E75EC0059BC0E /* MR0x10ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x10ViewController.m; sourceTree = "<group>"; };
+		DDB11A40248E75EC0059BC0E /* MR0x10ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x10ViewController.h; sourceTree = "<group>"; };
+		DDB11A42248E77160059BC0E /* MR0x10VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x10VideoRenderer.m; sourceTree = "<group>"; };
+		DDB11A43248E77170059BC0E /* MR0x10VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x10VideoRenderer.h; sourceTree = "<group>"; };
 		DDC92061248A317E00896D5E /* MR0x07VideoRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x07VideoRenderer.h; sourceTree = "<group>"; };
 		DDC92062248A317E00896D5E /* MR0x07VideoRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x07VideoRenderer.m; sourceTree = "<group>"; };
 		DDDFD49C2456ECFF00C02D8E /* MR0x03ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x03ViewController.h; sourceTree = "<group>"; };
@@ -158,6 +164,7 @@
 		6003F593195388D20070C39A /* FFmpegTutorial-iOS */ = {
 			isa = PBXGroup;
 			children = (
+				DDB11A3E248E75EC0059BC0E /* 0x10 */,
 				DDB11A33248BE8530059BC0E /* 0x09 */,
 				DDB11A37248BE9810059BC0E /* 0x08 */,
 				DD5BA0F424865E1C0093D46C /* 0x07 */,
@@ -276,6 +283,17 @@
 				DDB11A39248BE9810059BC0E /* MR0x08ViewController.m */,
 			);
 			path = 0x08;
+			sourceTree = "<group>";
+		};
+		DDB11A3E248E75EC0059BC0E /* 0x10 */ = {
+			isa = PBXGroup;
+			children = (
+				DDB11A43248E77170059BC0E /* MR0x10VideoRenderer.h */,
+				DDB11A42248E77160059BC0E /* MR0x10VideoRenderer.m */,
+				DDB11A40248E75EC0059BC0E /* MR0x10ViewController.h */,
+				DDB11A3F248E75EC0059BC0E /* MR0x10ViewController.m */,
+			);
+			path = 0x10;
 			sourceTree = "<group>";
 		};
 		DDDFD49B2456ECFF00C02D8E /* 0x03 */ = {
@@ -454,6 +472,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				DDB11A44248E77170059BC0E /* MR0x10VideoRenderer.m in Sources */,
 				DDDFD49E2456ECFF00C02D8E /* MR0x03ViewController.m in Sources */,
 				DD5BA0F724865E1C0093D46C /* MR0x07ViewController.m in Sources */,
 				DDC92063248A317E00896D5E /* MR0x07VideoRenderer.m in Sources */,
@@ -461,6 +480,7 @@
 				DD06051B24684B8500FBE179 /* MR0x04ViewController.m in Sources */,
 				DDE7025C2454574A00DA8A08 /* MR0x01ViewController.m in Sources */,
 				DD0CE9F4246CEFB0004E1E7C /* MR0x05ViewController.m in Sources */,
+				DDB11A41248E75EC0059BC0E /* MR0x10ViewController.m in Sources */,
 				DDB11A3C248BE9810059BC0E /* MR0x08ViewController.m in Sources */,
 				DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
