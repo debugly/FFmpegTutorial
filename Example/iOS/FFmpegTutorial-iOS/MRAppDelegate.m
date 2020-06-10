@@ -19,7 +19,7 @@
 {
     // Override point for customization after application launch.
     [self.window setBackgroundColor:[UIColor whiteColor]];
-    [PerformanceWrapper show];
+//    [PerformanceWrapper show];
     return YES;
 }
 

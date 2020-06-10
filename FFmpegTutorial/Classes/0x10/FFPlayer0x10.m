@@ -486,6 +486,18 @@ static int decode_interrupt_cb(void *ctx)
     return  [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
 }
 
+- (void)doDisplayVideoFrame:(Frame *)vp
+{
+    if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
+        @autoreleasepool {
+            CMSampleBufferRef sample = [self sampleBufferFromAVFrame:vp->frame];
+            if (sample) {
+                [self.delegate reveiveFrameToRenderer:sample];
+            }
+        }
+    }
+}
+
 - (void)rendererThreadFunc
 {
     ///调用了stop方法，，则不再渲染
@@ -499,21 +511,18 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&sampq);
         }
         
+        NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
+        
         if (frame_queue_nb_remaining(&pictq) > 0) {
             Frame *vp = frame_queue_peek(&pictq);
-            av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
-            if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
-                @autoreleasepool {
-                    CMSampleBufferRef sample = [self sampleBufferFromAVFrame:vp->frame];
-                    if (sample) {
-                        [self.delegate reveiveFrameToRenderer:sample];
-                    }
-                }
-            }
+            [self doDisplayVideoFrame:vp];
             frame_queue_pop(&pictq);
         }
         
-        usleep(1000 * 20);
+        NSTimeInterval end = CFAbsoluteTimeGetCurrent();
+        int cost = (end - begin) * 1000;
+        av_log(NULL, AV_LOG_INFO, "render video frame cost:%dms\n", cost);
+        usleep(1000 * (40-cost));
     }
 }
 

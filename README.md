@@ -5,9 +5,9 @@
 
 # Foreword
 
-本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，前几个 demo 使用 2.x 版本的 FFmepg，然后替换成 3.x 版本以此来熟悉 FFmpeg 的 API，了解播放器内部实现的细节，后续萌生了自己封装播放器的想法...
+本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，以此来熟悉 FFmpeg 的 API，了解播放器内部实现细节，在学习的过程中萌生了自己封装播放器的想法...
 
-3 年过去了，我仅仅摸索出了音视频的渲染而已，离目标相差很远，决定 2020 年重启该项目，并且使用 3.x 版本，等 iOS 版本的播放器完成后，专门写一篇如何升级到 4.x 版本的教程。工程采用 Pod 开发库（Development Pod）的形式来组织，所有的封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 库。
+3 年期间虽然摸索出了多种音视频渲染方法，但终究没有完成原定目标！于 2020 年年初从零重写该项目，工程采用 Pod 开发库（Development Pod）的形式来组织，所有的封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 库。
 
 工程目录结构如下：
 
@@ -62,7 +62,9 @@
 - 0x04：[多线程解码](md/0x04.md)
 - 0x05：[渲染线程与 AVFrame 缓存队列](md/0x05.md)
 - 0x06：[整理代码，封装解码器](md/0x06.md)
-- 0x07：[使用 UIImageView 渲染视频帧](md/0x07.md)
+- 0x07：[使用 Core Graphics 渲染视频帧](md/0x07.md)
+- 0x08：[使用 Core Animation 渲染视频帧](md/0x08.md)
+- 0x09：[使用 Core Image 渲染视频帧](md/0x09.md)
 
 # TODO
 
@@ -75,17 +77,15 @@
 **之前的老代码实现了音视频的不同渲染方式，可以通过 git 将代码切到这次 36e4f8cdcf1f9a293426dea802a39560747fdeec 提交进行查看**
 
 
-- 0x08：[将 avframe 转成 CIImage，使用 GLKView 渲染]
+- 0x10：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps]
 
-- 0x09：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps]
+- 0x11：[使用 AudioUnit 渲染音频]
 
-- 0x10：[使用 AudioUnit 渲染音频]
+- 0x12：[使用 AudioQueue 渲染音频]
 
-- 0x11：[使用 AudioQueue 渲染音频]
+- 0x13：[将音视频同步，为封装播放器做准备]
 
-- 0x12：[将音视频同步，为封装播放器做准备]
-
-- 0x13：[封装 MRMoviePlayer 播放器]
+- 0x14：[封装 MRMoviePlayer 播放器]
 
 ### Just For Fun
 

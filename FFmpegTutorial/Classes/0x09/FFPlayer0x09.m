@@ -490,6 +490,18 @@ static int decode_interrupt_cb(void *ctx)
     return nil;
 }
 
+- (void)doDisplayVideoFrame:(Frame *)vp
+{
+    if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
+        @autoreleasepool {
+            CIImage *ciImage = [self pixelBufferFromAVFrame:vp->frame];
+            if (ciImage) {
+                [self.delegate reveiveFrameToRenderer:ciImage];
+            }
+        }
+    }
+}
+
 - (void)rendererThreadFunc
 {
     ///调用了stop方法，，则不再渲染
@@ -505,19 +517,10 @@ static int decode_interrupt_cb(void *ctx)
         
         if (frame_queue_nb_remaining(&pictq) > 0) {
             Frame *vp = frame_queue_peek(&pictq);
-            av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
-            if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
-                @autoreleasepool {
-                    CIImage *ciImage = [self pixelBufferFromAVFrame:vp->frame];
-                    if (ciImage) {
-                        [self.delegate reveiveFrameToRenderer:ciImage];
-                    }
-                }
-            }
+            [self doDisplayVideoFrame:vp];
             frame_queue_pop(&pictq);
         }
-        
-        usleep(1000 * 20);
+        usleep(1000 * (15));
     }
 }
 

@@ -134,13 +134,28 @@ size_t bpc, size_t bpp, size_t bpr, int bmi)
     return [self pixelBufferFromAVFrame:frame opt:NULL];
 }
 
-+ (CVPixelBufferRef)pixelBufferFromAVFrame:(AVFrame *)picture
-                                       opt:(CVPixelBufferPoolRef)poolRef
++ (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame *)picture
+                                                 opt:(CVPixelBufferPoolRef)poolRef
 {
-    if (picture->format == AV_PIX_FMT_NV21) {
-        //later will swap VU. we won't modify the avframe data, because the frame can be dispaly again!
-    } else {
-        NSParameterAssert(picture->format == AV_PIX_FMT_NV12);
+    const int format = picture->format;
+    OSType pixelFormatType = 0;
+    
+    if(format == AV_PIX_FMT_RGB555BE){
+        pixelFormatType = kCVPixelFormatType_16BE555;
+    } else if(format == AV_PIX_FMT_RGB555LE){
+        pixelFormatType = kCVPixelFormatType_16LE555;
+    } else if(format == AV_PIX_FMT_RGB24){
+        pixelFormatType = kCVPixelFormatType_24RGB;
+    } else if(format == AV_PIX_FMT_RGBA){
+        pixelFormatType = kCVPixelFormatType_32RGBA;
+    } else if(format == AV_PIX_FMT_ARGB){
+        pixelFormatType = kCVPixelFormatType_32ARGB;
+    } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21){
+        pixelFormatType = picture->color_range == AVCOL_RANGE_MPEG ? kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange : kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
+        //for AV_PIX_FMT_NV21: later will swap VU. we won't modify the avframe data, because the frame can be dispaly again!
+    }
+    else {
+        NSAssert(NO,@"unsupported pixel format!");
     }
     
     CVPixelBufferRef pixelBuffer = NULL;
@@ -155,8 +170,7 @@ size_t bpc, size_t bpp, size_t bpr, int bmi)
         //AVCOL_RANGE_MPEG对应tv，AVCOL_RANGE_JPEG对应pc
         //Y′ values are conventionally shifted and scaled to the range [16, 235] (referred to as studio swing or "TV levels") rather than using the full range of [0, 255] (referred to as full swing or "PC levels").
         //https://en.wikipedia.org/wiki/YUV#Numerical_approximations
-        OSType pixelFormatType = picture->color_range == AVCOL_RANGE_MPEG ? kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange : kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
-        NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
+                NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
         [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
         [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
         
@@ -230,8 +244,10 @@ size_t bpc, size_t bpp, size_t bpr, int bmi)
             }
         }
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+        return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
+    } else {
+        return NULL;
     }
-    return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
 }
 
 + (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer
@@ -256,4 +272,5 @@ size_t bpc, size_t bpp, size_t bpr, int bmi)
     }
     return NULL;
 }
+
 @end

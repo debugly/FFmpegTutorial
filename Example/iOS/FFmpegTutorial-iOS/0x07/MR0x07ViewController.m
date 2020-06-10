@@ -58,7 +58,7 @@
         self.timer = nil;
     }];
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB0;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_0RGB;
         // MR_PIX_FMT_MASK_ARGB;// MR_PIX_FMT_MASK_RGBA;
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;
@@ -77,7 +77,7 @@
 - (void)reveiveFrameToRenderer:(CGImageRef)cgImage
 {
     CFRetain(cgImage);
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_sync(dispatch_get_main_queue(), ^{
         [self.videoRenderer dispalyCGImage:cgImage];
         CFRelease(cgImage);
     });

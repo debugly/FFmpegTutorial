@@ -20,6 +20,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet UIImageView *imgView;
 
+
 @end
 
 #define USE_CoreAnimation_DISPLAY 1
@@ -59,7 +60,7 @@
         self.timer = nil;
     }];
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_RGB555LE | MR_PIX_FMT_MASK_RGB555BE | MR_PIX_FMT_MASK_RGBA;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_0RGB;// MR_PIX_FMT_MASK_RGB555BE;//MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_RGB555LE | MR_PIX_FMT_MASK_RGB555BE | MR_PIX_FMT_MASK_RGBA;
 
     player.delegate = self;
     [player prepareToPlay];
@@ -76,7 +77,7 @@
 {
     UIImage *image = [UIImage imageWithCGImage:cgImage];
 
-    dispatch_async(dispatch_get_main_queue(), ^{
+    dispatch_sync(dispatch_get_main_queue(), ^{
         self.imgView.image = image;
     });
 }
