@@ -64,7 +64,7 @@
 - 0x06：[整理代码，封装解码器](md/0x06.md)
 - 0x07：[使用 Core Graphics 渲染视频帧](md/0x07.md)
 - 0x08：[使用 Core Animation 渲染视频帧](md/0x08.md)
-- 0x09：[使用 Core Image 渲染视频帧](md/0x09.md)
+- 0x09：[使用 Core Image 渲染视频帧]
 
 # TODO
 
@@ -77,7 +77,7 @@
 **之前的老代码实现了音视频的不同渲染方式，可以通过 git 将代码切到这次 36e4f8cdcf1f9a293426dea802a39560747fdeec 提交进行查看**
 
 
-- 0x10：[将 avframe 转成 CMSampleBufferRef，使用 AVSampleBufferDisplayLayer 渲染，60fps]
+- 0x10：[使用 Core Video 渲染视频帧]
 
 - 0x11：[使用 AudioUnit 渲染音频]
 
