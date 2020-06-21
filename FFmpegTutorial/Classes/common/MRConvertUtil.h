@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MRConvertUtil : NSObject
 
 + (CGImageRef)cgImageFromRGBFrame:(AVFrame*)frame;
++ (CIImage* )ciImageFromFrame:(AVFrame*)frame;
 + (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame*)frame;
 + (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame*)frame opt:(CVPixelBufferPoolRef _Nullable)poolRef;
 + (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;

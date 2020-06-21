@@ -20,7 +20,7 @@
 @property (weak, nonatomic) IBOutlet GLKView *glView;
 @property (nonatomic, strong) EAGLContext *glContext;
 @property (nonatomic, strong) CIContext *ciContext;
-
+@property (nonatomic, strong) CIFilter *ciFilter;
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
 
@@ -62,7 +62,7 @@
     }];
 //    MR_PIX_FMT_MASK_RGB24
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12; //MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_0RGB;// MR_PIX_FMT_MASK_RGB555BE;//MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_RGB555LE | MR_PIX_FMT_MASK_RGB555BE | MR_PIX_FMT_MASK_RGBA;MR_PIX_FMT_MASK_NV12;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;//MR_PIX_FMT_MASK_NV12; //MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_0RGB;// MR_PIX_FMT_MASK_RGB555BE;//MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_RGB555LE | MR_PIX_FMT_MASK_RGB555BE | MR_PIX_FMT_MASK_RGBA;MR_PIX_FMT_MASK_NV12;
     player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
@@ -74,12 +74,13 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(CIImage *)ciimage
+- (void)reveiveFrameToRenderer:(CIImage *)ciImage
 {
     dispatch_async(dispatch_get_main_queue(), ^{
         
         if (!self.glContext) {
             self.glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES3];
+            //important! use GPU
             self.ciContext = [CIContext contextWithEAGLContext:self.glContext];
             [self.glView setContext:self.glContext];
         }
@@ -88,8 +89,16 @@
             [EAGLContext setCurrentContext:self.glContext];
         }
         
+//        // 2. 创建滤镜
+//        self.ciFilter = [CIFilter filterWithName:@"CIMotionBlur" keysAndValues:kCIInputImageKey, ciImage, nil];
+//        // 设置相关参数
+//        [self.ciFilter setValue:@(10.f) forKey:@"inputRadius"];
+//
+//        // 3. 渲染并输出CIImage
+//        CIImage *outputImage = [self.ciFilter outputImage];
+        CIImage *outputImage = ciImage;
         CGFloat scale = [[UIScreen mainScreen]scale];
-        CGSize aspectRatio = ciimage.extent.size;
+        CGSize aspectRatio = ciImage.extent.size;
             
         CGFloat maxWidth  = CGRectGetWidth(self.glView.bounds);
         CGFloat maxHeight = CGRectGetHeight(self.glView.bounds);
@@ -119,9 +128,9 @@
         
         @autoreleasepool {
             [self.glView bindDrawable];
-            [self.ciContext drawImage:ciimage
+            [self.ciContext drawImage:outputImage
                                inRect:inRect
-                             fromRect:ciimage.extent];
+                             fromRect:outputImage.extent];
             [self.glView display];
         }
     });

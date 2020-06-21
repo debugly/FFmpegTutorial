@@ -126,6 +126,66 @@ size_t bpc, size_t bpp, size_t bpr, int bmi)
     return _CreateCGImageFromBitMap(pixels, w, h, bpc, bpp, bpr, bitMapInfo);
 }
 
++ (CIImage *)ciImageFromFrame:(AVFrame *)frame
+{
+    if (frame->format == AV_PIX_FMT_RGB555BE || frame->format == AV_PIX_FMT_RGB555LE || frame->format == AV_PIX_FMT_RGB24 || frame->format == AV_PIX_FMT_RGBA || frame->format == AV_PIX_FMT_0RGB || frame->format == AV_PIX_FMT_RGB0 || frame->format == AV_PIX_FMT_ARGB || frame->format == AV_PIX_FMT_RGBA) {
+        //these are supported!
+    } else {
+        NSAssert(NO, @"not support [%d] Pixel format,use RGB555BE/RGB555LE/RGBA/ARGB/0RGB/RGB24 please!",frame->format);
+    }
+//    https://stackoverflow.com/questions/1579631/converting-rgb-data-into-a-bitmap-in-objective-c-cocoa
+    //https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB
+    
+    int bpc = 0;
+    int bpp = 0;
+    CIFormat ciFmt = 0;
+    if (frame->format == AV_PIX_FMT_RGB555BE) {
+        bpc = 5;
+        bpp = 16;
+//        ciFmt = kCIFormatRGBA16;
+    } else if (frame->format == AV_PIX_FMT_RGB555LE) {
+        bpc = 5;
+        bpp = 16;
+    } else if (frame->format == AV_PIX_FMT_RGB24) {
+        bpc = 8;
+        bpp = 24;
+        
+    } else if (frame->format == AV_PIX_FMT_0RGB) {
+        //AV_PIX_FMT_0RGB 当做已经预乘好的 AV_PIX_FMT_ARGB 也可以渲染出来，总之不让 GPU 再次计算就行了
+        bpc = 8;
+        bpp = 32;
+        ciFmt = kCIFormatARGB8;
+    } else if (frame->format == AV_PIX_FMT_RGB0) {
+       //AV_PIX_FMT_RGB0 当做已经预乘好的 AV_PIX_FMT_RGBA 也可以渲染出来，总之不让 GPU 再次计算就行了
+       bpc = 8;
+       bpp = 32;
+       ciFmt = kCIFormatRGBA8;
+    } else if (frame->format == AV_PIX_FMT_ARGB) {
+        bpc = 8;
+        bpp = 32;
+        ciFmt = kCIFormatARGB8;
+    } else if (frame->format == AV_PIX_FMT_RGBA) {
+        bpc = 8;
+        bpp = 32;
+        ///已经预乘好的，不让GPU再次计算，直接渲染就行了
+        ciFmt = kCIFormatRGBA8;
+    } else {
+        NSAssert(NO, @"WTF!");
+    }
+    void *pixels = frame->data[0];
+    const size_t bpr = frame->linesize[0];
+    const int w = frame->width;
+    const int h = frame->height;
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    
+    const UInt8 *rgb = pixels;
+    const CFIndex length = bpr * h;
+    NSData *data = [NSData dataWithBytes:rgb length:length];
+    CIImage *ciImage = [[CIImage alloc] initWithBitmapData:data bytesPerRow:bpr size:CGSizeMake(w, h) format:ciFmt colorSpace:colorSpace];
+    return ciImage;
+}
+
 #pragma mark - YUV(NV12)-->CVPixelBufferRef Conversion
 
 //https://stackoverflow.com/questions/25659671/how-to-convert-from-yuv-to-ciimage-for-ios

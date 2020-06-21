@@ -458,8 +458,11 @@ static int decode_interrupt_cb(void *ctx)
     self.rendererThread.name = @"renderer";
 }
 
-- (CIImage * _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
+#define USE_CVPIXELBUFFER 0
+
+- (CIImage * _Nullable)ciImageFromAVFrame:(AVFrame *)frame
 {
+#if USE_CVPIXELBUFFER
 #if USE_PIXEL_BUFFER_POOL
     CVReturn theError;
     if (!self.pixelBufferPool){
@@ -488,13 +491,18 @@ static int decode_interrupt_cb(void *ctx)
         return [CIImage imageWithCVPixelBuffer:pixelBuffer];
     }
     return nil;
+#else
+    CGImageRef cgImg = [MRConvertUtil cgImageFromRGBFrame:frame];
+    return [CIImage imageWithCGImage:cgImg];
+    return [MRConvertUtil ciImageFromFrame:frame];
+#endif
 }
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
     if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
         @autoreleasepool {
-            CIImage *ciImage = [self pixelBufferFromAVFrame:vp->frame];
+            CIImage *ciImage = [self ciImageFromAVFrame:vp->frame];
             if (ciImage) {
                 [self.delegate reveiveFrameToRenderer:ciImage];
             }
@@ -515,12 +523,19 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&sampq);
         }
         
+        NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
+        
         if (frame_queue_nb_remaining(&pictq) > 0) {
             Frame *vp = frame_queue_peek(&pictq);
             [self doDisplayVideoFrame:vp];
             frame_queue_pop(&pictq);
         }
-        usleep(1000 * (15));
+        
+        NSTimeInterval end = CFAbsoluteTimeGetCurrent();
+        int cost = (end - begin) * 1000;
+        av_log(NULL, AV_LOG_INFO, "render video frame cost:%dms\n", cost);
+        usleep(1000 * (40-cost));
+        
     }
 }
 
