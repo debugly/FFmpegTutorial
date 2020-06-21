@@ -1,15 +1,15 @@
 [![](md/imgs/ffmpeg.png)](http://ffmpeg.org/) 
 
 
-> 从我个人的经验来看使用 **FFmpeg** 封装一个播放器，是有一定门槛的，为了让更多零基础的 iOS/macOS 开发人员快速入门，我编写了这个的教程。
+> 从我个人的经验来看使用 **FFmpeg** 封装一个播放器，是有一定门槛的，为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个教程。
 
 # Foreword
 
-本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，以此来熟悉 FFmpeg 的 API，了解播放器内部实现细节，在学习的过程中萌生了自己封装播放器的想法...
+本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，以此来熟悉 FFmpeg 的 API，了解播放器内部实现细节，谁料想在学习的过程中萌生了自己封装播放器的想法...
 
 3 年期间虽然摸索出了多种音视频渲染方法，但终究没有完成原定目标！于 2020 年年初从零重写该项目，工程采用 Pod 开发库（Development Pod）的形式来组织，所有的封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 库。
 
-工程目录结构如下：
+开发语言为 Objective-C，工程目录结构如下：
 
 ```
 ├── Example
@@ -44,8 +44,6 @@
     ...
 
 ```
-
-
 
 # Anti-Illiteracy
 
@@ -95,13 +93,13 @@
 
 本教程的终极目标是写一款 **跨平台播放器**，理想很丰满，现实很骨感，这是一项庞大的工程，我会分阶段来完成，计划如下：
 
-第一阶段：先完成一款 iOS 平台的播放，我本人做 iOS 开发多年，这个平台最为熟悉，由于没写过播放器，因此代码可能不是很成熟，前期改动可能会多些，以弥补思考不严密与规划不正确带来的问题。从长远来讲为了实现跨平台，不应当使用 Cocoa 特有的技术，比如 NSThread，GCD等，这完全是给自己挖坑😂！但是为了照顾广大 iOS 开发者零基础入门，我还是放弃了 C++ Thread 或  pthread 等实现方式，从而降低学习的门槛，让大家不用去学那么多乱七八糟的东西。
+第一阶段：先完成 iOS 平台的播放，由于没写过播放器，因此代码可能不是很成熟，前期改动可能会多些，以弥补思考不严密与规划不正确带来的问题。从长远来讲为了实现跨平台，不应当使用 Cocoa 特有的技术，比如 NSThread，GCD等，这完全是给自己挖坑😂！但是为了照顾广大 iOS 开发者零基础入门，我还是放弃了 C++ Thread 或 pthread 等实现方式，从而降低学习的门槛，让大家不用去学那么多乱七八糟的东西。
 
-第二阶段：移植到 macOS 平台，这一阶段需要对平台不兼容接口进行处理，主要是视频渲染方面的，另外需要考虑后续的移植问题，设计出优良的方便移植的接口。移植完毕后考虑学习下使用 MetalKit 渲染，和 VideoToolbox 硬解等。
+第二阶段：移植到 macOS 平台，这一阶段需要处理平台特有接口，主要是视频渲染方面的，另外需要考虑后续的移植问题，设计出优良的方便移植的接口。移植完毕后考虑学习下使用 MetalKit 渲染，和 VideoToolbox 硬解等。
 
-第三阶段：移植到 Android 平台，这个阶段的主要问题是将前两个阶段使用的 Cocoa API 替换成跨平台 API，主要包括线程和锁，还要学习 JNI 调用，音视频如何渲染，重新创建配套的 Demo 工程，学习如何管理依赖（有没有 cocoapods 一样的工具呢？）...
+第三阶段：移植到 Android 平台，这个阶段的主要问题是将前两个阶段使用的 Cocoa API 替换成跨平台 API，主要包括线程和锁，还要学习 JNI 调用，音视频如何渲染，重新创建配套的 Demo 工程，学习如何管理依赖（有没有 Cocoapods 一样的工具呢？）...
 
-第四阶段：移植到 windows 平台，好多年没有使用 Windows 系统了，没有太大的兴趣，所以要看有没有跟多的精力了。
+第四阶段：移植到 Windows 平台，好多年没有使用 Windows 系统了，有余力了搞下。
 
 # Usage
 
@@ -110,7 +108,7 @@
 **pod install --project-directory=Example/iOS**
 
 ```bash
-➜  StudyFFmpeg git:(03) ✗ pod install --project-directory=Example/iOS
+➜  StudyFFmpeg git:(master) ✗ pod install --project-directory=Example/iOS
 will install MRFFmpeg3.4.7
 Analyzing dependencies
 Downloading dependencies
@@ -120,8 +118,6 @@ Pod installation complete! There are 2 dependencies from the Podfile and 2 total
 ```
 
 成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
-
-由于 Github 在国内不稳定，pod install 的过程需要将几十兆的 FFmpeg 库下载下来，~~安装过程中如有失败属于正常现象，请多次几次，或者通过配置 HOST，翻墙等办法解决~~,最新代码已经不再从 github 下载，放到了测试机上，安装速度非常快！
 
 ## Ends
 
