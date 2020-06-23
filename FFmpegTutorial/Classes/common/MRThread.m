@@ -91,7 +91,7 @@
 {
     if (![self.thread isFinished] && self.joinModeName.length > 0) {
 //        for (;![self.thread isFinished];) {
-//            usleep(2);
+//            mr_usleep(2);
 //        }
 //        [self bye];
         [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES modes:@[self.joinModeName]];

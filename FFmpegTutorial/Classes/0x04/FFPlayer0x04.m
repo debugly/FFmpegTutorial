@@ -211,7 +211,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         }
         
@@ -238,7 +238,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         } else {
             //音频包入音频队列
@@ -472,7 +472,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
-            sleep(1);
+            mr_sleep(1);
         }
     } while (1);
     
@@ -523,7 +523,7 @@ static int decode_interrupt_cb(void *ctx)
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
             
-            sleep(2);
+            mr_sleep(2);
         }
     } while (1);
     

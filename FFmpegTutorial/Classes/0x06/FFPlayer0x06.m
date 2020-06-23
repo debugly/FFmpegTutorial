@@ -160,7 +160,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         }
         
@@ -187,7 +187,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         } else {
             //音频包入音频队列
@@ -409,7 +409,7 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&pictq);
         }
         
-        usleep(1000 * 40);
+        mr_usleep(1000 * 40);
     }
 }
 

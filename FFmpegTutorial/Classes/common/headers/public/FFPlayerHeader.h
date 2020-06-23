@@ -45,4 +45,20 @@ typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_RGB555LE= 1 << MR_PIX_FMT_RGB555LE     ///< packed RGB 5:5:5, 16bpp, (msb)1X 5R 5G 5B(lsb), little-endian, X=unused/undefined
 };
 
+/// safe usleep
+static inline void mr_usleep(long s) {
+    //mr_usleep is uint32 type!
+    if (s >= 0) {
+        usleep((useconds_t)s);
+    }
+}
+
+/// safe sleep
+static inline void mr_sleep(long s) {
+    //sleep is unsigned int type!
+    if (s >= 0) {
+        sleep((unsigned int)s);
+    }
+}
+
 #endif /* FFPlayerHeader_h */

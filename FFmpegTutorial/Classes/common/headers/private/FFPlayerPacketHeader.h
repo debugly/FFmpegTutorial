@@ -161,7 +161,7 @@ static __inline__ int packet_queue_get(PacketQueue *q, AVPacket *pkt, int block)
         ///阻塞形式，则休眠10ms后开始新一轮的检查
         else {
             dispatch_semaphore_signal(q->mutex);
-            usleep(10000);
+            mr_usleep(10000);
             dispatch_semaphore_wait(q->mutex, DISPATCH_TIME_FOREVER);
         }
     }
