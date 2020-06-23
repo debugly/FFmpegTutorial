@@ -19,7 +19,7 @@
 #define USE_CGImage        2
 #define USE_BitmapData     3
 
-#define CONVET_TYPE 1
+#define CONVET_TYPE USE_CVPixelBuffer
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
 
@@ -468,49 +468,10 @@ static int decode_interrupt_cb(void *ctx)
 #if CONVET_TYPE == USE_CVPixelBuffer
     
 #if USE_PIXEL_BUFFER_POOL
-    CVReturn theError;
     if (!self.pixelBufferPool){
-        int linesize = 32;//FFMpeg 解码数据对齐是32，这里期望CVPixelBuffer也能使用32对齐，但实际来看却是64！
-        int w = frame->width;
-        int h = frame->height;
-        int format = frame->format;
-        int pixelFormatType = 0;
-        
-        if (format == AV_PIX_FMT_RGB24){
-            pixelFormatType = kCVPixelFormatType_24RGB;
-        } else if(format == AV_PIX_FMT_ARGB || format == AV_PIX_FMT_0RGB){
-            pixelFormatType = kCVPixelFormatType_32ARGB;
-        } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21){
-            pixelFormatType = frame->color_range == AVCOL_RANGE_MPEG ? kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange : kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
-            //for AV_PIX_FMT_NV21: later will swap VU. we won't modify the avframe data, because the frame can be dispaly again!
-        } else if(format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0){
-            pixelFormatType = kCVPixelFormatType_32BGRA;
-        }
-        else {
-            NSAssert(NO,@"unsupported pixel format!");
-            return NULL;
-        }
-        
-        NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-        [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-        [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
-        [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
-        [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
-        
-        theError = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef) attributes, &_pixelBufferPool);
-        if (theError != kCVReturnSuccess){
-            NSLog(@"CVPixelBufferPoolCreate Failed");
-        }
+       self.pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
     }
 #endif
-    
-//    if(format == AV_PIX_FMT_RGB555BE){
-//        pixelFormatType = kCVPixelFormatType_16BE555;
-//    } else if(format == AV_PIX_FMT_RGB555LE){
-//        pixelFormatType = kCVPixelFormatType_16LE555;
-//    }
-//    可以创建 pixelbuffer，但是构建的 CIImage 是 nil！
     CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
     
     if (pixelBuffer) {
@@ -521,7 +482,7 @@ static int decode_interrupt_cb(void *ctx)
     CGImageRef cgImg = [MRConvertUtil cgImageFromRGBFrame:frame];
     return [CIImage imageWithCGImage:cgImg];
 #else
-    return [MRConvertUtil ciImageFromRGB32Frame:frame];
+    return [MRConvertUtil ciImageFromRGB32orBGR32Frame:frame];
 #endif
 }
 
