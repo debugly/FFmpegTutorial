@@ -98,7 +98,7 @@
             /*AVFormatContext 的 streams 变量是个数组，里面存放了 nb_streams 个元素，每个元素都是一个 AVStream */
             [text appendFormat:@"共%u个流，总时长:%llds",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
             //遍历所有的流
-            for (NSInteger i = 0; i < formatCtx->nb_streams; i++) {
+            for (int i = 0; i < formatCtx->nb_streams; i++) {
                 
                 AVStream *stream = formatCtx->streams[i];
                 
@@ -177,12 +177,12 @@
                         break;
                     case AVMEDIA_TYPE_ATTACHMENT:
                     {
-                        NSLog(@"附加信息流:%ld",i);
+                        NSLog(@"附加信息流:%d",i);
                     }
                         break;
                     default:
                     {
-                        NSLog(@"其他流:%ld",i);
+                        NSLog(@"其他流:%d",i);
                     }
                         break;
                 }
