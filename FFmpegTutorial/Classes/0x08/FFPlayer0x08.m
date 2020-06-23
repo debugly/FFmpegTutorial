@@ -485,7 +485,7 @@ static int decode_interrupt_cb(void *ctx)
         
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
         int cost = (end - begin) * 1000;
-        av_log(NULL, AV_LOG_INFO, "render video frame cost:%dms\n", cost);
+        av_log(NULL, AV_LOG_DEBUG, "render video frame cost:%dms\n", cost);
         usleep(1000 * (40-cost));
     }
 }
