@@ -254,8 +254,8 @@ static int decode_interrupt_cb(void *ctx)
     
     bool matched = false;
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    for (int i = 0; i < sizeof(ALL_MR_PIX_FMTS)/sizeof(MRPixelFormat); i ++) {
-        const MRPixelFormat fmt = ALL_MR_PIX_FMTS[i];
+    for (int i = MR_PIX_FMT_BEGIN; i <= MR_PIX_FMT_END; i ++) {
+        const MRPixelFormat fmt = i;
         const MRPixelFormatMask mask = 1 << fmt;
         if (self.supportedPixelFormats & mask) {
             if (firstSupportedFmt == MR_PIX_FMT_NONE) {
