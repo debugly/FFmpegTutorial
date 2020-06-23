@@ -118,7 +118,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         }
         
@@ -145,7 +145,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         } else {
             //音频包入音频队列
@@ -227,7 +227,7 @@ static int decode_interrupt_cb(void *ctx)
     NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
     //遍历所有的流
-    for (NSInteger i = 0; i < formatCtx->nb_streams; i++) {
+    for (int i = 0; i < formatCtx->nb_streams; i++) {
         
         AVStream *stream = formatCtx->streams[i];
         
@@ -263,12 +263,12 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             case AVMEDIA_TYPE_ATTACHMENT:
             {
-                NSLog(@"附加信息流:%ld",i);
+                NSLog(@"附加信息流:%d",i);
             }
                 break;
             default:
             {
-                NSLog(@"其他流:%ld",i);
+                NSLog(@"其他流:%d",i);
             }
                 break;
         }

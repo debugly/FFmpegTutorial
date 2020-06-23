@@ -172,7 +172,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         }
         
@@ -199,7 +199,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             /* wait 10 ms */
-            usleep(10000);
+            mr_usleep(10000);
             continue;
         } else {
             //音频包入音频队列
@@ -264,8 +264,8 @@ static int decode_interrupt_cb(void *ctx)
     
     bool matched = false;
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    for (int i = 0; i < sizeof(ALL_MR_PIX_FMTS)/sizeof(MRPixelFormat); i ++) {
-        const MRPixelFormat fmt = ALL_MR_PIX_FMTS[i];
+    for (int i = MR_PIX_FMT_BEGIN; i <= MR_PIX_FMT_END; i ++) {
+        const MRPixelFormat fmt = i;
         const MRPixelFormatMask mask = 1 << fmt;
         if (self.supportedPixelFormats & mask) {
             if (firstSupportedFmt == MR_PIX_FMT_NONE) {
@@ -461,24 +461,8 @@ static int decode_interrupt_cb(void *ctx)
 - (CMSampleBufferRef _Nullable)sampleBufferFromAVFrame:(AVFrame *)frame
 {
 #if USE_PIXEL_BUFFER_POOL
-    CVReturn theError;
     if (!self.pixelBufferPool){
-        const int linesize = 32;//FFMpeg 解码数据对齐是32，这里期望CVPixelBuffer也能使用32对齐，但实际来看却是64！
-        int w = frame->width;
-        int h = frame->height;
-        OSType pixelFormatType = frame->color_range == AVCOL_RANGE_MPEG ? kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange : kCVPixelFormatType_420YpCbCr8BiPlanarFullRange;
-        
-        NSMutableDictionary* attributes = [NSMutableDictionary dictionary];
-        [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-        [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
-        [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-        [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
-        [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
-        
-        theError = CVPixelBufferPoolCreate(kCFAllocatorDefault, NULL, (__bridge CFDictionaryRef) attributes, &_pixelBufferPool);
-        if (theError != kCVReturnSuccess){
-            NSLog(@"CVPixelBufferPoolCreate Failed");
-        }
+       self.pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
     }
 #endif
     
@@ -521,8 +505,8 @@ static int decode_interrupt_cb(void *ctx)
         
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
         int cost = (end - begin) * 1000;
-        av_log(NULL, AV_LOG_INFO, "render video frame cost:%dms\n", cost);
-        usleep(1000 * (40-cost));
+        av_log(NULL, AV_LOG_DEBUG, "render video frame cost:%dms\n", cost);
+        mr_usleep(1000 * (40-cost));
     }
 }
 

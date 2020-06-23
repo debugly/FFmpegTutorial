@@ -91,7 +91,7 @@ static __inline__ Frame *frame_queue_peek_writable(FrameQueue *f)
         }
         //等待10ms
         dispatch_semaphore_signal(f->mutex);
-        usleep(10000);
+        mr_usleep(10000);
         dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     }
     //解锁

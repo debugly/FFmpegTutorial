@@ -657,6 +657,7 @@
 				SWIFT_OBJC_BRIDGING_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -679,6 +680,7 @@
 				PRODUCT_NAME = FFmpegTutorial;
 				SWIFT_OBJC_BRIDGING_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
+				VALID_ARCHS = "arm64 x86_64";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
