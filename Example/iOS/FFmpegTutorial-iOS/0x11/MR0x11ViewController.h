@@ -1,18 +1,18 @@
 //
-//  MR0x10ViewController.h
+//  MR0x11ViewController.h
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/6/8.
+//  Created by qianlongxu on 2020/6/25.
 //  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-// 使用 Core Media 渲染视频桢
+// 使用 OpenGL ES 渲染视频桢
 
 
 #import <UIKit/UIKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x10ViewController : UIViewController
+@interface MR0x11ViewController : UIViewController
 
 @end
 
