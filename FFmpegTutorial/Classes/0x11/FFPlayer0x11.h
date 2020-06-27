@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 @protocol FFPlayer0x11Delegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(CMSampleBufferRef)img;
+- (void)reveiveFrameToRenderer:(MRPicture *)picture;
 
 @end
 

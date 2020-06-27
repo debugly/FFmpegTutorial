@@ -60,7 +60,7 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
     player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
@@ -72,12 +72,10 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
+- (void)reveiveFrameToRenderer:(MRPicture *)picture
 {
-    CFRetain(sampleBuffer);
     dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.renderView enqueueSampleBuffer:sampleBuffer];
-        CFRelease(sampleBuffer);
+        [self.renderView displayYUV420pPicture:picture];
     });
 }
 

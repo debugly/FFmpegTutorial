@@ -7,13 +7,16 @@
 //
 
 #import <UIKit/UIKit.h>
-#import <CoreMedia/CMSampleBuffer.h>
+#import <FFmpegTutorial/FFPlayerHeader.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x11VideoRenderer : UIView
 
-- (void)enqueueSampleBuffer:(CMSampleBufferRef)buffer;
+- (void)displayYUV420pPicture:(MRPicture *)pframe;
+/**
+ 清屏
+ */
 - (void)cleanScreen;
 
 @end

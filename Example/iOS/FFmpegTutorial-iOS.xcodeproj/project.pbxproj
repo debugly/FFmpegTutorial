@@ -264,9 +264,9 @@
 		DD39132624A4F8C5003DDA25 /* 0x11 */ = {
 			isa = PBXGroup;
 			children = (
+				DD39132924A4F8C5003DDA25 /* MR0x11ViewController.h */,
 				DD39132724A4F8C5003DDA25 /* MR0x11ViewController.m */,
 				DD39132824A4F8C5003DDA25 /* MR0x11VideoRenderer.h */,
-				DD39132924A4F8C5003DDA25 /* MR0x11ViewController.h */,
 				DD39132A24A4F8C5003DDA25 /* MR0x11VideoRenderer.m */,
 			);
 			path = 0x11;
@@ -276,8 +276,8 @@
 			isa = PBXGroup;
 			children = (
 				DD39132C24A4F8C5003DDA25 /* MR0x12ViewController.h */,
-				DD39132D24A4F8C5003DDA25 /* MR0x12VideoRenderer.h */,
 				DD39132E24A4F8C5003DDA25 /* MR0x12ViewController.m */,
+				DD39132D24A4F8C5003DDA25 /* MR0x12VideoRenderer.h */,
 				DD39132F24A4F8C5003DDA25 /* MR0x12VideoRenderer.m */,
 			);
 			path = 0x12;

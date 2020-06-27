@@ -458,30 +458,24 @@ static int decode_interrupt_cb(void *ctx)
     self.rendererThread.name = @"renderer";
 }
 
-- (CMSampleBufferRef _Nullable)sampleBufferFromAVFrame:(AVFrame *)frame
+- (void)fillMRPicture:(MRPicture *)picture useAVFrame:(AVFrame *)frame
 {
-#if USE_PIXEL_BUFFER_POOL
-    if (!self.pixelBufferPool){
-        CVPixelBufferPoolRef pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
-        if (pixelBufferPool) {
-            CVPixelBufferPoolRetain(pixelBufferPool);
-            self.pixelBufferPool = pixelBufferPool;
-        }
-    }
-#endif
-    
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
-    return  [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
+    //important！copy from AVFrame to MRPicture.
+    picture->format = AVPixelFormat2MR((enum AVPixelFormat)frame->format);
+    picture->width = frame->width;
+    picture->height = frame->height;
+    picture->color_range = AVColorRange2MR(frame->color_range);
+    memcpy(picture->data, frame->data, FFMIN(sizeof(picture->data),sizeof(frame->data)));
+    memcpy(&picture->linesize, &frame->linesize,FFMIN(sizeof(picture->linesize),sizeof(frame->linesize)));
 }
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
     if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
         @autoreleasepool {
-            CMSampleBufferRef sample = [self sampleBufferFromAVFrame:vp->frame];
-            if (sample) {
-                [self.delegate reveiveFrameToRenderer:sample];
-            }
+            MRPicture picture = {0};
+            [self fillMRPicture:&picture useAVFrame:vp->frame];
+            [self.delegate reveiveFrameToRenderer:&picture];
         }
     }
 }

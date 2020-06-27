@@ -36,7 +36,7 @@ typedef enum : NSUInteger {
 } MRPixelFormat;
 
 static int MR_PIX_FMT_BEGIN = MR_PIX_FMT_NONE + 1;
-static int MR_PIX_FMT_END = MR_PIX_FMT_EOF - 1;
+static int MR_PIX_FMT_END   = MR_PIX_FMT_EOF  - 1;
 
 typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_NONE    = MR_PIX_FMT_NONE,
@@ -56,6 +56,49 @@ typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_0BGR    = 1 << MR_PIX_FMT_0BGR,        ///< packed BGR 8:8:8, 32bpp, XBGRXBGR...   X=unused/undefined
     MR_PIX_FMT_MASK_BGR24   = 1 << MR_PIX_FMT_BGR24,       ///< packed RGB 8:8:8, 24bpp, BGRBGR...
 };
+
+typedef enum MRColorRange {
+    MRCOL_RANGE_UNSPECIFIED = 0,
+    MRCOL_RANGE_MPEG        = 1, ///< the normal 219*2^(n-8) "MPEG" YUV ranges
+    MRCOL_RANGE_JPEG        = 2, ///< the normal     2^n-1   "JPEG" YUV ranges
+    MRCOL_RANGE_NB               ///< Not part of ABI
+}MRColorRange;
+
+typedef struct MRPicture{
+    /**
+     * pointer to the picture/channel planes.
+     * This might be different from the first allocated byte
+     *
+     * Some decoders access areas outside 0,0 - width,height, please
+     * see avcodec_align_dimensions2(). Some filters and swscale can read
+     * up to 16 bytes beyond the planes, if these filters are to be used,
+     * then 16 extra bytes must be allocated.
+     *
+     * NOTE: Except for hwaccel formats, pointers not needed by the format
+     * MUST be set to NULL.
+     */
+    uint8_t *data[8];
+
+    /**
+     * For video, size in bytes of each picture line.
+     * For audio, size in bytes of each plane.
+     *
+     * For audio, only linesize[0] may be set. For planar audio, each channel
+     * plane must be the same size.
+     *
+     * For video the linesizes should be multiples of the CPUs alignment
+     * preference, this is 16 or 32 for modern desktop CPUs.
+     * Some code requires such alignment other code can be slower without
+     * correct alignment, for yet other it makes no difference.
+     *
+     * @note The linesize may be larger than the size of usable data -- there
+     * may be extra padding present for performance reasons.
+     */
+    int linesize[8];
+    int width, height;
+    enum MRColorRange color_range;
+    MRPixelFormat format;
+}MRPicture;
 
 /// safe usleep
 static inline void mr_usleep(long s) {
