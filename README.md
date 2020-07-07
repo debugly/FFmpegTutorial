@@ -65,6 +65,8 @@
 - 0x07：[使用 Core Graphics 渲染视频帧](md/0x07.md)
 - 0x08：[使用 Core Animation 渲染视频帧](md/0x08.md)
 - 0x09：[使用 Core Image 渲染视频帧]
+- 0x0a：[使用 Core Video 渲染视频帧]
+- 0x0b：[使用 OpenGL ES 渲染视频帧]
 
 # TODO
 
@@ -77,15 +79,11 @@
 **之前的老代码实现了音视频的不同渲染方式，可以通过 git 将代码切到这次 36e4f8cdcf1f9a293426dea802a39560747fdeec 提交进行查看**
 
 
-- 0x10：[使用 Core Video 渲染视频帧]
-
-- 0x11：[使用 AudioUnit 渲染音频]
-
-- 0x12：[使用 AudioQueue 渲染音频]
-
-- 0x13：[将音视频同步，为封装播放器做准备]
-
-- 0x14：[封装 MRMoviePlayer 播放器]
+- 0x0c：[使用 Metal 渲染视频帧]
+- 0x0d：[使用 AudioUnit 渲染音频]
+- 0x0e：[使用 AudioQueue 渲染音频]
+- 0x0f：[将音视频同步，为封装播放器做准备]
+- 0xf0：[封装 MRMoviePlayer 播放器]
 
 ### Just For Fun
 
