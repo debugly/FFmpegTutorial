@@ -1,16 +1,16 @@
 //
-//  FFVideoScale0x10.m
+//  FFVideoScale0x0a.m
 //  FFmpegTutorial
 //
 //  Created by Matt Reach on 2020/6/8.
 //
 
-#import "FFVideoScale0x10.h"
+#import "FFVideoScale0x0a.h"
 #import "FFPlayerInternalHeader.h"
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 
-@interface FFVideoScale0x10()
+@interface FFVideoScale0x0a()
 
 @property (nonatomic, assign) enum AVPixelFormat dstPixFmt;
 @property (nonatomic, assign) struct SwsContext *sws_ctx;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation FFVideoScale0x10
+@implementation FFVideoScale0x0a
 
 - (void)dealloc
 {

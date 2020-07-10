@@ -1,24 +1,24 @@
 //
-//  FFPlayer0x10.m
+//  FFPlayer0x0a.m
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2020/6/8.
 //
 
-#import "FFPlayer0x10.h"
+#import "FFPlayer0x0a.h"
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
-#import "FFDecoder0x10.h"
-#import "FFVideoScale0x10.h"
+#import "FFDecoder0x0a.h"
+#import "FFVideoScale0x0a.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
 
-@interface FFPlayer0x10 ()<FFDecoderDelegate0x10>
+@interface FFPlayer0x0a ()<FFDecoderDelegate0x0a>
 {
     //解码前的音频包缓存队列
     PacketQueue audioq;
@@ -40,11 +40,11 @@
 @property (nonatomic, strong) MRThread *rendererThread;
 
 //音频解码器
-@property (nonatomic, strong) FFDecoder0x10 *audioDecoder;
+@property (nonatomic, strong) FFDecoder0x0a *audioDecoder;
 //视频解码器
-@property (nonatomic, strong) FFDecoder0x10 *videoDecoder;
+@property (nonatomic, strong) FFDecoder0x0a *videoDecoder;
 //图像格式转换/缩放器
-@property (nonatomic, strong) FFVideoScale0x10 *videoScale;
+@property (nonatomic, strong) FFVideoScale0x0a *videoScale;
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 @property (atomic, assign) int abort_request;
@@ -56,11 +56,11 @@
 
 @end
 
-@implementation  FFPlayer0x10
+@implementation  FFPlayer0x0a
 
 static int decode_interrupt_cb(void *ctx)
 {
-    FFPlayer0x10 *player = (__bridge FFPlayer0x10 *)ctx;
+    FFPlayer0x0a *player = (__bridge FFPlayer0x0a *)ctx;
     return player.abort_request;
 }
 
@@ -135,9 +135,9 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 打开解码器创建解码线程
 
-- (FFDecoder0x10 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (FFDecoder0x0a *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
-    FFDecoder0x10 *decoder = [FFDecoder0x10 new];
+    FFDecoder0x0a *decoder = [FFDecoder0x0a new];
     decoder.ic = ic;
     decoder.streamIdx = idx;
     if ([decoder open] == 0) {
@@ -252,7 +252,7 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 视频像素格式转换
 
-- (FFVideoScale0x10 *)createVideoScaleIfNeed {
+- (FFVideoScale0x0a *)createVideoScaleIfNeed {
     //未指定期望像素格式
     if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
         NSAssert(NO, @"supportedPixelFormats can't be none!");
@@ -290,7 +290,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     ///创建像素格式转换上下文
-    FFVideoScale0x10 *scale = [[FFVideoScale0x10 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
+    FFVideoScale0x0a *scale = [[FFVideoScale0x0a alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
     return scale;
 }
 
@@ -408,9 +408,9 @@ static int decode_interrupt_cb(void *ctx)
         avformat_close_input(&formatCtx);
 }
 
-#pragma mark - FFDecoderDelegate0x10
+#pragma mark - FFDecoderDelegate0x0a
 
-- (int)decoder:(FFDecoder0x10 *)decoder wantAPacket:(AVPacket *)pkt
+- (int)decoder:(FFDecoder0x0a *)decoder wantAPacket:(AVPacket *)pkt
 {
     if (decoder == self.audioDecoder) {
         return packet_queue_get(&audioq, pkt, 1);
@@ -421,7 +421,7 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoder:(FFDecoder0x10 *)decoder reveivedAFrame:(AVFrame *)frame
+- (void)decoder:(FFDecoder0x0a *)decoder reveivedAFrame:(AVFrame *)frame
 {
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &sampq;
@@ -462,7 +462,11 @@ static int decode_interrupt_cb(void *ctx)
 {
 #if USE_PIXEL_BUFFER_POOL
     if (!self.pixelBufferPool){
-       self.pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
+        CVPixelBufferPoolRef pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
+        if (pixelBufferPool) {
+            CVPixelBufferPoolRetain(pixelBufferPool);
+            self.pixelBufferPool = pixelBufferPool;
+        }
     }
 #endif
     

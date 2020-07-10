@@ -91,6 +91,25 @@ static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
     }
 }
 
+static MRColorRange AVColorRange2MR (enum AVColorRange avcr){
+    switch (avcr) {
+        case AVCOL_RANGE_UNSPECIFIED:
+            return MRCOL_RANGE_UNSPECIFIED;
+        case AVCOL_RANGE_JPEG:
+            return MRCOL_RANGE_JPEG;
+        case AVCOL_RANGE_MPEG:
+            return MRCOL_RANGE_MPEG;
+        case AVCOL_RANGE_NB:
+            return MRCOL_RANGE_NB;
+        default:
+        {
+            assert(0);
+            return MRCOL_RANGE_UNSPECIFIED;
+        }
+            break;
+    }
+}
+
 static __inline__ NSError * _make_nserror(int code)
 {
     return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:nil];

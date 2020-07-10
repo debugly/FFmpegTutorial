@@ -1,31 +1,31 @@
 //
-//  MR0x10ViewController.m
+//  MR0x0bViewController.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/6/8.
+//  Created by qianlongxu on 2020/7/10.
 //  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 //
 
-#import "MR0x10ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
+#import "MR0x0bViewController.h"
+#import <FFmpegTutorial/FFPlayer0x0b.h>
 #import <FFmpegTutorial/MRRWeakProxy.h>
 #import <GLKit/GLKit.h>
-#import "MR0x10VideoRenderer.h"
+#import "MR0x0bVideoRenderer.h"
 
-@interface MR0x10ViewController ()<UITextViewDelegate,FFPlayer0x10Delegate>
+@interface MR0x0bViewController ()<UITextViewDelegate,FFPlayer0x0bDelegate>
 
-@property (nonatomic, strong) FFPlayer0x10 *player;
+@property (nonatomic, strong) FFPlayer0x0b *player;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
-@property (weak, nonatomic) IBOutlet MR0x10VideoRenderer *renderView;
+@property (weak, nonatomic) IBOutlet MR0x0bVideoRenderer *renderView;
 
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
 
 @end
 
-@implementation MR0x10ViewController
+@implementation MR0x0bViewController
 
 - (void)dealloc
 {
@@ -48,10 +48,9 @@
     self.textView.layoutManager.allowsNonContiguousLayout = NO;
     self.renderView.contentMode = UIViewContentModeScaleAspectFit;
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFPlayer0x0b *player = [[FFPlayer0x0b alloc] init];
     player.contentPath = @"http://data.vod.itc.cn/?new=/73/15/oFed4wzSTZe8HPqHZ8aF7J.mp4&vid=77972299&plat=14&mkey=XhSpuZUl_JtNVIuSKCB05MuFBiqUP7rB&ch=null&user=api&qd=8001&cv=3.13&uid=F45C89AE5BC3&ca=2&pg=5&pt=1&prod=ifox";
 
-    player.contentPath = @"http://10.7.36.148/ffmpeg-test/xp5.mp4";
     __weakSelf__
     [player onError:^{
         __strongSelf__
@@ -73,12 +72,12 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
+- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
 {
-    CFRetain(sampleBuffer);
+    CVPixelBufferRetain(img);
     dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.renderView enqueueSampleBuffer:sampleBuffer];
-        CFRelease(sampleBuffer);
+        [self.renderView displayPixelBuffer:img];
+        CVPixelBufferRelease(img);
     });
 }
 

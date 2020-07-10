@@ -222,7 +222,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         NSLog(@"CVPixelBufferPoolCreate Failed");
         return NULL;
     } else {
-        return pixelBufferPool;
+        return (CVPixelBufferPoolRef)CFAutorelease((const void *)pixelBufferPool);
     }
 }
 
@@ -342,6 +342,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                 }
             }
         } else {
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
             NSAssert(NO,@"unsupported pixel format!");
             return NULL;
         }
@@ -355,22 +356,28 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 + (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer
 {
     if (pixelBuffer) {
-        //不设置具体时间信息
-        CMSampleTimingInfo timing = {kCMTimeInvalid, kCMTimeInvalid, kCMTimeInvalid};
         //获取视频信息
         CMVideoFormatDescriptionRef videoInfo = NULL;
         OSStatus result = CMVideoFormatDescriptionCreateForImageBuffer(NULL, pixelBuffer, &videoInfo);
-        NSParameterAssert(result == 0 && videoInfo != NULL);
-        
-        CMSampleBufferRef sampleBuffer = NULL;
-        result = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault,pixelBuffer, true, NULL, NULL, videoInfo, &timing, &sampleBuffer);
-        NSParameterAssert(result == 0 && sampleBuffer != NULL);
-        CFRelease(videoInfo);
-        
-        CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
-        CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
-        CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-        return (CMSampleBufferRef)CFAutorelease(sampleBuffer);
+        if (result == noErr) {
+            //不设置具体时间信息
+            CMSampleTimingInfo timing = {kCMTimeInvalid, kCMTimeInvalid, kCMTimeInvalid};
+            
+            CMSampleBufferRef sampleBuffer = NULL;
+            result = CMSampleBufferCreateForImageBuffer(kCFAllocatorDefault,pixelBuffer, true, NULL, NULL, videoInfo, &timing, &sampleBuffer);
+            if (result == noErr) {
+                CFRelease(videoInfo);
+                CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
+                CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
+                CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
+                return (CMSampleBufferRef)CFAutorelease(sampleBuffer);
+            } else {
+                CFRelease(videoInfo);
+                NSAssert(NO, @"Can't create CMSampleBuffer from image buffer!");
+            }
+        } else {
+            NSAssert(NO, @"Can't create VideoFormatDescription from image buffer!");
+        }
     }
     return NULL;
 }

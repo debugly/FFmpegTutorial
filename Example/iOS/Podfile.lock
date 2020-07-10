@@ -1,38 +1,44 @@
 PODS:
-  - FFmpegTutorial (0.1.10):
-    - FFmpegTutorial/0x01 (= 0.1.10)
-    - FFmpegTutorial/0x02 (= 0.1.10)
-    - FFmpegTutorial/0x03 (= 0.1.10)
-    - FFmpegTutorial/0x04 (= 0.1.10)
-    - FFmpegTutorial/0x05 (= 0.1.10)
-    - FFmpegTutorial/0x06 (= 0.1.10)
-    - FFmpegTutorial/0x07 (= 0.1.10)
-    - FFmpegTutorial/0x08 (= 0.1.10)
-    - FFmpegTutorial/0x09 (= 0.1.10)
-    - FFmpegTutorial/0x10 (= 0.1.10)
-    - FFmpegTutorial/common (= 0.1.10)
+  - FFmpegTutorial (0.1.12):
+    - FFmpegTutorial/0x01 (= 0.1.12)
+    - FFmpegTutorial/0x02 (= 0.1.12)
+    - FFmpegTutorial/0x03 (= 0.1.12)
+    - FFmpegTutorial/0x04 (= 0.1.12)
+    - FFmpegTutorial/0x05 (= 0.1.12)
+    - FFmpegTutorial/0x06 (= 0.1.12)
+    - FFmpegTutorial/0x07 (= 0.1.12)
+    - FFmpegTutorial/0x08 (= 0.1.12)
+    - FFmpegTutorial/0x09 (= 0.1.12)
+    - FFmpegTutorial/0x0a (= 0.1.12)
+    - FFmpegTutorial/0x0b (= 0.1.12)
+    - FFmpegTutorial/0x0c (= 0.1.12)
+    - FFmpegTutorial/common (= 0.1.12)
     - MRFFmpegPod
-  - FFmpegTutorial/0x01 (0.1.10):
+  - FFmpegTutorial/0x01 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x02 (0.1.10):
+  - FFmpegTutorial/0x02 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x03 (0.1.10):
+  - FFmpegTutorial/0x03 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x04 (0.1.10):
+  - FFmpegTutorial/0x04 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x05 (0.1.10):
+  - FFmpegTutorial/0x05 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x06 (0.1.10):
+  - FFmpegTutorial/0x06 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x07 (0.1.10):
+  - FFmpegTutorial/0x07 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x08 (0.1.10):
+  - FFmpegTutorial/0x08 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x09 (0.1.10):
+  - FFmpegTutorial/0x09 (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/0x10 (0.1.10):
+  - FFmpegTutorial/0x0a (0.1.12):
     - MRFFmpegPod
-  - FFmpegTutorial/common (0.1.10):
+  - FFmpegTutorial/0x0b (0.1.12):
+    - MRFFmpegPod
+  - FFmpegTutorial/0x0c (0.1.12):
+    - MRFFmpegPod
+  - FFmpegTutorial/common (0.1.12):
     - MRFFmpegPod
   - GDPerformanceView-Swift (2.0.3)
   - MRFFmpegPod (3.4.7):
@@ -63,7 +69,7 @@ EXTERNAL SOURCES:
     :podspec: https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg3.4.7.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: e65f478871ab40beb3e7167773f01c195088ab74
+  FFmpegTutorial: 895e739d5c6d465cf26bf05e1fdc66cec29a1fcc
   GDPerformanceView-Swift: ef3d05deb103e472a5494d3f60aeca5a58b88a7d
   MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 

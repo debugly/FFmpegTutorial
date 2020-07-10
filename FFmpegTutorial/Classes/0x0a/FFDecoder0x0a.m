@@ -1,16 +1,16 @@
 //
-//  FFDecoder0x10.m
+//  FFDecoder0x0a.m
 //  FFmpegTutorial
 //
 //  Created by Matt Reach on 2020/6/8.
 //
 
-#import "FFDecoder0x10.h"
+#import "FFDecoder0x0a.h"
 #import "MRThread.h"
 #include <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 
-@interface FFDecoder0x10()
+@interface FFDecoder0x0a()
 
 ///解码线程
 @property (nonatomic, strong) MRThread * workThread;
@@ -24,7 +24,7 @@
 
 @end
 
-@implementation FFDecoder0x10
+@implementation FFDecoder0x0a
 
 - (void)dealloc
 {

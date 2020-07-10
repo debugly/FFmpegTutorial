@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.1.10'
+  s.version          = '0.1.12'
   s.summary          = 'A short description of FFmpegTutorial.'
 
 # This description is used to generate tags and improve search results.
@@ -80,9 +80,19 @@ TODO: Add long description of the pod here.
     ss.public_header_files = 'FFmpegTutorial/Classes/0x09/FFPlayer0x09.h'
   end
 
-  s.subspec '0x10' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x10/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x10/FFPlayer0x10.h'
+  s.subspec '0x0a' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x0a/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x0a/FFPlayer0x0a.h'
+  end
+
+  s.subspec '0x0b' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x0b/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x0b/FFPlayer0x0b.h'
+  end
+
+  s.subspec '0x0c' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x0c/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x0c/FFPlayer0x0c.h'
   end
 
   s.dependency 'MRFFmpegPod'

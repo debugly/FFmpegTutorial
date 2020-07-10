@@ -1,29 +1,24 @@
 //
-//  FFPlayer0x09.m
+//  FFPlayer0x0c.m
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/6/6.
+//  Created by qianlongxu on 2020/6/25.
 //
 
-#import "FFPlayer0x09.h"
+#import "FFPlayer0x0c.h"
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
-#import "FFDecoder0x09.h"
-#import "FFVideoScale0x09.h"
+#import "FFDecoder0x0c.h"
+#import "FFVideoScale0x0c.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
-#define USE_CVPixelBuffer  1
-#define USE_CGImage        2
-#define USE_BitmapData     3
-
-#define CONVET_TYPE USE_CVPixelBuffer
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
 
-@interface FFPlayer0x09 ()<FFDecoderDelegate0x09>
+@interface FFPlayer0x0c ()<FFDecoderDelegate0x0c>
 {
     //解码前的音频包缓存队列
     PacketQueue audioq;
@@ -45,11 +40,11 @@
 @property (nonatomic, strong) MRThread *rendererThread;
 
 //音频解码器
-@property (nonatomic, strong) FFDecoder0x09 *audioDecoder;
+@property (nonatomic, strong) FFDecoder0x0c *audioDecoder;
 //视频解码器
-@property (nonatomic, strong) FFDecoder0x09 *videoDecoder;
+@property (nonatomic, strong) FFDecoder0x0c *videoDecoder;
 //图像格式转换/缩放器
-@property (nonatomic, strong) FFVideoScale0x09 *videoScale;
+@property (nonatomic, strong) FFVideoScale0x0c *videoScale;
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 @property (atomic, assign) int abort_request;
@@ -61,11 +56,11 @@
 
 @end
 
-@implementation  FFPlayer0x09
+@implementation  FFPlayer0x0c
 
 static int decode_interrupt_cb(void *ctx)
 {
-    FFPlayer0x09 *player = (__bridge FFPlayer0x09 *)ctx;
+    FFPlayer0x0c *player = (__bridge FFPlayer0x0c *)ctx;
     return player.abort_request;
 }
 
@@ -140,9 +135,9 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 打开解码器创建解码线程
 
-- (FFDecoder0x09 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (FFDecoder0x0c *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
-    FFDecoder0x09 *decoder = [FFDecoder0x09 new];
+    FFDecoder0x0c *decoder = [FFDecoder0x0c new];
     decoder.ic = ic;
     decoder.streamIdx = idx;
     if ([decoder open] == 0) {
@@ -257,7 +252,7 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 视频像素格式转换
 
-- (FFVideoScale0x09 *)createVideoScaleIfNeed {
+- (FFVideoScale0x0c *)createVideoScaleIfNeed {
     //未指定期望像素格式
     if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
         NSAssert(NO, @"supportedPixelFormats can't be none!");
@@ -295,7 +290,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     ///创建像素格式转换上下文
-    FFVideoScale0x09 *scale = [[FFVideoScale0x09 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
+    FFVideoScale0x0c *scale = [[FFVideoScale0x0c alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
     return scale;
 }
 
@@ -413,9 +408,9 @@ static int decode_interrupt_cb(void *ctx)
         avformat_close_input(&formatCtx);
 }
 
-#pragma mark - FFDecoderDelegate0x09
+#pragma mark - FFDecoderDelegate0x0c
 
-- (int)decoder:(FFDecoder0x09 *)decoder wantAPacket:(AVPacket *)pkt
+- (int)decoder:(FFDecoder0x0c *)decoder wantAPacket:(AVPacket *)pkt
 {
     if (decoder == self.audioDecoder) {
         return packet_queue_get(&audioq, pkt, 1);
@@ -426,7 +421,7 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoder:(FFDecoder0x09 *)decoder reveivedAFrame:(AVFrame *)frame
+- (void)decoder:(FFDecoder0x0c *)decoder reveivedAFrame:(AVFrame *)frame
 {
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &sampq;
@@ -463,10 +458,8 @@ static int decode_interrupt_cb(void *ctx)
     self.rendererThread.name = @"renderer";
 }
 
-- (CIImage * _Nullable)ciImageFromAVFrame:(AVFrame *)frame
+- (CMSampleBufferRef _Nullable)sampleBufferFromAVFrame:(AVFrame *)frame
 {
-#if CONVET_TYPE == USE_CVPixelBuffer
-    
 #if USE_PIXEL_BUFFER_POOL
     if (!self.pixelBufferPool){
         CVPixelBufferPoolRef pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
@@ -476,27 +469,18 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
 #endif
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
     
-    if (pixelBuffer) {
-        return [CIImage imageWithCVPixelBuffer:pixelBuffer];
-    }
-    return nil;
-#elif CONVET_TYPE == USE_CGImage
-    CGImageRef cgImg = [MRConvertUtil cgImageFromRGBFrame:frame];
-    return [CIImage imageWithCGImage:cgImg];
-#else
-    return [MRConvertUtil ciImageFromRGB32orBGR32Frame:frame];
-#endif
+    CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
+    return  [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
 }
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
     if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
         @autoreleasepool {
-            CIImage *ciImage = [self ciImageFromAVFrame:vp->frame];
-            if (ciImage) {
-                [self.delegate reveiveFrameToRenderer:ciImage];
+            CMSampleBufferRef sample = [self sampleBufferFromAVFrame:vp->frame];
+            if (sample) {
+                [self.delegate reveiveFrameToRenderer:sample];
             }
         }
     }

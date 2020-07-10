@@ -1,8 +1,8 @@
 //
-//  FFDecoder0x10.h
+//  FFDecoder0x0c.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/6/8.
+//  Created by Matt Reach on 2020/6/25.
 //
 // 自定义解码器类
 // 通过代理衔接输入输出
@@ -16,23 +16,23 @@ typedef struct AVFormatContext AVFormatContext;
 typedef struct AVPacket AVPacket;
 typedef struct AVFrame AVFrame;
 
-@class FFDecoder0x10;
-@protocol FFDecoderDelegate0x10 <NSObject>
+@class FFDecoder0x0c;
+@protocol FFDecoderDelegate0x0c <NSObject>
 
 @required
 ///解码器向 delegater 要一个 AVPacket
-- (int)decoder:(FFDecoder0x10 *)decoder wantAPacket:(AVPacket *)packet;
+- (int)decoder:(FFDecoder0x0c *)decoder wantAPacket:(AVPacket *)packet;
 ///将解码后的 AVFrame 给 delegater
-- (void)decoder:(FFDecoder0x10 *)decoder reveivedAFrame:(AVFrame *)frame;
+- (void)decoder:(FFDecoder0x0c *)decoder reveivedAFrame:(AVFrame *)frame;
 
 @end
 
-@interface FFDecoder0x10 : NSObject
+@interface FFDecoder0x0c : NSObject
 
 @property (nonatomic, assign) AVFormatContext *ic;
 @property (nonatomic, assign) int streamIdx;
 @property (nonatomic, copy) NSString * name;
-@property (nonatomic, weak) id <FFDecoderDelegate0x10> delegate;
+@property (nonatomic, weak) id <FFDecoderDelegate0x0c> delegate;
 @property (nonatomic, assign, readonly) AVStream * stream;
 ///for video
 @property (nonatomic, assign, readonly) enum AVPixelFormat pix_fmt;
