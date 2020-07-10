@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.1.12'
+  s.version          = '0.2.0'
   s.summary          = 'A short description of FFmpegTutorial.'
 
 # This description is used to generate tags and improve search results.
@@ -65,34 +65,39 @@ TODO: Add long description of the pod here.
     ss.public_header_files = 'FFmpegTutorial/Classes/0x06/*.h'
   end
 
-  s.subspec '0x07' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x07/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x07/FFPlayer0x07.h'
+  s.subspec '0x10' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x10/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x10/FFPlayer0x10.h'
   end
 
-  s.subspec '0x08' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x08/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x08/FFPlayer0x08.h'
+  s.subspec '0x11' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x11/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x11/FFPlayer0x11.h'
   end
 
-  s.subspec '0x09' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x09/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x09/FFPlayer0x09.h'
+  s.subspec '0x12' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x12/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x12/FFPlayer0x12.h'
   end
 
-  s.subspec '0x0a' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x0a/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x0a/FFPlayer0x0a.h'
+  s.subspec '0x13' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x13/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x13/FFPlayer0x13.h'
   end
 
-  s.subspec '0x0b' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x0b/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x0b/FFPlayer0x0b.h'
+  s.subspec '0x14' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x14/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x14/FFPlayer0x14.h'
   end
 
-  s.subspec '0x0c' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x0c/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x0c/FFPlayer0x0c.h'
+  s.subspec '0x15' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x15/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x15/FFPlayer0x15.h'
+  end
+
+  s.subspec '0x20' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x20/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x20/FFPlayer0x20.h'
   end
 
   s.dependency 'MRFFmpegPod'

@@ -30,7 +30,7 @@
 │       ├── 0x04
 │       ├── 0x05
 │       ├── 0x06
-│       ├── 0x07
+│       ├── 0x10
 │       ...
 │       └── common //通用类
 ├── FFmpegTutorial.podspec
@@ -53,6 +53,8 @@
 
 # Tutorial
 
+音视频基础，解码队列，解码器
+
 - 0x00：[FFmpeg简介及编译方法](md/0x00.md) 
 - 0x01：[查看编译时配置信息、支持的协议、版本号](md/0x01.md)
 - 0x02：[查看音视频码流基础信息](md/0x02.md)
@@ -60,11 +62,14 @@
 - 0x04：[多线程解码](md/0x04.md)
 - 0x05：[渲染线程与 AVFrame 缓存队列](md/0x05.md)
 - 0x06：[整理代码，封装解码器](md/0x06.md)
-- 0x07：[使用 Core Graphics 渲染视频帧](md/0x07.md)
-- 0x08：[使用 Core Animation 渲染视频帧](md/0x08.md)
-- 0x09：[使用 Core Image 渲染视频帧]
-- 0x0a：[使用 Core Video 渲染视频帧]
-- 0x0b：[使用 OpenGL ES 渲染视频帧]
+
+渲染视频帧
+
+- 0x10：[使用 Core Graphics 渲染视频帧](md/0x10.md)
+- 0x11：[使用 Core Animation 渲染视频帧](md/0x11.md)
+- 0x12：[使用 Core Image 渲染视频帧]
+- 0x13：[使用 Core Video 渲染视频帧]
+- 0x14：[使用 OpenGL ES 渲染视频帧]
 
 # TODO
 
@@ -77,15 +82,21 @@
 **之前的老代码实现了音视频的不同渲染方式，可以通过 git 将代码切到这次 36e4f8cdcf1f9a293426dea802a39560747fdeec 提交进行查看**
 
 
-- 0x0c：[使用 Metal 渲染视频帧]
-- 0x0d：[使用 AudioUnit 渲染音频]
-- 0x0e：[使用 AudioQueue 渲染音频]
-- 0x0f：[将音视频同步，为封装播放器做准备]
-- 0xf0：[封装 MRMoviePlayer 播放器]
+- 0x15：[使用 Metal 渲染视频帧]
 
-### Just For Fun
+渲染音频采样
 
-- 0xF0：[黑白电视机雪花屏、灰色色阶图] 
+  - 0x20: [使用 AudioUnit 渲染音频]
+
+- 0x21：[使用 AudioQueue 渲染音频]
+
+- 0x30：[将音视频同步，为封装播放器做准备]
+
+- 0x31：[封装 MRMoviePlayer 播放器]
+
+Just For Fun
+
+- 0x40：[黑白电视机雪花屏、灰色色阶图] 
 
 ### Cross-platform
 
