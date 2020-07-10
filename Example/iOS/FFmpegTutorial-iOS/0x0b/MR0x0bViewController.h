@@ -2,11 +2,10 @@
 //  MR0x0bViewController.h
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/6/25.
+//  Created by qianlongxu on 2020/7/10.
 //  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 使用 OpenGL ES 渲染视频桢
-
 
 #import <UIKit/UIKit.h>
 

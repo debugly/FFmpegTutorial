@@ -2,7 +2,7 @@
 //  MR0x0bViewController.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/6/25.
+//  Created by qianlongxu on 2020/7/10.
 //  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 //
@@ -60,7 +60,7 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     player.delegate = self;
     [player prepareToPlay];
     [player readPacket];
@@ -72,10 +72,12 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(MRPicture *)picture
+- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
 {
+    CVPixelBufferRetain(img);
     dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.renderView displayYUV420pPicture:picture];
+        [self.renderView displayPixelBuffer:img];
+        CVPixelBufferRelease(img);
     });
 }
 

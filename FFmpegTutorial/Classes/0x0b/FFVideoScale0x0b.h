@@ -2,7 +2,7 @@
 //  FFVideoScale0x0b.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/6/25.
+//  Created by Matt Reach on 2020/7/10.
 //
 // 像素格式转换类
 

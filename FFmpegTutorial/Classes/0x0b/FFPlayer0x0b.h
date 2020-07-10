@@ -2,18 +2,18 @@
 //  FFPlayer0x0b.h
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/6/25.
+//  Created by qianlongxu on 2020/7/10.
 //
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
-#import <CoreMedia/CMSampleBuffer.h>
+#import <CoreVideo/CVPixelBuffer.h>
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol FFPlayer0x0bDelegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(MRPicture *)picture;
+- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img;
 
 @end
 

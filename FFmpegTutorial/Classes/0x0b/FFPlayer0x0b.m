@@ -2,7 +2,7 @@
 //  FFPlayer0x0b.m
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/6/25.
+//  Created by qianlongxu on 2020/7/10.
 //
 
 #import "FFPlayer0x0b.h"
@@ -458,24 +458,30 @@ static int decode_interrupt_cb(void *ctx)
     self.rendererThread.name = @"renderer";
 }
 
-- (void)fillMRPicture:(MRPicture *)picture useAVFrame:(AVFrame *)frame
+- (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
 {
-    //important！copy from AVFrame to MRPicture.
-    picture->format = AVPixelFormat2MR((enum AVPixelFormat)frame->format);
-    picture->width = frame->width;
-    picture->height = frame->height;
-    picture->color_range = AVColorRange2MR(frame->color_range);
-    memcpy(picture->data, frame->data, FFMIN(sizeof(picture->data),sizeof(frame->data)));
-    memcpy(&picture->linesize, &frame->linesize,FFMIN(sizeof(picture->linesize),sizeof(frame->linesize)));
+#if USE_PIXEL_BUFFER_POOL
+    if (!self.pixelBufferPool){
+        CVPixelBufferPoolRef pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
+        if (pixelBufferPool) {
+            CVPixelBufferPoolRetain(pixelBufferPool);
+            self.pixelBufferPool = pixelBufferPool;
+        }
+    }
+#endif
+    
+    CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
+    return pixelBuffer;
 }
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
     if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
         @autoreleasepool {
-            MRPicture picture = {0};
-            [self fillMRPicture:&picture useAVFrame:vp->frame];
-            [self.delegate reveiveFrameToRenderer:&picture];
+            CVPixelBufferRef pixelBuffer = [self pixelBufferFromAVFrame:vp->frame];
+            if (pixelBuffer) {
+                [self.delegate reveiveFrameToRenderer:pixelBuffer];
+            }
         }
     }
 }
