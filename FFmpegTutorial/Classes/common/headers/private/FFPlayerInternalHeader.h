@@ -11,7 +11,7 @@
 #import <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
 
-static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
+av_unused static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
     switch (avpf) {
         case AV_PIX_FMT_YUV420P:
             return MR_PIX_FMT_YUV420P;
@@ -52,7 +52,7 @@ static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
     }
 }
 
-static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
+av_unused static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
     switch (mrpf) {
         case MR_PIX_FMT_YUV420P:
             return AV_PIX_FMT_YUV420P;
@@ -91,7 +91,7 @@ static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
     }
 }
 
-static MRColorRange AVColorRange2MR (enum AVColorRange avcr){
+av_unused static MRColorRange AVColorRange2MR (enum AVColorRange avcr){
     switch (avcr) {
         case AVCOL_RANGE_UNSPECIFIED:
             return MRCOL_RANGE_UNSPECIFIED;
@@ -107,6 +107,43 @@ static MRColorRange AVColorRange2MR (enum AVColorRange avcr){
             return MRCOL_RANGE_UNSPECIFIED;
         }
             break;
+    }
+}
+
+
+av_unused static enum AVSampleFormat MRSampleFormat2AV (MRSampleFormat mrsf){
+    switch (mrsf) {
+        case MR_SAMPLE_FMT_S16:
+            return AV_SAMPLE_FMT_S16;
+        case MR_SAMPLE_FMT_FLT:
+            return AV_SAMPLE_FMT_FLT;
+        case MR_SAMPLE_FMT_S16P:
+            return AV_SAMPLE_FMT_S16P;
+        case MR_SAMPLE_FMT_FLTP:
+            return AV_SAMPLE_FMT_FLTP;
+        case MR_SAMPLE_FMT_EOF:
+        case MR_SAMPLE_FMT_NONE:
+        {
+            return AV_SAMPLE_FMT_NONE;
+        }
+    }
+}
+
+av_unused static MRSampleFormat AVSampleFormat2MR (enum AVSampleFormat avsf){
+    switch (avsf) {
+        case AV_SAMPLE_FMT_S16:
+            return MR_SAMPLE_FMT_S16;
+        case AV_SAMPLE_FMT_FLT:
+            return MR_SAMPLE_FMT_FLT;
+        case AV_SAMPLE_FMT_S16P:
+            return MR_SAMPLE_FMT_S16P;
+        case AV_SAMPLE_FMT_FLTP:
+            return MR_SAMPLE_FMT_FLTP;
+        case AV_SAMPLE_FMT_NONE:
+            return MR_SAMPLE_FMT_NONE;
+        default:
+            assert(0);
+            return MR_SAMPLE_FMT_NONE;
     }
 }
 

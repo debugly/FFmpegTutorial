@@ -57,6 +57,61 @@ typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_BGR24   = 1 << MR_PIX_FMT_BGR24,       ///< packed RGB 8:8:8, 24bpp, BGRBGR...
 };
 
+typedef enum MRSampleFormat{
+    MR_SAMPLE_FMT_NONE ,
+    MR_SAMPLE_FMT_S16  ,    ///< signed 16 bits
+    MR_SAMPLE_FMT_FLT  ,    ///< float
+    MR_SAMPLE_FMT_S16P ,    ///< signed 16 bits, planar
+    MR_SAMPLE_FMT_FLTP ,    ///< float, planar
+    MR_SAMPLE_FMT_EOF
+}MRSampleFormat;
+
+static int MR_SAMPLE_FMT_BEGIN = MR_SAMPLE_FMT_NONE + 1;
+static int MR_SAMPLE_FMT_END   = MR_SAMPLE_FMT_EOF  - 1;
+
+typedef NS_OPTIONS(NSUInteger, MRSampleFormatMask) {
+    MR_SAMPLE_FMT_MASK_NONE = 1 << MR_SAMPLE_FMT_NONE,
+    MR_SAMPLE_FMT_MASK_S16  = 1 << MR_SAMPLE_FMT_S16,    ///< signed 16 bits
+    MR_SAMPLE_FMT_MASK_FLT  = 1 << MR_SAMPLE_FMT_FLT,    ///< float
+    MR_SAMPLE_FMT_MASK_S16P = 1 << MR_SAMPLE_FMT_S16P,    ///< signed 16 bits, planar
+    MR_SAMPLE_FMT_MASK_FLTP = 1 << MR_SAMPLE_FMT_FLTP,    ///< float, planar
+    MR_SAMPLE_FMT_MASK_ALL  = MR_SAMPLE_FMT_MASK_S16 + MR_SAMPLE_FMT_MASK_FLT + MR_SAMPLE_FMT_MASK_S16P + MR_SAMPLE_FMT_MASK_FLTP
+};
+
+
+static inline bool MR_Sample_Fmt_Is_Packet(MRSampleFormat fmt){
+    if (fmt == MR_SAMPLE_FMT_S16 || fmt == MR_SAMPLE_FMT_FLT) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+static inline bool MR_Sample_Fmt_Is_Planar(MRSampleFormat fmt){
+    if (fmt == MR_SAMPLE_FMT_S16P || fmt == MR_SAMPLE_FMT_FLTP) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+static inline bool MR_Sample_Fmt_Is_FloatX(MRSampleFormat fmt){
+    if (fmt == MR_SAMPLE_FMT_FLT || fmt == MR_SAMPLE_FMT_FLTP) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+static inline bool MR_Sample_Fmt_Is_S16X(MRSampleFormat fmt){
+    if (fmt == MR_SAMPLE_FMT_S16 || fmt == MR_SAMPLE_FMT_S16P) {
+        return true;
+    } else {
+        return false;
+    }
+}
+
+
 typedef enum MRColorRange {
     MRCOL_RANGE_UNSPECIFIED = 0,
     MRCOL_RANGE_MPEG        = 1, ///< the normal 219*2^(n-8) "MPEG" YUV ranges
