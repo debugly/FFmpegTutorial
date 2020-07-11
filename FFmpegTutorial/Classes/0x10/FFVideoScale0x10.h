@@ -26,7 +26,7 @@ typedef struct AVFrame AVFrame;
 
 /// @param inF  需要转换的帧
 /// @param outP 转换的结果[不要free相关内存，通过ref/unref的方式使用]
-- (BOOL) rescaleFrame:(AVFrame *)inF out:(AVFrame *_Nonnull*_Nonnull)outP;
+- (BOOL)rescaleFrame:(AVFrame *)inF out:(AVFrame *_Nonnull*_Nonnull)outP;
 
 @end
 

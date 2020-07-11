@@ -51,7 +51,7 @@
     return self;
 }
 
-- (BOOL) rescaleFrame:(AVFrame *)inF out:(AVFrame **)outP
+- (BOOL)rescaleFrame:(AVFrame *)inF out:(AVFrame **)outP
 {
     AVFrame *out_frame = self.frame;
     ///important！
