@@ -260,7 +260,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     //当前视频的像素格式
-    const enum AVPixelFormat format = self.videoDecoder.pix_fmt;
+    const enum AVPixelFormat format = self.videoDecoder.format;
     
     bool matched = false;
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;

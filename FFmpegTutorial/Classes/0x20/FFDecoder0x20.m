@@ -18,9 +18,13 @@
 @property (nonatomic, assign) AVCodecContext * avctx;
 @property (nonatomic, assign) int abort_request;
 ///for video
-@property (nonatomic, assign, readwrite) enum AVPixelFormat pix_fmt;
+@property (nonatomic, assign, readwrite) int format;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
+
+///for audio
+@property (nonatomic, assign, readwrite) int sampleRate;
+@property (nonatomic, assign, readwrite) int channelLayout;
 
 @end
 
@@ -88,9 +92,18 @@
     stream->discard = AVDISCARD_DEFAULT;
     self.stream = stream;
     self.avctx = avctx;
-    self.pix_fmt = avctx->pix_fmt;
-    self.picWidth = avctx->width;
-    self.picHeight = avctx->height;
+    
+    if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
+        self.format = avctx->sample_fmt;
+        self.sampleRate = avctx->sample_rate;
+        self.channelLayout = avctx->channel_layout;
+    } else if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
+        self.format = avctx->pix_fmt;
+        self.picWidth = avctx->width;
+        self.picHeight = avctx->height;
+    } else {
+        
+    }
     
     self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
     
