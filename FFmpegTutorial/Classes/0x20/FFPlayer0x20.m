@@ -12,6 +12,7 @@
 #import "FFPlayerFrameHeader.h"
 #import "FFDecoder0x20.h"
 #import "FFVideoScale0x20.h"
+#import "FFAudioResample0x20.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
@@ -45,6 +46,9 @@
 @property (nonatomic, strong) FFDecoder0x20 *videoDecoder;
 //图像格式转换/缩放器
 @property (nonatomic, strong) FFVideoScale0x20 *videoScale;
+//音频格式转换器
+@property (nonatomic, strong) FFAudioResample0x20 *audioResample;
+
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 @property (atomic, assign) int abort_request;
@@ -252,7 +256,8 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 视频像素格式转换
 
-- (FFVideoScale0x20 *)createVideoScaleIfNeed {
+- (FFVideoScale0x20 *)createVideoScaleIfNeed
+{
     //未指定期望像素格式
     if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
         NSAssert(NO, @"supportedPixelFormats can't be none!");
@@ -281,6 +286,7 @@ static int decode_interrupt_cb(void *ctx)
     
     if (matched) {
         //期望像素格式包含了当前视频像素格式，则直接使用当前格式，不再转换。
+        av_log(NULL, AV_LOG_INFO, "video not need rescale!\n");
         return nil;
     }
     
@@ -292,6 +298,63 @@ static int decode_interrupt_cb(void *ctx)
     ///创建像素格式转换上下文
     FFVideoScale0x20 *scale = [[FFVideoScale0x20 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
     return scale;
+}
+
+- (FFAudioResample0x20 *)createAudioResampleIfNeed
+{
+    //未指定期望音频格式
+    if (self.supportedSampleFormats == MR_SAMPLE_FMT_MASK_NONE) {
+        NSAssert(NO, @"supportedSampleFormats can't be none!");
+        return nil;
+    }
+    
+    //当前视频的像素格式
+    const enum AVSampleFormat format = self.audioDecoder.format;
+    
+    bool matched = false;
+    MRSampleFormat firstSupportedFmt = MR_SAMPLE_FMT_NONE;
+    for (int i = MR_SAMPLE_FMT_BEGIN; i <= MR_SAMPLE_FMT_END; i ++) {
+        const MRSampleFormat fmt = i;
+        const MRSampleFormatMask mask = 1 << fmt;
+        if (self.supportedSampleFormats & mask) {
+            if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
+                firstSupportedFmt = fmt;
+            }
+            
+            if (format == MRSampleFormat2AV(fmt)) {
+                matched = true;
+                break;
+            }
+        }
+    }
+    
+    if (matched) {
+        //采样率不匹配
+        if (self.supportedSampleRate != self.audioDecoder.sampleRate) {
+            firstSupportedFmt = AVSampleFormat2MR(format);
+            matched = NO;
+        }
+    }
+    
+    if (matched) {
+        //期望音频格式包含了当前音频格式，则直接使用当前格式，不再转换。
+        av_log(NULL, AV_LOG_INFO, "audio not need resample!\n");
+        return nil;
+    }
+    
+    if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
+        NSAssert(NO, @"supportedSampleFormats is invalid!");
+        return nil;
+    }
+    
+    ///创建音频格式转换上下文
+    FFAudioResample0x20 *resample = [[FFAudioResample0x20 alloc] initWithSrcSampleFmt:format
+                                                                         dstSampleFmt:MRSampleFormat2AV(firstSupportedFmt)
+                                                                           srcChannel:self.audioDecoder.channelLayout
+                                                                           dstChannel:self.audioDecoder.channelLayout
+                                                                              srcRate:self.audioDecoder.sampleRate
+                                                                              dstRate:self.supportedSampleRate];
+    return resample;
 }
 
 - (void)readPacketsFunc
@@ -368,13 +431,22 @@ static int decode_interrupt_cb(void *ctx)
             if(self.audioDecoder){
                 self.audioDecoder.delegate = self;
                 self.audioDecoder.name = @"audioDecoder";
+                self.audioResample = [self createAudioResampleIfNeed];
             } else {
-                av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
+                av_log(NULL, AV_LOG_ERROR, "can't open audio stream.\n");
                 self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
                 [self performErrorResultOnMainThread];
                 //出错了，销毁下相关结构体
                 avformat_close_input(&formatCtx);
                 return;
+            }
+            
+            if ([self.delegate respondsToSelector:@selector(onInitAudioRender:)]) {
+                if (self.audioResample) {
+                    [self.delegate onInitAudioRender:AVSampleFormat2MR(self.audioResample.out_sample_fmt)];
+                } else {
+                    [self.delegate onInitAudioRender:AVSampleFormat2MR(self.audioDecoder.format)];
+                }
             }
         }
     
@@ -425,10 +497,27 @@ static int decode_interrupt_cb(void *ctx)
 {
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &sampq;
+        
+        AVFrame *outP = nil;
+        bool need_free = false;
+        if (self.audioResample) {
+            if (![self.audioResample resampleFrame:frame out:&outP]) {
+#warning TODO handle sacle error
+            } else {
+                need_free = true;
+            }
+        } else {
+            outP = frame;
+        }
+        
         Frame *af = NULL;
         if (NULL != (af = frame_queue_peek_writable(fq))) {
-            av_frame_ref(af->frame, frame);
+//            av_frame_move_ref(af->frame, outP);
+            av_frame_ref(af->frame, outP);
             frame_queue_push(fq);
+        }
+        if (need_free) {
+            av_frame_free(&outP);
         }
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &pictq;
@@ -491,14 +580,6 @@ static int decode_interrupt_cb(void *ctx)
     ///调用了stop方法，，则不再渲染
     while (!self.abort_request) {
         
-        //队列里缓存帧大于0，则取出
-        if (frame_queue_nb_remaining(&sampq) > 0) {
-            Frame *ap = frame_queue_peek(&sampq);
-            av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
-            //释放该节点存储的frame的内存
-            frame_queue_pop(&sampq);
-        }
-        
         NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
         
         if (frame_queue_nb_remaining(&pictq) > 0) {
@@ -512,6 +593,107 @@ static int decode_interrupt_cb(void *ctx)
         av_log(NULL, AV_LOG_DEBUG, "render video frame cost:%dms\n", cost);
         mr_usleep(1000 * (40-cost));
     }
+}
+
+- (bool)fetchPacketSample:(uint8_t *)buffer
+                wantBytes:(UInt32)bufferSize
+{
+    while (bufferSize > 0) {
+        Frame *ap = NULL;
+        //队列里缓存帧大于0，则取出
+        if (frame_queue_nb_remaining(&sampq) > 0) {
+            ap = frame_queue_peek(&sampq);
+            av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
+        }
+        
+        if (NULL == ap) {
+            return false;
+        }
+        
+        uint8_t *src = ap->frame->data[0];
+        const int fmt = ap->frame->format;
+        assert(0 == av_sample_fmt_is_planar(fmt));
+        
+        int data_size = av_samples_get_buffer_size(ap->frame->linesize, 2, ap->frame->nb_samples, fmt, 1);
+        int l_src_size = data_size;//ap->frame->linesize[0];
+        
+        const void *from = src + ap->left_offset;
+        int left = l_src_size - ap->left_offset;
+        
+        ///根据剩余数据长度和需要数据长度算出应当copy的长度
+        int leftBytesToCopy = FFMIN(bufferSize, left);
+        
+        memcpy(buffer, from, leftBytesToCopy);
+        buffer += leftBytesToCopy;
+        bufferSize -= leftBytesToCopy;
+        ap->left_offset += leftBytesToCopy;
+        
+        if (leftBytesToCopy >= left){
+            //读取完毕，则清空；读取下一个包
+            av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
+            frame_queue_pop(&sampq);
+        }
+    }
+    return true;
+}
+
+- (bool)fetchPlanarSample:(uint8_t *)l_buffer
+                 leftSize:(UInt32)l_size
+                    right:(uint8_t *)r_buffer
+                rightSize:(UInt32)r_size
+{
+    while (l_size > 0 || r_size > 0) {
+        Frame *ap = NULL;
+        //队列里缓存帧大于0，则取出
+        if (frame_queue_nb_remaining(&sampq) > 0) {
+            ap = frame_queue_peek(&sampq);
+            av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
+        }
+        
+        if (NULL == ap) {
+            return false;
+        }
+        
+        uint8_t *l_src = ap->frame->data[0];
+        const int fmt  = ap->frame->format;
+        assert(av_sample_fmt_is_planar(fmt));
+        
+        int data_size = av_samples_get_buffer_size(ap->frame->linesize, 1, ap->frame->nb_samples, fmt, 1);
+        
+        int l_src_size = data_size;//af->frame->linesize[0];
+        
+        const void *leftFrom = l_src + ap->left_offset;
+        int leftBytesLeft = l_src_size - ap->left_offset;
+        
+        ///根据剩余数据长度和需要数据长度算出应当copy的长度
+        int leftBytesToCopy = FFMIN(l_size, leftBytesLeft);
+        
+        memcpy(l_buffer, leftFrom, leftBytesToCopy);
+        l_buffer += leftBytesToCopy;
+        l_size -= leftBytesToCopy;
+        ap->left_offset += leftBytesToCopy;
+        
+        uint8_t *r_src = ap->frame->data[1];
+        int r_src_size = l_src_size;//af->frame->linesize[1];
+        if (r_src) {
+            const void *right_from = r_src + ap->right_offset;
+            int right_bytes_left = r_src_size - ap->right_offset;
+            
+            ///根据剩余数据长度和需要数据长度算出应当copy的长度
+            int rightBytesToCopy = FFMIN(r_size, right_bytes_left);
+            memcpy(r_buffer, right_from, rightBytesToCopy);
+            r_buffer += rightBytesToCopy;
+            r_size -= rightBytesToCopy;
+            ap->right_offset += rightBytesToCopy;
+        }
+        
+        if (leftBytesToCopy >= leftBytesLeft){
+            //读取完毕，则清空；读取下一个包
+            av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
+            frame_queue_pop(&sampq);
+        }
+    }
+    return true;
 }
 
 - (void)performErrorResultOnMainThread

@@ -96,7 +96,7 @@
     if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
         self.format = avctx->sample_fmt;
         self.sampleRate = avctx->sample_rate;
-        self.channelLayout = avctx->channel_layout;
+        self.channelLayout = (int)avctx->channel_layout;
     } else if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
         self.format = avctx->pix_fmt;
         self.picWidth = avctx->width;

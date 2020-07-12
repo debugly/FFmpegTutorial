@@ -19,6 +19,8 @@
 typedef struct Frame {
     AVFrame *frame;
     double pts;           /* presentation timestamp for the frame */
+    int left_offset;
+    int right_offset;
 } Frame;
 
 //定义队列
@@ -101,6 +103,9 @@ static __inline__ Frame *frame_queue_peek_writable(FrameQueue *f)
     }
     //获取到了一个可写位置
     Frame *af = &f->queue[f->windex];
+    ///important! reset to zero.
+    af->left_offset = 0;
+    af->right_offset = 0;
     return af;
 }
 
