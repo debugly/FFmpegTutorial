@@ -1,47 +1,50 @@
 PODS:
-  - FFmpegTutorial (0.2.0):
-    - FFmpegTutorial/0x01 (= 0.2.0)
-    - FFmpegTutorial/0x02 (= 0.2.0)
-    - FFmpegTutorial/0x03 (= 0.2.0)
-    - FFmpegTutorial/0x04 (= 0.2.0)
-    - FFmpegTutorial/0x05 (= 0.2.0)
-    - FFmpegTutorial/0x06 (= 0.2.0)
-    - FFmpegTutorial/0x10 (= 0.2.0)
-    - FFmpegTutorial/0x11 (= 0.2.0)
-    - FFmpegTutorial/0x12 (= 0.2.0)
-    - FFmpegTutorial/0x13 (= 0.2.0)
-    - FFmpegTutorial/0x14 (= 0.2.0)
-    - FFmpegTutorial/0x15 (= 0.2.0)
-    - FFmpegTutorial/0x20 (= 0.2.0)
-    - FFmpegTutorial/common (= 0.2.0)
+  - FFmpegTutorial (0.2.1):
+    - FFmpegTutorial/0x01 (= 0.2.1)
+    - FFmpegTutorial/0x02 (= 0.2.1)
+    - FFmpegTutorial/0x03 (= 0.2.1)
+    - FFmpegTutorial/0x04 (= 0.2.1)
+    - FFmpegTutorial/0x05 (= 0.2.1)
+    - FFmpegTutorial/0x06 (= 0.2.1)
+    - FFmpegTutorial/0x10 (= 0.2.1)
+    - FFmpegTutorial/0x11 (= 0.2.1)
+    - FFmpegTutorial/0x12 (= 0.2.1)
+    - FFmpegTutorial/0x13 (= 0.2.1)
+    - FFmpegTutorial/0x14 (= 0.2.1)
+    - FFmpegTutorial/0x15 (= 0.2.1)
+    - FFmpegTutorial/0x20 (= 0.2.1)
+    - FFmpegTutorial/0x21 (= 0.2.1)
+    - FFmpegTutorial/common (= 0.2.1)
     - MRFFmpegPod
-  - FFmpegTutorial/0x01 (0.2.0):
+  - FFmpegTutorial/0x01 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x02 (0.2.0):
+  - FFmpegTutorial/0x02 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x03 (0.2.0):
+  - FFmpegTutorial/0x03 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x04 (0.2.0):
+  - FFmpegTutorial/0x04 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x05 (0.2.0):
+  - FFmpegTutorial/0x05 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x06 (0.2.0):
+  - FFmpegTutorial/0x06 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x10 (0.2.0):
+  - FFmpegTutorial/0x10 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x11 (0.2.0):
+  - FFmpegTutorial/0x11 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x12 (0.2.0):
+  - FFmpegTutorial/0x12 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x13 (0.2.0):
+  - FFmpegTutorial/0x13 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x14 (0.2.0):
+  - FFmpegTutorial/0x14 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x15 (0.2.0):
+  - FFmpegTutorial/0x15 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/0x20 (0.2.0):
+  - FFmpegTutorial/0x20 (0.2.1):
     - MRFFmpegPod
-  - FFmpegTutorial/common (0.2.0):
+  - FFmpegTutorial/0x21 (0.2.1):
+    - MRFFmpegPod
+  - FFmpegTutorial/common (0.2.1):
     - MRFFmpegPod
   - GDPerformanceView-Swift (2.0.3)
   - MRFFmpegPod (3.4.7):
@@ -72,7 +75,7 @@ EXTERNAL SOURCES:
     :podspec: https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg3.4.7.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: 6994cf928f96ef4e58655b8a62c5e11716378d6e
+  FFmpegTutorial: aba7b811d061b8f9f85e38fc6fe6b4902506c6ea
   GDPerformanceView-Swift: ef3d05deb103e472a5494d3f60aeca5a58b88a7d
   MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
 
