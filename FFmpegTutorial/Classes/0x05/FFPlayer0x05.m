@@ -325,7 +325,7 @@ static int decode_interrupt_cb(void *ctx)
     AVFormatContext *formatCtx = avformat_alloc_context();
     
     if (!formatCtx) {
-        self.error = _make_nserror_desc(FFPlayerErrorCode_AllocFmtCtxFailed, @"Could not allocate context.");
+        self.error = _make_nserror_desc(FFPlayerErrorCode_AllocFmtCtxFailed, @"创建 AVFormatContext 失败！");
         [self performErrorResultOnMainThread];
         return;
     }

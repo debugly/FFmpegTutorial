@@ -293,7 +293,7 @@ static int decode_interrupt_cb(void *ctx)
         AVFormatContext *formatCtx = avformat_alloc_context();
         
         if (!formatCtx) {
-            self.error = _make_nserror_desc(FFPlayerErrorCode_AllocFmtCtxFailed, @"Could not allocate context.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_AllocFmtCtxFailed, @"创建 AVFormatContext 失败！");
             [self performErrorResultOnMainThread];
             return;
         }
@@ -422,7 +422,9 @@ static int decode_interrupt_cb(void *ctx)
         AVFrame *outP = nil;
         if (self.videoScale) {
             if (![self.videoScale rescaleFrame:frame out:&outP]) {
-#warning TODO handle sacle error
+                self.error = _make_nserror_desc(FFPlayerErrorCode_RescaleFrameFailed, @"视频帧重转失败！");
+                [self performErrorResultOnMainThread];
+                return;
             }
         } else {
             outP = frame;
