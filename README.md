@@ -50,8 +50,9 @@
 - 0x01：[常见封装格式介绍](md/illiteracy/0x01.md)
 - 0x02：[播放器总体架构设计](md/illiteracy/0x02.md)
 - 0x03：[封装 NSThread，支持 join](md/illiteracy/0x03.md)
+- 0x04：[AVFrame 内存管理分析](md/illiteracy/0x04.md)
 
-# Tutorial
+# Tutorials
 
 音视频基础，解码队列，解码器
 
