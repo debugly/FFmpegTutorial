@@ -71,8 +71,18 @@ static __inline__ int frame_queue_init(FrameQueue *f, int max_size, const char *
  |
  rindex
  */
-//[阻塞等待]获取一个可写的节点
-static __inline__ Frame *frame_queue_peek_writable(FrameQueue *f)
+//1、[阻塞等待]获取一个可写的节点
+/*
+size=4
+[1,1,1,1,0,0,0,0]
+         |
+         windex
+|
+rindex
+*/
+//2、移动写指针位置，增加队列里已存储数量
+//return 0 is OK.
+static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame)
 {
     /* wait until we have space to put a new frame */
     int ret = 0;
@@ -96,32 +106,21 @@ static __inline__ Frame *frame_queue_peek_writable(FrameQueue *f)
         mr_usleep(10000);
         dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     }
-    //解锁
-    dispatch_semaphore_signal(f->mutex);
+    
     if (ret < 0) {
-        return NULL;
+        //解锁
+        dispatch_semaphore_signal(f->mutex);
+        return ret;
     }
+    
     //获取到了一个可写位置
     Frame *af = &f->queue[f->windex];
     ///important! reset to zero.
     af->left_offset = 0;
     af->right_offset = 0;
-    return af;
-}
-
-/*
-size=4
-[1,1,1,1,0,0,0,0]
-         |
-         windex
-|
-rindex
-*/
-//移动写指针位置，增加队列里已存储数量
-static __inline__ void frame_queue_push(FrameQueue *f)
-{
-    //加锁
-    dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
+    
+    //ref it!
+    av_frame_ref(af->frame, frame);
     
     //写指针超过了总长度时，将写指针归零，指向头部
     if (++f->windex == f->max_size) {
@@ -132,6 +131,7 @@ static __inline__ void frame_queue_push(FrameQueue *f)
     av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
     //解锁
     dispatch_semaphore_signal(f->mutex);
+    return 0;
 }
 
 // 获取队列里缓存帧的数量

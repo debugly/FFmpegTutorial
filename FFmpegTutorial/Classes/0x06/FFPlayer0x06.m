@@ -374,11 +374,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     if (fq != NULL) {
-        Frame *af = NULL;
-        if (NULL != (af = frame_queue_peek_writable(fq))) {
-            av_frame_ref(af->frame, frame);
-            frame_queue_push(fq);
-        }
+        frame_queue_push(fq, frame);
     }
 }
 

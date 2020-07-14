@@ -61,7 +61,7 @@
         out_frame->format  = self.dstPixFmt;
         out_frame->width   = self.picWidth;
         out_frame->height  = self.picHeight;
-        
+    
         av_image_fill_linesizes(out_frame->linesize, out_frame->format, out_frame->width);
         av_image_alloc(out_frame->data, out_frame->linesize, self.picWidth, self.picHeight, self.dstPixFmt, 1);
     }

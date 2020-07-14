@@ -69,7 +69,7 @@
 {
     AVFrame *out_frame = self.frame;
     //important！otherwise sample is not right! or use av_frame_move_ref relese and reset the outP in call side!
-    //av_frame_unref(out_frame);
+    av_frame_unref(out_frame);
     //important！
     av_frame_copy_props(out_frame, inF);
 

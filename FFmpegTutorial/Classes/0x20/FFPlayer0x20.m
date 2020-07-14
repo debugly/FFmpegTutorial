@@ -506,12 +506,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             outP = frame;
         }
-        
-        Frame *af = NULL;
-        if (NULL != (af = frame_queue_peek_writable(fq))) {
-            av_frame_move_ref(af->frame, outP);
-            frame_queue_push(fq);
-        }
+        frame_queue_push(fq, outP);
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &pictq;
         
@@ -523,12 +518,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             outP = frame;
         }
-
-        Frame *af = NULL;
-        if (NULL != (af = frame_queue_peek_writable(fq))) {
-            av_frame_ref(af->frame, outP);
-            frame_queue_push(fq);
-        }
+        frame_queue_push(fq, outP);
     }
 }
 

@@ -498,12 +498,9 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
-            Frame *af = NULL;
-            if (NULL == (af = frame_queue_peek_writable(&sampq))) {
+            if (0 != frame_queue_push(&sampq, frame)) {
                 break;
             }
-            av_frame_ref(af->frame, frame);
-            frame_queue_push(&sampq);
         }
     } while (1);
     
@@ -554,12 +551,9 @@ static int decode_interrupt_cb(void *ctx)
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
             
-            Frame *af = NULL;
-            if (NULL == (af = frame_queue_peek_writable(&pictq))) {
+            if (0 != frame_queue_push(&pictq, frame)) {
                 break;
             }
-            av_frame_ref(af->frame, frame);
-            frame_queue_push(&pictq);
         }
     } while (1);
     
