@@ -499,12 +499,9 @@ static int decode_interrupt_cb(void *ctx)
         FrameQueue *fq = &sampq;
         
         AVFrame *outP = nil;
-        bool need_free = false;
         if (self.audioResample) {
             if (![self.audioResample resampleFrame:frame out:&outP]) {
 #warning TODO handle sacle error
-            } else {
-                need_free = true;
             }
         } else {
             outP = frame;
@@ -512,12 +509,8 @@ static int decode_interrupt_cb(void *ctx)
         
         Frame *af = NULL;
         if (NULL != (af = frame_queue_peek_writable(fq))) {
-//            av_frame_move_ref(af->frame, outP);
-            av_frame_ref(af->frame, outP);
+            av_frame_move_ref(af->frame, outP);
             frame_queue_push(fq);
-        }
-        if (need_free) {
-            av_frame_free(&outP);
         }
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &pictq;

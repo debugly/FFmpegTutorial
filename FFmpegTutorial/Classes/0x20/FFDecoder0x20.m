@@ -21,7 +21,6 @@
 @property (nonatomic, assign, readwrite) int format;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
-
 ///for audio
 @property (nonatomic, assign, readwrite) int sampleRate;
 @property (nonatomic, assign, readwrite) int channelLayout;

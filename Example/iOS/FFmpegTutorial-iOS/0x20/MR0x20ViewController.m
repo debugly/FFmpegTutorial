@@ -15,7 +15,7 @@
 #import <AVFoundation/AVFoundation.h>
 
 //将音频裸流PCM写入到文件
-#define DEBUG_RECORD_PCM_TO_FILE 1
+#define DEBUG_RECORD_PCM_TO_FILE 0
 
 
 @interface MR0x20ViewController ()<UITextViewDelegate,FFPlayer0x20Delegate>
@@ -51,7 +51,7 @@
 - (void)dealloc
 {
     if (_audioUnit) {
-        OSStatus status = AudioOutputUnitStop(_audioUnit);
+        AudioOutputUnitStop(_audioUnit);
     }
     
     #if DEBUG_RECORD_PCM_TO_FILE
@@ -77,10 +77,9 @@
     self.textView.delegate = self;
     self.textView.layoutManager.allowsNonContiguousLayout = NO;
     self.renderView.contentMode = UIViewContentModeScaleAspectFit;
-    //硬件实际采样率
+    //设置采样率
     [[AVAudioSession sharedInstance] setPreferredSampleRate:44100 error:nil];
-    self.targetSampleRate = (int)[[AVAudioSession sharedInstance]sampleRate];
-    
+    self.targetSampleRate = (int)[[AVAudioSession sharedInstance] sampleRate];
     
 #if DEBUG_RECORD_PCM_TO_FILE
     if (file_pcm_l == NULL) {
@@ -108,7 +107,13 @@
         self.timer = nil;
     }];
     player.supportedPixelFormats  = MR_PIX_FMT_MASK_NV12;
-    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_ALL;
+    
+//    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16;
+//    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16P;
+//    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_FLT;
+//    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_FLTP;
+    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_AUTO;
+    
     player.supportedSampleRate    = self.targetSampleRate;
     
     player.delegate = self;

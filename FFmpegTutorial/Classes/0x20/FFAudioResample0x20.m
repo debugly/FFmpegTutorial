@@ -67,10 +67,10 @@
 
 - (BOOL)resampleFrame:(AVFrame *)inF out:(AVFrame **)outP
 {
-#warning TODO reuse the frame for convert audio sample！
-    //AVFrame *out_frame = self.frame;
-    AVFrame *out_frame = av_frame_alloc();
-    ///important！
+    AVFrame *out_frame = self.frame;
+    //important！otherwise sample is not right! or use av_frame_move_ref relese and reset the outP in call side!
+    //av_frame_unref(out_frame);
+    //important！
     av_frame_copy_props(out_frame, inF);
 
     //int64_t dst_ch_layout;
@@ -83,7 +83,6 @@
     if(ret < 0){
         // convert error, try next frame
         av_log(NULL, AV_LOG_ERROR, "fail resample audio");
-        av_frame_free(&out_frame);
         return -1;
     }
     
