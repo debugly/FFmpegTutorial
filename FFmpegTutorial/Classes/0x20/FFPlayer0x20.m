@@ -582,9 +582,10 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (bool)fetchPacketSample:(uint8_t *)buffer
-                wantBytes:(UInt32)bufferSize
+- (UInt32)fetchPacketSample:(uint8_t *)buffer
+                  wantBytes:(UInt32)bufferSize
 {
+    UInt32 filled = 0;
     while (bufferSize > 0) {
         Frame *ap = NULL;
         //队列里缓存帧大于0，则取出
@@ -594,7 +595,7 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         if (NULL == ap) {
-            return false;
+            return filled;
         }
         
         uint8_t *src = ap->frame->data[0];
@@ -614,21 +615,22 @@ static int decode_interrupt_cb(void *ctx)
         buffer += leftBytesToCopy;
         bufferSize -= leftBytesToCopy;
         ap->left_offset += leftBytesToCopy;
-        
+        filled += leftBytesToCopy;
         if (leftBytesToCopy >= left){
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&sampq);
         }
     }
-    return true;
+    return filled;
 }
 
-- (bool)fetchPlanarSample:(uint8_t *)l_buffer
-                 leftSize:(UInt32)l_size
-                    right:(uint8_t *)r_buffer
-                rightSize:(UInt32)r_size
+- (UInt32)fetchPlanarSample:(uint8_t *)l_buffer
+                   leftSize:(UInt32)l_size
+                      right:(uint8_t *)r_buffer
+                  rightSize:(UInt32)r_size
 {
+    UInt32 filled = 0;
     while (l_size > 0 || r_size > 0) {
         Frame *ap = NULL;
         //队列里缓存帧大于0，则取出
@@ -638,7 +640,7 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         if (NULL == ap) {
-            return false;
+            return filled;
         }
         
         uint8_t *l_src = ap->frame->data[0];
@@ -659,7 +661,7 @@ static int decode_interrupt_cb(void *ctx)
         l_buffer += leftBytesToCopy;
         l_size -= leftBytesToCopy;
         ap->left_offset += leftBytesToCopy;
-        
+        filled += leftBytesToCopy;
         uint8_t *r_src = ap->frame->data[1];
         int r_src_size = l_src_size;//af->frame->linesize[1];
         if (r_src) {
@@ -680,7 +682,7 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&sampq);
         }
     }
-    return true;
+    return filled;
 }
 
 - (void)performErrorResultOnMainThread

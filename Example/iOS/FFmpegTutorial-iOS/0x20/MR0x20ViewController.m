@@ -349,23 +349,23 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     return noErr;
 }
 
-- (bool)fetchPacketSample:(uint8_t*)buffer
-                 wantBytes:(UInt32)bufferSize
+- (UInt32)fetchPacketSample:(uint8_t*)buffer
+                  wantBytes:(UInt32)bufferSize
 {
-    bool flag = [self.player fetchPacketSample:buffer wantBytes:bufferSize];
+    UInt32 filled = [self.player fetchPacketSample:buffer wantBytes:bufferSize];
     
     #if DEBUG_RECORD_PCM_TO_FILE
-    fwrite(buffer, 1, bufferSize, self->file_pcm_l);
+    fwrite(buffer, 1, filled, self->file_pcm_l);
     #endif
-    return flag;
+    return filled;
 }
 
-- (bool)fetchPlanarSample:(uint8_t*)left
+- (UInt32)fetchPlanarSample:(uint8_t*)left
                   leftSize:(UInt32)leftSize
                      right:(uint8_t*)right
                  rightSize:(UInt32)rightSize
 {
-    bool flag =  [self.player fetchPlanarSample:left leftSize:leftSize right:right rightSize:rightSize];
+    UInt32 filled = [self.player fetchPlanarSample:left leftSize:leftSize right:right rightSize:rightSize];
     #if DEBUG_RECORD_PCM_TO_FILE
     fwrite(left, 1, leftSize, self->file_pcm_l);
     fwrite(right, 1, rightSize, self->file_pcm_r);
@@ -373,7 +373,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     fflush(self->file_pcm_l);
     fflush(self->file_pcm_r);
     #endif
-    return flag;
+    return filled;
 }
 
 - (void)onTimer:(NSTimer *)sender
