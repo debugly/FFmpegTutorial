@@ -26,10 +26,7 @@
 - (void)dealloc
 {
     if (self.frame) {
-        if(_frame->data[0] != NULL){
-            av_freep(_frame->data);
-        }
-//        av_frame_free(&_frame);
+        av_frame_free(&_frame);
     }
 }
 

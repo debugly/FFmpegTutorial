@@ -129,7 +129,7 @@
 {
     for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
         AudioQueueBufferRef ref = self->audioQueueBuffers[i];
-        [self renderFramesToBuffer:ref];
+        [self renderFramesToBuffer:ref queue:self.audioQueue];
     }
     
     OSStatus status = AudioQueueStart(self.audioQueue, NULL);
@@ -174,10 +174,6 @@
         // ----- Audio Queue Setup -----
         
         _outputFormat.mSampleRate = _targetSampleRate;
-        /**不使用视频的原声道数_audioCodecCtx->channels;
-         mChannelsPerFrame 这个值决定了后续AudioUnit索要数据时 ioData->mNumberBuffers 的值！
-         如果写成1会影响Planar类型，就不会开两个buffer了！！因此这里写死为2！
-         */
         _outputFormat.mChannelsPerFrame = 2;
         _outputFormat.mFormatID = kAudioFormatLinearPCM;
         _outputFormat.mReserved = 0;
@@ -225,17 +221,17 @@ static void MRAudioQueueOutputCallback(
                                  AudioQueueBufferRef     inBuffer)
 {
     MR0x21ViewController *am = (__bridge MR0x21ViewController *)inUserData;
-    [am renderFramesToBuffer:inBuffer];
+    [am renderFramesToBuffer:inBuffer queue:inAQ];
 }
 
-- (UInt32)renderFramesToBuffer:(AudioQueueBufferRef) inBuffer
+- (UInt32)renderFramesToBuffer:(AudioQueueBufferRef) inBuffer queue:(AudioQueueRef)inAQ
 {
     //1、填充数据
     UInt32 gotBytes = [self fetchPacketSample:inBuffer->mAudioData wantBytes:inBuffer->mAudioDataBytesCapacity];
     inBuffer->mAudioDataByteSize = gotBytes;
     
     // 2、通知 AudioQueue 有可以播放的 buffer 了
-    AudioQueueEnqueueBuffer(self.audioQueue, inBuffer, 0, NULL);
+    AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, NULL);
     return gotBytes;
 }
 
