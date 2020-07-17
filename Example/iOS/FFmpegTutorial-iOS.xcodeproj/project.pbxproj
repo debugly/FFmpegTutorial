@@ -110,6 +110,7 @@
 		DD8B00EF24C06066009364C5 /* MR0x22AudioUnitRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x22AudioUnitRenderer.m; sourceTree = "<group>"; };
 		DD8B00F124C06079009364C5 /* MR0x22AudioQueueRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x22AudioQueueRenderer.h; sourceTree = "<group>"; };
 		DD8B00F224C06079009364C5 /* MR0x22AudioQueueRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x22AudioQueueRenderer.m; sourceTree = "<group>"; };
+		DD8B00F724C14F1B009364C5 /* MR0x22AudioRendererImpProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x22AudioRendererImpProtocol.h; sourceTree = "<group>"; };
 		DD8BFCF324BDB0F5009364C5 /* MR0x21VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x21VideoRenderer.m; sourceTree = "<group>"; };
 		DD8BFCF424BDB0F5009364C5 /* MR0x21ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x21ViewController.h; sourceTree = "<group>"; };
 		DD8BFCF624BDB0F5009364C5 /* 0x21Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 0x21Shader.fsh; sourceTree = "<group>"; };
@@ -293,14 +294,8 @@
 			isa = PBXGroup;
 			children = (
 				DD8B00E324C05E9A009364C5 /* Shaders */,
-				DD8B00E224C05E9A009364C5 /* MR0x22VideoRenderer.h */,
-				DD8B00E024C05E9A009364C5 /* MR0x22VideoRenderer.m */,
-				DD8B00EB24C06039009364C5 /* MR0x22AudioRenderer.h */,
-				DD8B00EC24C06039009364C5 /* MR0x22AudioRenderer.m */,
-				DD8B00EE24C06066009364C5 /* MR0x22AudioUnitRenderer.h */,
-				DD8B00EF24C06066009364C5 /* MR0x22AudioUnitRenderer.m */,
-				DD8B00F124C06079009364C5 /* MR0x22AudioQueueRenderer.h */,
-				DD8B00F224C06079009364C5 /* MR0x22AudioQueueRenderer.m */,
+				DD8B00F524C14E52009364C5 /* Video */,
+				DD8B00F424C14E43009364C5 /* Audio */,
 				DD8B00E624C05E9A009364C5 /* MR0x22ViewController.h */,
 				DD8B00E124C05E9A009364C5 /* MR0x22ViewController.m */,
 			);
@@ -314,6 +309,37 @@
 				DD8B00E524C05E9A009364C5 /* 0x22Shader.fsh */,
 			);
 			path = Shaders;
+			sourceTree = "<group>";
+		};
+		DD8B00F424C14E43009364C5 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				DD8B00EB24C06039009364C5 /* MR0x22AudioRenderer.h */,
+				DD8B00EC24C06039009364C5 /* MR0x22AudioRenderer.m */,
+				DD8B00F624C14E64009364C5 /* Imp */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		DD8B00F524C14E52009364C5 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				DD8B00E224C05E9A009364C5 /* MR0x22VideoRenderer.h */,
+				DD8B00E024C05E9A009364C5 /* MR0x22VideoRenderer.m */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		DD8B00F624C14E64009364C5 /* Imp */ = {
+			isa = PBXGroup;
+			children = (
+				DD8B00F724C14F1B009364C5 /* MR0x22AudioRendererImpProtocol.h */,
+				DD8B00EE24C06066009364C5 /* MR0x22AudioUnitRenderer.h */,
+				DD8B00EF24C06066009364C5 /* MR0x22AudioUnitRenderer.m */,
+				DD8B00F124C06079009364C5 /* MR0x22AudioQueueRenderer.h */,
+				DD8B00F224C06079009364C5 /* MR0x22AudioQueueRenderer.m */,
+			);
+			path = Imp;
 			sourceTree = "<group>";
 		};
 		DD8BFCF224BDB0F5009364C5 /* 0x21 */ = {

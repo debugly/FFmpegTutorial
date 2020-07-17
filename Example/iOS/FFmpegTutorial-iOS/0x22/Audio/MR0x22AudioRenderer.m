@@ -9,6 +9,7 @@
 #import "MR0x22AudioRenderer.h"
 #import <AVFoundation/AVFoundation.h>
 #import "MR0x22AudioQueueRenderer.h"
+#import "MR0x22AudioUnitRenderer.h"
 
 @interface MR0x22AudioRenderer ()
 {
@@ -16,7 +17,7 @@
 }
 
 @property (nonatomic, assign, readwrite) MRSampleFormat sampleFmt;
-@property (nonatomic, strong) MR0x22AudioQueueRenderer *audioQueue;
+@property (nonatomic, strong) id<MR0x22AudioRendererImpProtocol> audioRendererImp;
 
 @end
 
@@ -43,8 +44,8 @@
     self.sampleFmt = fmt;
     if (self.preferredAudioQueue) {
         if (MR_Sample_Fmt_Is_Packet(fmt)) {
-            self.audioQueue = [[MR0x22AudioQueueRenderer alloc] init];
-            [self.audioQueue setup:rate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt)];
+            self.audioRendererImp = [[MR0x22AudioQueueRenderer alloc] init];
+            [self.audioRendererImp setup:rate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt)];
         } else {
             NSAssert(NO, @"audio queue not support planar fmt!");
         }
@@ -55,12 +56,12 @@
 
 - (void)onFetchPacketSample:(MRFetchPacketSample)block
 {
-    [self.audioQueue onFetchPacketSample:block];
+    [self.audioRendererImp onFetchPacketSample:block];
 }
 
 - (void)paly
 {
-    [self.audioQueue play];
+    [self.audioRendererImp play];
 }
 
 - (float)outputVolume

@@ -8,15 +8,16 @@
 //Audio Queue Support packet fmt only!
 
 #import <Foundation/Foundation.h>
+#import "MR0x22AudioRendererImpProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef UInt32(^MRFetchPacketSample)(uint8_t*buffer,UInt32 bufferSize);
 
-@interface MR0x22AudioQueueRenderer : NSObject
 
-- (void)setup:(int)sampleRate isFloatFmt:(BOOL)isFloat;
+@interface MR0x22AudioQueueRenderer : NSObject <MR0x22AudioRendererImpProtocol>
+
 - (void)onFetchPacketSample:(MRFetchPacketSample)block;
+- (void)setup:(int)sampleRate isFloatFmt:(BOOL)isFloat;
 - (void)play;
 
 @end
