@@ -11,9 +11,16 @@
 #import "MR0x22AudioQueueRenderer.h"
 #import "MR0x22AudioUnitRenderer.h"
 
+//将音频裸流PCM写入到文件
+#define DEBUG_RECORD_PCM_TO_FILE 1
+
 @interface MR0x22AudioRenderer ()
 {
     float _outputVolume;
+#if DEBUG_RECORD_PCM_TO_FILE
+    FILE * file_pcm_l;
+    FILE * file_pcm_r;
+#endif
 }
 
 @property (nonatomic, assign, readwrite) MRSampleFormat sampleFmt;
@@ -21,10 +28,23 @@
 
 @end
 
-
 @implementation MR0x22AudioRenderer
 
 @synthesize outputVolume = _outputVolume;
+
+- (void)dealloc
+{
+#if DEBUG_RECORD_PCM_TO_FILE
+    if (NULL != file_pcm_l) {
+        fclose(file_pcm_l);
+        file_pcm_l = NULL;
+    }
+    if (NULL != file_pcm_r) {
+        fclose(file_pcm_r);
+        file_pcm_r = NULL;
+    }
+#endif
+}
 
 + (int)setPreferredSampleRate:(int)rate
 {
@@ -55,16 +75,56 @@
     
     self.audioRendererImp = [[MR0x22AudioUnitRenderer alloc] init];
     [self.audioRendererImp setup:rate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt) isPacket:MR_Sample_Fmt_Is_Packet(fmt)];
+    
+#if DEBUG_RECORD_PCM_TO_FILE
+    if (file_pcm_l == NULL) {
+        const char *l = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"L.pcm"]UTF8String];
+        NSLog(@"%s",l);
+        file_pcm_l = fopen(l, "wb+");
+    }
+    
+    if (file_pcm_r == NULL) {
+        const char *r = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"R.pcm"]UTF8String];
+        NSLog(@"%s",r);
+        file_pcm_r = fopen(r, "wb+");
+    }
+#endif
+
 }
 
 - (void)onFetchPacketSample:(MRFetchPacketSample)block
 {
+#if DEBUG_RECORD_PCM_TO_FILE
+    [self.audioRendererImp onFetchPacketSample:^UInt32(uint8_t * _Nonnull buffer, UInt32 bufferSize) {
+        if (block) {
+            UInt32 filled = block(buffer,bufferSize);
+            fwrite(buffer, 1, filled, self->file_pcm_l);
+            return filled;
+        } else {
+            return 0;
+        }
+    }];
+#else
     [self.audioRendererImp onFetchPacketSample:block];
+#endif
 }
 
 - (void)onFetchPlanarSample:(MRFetchPlanarSample)block
 {
+#if DEBUG_RECORD_PCM_TO_FILE
+    [self.audioRendererImp onFetchPlanarSample:^UInt32(uint8_t * _Nonnull left, UInt32 leftSize, uint8_t * _Nonnull right, UInt32 rightSize) {
+        if (block) {
+            UInt32 filled = block(left,leftSize,right,rightSize);
+            fwrite(left, 1, filled, self->file_pcm_l);
+            fwrite(right, 1, filled, self->file_pcm_r);
+            return filled;
+        } else {
+            return 0;
+        }
+    }];
+#else
     [self.audioRendererImp onFetchPlanarSample:block];
+#endif
 }
 
 - (void)paly

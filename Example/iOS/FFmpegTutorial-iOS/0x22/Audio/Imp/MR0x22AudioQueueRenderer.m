@@ -102,9 +102,6 @@ static void MRAudioQueueOutputCallback(
     UInt32 filled = 0;
     if (self.fetchBlock) {
         filled = self.fetchBlock(buffer,bufferSize);
-        #if DEBUG_RECORD_PCM_TO_FILE
-        fwrite(buffer, 1, filled, file_pcm_l);
-        #endif
     }
     return filled;
 }

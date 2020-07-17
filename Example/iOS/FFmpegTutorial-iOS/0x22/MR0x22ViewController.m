@@ -14,15 +14,7 @@
 #import "MR0x22VideoRenderer.h"
 #import "MR0x22AudioRenderer.h"
 
-//将音频裸流PCM写入到文件
-#define DEBUG_RECORD_PCM_TO_FILE 0
-
 @interface MR0x22ViewController ()<UITextViewDelegate,FFPlayer0x22Delegate>
-{
-    #if DEBUG_RECORD_PCM_TO_FILE
-        FILE * file_pcm_l;
-    #endif
-}
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
@@ -39,11 +31,6 @@
 
 - (void)dealloc
 {
-    
-    #if DEBUG_RECORD_PCM_TO_FILE
-        fclose(file_pcm_l);
-    #endif
-    
     if (self.timer) {
         [self.timer invalidate];
         self.timer = nil;
@@ -62,13 +49,6 @@
     self.textView.delegate = self;
     self.textView.layoutManager.allowsNonContiguousLayout = NO;
     self.renderView.contentMode = UIViewContentModeScaleAspectFit;
-#if DEBUG_RECORD_PCM_TO_FILE
-    if (file_pcm_l == NULL) {
-        const char *l = [[NSTemporaryDirectory() stringByAppendingPathComponent:@"L.pcm"]UTF8String];
-        NSLog(@"%s",l);
-        file_pcm_l = fopen(l, "wb+");
-    }
-#endif
     
     FFPlayer0x22 *player = [[FFPlayer0x22 alloc] init];
     player.contentPath = @"http://data.vod.itc.cn/?new=/73/15/oFed4wzSTZe8HPqHZ8aF7J.mp4&vid=77972299&plat=14&mkey=XhSpuZUl_JtNVIuSKCB05MuFBiqUP7rB&ch=null&user=api&qd=8001&cv=3.13&uid=F45C89AE5BC3&ca=2&pg=5&pt=1&prod=ifox";
