@@ -25,6 +25,13 @@
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
 		DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */; };
+		DD65FF5924C1AC3C0035E472 /* MR0x30VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD65FF4924C1AC3C0035E472 /* MR0x30VideoRenderer.m */; };
+		DD65FF5A24C1AC3C0035E472 /* MR0x30AudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD65FF4E24C1AC3C0035E472 /* MR0x30AudioQueueRenderer.m */; };
+		DD65FF5B24C1AC3C0035E472 /* MR0x30AudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD65FF4F24C1AC3C0035E472 /* MR0x30AudioUnitRenderer.m */; };
+		DD65FF5C24C1AC3C0035E472 /* MR0x30AudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD65FF5424C1AC3C0035E472 /* MR0x30AudioRenderer.m */; };
+		DD65FF5D24C1AC3C0035E472 /* 0x30Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD65FF5624C1AC3C0035E472 /* 0x30Shader.vsh */; };
+		DD65FF5E24C1AC3C0035E472 /* 0x30Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD65FF5724C1AC3C0035E472 /* 0x30Shader.fsh */; };
+		DD65FF5F24C1AC3C0035E472 /* MR0x30ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD65FF5824C1AC3C0035E472 /* MR0x30ViewController.m */; };
 		DD8B00E724C05E9A009364C5 /* MR0x22VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8B00E024C05E9A009364C5 /* MR0x22VideoRenderer.m */; };
 		DD8B00E824C05E9A009364C5 /* MR0x22ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8B00E124C05E9A009364C5 /* MR0x22ViewController.m */; };
 		DD8B00E924C05E9A009364C5 /* 0x22Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD8B00E424C05E9A009364C5 /* 0x22Shader.vsh */; };
@@ -98,6 +105,19 @@
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceWrapper.swift; sourceTree = "<group>"; };
+		DD65FF4924C1AC3C0035E472 /* MR0x30VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x30VideoRenderer.m; sourceTree = "<group>"; };
+		DD65FF4A24C1AC3C0035E472 /* MR0x30VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x30VideoRenderer.h; sourceTree = "<group>"; };
+		DD65FF4B24C1AC3C0035E472 /* MR0x30ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x30ViewController.h; sourceTree = "<group>"; };
+		DD65FF4E24C1AC3C0035E472 /* MR0x30AudioQueueRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x30AudioQueueRenderer.m; sourceTree = "<group>"; };
+		DD65FF4F24C1AC3C0035E472 /* MR0x30AudioUnitRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x30AudioUnitRenderer.m; sourceTree = "<group>"; };
+		DD65FF5024C1AC3C0035E472 /* MR0x30AudioRendererImpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x30AudioRendererImpProtocol.h; sourceTree = "<group>"; };
+		DD65FF5124C1AC3C0035E472 /* MR0x30AudioQueueRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x30AudioQueueRenderer.h; sourceTree = "<group>"; };
+		DD65FF5224C1AC3C0035E472 /* MR0x30AudioUnitRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x30AudioUnitRenderer.h; sourceTree = "<group>"; };
+		DD65FF5324C1AC3C0035E472 /* MR0x30AudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x30AudioRenderer.h; sourceTree = "<group>"; };
+		DD65FF5424C1AC3C0035E472 /* MR0x30AudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x30AudioRenderer.m; sourceTree = "<group>"; };
+		DD65FF5624C1AC3C0035E472 /* 0x30Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 0x30Shader.vsh; sourceTree = "<group>"; };
+		DD65FF5724C1AC3C0035E472 /* 0x30Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 0x30Shader.fsh; sourceTree = "<group>"; };
+		DD65FF5824C1AC3C0035E472 /* MR0x30ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x30ViewController.m; sourceTree = "<group>"; };
 		DD8B00E024C05E9A009364C5 /* MR0x22VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x22VideoRenderer.m; sourceTree = "<group>"; };
 		DD8B00E124C05E9A009364C5 /* MR0x22ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x22ViewController.m; sourceTree = "<group>"; };
 		DD8B00E224C05E9A009364C5 /* MR0x22VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x22VideoRenderer.h; sourceTree = "<group>"; };
@@ -235,6 +255,7 @@
 				DDFA39A724B872DB005C6430 /* 0x20 */,
 				DD8BFCF224BDB0F5009364C5 /* 0x21 */,
 				DD8B00DF24C05E9A009364C5 /* 0x22 */,
+				DD65FF4724C1AC3C0035E472 /* 0x30 */,
 				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -290,12 +311,64 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DD65FF4724C1AC3C0035E472 /* 0x30 */ = {
+			isa = PBXGroup;
+			children = (
+				DD65FF4C24C1AC3C0035E472 /* Audio */,
+				DD65FF5524C1AC3C0035E472 /* Shaders */,
+				DD65FF4824C1AC3C0035E472 /* Video */,
+				DD65FF4B24C1AC3C0035E472 /* MR0x30ViewController.h */,
+				DD65FF5824C1AC3C0035E472 /* MR0x30ViewController.m */,
+			);
+			path = 0x30;
+			sourceTree = "<group>";
+		};
+		DD65FF4824C1AC3C0035E472 /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				DD65FF4924C1AC3C0035E472 /* MR0x30VideoRenderer.m */,
+				DD65FF4A24C1AC3C0035E472 /* MR0x30VideoRenderer.h */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		DD65FF4C24C1AC3C0035E472 /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				DD65FF4D24C1AC3C0035E472 /* Imp */,
+				DD65FF5324C1AC3C0035E472 /* MR0x30AudioRenderer.h */,
+				DD65FF5424C1AC3C0035E472 /* MR0x30AudioRenderer.m */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		DD65FF4D24C1AC3C0035E472 /* Imp */ = {
+			isa = PBXGroup;
+			children = (
+				DD65FF5024C1AC3C0035E472 /* MR0x30AudioRendererImpProtocol.h */,
+				DD65FF5124C1AC3C0035E472 /* MR0x30AudioQueueRenderer.h */,
+				DD65FF4E24C1AC3C0035E472 /* MR0x30AudioQueueRenderer.m */,
+				DD65FF5224C1AC3C0035E472 /* MR0x30AudioUnitRenderer.h */,
+				DD65FF4F24C1AC3C0035E472 /* MR0x30AudioUnitRenderer.m */,
+			);
+			path = Imp;
+			sourceTree = "<group>";
+		};
+		DD65FF5524C1AC3C0035E472 /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				DD65FF5624C1AC3C0035E472 /* 0x30Shader.vsh */,
+				DD65FF5724C1AC3C0035E472 /* 0x30Shader.fsh */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
 		DD8B00DF24C05E9A009364C5 /* 0x22 */ = {
 			isa = PBXGroup;
 			children = (
+				DD8B00F424C14E43009364C5 /* Audio */,
 				DD8B00E324C05E9A009364C5 /* Shaders */,
 				DD8B00F524C14E52009364C5 /* Video */,
-				DD8B00F424C14E43009364C5 /* Audio */,
 				DD8B00E624C05E9A009364C5 /* MR0x22ViewController.h */,
 				DD8B00E124C05E9A009364C5 /* MR0x22ViewController.m */,
 			);
@@ -557,7 +630,7 @@
 			isa = PBXProject;
 			attributes = {
 				CLASSPREFIX = MR;
-				LastUpgradeCheck = 1140;
+				LastUpgradeCheck = 1150;
 				ORGANIZATIONNAME = "Matt Reach's Awesome FFmpeg Tutotial";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
@@ -600,7 +673,9 @@
 				DD8B00E924C05E9A009364C5 /* 0x22Shader.vsh in Resources */,
 				DDFA39DE24B872DC005C6430 /* 0x20Shader.fsh in Resources */,
 				DD8BFCFB24BDB0F5009364C5 /* 0x21Shader.fsh in Resources */,
+				DD65FF5E24C1AC3C0035E472 /* 0x30Shader.fsh in Resources */,
 				DD8BFCFC24BDB0F5009364C5 /* 0x21Shader.vsh in Resources */,
+				DD65FF5D24C1AC3C0035E472 /* 0x30Shader.vsh in Resources */,
 				DDFA39DF24B872DC005C6430 /* 0x20Shader.vsh in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
@@ -669,26 +744,31 @@
 				DD8B00ED24C06039009364C5 /* MR0x22AudioRenderer.m in Sources */,
 				DDFA39EB24B872DC005C6430 /* MR0x10ViewController.m in Sources */,
 				DD8BFCFD24BDB0F5009364C5 /* MR0x21ViewController.m in Sources */,
+				DD65FF5B24C1AC3C0035E472 /* MR0x30AudioUnitRenderer.m in Sources */,
 				DDFA39E524B872DC005C6430 /* MR0x05ViewController.m in Sources */,
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
 				DDFA39DD24B872DC005C6430 /* MR0x20ViewController.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */,
+				DD65FF5924C1AC3C0035E472 /* MR0x30VideoRenderer.m in Sources */,
 				DDFA39E624B872DC005C6430 /* MR0x02ViewController.m in Sources */,
 				DDFA39DC24B872DC005C6430 /* MR0x20VideoRenderer.m in Sources */,
 				DDFA39EC24B872DC005C6430 /* MR0x10VideoRenderer.m in Sources */,
 				DDFA39ED24B872DC005C6430 /* MR0x13VideoRenderer.m in Sources */,
+				DD65FF5A24C1AC3C0035E472 /* MR0x30AudioQueueRenderer.m in Sources */,
 				DDFA39E424B872DC005C6430 /* MR0x12ViewController.m in Sources */,
 				DDFA39EF24B872DC005C6430 /* MR0x15ViewController.m in Sources */,
 				DDFA39EA24B872DC005C6430 /* MR0x14ViewController.m in Sources */,
 				DDFA39EE24B872DC005C6430 /* MR0x13ViewController.m in Sources */,
 				DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */,
 				DDFA39E024B872DC005C6430 /* MR0x11ViewController.m in Sources */,
+				DD65FF5C24C1AC3C0035E472 /* MR0x30AudioRenderer.m in Sources */,
 				DD8BFCFA24BDB0F5009364C5 /* MR0x21VideoRenderer.m in Sources */,
 				DDFA39E724B872DC005C6430 /* MR0x14VideoRenderer.m in Sources */,
 				DDFA39E124B872DC005C6430 /* MR0x06ViewController.m in Sources */,
 				DDFA39E224B872DC005C6430 /* MR0x03ViewController.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
+				DD65FF5F24C1AC3C0035E472 /* MR0x30ViewController.m in Sources */,
 				DD8B00F024C06066009364C5 /* MR0x22AudioUnitRenderer.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DDFA39E324B872DC005C6430 /* MR0x04ViewController.m in Sources */,
@@ -841,6 +921,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
 				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 			};
