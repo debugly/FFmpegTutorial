@@ -7,10 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MR0x22AudioRendererImpProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x22AudioUnitRenderer : NSObject
+@interface MR0x22AudioUnitRenderer : NSObject <MR0x22AudioRendererImpProtocol>
 
 @end
 

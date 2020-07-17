@@ -42,21 +42,29 @@
 - (void)setupWithFmt:(MRSampleFormat)fmt sampleRate:(int)rate
 {
     self.sampleFmt = fmt;
+    ///优先使用audiounit，只有明确选择 audio queue 并且格式支持时才用 audio queue！
     if (self.preferredAudioQueue) {
         if (MR_Sample_Fmt_Is_Packet(fmt)) {
             self.audioRendererImp = [[MR0x22AudioQueueRenderer alloc] init];
             [self.audioRendererImp setup:rate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt)];
+            return;
         } else {
-            NSAssert(NO, @"audio queue not support planar fmt!");
+            NSLog(@"audio queue not support planar fmt, will use audio unit!");
         }
-    } else {
-#warning TODO
     }
+    
+    self.audioRendererImp = [[MR0x22AudioUnitRenderer alloc] init];
+    [self.audioRendererImp setup:rate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt) isPacket:MR_Sample_Fmt_Is_Packet(fmt)];
 }
 
 - (void)onFetchPacketSample:(MRFetchPacketSample)block
 {
     [self.audioRendererImp onFetchPacketSample:block];
+}
+
+- (void)onFetchPlanarSample:(MRFetchPlanarSample)block
+{
+    [self.audioRendererImp onFetchPlanarSample:block];
 }
 
 - (void)paly

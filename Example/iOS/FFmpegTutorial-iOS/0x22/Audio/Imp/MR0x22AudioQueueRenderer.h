@@ -12,8 +12,6 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-
-
 @interface MR0x22AudioQueueRenderer : NSObject <MR0x22AudioRendererImpProtocol>
 
 - (void)onFetchPacketSample:(MRFetchPacketSample)block;

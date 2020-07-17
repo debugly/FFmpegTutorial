@@ -24,17 +24,13 @@
     #endif
 }
 
-@property (nonatomic, strong) FFPlayer0x22 *player;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
-@property (weak, nonatomic) IBOutlet MR0x22VideoRenderer *renderView;
-
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
 
-//采样率
-@property (nonatomic,assign) int targetSampleRate;
-
+@property (nonatomic, strong) FFPlayer0x22 *player;
+@property (weak, nonatomic) IBOutlet MR0x22VideoRenderer *renderView;
 @property (nonatomic, strong) MR0x22AudioRenderer *audioRender;
 
 @end
@@ -87,15 +83,15 @@
         self.timer = nil;
     }];
     player.supportedPixelFormats  = MR_PIX_FMT_MASK_NV12;
-    
-    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16 | MR_SAMPLE_FMT_MASK_FLT;
-//    not support planar fmt.
+    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_AUTO;
+//    for test fmt.
+//    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16 | MR_SAMPLE_FMT_MASK_FLT;
 //    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16P;
 //    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_FLTP;
     
-    //设置采样率
-    self.targetSampleRate = [MR0x22AudioRenderer setPreferredSampleRate:44100];
-    player.supportedSampleRate = self.targetSampleRate;
+    //设置采样率，如果播放之前知道音频的采样率，可以设置成实际的值，可避免播放器内部转换！
+    int sampleRate = [MR0x22AudioRenderer setPreferredSampleRate:44100];
+    player.supportedSampleRate = sampleRate;
     
     player.delegate = self;
     [player prepareToPlay];
@@ -140,11 +136,18 @@
     self.audioRender = [MR0x22AudioRenderer new];
     [self.audioRender setPreferredAudioQueue:YES];
     [self.audioRender active];
-    [self.audioRender setupWithFmt:fmt sampleRate:self.targetSampleRate];
+    ///播放器使用的采样率
+    [self.audioRender setupWithFmt:fmt sampleRate:self.player.supportedSampleRate];
     __weakSelf__
     [self.audioRender onFetchPacketSample:^UInt32(uint8_t * _Nonnull buffer, UInt32 bufferSize) {
         __strongSelf__
         UInt32 filled = [self.player fetchPacketSample:buffer wantBytes:bufferSize];
+        return filled;
+    }];
+    
+    [self.audioRender onFetchPlanarSample:^UInt32(uint8_t * _Nonnull left, UInt32 leftSize, uint8_t * _Nonnull right, UInt32 rightSize) {
+        __strongSelf__
+        UInt32 filled = [self.player fetchPlanarSample:left leftSize:leftSize right:right rightSize:rightSize];
         return filled;
     }];
 }

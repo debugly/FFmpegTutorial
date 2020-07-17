@@ -11,6 +11,7 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef UInt32(^MRFetchPacketSample)(uint8_t*buffer,UInt32 bufferSize);
+typedef UInt32(^MRFetchPlanarSample)(uint8_t*left,UInt32 leftSize,uint8_t*right,UInt32 rightSize);
 
 @interface MR0x22AudioRenderer : NSObject
 
@@ -24,10 +25,10 @@ typedef UInt32(^MRFetchPacketSample)(uint8_t*buffer,UInt32 bufferSize);
 ///设置采样率
 + (int)setPreferredSampleRate:(int)rate;
 
-
 - (void)active;
 - (void)setupWithFmt:(MRSampleFormat)fmt sampleRate:(int)rate;
 - (void)onFetchPacketSample:(MRFetchPacketSample)block;
+- (void)onFetchPlanarSample:(MRFetchPlanarSample)block;
 - (void)paly;
 
 @end
