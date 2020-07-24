@@ -55,7 +55,7 @@ static __inline__ int frame_queue_init(FrameQueue *f, int max_size, const char *
     f->name = av_strdup(name);
     f->mutex = dispatch_semaphore_create(1);
     f->max_size = FFMIN(max_size, FRAME_QUEUE_SIZE);
-    
+    f->keep_last = keep_last;
     //填充每个元素的 frame
     for (i = 0; i < f->max_size; i++) {
         if (!(f->queue[i].frame = av_frame_alloc())) {
