@@ -170,7 +170,7 @@
         return;
     }
     do {
-        //使用通用方法解码音频队列
+        //使用通用方法解码一帧
         int got_frame = [self decodeAFrame:self.avctx result:frame];
         //解码出错
         if (got_frame < 0) {
@@ -184,7 +184,7 @@
             break;
         } else {
             //正常解码
-            av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
+            av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
             if ([self.delegate respondsToSelector:@selector(decoder:reveivedAFrame:)]) {
                 [self.delegate decoder:self reveivedAFrame:frame];
             }
