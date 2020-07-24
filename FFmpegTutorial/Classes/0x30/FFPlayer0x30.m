@@ -154,6 +154,20 @@ static int decode_interrupt_cb(void *ctx)
 - (void)initAudioClock
 {
     self.audioClk = [[FFSyncClock0x30 alloc] init];
+    enum AVSampleFormat fmt = 0;
+    if (self.audioResample) {
+        fmt = self.audioResample.out_sample_fmt;
+    } else {
+        fmt = self.audioDecoder.format;
+    }
+    
+    int bytesPerSample = 0;
+    if (fmt == AV_SAMPLE_FMT_FLT || fmt == AV_SAMPLE_FMT_FLTP) {
+        bytesPerSample = sizeof(float);
+    } else if (fmt == AV_SAMPLE_FMT_S16 || fmt == AV_SAMPLE_FMT_S16P) {
+        bytesPerSample = sizeof(int16_t);
+    }
+    self.audioClk.bytesPerSample = bytesPerSample;
 }
 
 #pragma mark - 打开解码器创建解码线程
@@ -687,10 +701,9 @@ static int decode_interrupt_cb(void *ctx)
 }
 
 - (void)updateAudioClock:(Frame *)ap filled:(UInt32)filled {
-    double audio_pts = ap->pts + ap->frame->nb_samples / ap->frame->sample_rate;
-#warning TODO
-    double bytes_per_sec = self.supportedSampleRate * 100;
-    double audio_clock = audio_pts - (double)(ap->left_offset + ap->right_offset + filled) / bytes_per_sec;
+    double audio_pts = ap->pts + 1.0 * ap->frame->nb_samples / ap->frame->sample_rate;
+    double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
+    double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
     [self.audioClk setClock:audio_clock];
 }
 
