@@ -30,6 +30,8 @@ typedef struct FrameQueue {
     int windex; //写索引
     int size;   //缓存元素个数
     int max_size;//最大容量
+    int keep_last;//保留上一帧
+    int rindex_shown;//rindex 指向帧是否已读
     //锁
     dispatch_semaphore_t mutex;
     char *name; //队列名字
@@ -45,7 +47,7 @@ typedef struct FrameQueue {
  rindex
 */
 ///队列初始化
-static __inline__ int frame_queue_init(FrameQueue *f, int max_size, const char *name)
+static __inline__ int frame_queue_init(FrameQueue *f, int max_size, const char *name,int keep_last)
 {
     int i;
     memset((void*)f, 0, sizeof(FrameQueue));
@@ -139,7 +141,7 @@ static __inline__ int frame_queue_nb_remaining(FrameQueue *f)
 {
     int r = 0;
     dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
-    r = f->size;
+    r = f->size - f->rindex_shown;
     dispatch_semaphore_signal(f->mutex);
     return r;
 }
@@ -147,12 +149,29 @@ static __inline__ int frame_queue_nb_remaining(FrameQueue *f)
 // 获取当前读指针指向的节点
 static __inline__ Frame *frame_queue_peek(FrameQueue *f)
 {
-    return &f->queue[(f->rindex) % f->max_size];
+    return &f->queue[(f->rindex + f->rindex_shown) % f->max_size];
+}
+
+// 获取下一个读指针指向的节点
+static __inline__ Frame *frame_queue_peek_next(FrameQueue *f)
+{
+    return &f->queue[(f->rindex + f->rindex_shown + 1) % f->max_size];
+}
+
+// 获取上一个读指针指向的节点
+static __inline__ Frame *frame_queue_peek_last(FrameQueue *f)
+{
+    return &f->queue[f->rindex];
 }
 
 // 移动读指针位置，减少队列里已存储数量
 static __inline__ void frame_queue_pop(FrameQueue *f)
 {
+    //标记为已显示，不移动读指针
+    if(f->keep_last && !f->rindex_shown) {
+        f->rindex_shown = 1;
+        return;
+    }
     dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     //取出读指针指向的元素
     Frame *vp = &f->queue[f->rindex];

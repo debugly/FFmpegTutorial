@@ -113,9 +113,9 @@ static int decode_interrupt_cb(void *ctx)
     init_ffmpeg_once();
     
     ///初始化视频帧队列
-    frame_queue_init(&pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq");
+    frame_queue_init(&pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq", 0);
     ///初始化音频帧队列
-    frame_queue_init(&sampq, SAMPLE_QUEUE_SIZE, "sampq");
+    frame_queue_init(&sampq, SAMPLE_QUEUE_SIZE, "sampq", 0);
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"readPackets";
