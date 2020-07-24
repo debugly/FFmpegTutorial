@@ -63,7 +63,7 @@
         self.timer = nil;
     }];
     player.supportedPixelFormats  = MR_PIX_FMT_MASK_NV12;
-    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_AUTO;
+    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_FLT;//MR_SAMPLE_FMT_MASK_AUTO;
 //    for test fmt.
 //    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16 | MR_SAMPLE_FMT_MASK_FLT;
 //    player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16P;

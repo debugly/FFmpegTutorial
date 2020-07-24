@@ -686,6 +686,14 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
+- (void)updateAudioClock:(Frame *)ap filled:(UInt32)filled {
+    double audio_pts = ap->pts + ap->frame->nb_samples / ap->frame->sample_rate;
+#warning TODO
+    double bytes_per_sec = self.supportedSampleRate * 100;
+    double audio_clock = audio_pts - (double)(ap->left_offset + ap->right_offset + filled) / bytes_per_sec;
+    [self.audioClk setClock:audio_clock];
+}
+
 - (UInt32)fetchPacketSample:(uint8_t *)buffer
                   wantBytes:(UInt32)bufferSize
 {
@@ -727,11 +735,7 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    double audio_pts = ap->pts + ap->frame->nb_samples / ap->frame->sample_rate;
-    #warning TODO
-    double bytes_per_sec = self.supportedSampleRate * 100;
-    double audio_clock = audio_pts - (double)(ap->left_offset + ap->right_offset + filled) / bytes_per_sec;
-    [self.audioClk setClock:audio_clock];
+    [self updateAudioClock:ap filled:filled];
     return filled;
 }
 
@@ -794,11 +798,7 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    double audio_pts = ap->pts + ap->frame->nb_samples / ap->frame->sample_rate;
-#warning TODO
-    double bytes_per_sec = self.supportedSampleRate * 100;
-    double audio_clock = audio_pts - (double)(ap->left_offset + ap->right_offset + filled) / bytes_per_sec;
-    [self.audioClk setClock:audio_clock];
+    [self updateAudioClock:ap filled:filled];
     return filled;
 }
 

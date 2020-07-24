@@ -106,6 +106,11 @@ static void MRAudioQueueOutputCallback(
     return filled;
 }
 
+- (void)onFetchPlanarSample:(MRFetchPlanarSample)block
+{
+    NSLog(@"Warning: audio queue not imp [-onFetchPlanarSample].");
+}
+
 - (void)play
 {
     for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
