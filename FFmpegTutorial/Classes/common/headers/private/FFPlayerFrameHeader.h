@@ -137,6 +137,61 @@ static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame,double dura
     return 0;
 }
 
+static __inline__ int frame_queue_push_v2(FrameQueue *f, AVFrame *frame,void(^maker)(Frame* const af))
+{
+    /* wait until we have space to put a new frame */
+    int ret = 0;
+    //加锁
+    dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
+    int is_loged = 0;//避免重复打日志
+      //当前大小大于等于最大容量，说明没有空余，需要等待
+    while (f->size >= f->max_size) {
+        //停止了直接返回
+        if (f->abort_request) {
+            ret = -1;
+            break;
+        }
+        
+        if (!is_loged) {
+            is_loged = 1;
+            av_log(NULL, AV_LOG_VERBOSE, "%s frame queue is full(%d)\n",f->name,f->size);
+        }
+        //等待10ms
+        dispatch_semaphore_signal(f->mutex);
+        mr_usleep(10000);
+        dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
+    }
+    
+    if (ret < 0) {
+        //解锁
+        dispatch_semaphore_signal(f->mutex);
+        return ret;
+    }
+    
+    //获取到了一个可写位置
+    Frame *af = &f->queue[f->windex];
+    ///important! reset to zero.
+    af->left_offset = 0;
+    af->right_offset = 0;
+    //外部可随意填充
+    if (maker) {
+        maker(af);
+    }
+    //ref it!
+    av_frame_ref(af->frame, frame);
+    
+    //写指针超过了总长度时，将写指针归零，指向头部
+    if (++f->windex == f->max_size) {
+        f->windex = 0;
+    }
+    //队列已存储数量加1
+    f->size ++;
+    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
+    //解锁
+    dispatch_semaphore_signal(f->mutex);
+    return 0;
+}
+
 // 获取队列里缓存帧的数量
 static __inline__ int frame_queue_nb_remaining(FrameQueue *f)
 {

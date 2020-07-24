@@ -15,6 +15,7 @@ typedef struct AVStream AVStream;
 typedef struct AVFormatContext AVFormatContext;
 typedef struct AVPacket AVPacket;
 typedef struct AVFrame AVFrame;
+typedef struct AVRational AVRational;
 
 @class FFDecoder0x30;
 @protocol FFDecoderDelegate0x30 <NSObject>
@@ -38,6 +39,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, assign, readonly) int format;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;
+@property (nonatomic, assign, readonly) AVRational frameRate;
 
 @property (nonatomic, assign, readonly) int sampleRate;
 @property (nonatomic, assign, readonly) int channelLayout;

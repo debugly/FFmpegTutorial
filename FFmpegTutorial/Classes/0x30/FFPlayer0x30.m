@@ -13,8 +13,10 @@
 #import "FFDecoder0x30.h"
 #import "FFVideoScale0x30.h"
 #import "FFAudioResample0x30.h"
+#import "FFSyncClock0x30.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
+#import <libavutil/time.h>
 
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
@@ -48,6 +50,10 @@
 @property (nonatomic, strong) FFVideoScale0x30 *videoScale;
 //音频格式转换器
 @property (nonatomic, strong) FFAudioResample0x30 *audioResample;
+//音频时钟
+@property (nonatomic, strong) FFSyncClock0x30 *audioClk;
+//视频时钟
+@property (nonatomic, strong) FFSyncClock0x30 *videoClk;
 
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
@@ -57,6 +63,7 @@
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
+@property (nonatomic, assign) double max_frame_duration;
 
 @end
 
@@ -135,6 +142,18 @@ static int decode_interrupt_cb(void *ctx)
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"readPackets";
+}
+
+#pragma mark - clock
+
+- (void)initVideoClock
+{
+    self.videoClk = [[FFSyncClock0x30 alloc] init];
+}
+
+- (void)initAudioClock
+{
+    self.audioClk = [[FFSyncClock0x30 alloc] init];
 }
 
 #pragma mark - 打开解码器创建解码线程
@@ -417,7 +436,7 @@ static int decode_interrupt_cb(void *ctx)
     
     NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
-    
+    self.max_frame_duration = (formatCtx->iformat->flags & AVFMT_TS_DISCONT) ? 10.0 : 3600.0;
     //确定最优的音视频流
     int st_index[AVMEDIA_TYPE_NB];
     memset(st_index, -1, sizeof(st_index));
@@ -466,7 +485,9 @@ static int decode_interrupt_cb(void *ctx)
             return;
         }
     }
-    
+    //初始化同步时钟
+    [self initVideoClock];
+    [self initAudioClock];
     //音视频解码线程开始工作
     [self.audioDecoder start];
     [self.videoDecoder start];
@@ -508,7 +529,12 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             outP = frame;
         }
-        frame_queue_push(fq, outP, 0.0);
+        double duration = av_q2d((AVRational){outP->nb_samples, outP->sample_rate});
+        AVRational tb = (AVRational){1, frame->sample_rate};
+        frame_queue_push_v2(fq, outP,^(Frame * const af){
+            af->duration = duration;
+            af->pts = (frame->pts == AV_NOPTS_VALUE) ? NAN : frame->pts * av_q2d(tb);;
+        });
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &pictq;
         
@@ -522,7 +548,14 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             outP = frame;
         }
-        frame_queue_push(fq, outP, 0.0);
+        
+        double duration = (self.videoDecoder.frameRate.num && self.videoDecoder.frameRate.den ? av_q2d(self.videoDecoder.frameRate) : 0);
+        AVRational tb = self.videoDecoder.stream->time_base;
+        double pts = (outP->pts == AV_NOPTS_VALUE) ? NAN : outP->pts * av_q2d(tb);
+        frame_queue_push_v2(fq, outP,^(Frame * const af){
+            af->duration = duration;
+            af->pts = pts;
+        });
     }
 }
 
@@ -562,23 +595,94 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)rendererThreadFunc
+- (double)vp_durationWithP1:(Frame *)p1 p2:(Frame *)p2 {
+    double duration = p2->pts - p1->pts;
+    if (isnan(duration) || duration <= 0 || duration > self.max_frame_duration){
+        return p1->duration;
+    } else {
+        return duration;
+    }
+}
+
+- (double)compute_target_delay:(double)delay
 {
-    ///调用了stop方法，，则不再渲染
-    while (!self.abort_request) {
-        
-        NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-        
-        if (frame_queue_nb_remaining(&pictq) > 0) {
-            Frame *vp = frame_queue_peek(&pictq);
-            [self doDisplayVideoFrame:vp];
-            frame_queue_pop(&pictq);
+    //计算视频时钟和主时钟（音频时钟）的差距
+    double diff = [self.videoClk getClock] - [self.audioClk getClock];
+    
+    /* skip or repeat frame. We take into account the
+       delay to compute the threshold. I still don't know
+       if it is the best guess */
+    double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, FFMIN(AV_SYNC_THRESHOLD_MAX, delay));
+    if (!isnan(diff) && fabs(diff) < self.max_frame_duration) {
+        if (diff <= -sync_threshold)
+            delay = FFMAX(0, delay + diff);
+        else if (diff >= sync_threshold && delay > AV_SYNC_FRAMEDUP_THRESHOLD)
+            delay = delay + diff;
+        else if (diff >= sync_threshold)
+            delay = 2 * delay;
+    }
+    av_log(NULL, AV_LOG_INFO, "video: delay=%0.3f A-V=%f\n",
+            delay, -diff);
+    return delay;
+}
+
+- (void)video_refresh:(double *)remaining_time
+{
+    if (frame_queue_nb_remaining(&pictq) > 0) {
+        Frame *vp, *lastvp;
+        lastvp = frame_queue_peek_last(&pictq);
+        vp = frame_queue_peek(&pictq);
+        //计算上一帧的持续时长
+        double last_duration = [self vp_durationWithP1:lastvp p2:vp];
+        //参考audio clock计算上一帧真正的持续时长
+        double delay = [self compute_target_delay:last_duration ];
+        double time = av_gettime_relative()/1000000.0;
+        //时间还没到上一帧结束点
+        if (time < self.videoClk.frame_timer + delay) {
+            *remaining_time = FFMIN(self.videoClk.frame_timer + delay - time, *remaining_time);
+            //仍旧显示上一帧
+            [self doDisplayVideoFrame:lastvp];
+            return;
         }
         
-        NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-        int cost = (end - begin) * 1000;
-        av_log(NULL, AV_LOG_DEBUG, "render video frame cost:%dms\n", cost);
-        mr_usleep(1000 * (40-cost));
+        self.videoClk.frame_timer += delay;
+        if (delay > 0 && time - self.videoClk.frame_timer > AV_SYNC_THRESHOLD_MAX) {
+            self.videoClk.frame_timer = time;
+        }
+        
+        [self.videoClk setClock:vp->pts];
+        
+        //丢帧逻辑
+        if (frame_queue_nb_remaining(&pictq) > 1) {
+            Frame *nextvp = frame_queue_peek_next(&pictq);
+            double duration = [self vp_durationWithP1:vp p2:nextvp];//当前帧显示时长
+            if(time > self.videoClk.frame_timer + duration){//如果系统时间已经大于当前帧，则丢弃当前帧
+                static int frame_drops_late = 0;
+                frame_drops_late++;
+                av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
+                frame_drops_late);
+                frame_queue_pop(&pictq);
+                //继续重试
+                [self video_refresh:remaining_time];
+                return;
+            }
+        }
+        frame_queue_pop(&pictq);
+    } else {
+        //no picture do display.
+    }
+}
+
+- (void)rendererThreadFunc
+{
+    double remaining_time = 0.0;
+    ///调用了stop方法，则不再渲染
+    while (!self.abort_request) {
+        if (remaining_time > 0.0){
+            mr_usleep((long)(remaining_time * 1000000.0));
+        }
+        remaining_time = REFRESH_RATE;
+        [self video_refresh:&remaining_time];
     }
 }
 
@@ -586,8 +690,8 @@ static int decode_interrupt_cb(void *ctx)
                   wantBytes:(UInt32)bufferSize
 {
     UInt32 filled = 0;
+    Frame *ap = NULL;
     while (bufferSize > 0) {
-        Frame *ap = NULL;
         //队列里缓存帧大于0，则取出
         if (frame_queue_nb_remaining(&sampq) > 0) {
             ap = frame_queue_peek(&sampq);
@@ -622,6 +726,12 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&sampq);
         }
     }
+    
+    double audio_pts = ap->pts + ap->frame->nb_samples / ap->frame->sample_rate;
+    #warning TODO
+    double bytes_per_sec = self.supportedSampleRate * 100;
+    double audio_clock = audio_pts - (double)(ap->left_offset + ap->right_offset + filled) / bytes_per_sec;
+    [self.audioClk setClock:audio_clock];
     return filled;
 }
 
@@ -631,8 +741,8 @@ static int decode_interrupt_cb(void *ctx)
                   rightSize:(UInt32)r_size
 {
     UInt32 filled = 0;
+    Frame *ap = NULL;
     while (l_size > 0 || r_size > 0) {
-        Frame *ap = NULL;
         //队列里缓存帧大于0，则取出
         if (frame_queue_nb_remaining(&sampq) > 0) {
             ap = frame_queue_peek(&sampq);
@@ -645,6 +755,7 @@ static int decode_interrupt_cb(void *ctx)
         
         uint8_t *l_src = ap->frame->data[0];
         const int fmt  = ap->frame->format;
+        #warning TODO crash at last frame!
         assert(av_sample_fmt_is_planar(fmt));
         
         int data_size = av_samples_get_buffer_size(ap->frame->linesize, 1, ap->frame->nb_samples, fmt, 1);
@@ -682,6 +793,12 @@ static int decode_interrupt_cb(void *ctx)
             frame_queue_pop(&sampq);
         }
     }
+    
+    double audio_pts = ap->pts + ap->frame->nb_samples / ap->frame->sample_rate;
+#warning TODO
+    double bytes_per_sec = self.supportedSampleRate * 100;
+    double audio_clock = audio_pts - (double)(ap->left_offset + ap->right_offset + filled) / bytes_per_sec;
+    [self.audioClk setClock:audio_clock];
     return filled;
 }
 

@@ -21,6 +21,7 @@
 @property (nonatomic, assign, readwrite) int format;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
+@property (nonatomic, assign, readwrite) AVRational frameRate;
 ///for audio
 @property (nonatomic, assign, readwrite) int sampleRate;
 @property (nonatomic, assign, readwrite) int channelLayout;
@@ -100,8 +101,9 @@
         self.format = avctx->pix_fmt;
         self.picWidth = avctx->width;
         self.picHeight = avctx->height;
+        self.frameRate = av_guess_frame_rate(self.ic, stream, NULL);
     } else {
-        
+        NSAssert(NO, @"hasn't handle other media type!");
     }
     
     self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
@@ -183,6 +185,19 @@
             }
             break;
         } else {
+            if (self.avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
+                frame->pts = frame->best_effort_timestamp;
+            } else if (self.avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
+                AVRational tb = (AVRational){1, frame->sample_rate};
+                if (frame->pts != AV_NOPTS_VALUE)
+                    frame->pts = av_rescale_q(frame->pts, self.avctx->pkt_timebase, tb);
+//                else if (d->next_pts != AV_NOPTS_VALUE)
+//                    frame->pts = av_rescale_q(d->next_pts, d->next_pts_tb, tb);
+//                if (frame->pts != AV_NOPTS_VALUE) {
+//                    d->next_pts = frame->pts + frame->nb_samples;
+//                    d->next_pts_tb = tb;
+//                }
+            }
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
             if ([self.delegate respondsToSelector:@selector(decoder:reveivedAFrame:)]) {
