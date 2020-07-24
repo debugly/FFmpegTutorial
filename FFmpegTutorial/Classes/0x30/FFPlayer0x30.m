@@ -716,9 +716,9 @@ static int decode_interrupt_cb(void *ctx)
         
         int data_size = av_samples_get_buffer_size(ap->frame->linesize, 2, ap->frame->nb_samples, fmt, 1);
         int l_src_size = data_size;//ap->frame->linesize[0];
-        
-        const void *from = src + ap->left_offset;
-        int left = l_src_size - ap->left_offset;
+        const int offset = ap->offset;
+        const void *from = src + offset;
+        int left = l_src_size - offset;
         
         ///根据剩余数据长度和需要数据长度算出应当copy的长度
         int leftBytesToCopy = FFMIN(bufferSize, left);
@@ -726,7 +726,7 @@ static int decode_interrupt_cb(void *ctx)
         memcpy(buffer, from, leftBytesToCopy);
         buffer += leftBytesToCopy;
         bufferSize -= leftBytesToCopy;
-        ap->left_offset += leftBytesToCopy;
+        ap->offset += leftBytesToCopy;
         filled += leftBytesToCopy;
         if (leftBytesToCopy >= left){
             //读取完毕，则清空；读取下一个包
@@ -759,15 +759,14 @@ static int decode_interrupt_cb(void *ctx)
         
         uint8_t *l_src = ap->frame->data[0];
         const int fmt  = ap->frame->format;
-        #warning TODO crash at last frame!
         assert(av_sample_fmt_is_planar(fmt));
         
         int data_size = av_samples_get_buffer_size(ap->frame->linesize, 1, ap->frame->nb_samples, fmt, 1);
         
         int l_src_size = data_size;//af->frame->linesize[0];
-        
-        const void *leftFrom = l_src + ap->left_offset;
-        int leftBytesLeft = l_src_size - ap->left_offset;
+        const int offset = ap->offset;
+        const void *leftFrom = l_src + offset;
+        int leftBytesLeft = l_src_size - offset;
         
         ///根据剩余数据长度和需要数据长度算出应当copy的长度
         int leftBytesToCopy = FFMIN(l_size, leftBytesLeft);
@@ -775,20 +774,19 @@ static int decode_interrupt_cb(void *ctx)
         memcpy(l_buffer, leftFrom, leftBytesToCopy);
         l_buffer += leftBytesToCopy;
         l_size -= leftBytesToCopy;
-        ap->left_offset += leftBytesToCopy;
+        ap->offset += leftBytesToCopy;
         filled += leftBytesToCopy;
         uint8_t *r_src = ap->frame->data[1];
         int r_src_size = l_src_size;//af->frame->linesize[1];
         if (r_src) {
-            const void *right_from = r_src + ap->right_offset;
-            int right_bytes_left = r_src_size - ap->right_offset;
+            const void *right_from = r_src + offset;
+            int right_bytes_left = r_src_size - offset;
             
             ///根据剩余数据长度和需要数据长度算出应当copy的长度
             int rightBytesToCopy = FFMIN(r_size, right_bytes_left);
             memcpy(r_buffer, right_from, rightBytesToCopy);
             r_buffer += rightBytesToCopy;
             r_size -= rightBytesToCopy;
-            ap->right_offset += rightBytesToCopy;
         }
         
         if (leftBytesToCopy >= leftBytesLeft){
