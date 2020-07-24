@@ -287,115 +287,115 @@ static int decode_interrupt_cb(void *ctx)
 - (void)readPacketsFunc
 {
     if (![self.contentPath hasPrefix:@"/"]) {
-            _init_net_work_once();
-        }
-        
-        AVFormatContext *formatCtx = avformat_alloc_context();
-        
-        if (!formatCtx) {
-            self.error = _make_nserror_desc(FFPlayerErrorCode_AllocFmtCtxFailed, @"创建 AVFormatContext 失败！");
-            [self performErrorResultOnMainThread];
+        _init_net_work_once();
+    }
+    
+    AVFormatContext *formatCtx = avformat_alloc_context();
+    
+    if (!formatCtx) {
+        self.error = _make_nserror_desc(FFPlayerErrorCode_AllocFmtCtxFailed, @"创建 AVFormatContext 失败！");
+        [self performErrorResultOnMainThread];
+        return;
+    }
+    
+    formatCtx->interrupt_callback.callback = decode_interrupt_cb;
+    formatCtx->interrupt_callback.opaque = (__bridge void *)self;
+    
+    /*
+     打开输入流，读取文件头信息，不会打开解码器；
+     */
+    ///低版本是 av_open_input_file 方法
+    const char *moviePath = [self.contentPath cStringUsingEncoding:NSUTF8StringEncoding];
+    
+    //打开文件流，读取头信息；
+    if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
+        ///释放内存
+        avformat_free_context(formatCtx);
+        //当取消掉时，不给上层回调
+        if (self.abort_request) {
             return;
         }
+        self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
+        [self performErrorResultOnMainThread];
+        return;
+    }
+    
+    /* 刚才只是打开了文件，检测了下文件头而已，并不知道流信息；因此开始读包以获取流信息
+     设置读包探测大小和最大时长，避免读太多的包！
+    */
+    formatCtx->probesize = 500 * 1024;
+    formatCtx->max_analyze_duration = 5 * AV_TIME_BASE;
+#if DEBUG
+    NSTimeInterval begin = [[NSDate date] timeIntervalSinceReferenceDate];
+#endif
+    if (0 != avformat_find_stream_info(formatCtx, NULL)) {
+        avformat_close_input(&formatCtx);
+        self.error = _make_nserror_desc(FFPlayerErrorCode_StreamNotFound, @"不能找到流！");
+        [self performErrorResultOnMainThread];
+        //出错了，销毁下相关结构体
+        avformat_close_input(&formatCtx);
+        return;
+    }
+    
+#if DEBUG
+    NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
+    ///用于查看详细信息，调试的时候打出来看下很有必要
+    av_dump_format(formatCtx, 0, moviePath, false);
+    
+    NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
+#endif
+    
+    //确定最优的音视频流
+    int st_index[AVMEDIA_TYPE_NB];
+    memset(st_index, -1, sizeof(st_index));
+    [self findBestStreams:formatCtx result:&st_index];
+    
+    //打开音频解码器，创建解码线程
+    if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
         
-        formatCtx->interrupt_callback.callback = decode_interrupt_cb;
-        formatCtx->interrupt_callback.opaque = (__bridge void *)self;
+        self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
         
-        /*
-         打开输入流，读取文件头信息，不会打开解码器；
-         */
-        ///低版本是 av_open_input_file 方法
-        const char *moviePath = [self.contentPath cStringUsingEncoding:NSUTF8StringEncoding];
-        
-        //打开文件流，读取头信息；
-        if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
-            ///释放内存
-            avformat_free_context(formatCtx);
-            //当取消掉时，不给上层回调
-            if (self.abort_request) {
-                return;
-            }
-            self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
-            [self performErrorResultOnMainThread];
-            return;
-        }
-        
-        /* 刚才只是打开了文件，检测了下文件头而已，并不知道流信息；因此开始读包以获取流信息
-         设置读包探测大小和最大时长，避免读太多的包！
-        */
-        formatCtx->probesize = 500 * 1024;
-        formatCtx->max_analyze_duration = 5 * AV_TIME_BASE;
-    #if DEBUG
-        NSTimeInterval begin = [[NSDate date] timeIntervalSinceReferenceDate];
-    #endif
-        if (0 != avformat_find_stream_info(formatCtx, NULL)) {
-            avformat_close_input(&formatCtx);
-            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamNotFound, @"不能找到流！");
+        if(self.audioDecoder){
+            self.audioDecoder.delegate = self;
+            self.audioDecoder.name = @"audioDecoder";
+        } else {
+            av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
             [self performErrorResultOnMainThread];
             //出错了，销毁下相关结构体
             avformat_close_input(&formatCtx);
             return;
         }
-        
-    #if DEBUG
-        NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
-        ///用于查看详细信息，调试的时候打出来看下很有必要
-        av_dump_format(formatCtx, 0, moviePath, false);
-        
-        NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
-    #endif
-        
-        //确定最优的音视频流
-        int st_index[AVMEDIA_TYPE_NB];
-        memset(st_index, -1, sizeof(st_index));
-        [self findBestStreams:formatCtx result:&st_index];
-        
-        //打开音频解码器，创建解码线程
-        if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
-            
-            self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
-            
-            if(self.audioDecoder){
-                self.audioDecoder.delegate = self;
-                self.audioDecoder.name = @"audioDecoder";
-            } else {
-                av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
-                self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
-                [self performErrorResultOnMainThread];
-                //出错了，销毁下相关结构体
-                avformat_close_input(&formatCtx);
-                return;
-            }
+    }
+
+    //打开视频解码器，创建解码线程
+    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
+        self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+        if(self.videoDecoder){
+            self.videoDecoder.delegate = self;
+            self.videoDecoder.name = @"videoDecoder";
+            self.videoScale = [self createVideoScaleIfNeed];
+        } else {
+            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
+            [self performErrorResultOnMainThread];
+            //出错了，销毁下相关结构体
+            avformat_close_input(&formatCtx);
+            return;
         }
+    }
     
-        //打开视频解码器，创建解码线程
-        if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
-            self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
-            if(self.videoDecoder){
-                self.videoDecoder.delegate = self;
-                self.videoDecoder.name = @"videoDecoder";
-                self.videoScale = [self createVideoScaleIfNeed];
-            } else {
-                av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
-                self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
-                [self performErrorResultOnMainThread];
-                //出错了，销毁下相关结构体
-                avformat_close_input(&formatCtx);
-                return;
-            }
-        }
-        
-        //音视频解码线程开始工作
-        [self.audioDecoder start];
-        [self.videoDecoder start];
-        //准备渲染线程
-        [self prepareRendererThread];
-        //渲染线程开始工作
-        [self.rendererThread start];
-        //循环读包
-        [self readPacketLoop:formatCtx];
-        ///读包线程结束了，销毁下相关结构体
-        avformat_close_input(&formatCtx);
+    //音视频解码线程开始工作
+    [self.audioDecoder start];
+    [self.videoDecoder start];
+    //准备渲染线程
+    [self prepareRendererThread];
+    //渲染线程开始工作
+    [self.rendererThread start];
+    //循环读包
+    [self readPacketLoop:formatCtx];
+    ///读包线程结束了，销毁下相关结构体
+    avformat_close_input(&formatCtx);
 }
 
 #pragma mark - FFDecoderDelegate0x10
