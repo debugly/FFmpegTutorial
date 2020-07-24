@@ -19,8 +19,9 @@
 typedef struct Frame {
     AVFrame *frame;
     double pts;           /* presentation timestamp for the frame */
-    int left_offset;
+    int left_offset; //audio frame display offset
     int right_offset;
+    double duration; //video frame duration
 } Frame;
 
 //定义队列
@@ -84,7 +85,7 @@ rindex
 */
 //2、移动写指针位置，增加队列里已存储数量
 //return 0 is OK.
-static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame)
+static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame,double duration)
 {
     /* wait until we have space to put a new frame */
     int ret = 0;
@@ -120,7 +121,7 @@ static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame)
     ///important! reset to zero.
     af->left_offset = 0;
     af->right_offset = 0;
-    
+    af->duration = duration;
     //ref it!
     av_frame_ref(af->frame, frame);
     

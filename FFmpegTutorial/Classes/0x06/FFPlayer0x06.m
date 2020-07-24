@@ -374,7 +374,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     if (fq != NULL) {
-        frame_queue_push(fq, frame);
+        frame_queue_push(fq, frame, 0.0);
     }
 }
 

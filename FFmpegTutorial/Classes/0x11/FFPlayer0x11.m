@@ -415,7 +415,7 @@ static int decode_interrupt_cb(void *ctx)
 {
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &sampq;
-        frame_queue_push(fq, frame);
+        frame_queue_push(fq, frame, 0.0);
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &pictq;
         
@@ -429,7 +429,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             outP = frame;
         }
-        frame_queue_push(fq, outP);
+        frame_queue_push(fq, outP, 0.0);
     }
 }
 
