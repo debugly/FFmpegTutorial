@@ -29,7 +29,6 @@
 {
     self = [super init];
     if (self) {
-        
         self.threadTarget = target;
         self.threadSelector = selector;
         self.threadArgs = argument;

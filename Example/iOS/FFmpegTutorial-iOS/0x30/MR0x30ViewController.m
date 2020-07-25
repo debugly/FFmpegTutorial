@@ -62,6 +62,15 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
+    
+    [player onVideoEnds:^{
+        __strongSelf__
+        self.textView.text = @"Video Ends.";
+        [self.player stop];
+        self.player = nil;
+        [self.timer invalidate];
+        self.timer = nil;
+    }];
     player.supportedPixelFormats  = MR_PIX_FMT_MASK_NV12;
     player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_AUTO;
 //    for test fmt.

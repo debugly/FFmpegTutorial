@@ -178,10 +178,12 @@
         if (got_frame < 0) {
             if (got_frame == AVERROR_EOF) {
                 av_log(NULL, AV_LOG_ERROR, "%s eof.\n",[self.name UTF8String]);
+                self.eof = YES;
             } else if (self.abort_request){
                 av_log(NULL, AV_LOG_ERROR, "%s cancel.\n",[self.name UTF8String]);
             } else {
                 av_log(NULL, AV_LOG_ERROR, "%s decode err %d.\n",[self.name UTF8String],got_frame);
+                self.eof = YES;
             }
             break;
         } else {

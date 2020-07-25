@@ -32,9 +32,6 @@
     FrameQueue sampq;
     //解码后的视频帧缓存队列
     FrameQueue pictq;
-    
-    //读包完毕？
-    int eof;
 }
 
 ///读包线程
@@ -58,12 +55,18 @@
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 @property (atomic, assign) int abort_request;
+
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
 @property (nonatomic, copy) dispatch_block_t onPacketBufferFullBlock;
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
+@property (nonatomic, copy) dispatch_block_t onVideoEndsBlock;
+
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
 @property (nonatomic, assign) double max_frame_duration;
+//读包完毕
+@property (atomic, assign) BOOL eof;
+@property (atomic, assign) BOOL videoEnds;
 
 @end
 
@@ -219,7 +222,7 @@ static int decode_interrupt_cb(void *ctx)
         ///读包出错
         if (ret < 0) {
             //读到最后结束了
-            if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !eof) {
+            if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !self.eof) {
                 ///最后放一个空包进去
                 if (self.audioDecoder.streamIdx >= 0) {
                     packet_queue_put_nullpacket(&videoq, self.audioDecoder.streamIdx);
@@ -229,7 +232,7 @@ static int decode_interrupt_cb(void *ctx)
                     packet_queue_put_nullpacket(&audioq, self.videoDecoder.streamIdx);
                 }
                 //标志为读包结束
-                eof = 1;
+                self.eof = 1;
             }
             
             if (formatCtx->pb && formatCtx->pb->error) {
@@ -621,6 +624,10 @@ static int decode_interrupt_cb(void *ctx)
 - (double)compute_target_delay:(double)delay
 {
     //计算视频时钟和主时钟（音频时钟）的差距
+    if (self.audioClk.eof) {
+        return delay;
+    }
+    
     double diff = [self.videoClk getClock] - [self.audioClk getClock];
     
     /* skip or repeat frame. We take into account the
@@ -682,8 +689,10 @@ static int decode_interrupt_cb(void *ctx)
             }
         }
         frame_queue_pop(&pictq);
-    } else {
+    } else if(self.eof && self.videoDecoder.eof){
         //no picture do display.
+        self.videoClk.eof = YES;
+        [self maybeReachEnds];
     }
 }
 
@@ -751,6 +760,11 @@ static int decode_interrupt_cb(void *ctx)
     if (NULL !=ap && filled > 0) {
         [self updateAudioClock:ap filled:filled];
     }
+    //没有取出采样桢，读包eof，解码也eof时标记为音频渲染完毕
+    else if(self.eof && self.audioDecoder.eof){
+        self.audioClk.eof = YES;
+        [self maybeReachEnds];
+    }
     
     return filled;
 }
@@ -813,23 +827,40 @@ static int decode_interrupt_cb(void *ctx)
     if (NULL !=ap && filled > 0) {
         [self updateAudioClock:ap filled:filled];
     }
+    //没有取出采样桢，读包eof，解码也eof时标记为音频渲染完毕
+    else if(self.eof && self.audioDecoder.eof){
+        self.audioClk.eof = YES;
+        [self maybeReachEnds];
+    }
     
     return filled;
 }
 
-- (void)performErrorResultOnMainThread
+- (void)maybeReachEnds
 {
-    if (![NSThread isMainThread]) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (self.onErrorBlock) {
-                self.onErrorBlock();
-            }
-        }];
-    } else {
-        if (self.onErrorBlock) {
-            self.onErrorBlock();
+    if (!self.videoEnds) {
+        if (self.audioClk.eof && self.videoClk.eof) {
+            self.videoEnds = YES;
+            [self performOnMainThread:self.onVideoEndsBlock];
         }
     }
+}
+
+- (void)performOnMainThread:(dispatch_block_t)block
+{
+    if (!block) {
+        return;
+    }
+    if (![NSThread isMainThread]) {
+        [[NSOperationQueue mainQueue] addOperationWithBlock:block];
+    } else {
+        block();
+    }
+}
+
+- (void)performErrorResultOnMainThread
+{
+    [self performOnMainThread:self.onErrorBlock];
 }
 
 - (void)readPacket
@@ -855,6 +886,11 @@ static int decode_interrupt_cb(void *ctx)
 - (void)onPacketBufferEmpty:(dispatch_block_t)block
 {
     self.onPacketBufferEmptyBlock = block;
+}
+
+- (void)onVideoEnds:(dispatch_block_t)block
+{
+    self.onVideoEndsBlock = block;
 }
 
 - (NSString *)peekPacketBufferStatus

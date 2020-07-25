@@ -10,6 +10,11 @@
 
 @implementation FFSyncClock0x30
 
+- (void)dealloc
+{
+    
+}
+
 - (void)setClock:(double)pts
 {
     double time = av_gettime_relative() / 1000000.0;

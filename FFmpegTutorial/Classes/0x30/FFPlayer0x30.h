@@ -43,6 +43,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)onPacketBufferEmpty:(dispatch_block_t)block;
 - (void)onPacketBufferFull:(dispatch_block_t)block;
+- (void)onVideoEnds:(dispatch_block_t)block;
 
 ///m/n 缓冲情况
 - (NSString *)peekPacketBufferStatus;

@@ -17,6 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) double frame_timer;
 //每个采样几个字节
 @property (nonatomic, assign) int bytesPerSample;
+@property (atomic, assign) BOOL eof;
 
 - (void)setClock:(double)pts;
 - (double)getClock;

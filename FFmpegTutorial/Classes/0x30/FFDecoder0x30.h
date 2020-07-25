@@ -43,6 +43,7 @@ typedef struct AVRational AVRational;
 
 @property (nonatomic, assign, readonly) int sampleRate;
 @property (nonatomic, assign, readonly) int channelLayout;
+@property (atomic, assign) BOOL eof;
 /**
  打开解码器，创建解码线程;
  return 0;（没有错误）
