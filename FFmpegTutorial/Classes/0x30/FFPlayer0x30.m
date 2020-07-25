@@ -700,7 +700,8 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)updateAudioClock:(Frame *)ap filled:(UInt32)filled {
+- (void)updateAudioClock:(Frame *)ap filled:(UInt32)filled
+{
     double audio_pts = ap->pts + 1.0 * ap->frame->nb_samples / ap->frame->sample_rate;
     double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
     double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
@@ -717,10 +718,9 @@ static int decode_interrupt_cb(void *ctx)
         if (frame_queue_nb_remaining(&sampq) > 0) {
             ap = frame_queue_peek(&sampq);
             av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
-        }
-        
-        if (NULL == ap) {
-            return filled;
+        } else {
+            //队列里没有音频桢了，跳出循环
+            break;
         }
         
         uint8_t *src = ap->frame->data[0];
@@ -748,7 +748,10 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    [self updateAudioClock:ap filled:filled];
+    if (NULL !=ap && filled > 0) {
+        [self updateAudioClock:ap filled:filled];
+    }
+    
     return filled;
 }
 
@@ -764,12 +767,10 @@ static int decode_interrupt_cb(void *ctx)
         if (frame_queue_nb_remaining(&sampq) > 0) {
             ap = frame_queue_peek(&sampq);
             av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
+        } else {
+            //队列里没有音频桢了，跳出循环
+            break;
         }
-        
-        if (NULL == ap) {
-            return filled;
-        }
-        
         uint8_t *l_src = ap->frame->data[0];
         const int fmt  = ap->frame->format;
         assert(av_sample_fmt_is_planar(fmt));
@@ -809,7 +810,10 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    [self updateAudioClock:ap filled:filled];
+    if (NULL !=ap && filled > 0) {
+        [self updateAudioClock:ap filled:filled];
+    }
+    
     return filled;
 }
 
