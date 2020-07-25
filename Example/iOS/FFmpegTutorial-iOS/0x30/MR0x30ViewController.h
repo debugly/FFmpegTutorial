@@ -7,6 +7,7 @@
 //
 // 使用 Audio Unit/Queue 渲染音频桢
 // 使用 OpenGL ES 渲染视频桢
+// 音视频同步，处理播放结束事件
 
 #import <UIKit/UIKit.h>
 
