@@ -1,19 +1,19 @@
 //
-//  FFPlayer0x30.m
+//  FFPlayer0x31.m
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/7/17.
+//  Created by qianlongxu on 2020/7/30.
 //
 
-#import "FFPlayer0x30.h"
+#import "FFPlayer0x31.h"
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
-#import "FFDecoder0x30.h"
-#import "FFVideoScale0x30.h"
-#import "FFAudioResample0x30.h"
-#import "FFSyncClock0x30.h"
+#import "FFDecoder0x31.h"
+#import "FFVideoScale0x31.h"
+#import "FFAudioResample0x31.h"
+#import "FFSyncClock0x31.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 #import <libavutil/time.h>
@@ -21,7 +21,7 @@
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
 
-@interface FFPlayer0x30 ()<FFDecoderDelegate0x30>
+@interface FFPlayer0x31 ()<FFDecoderDelegate0x31>
 {
     //解码前的音频包缓存队列
     PacketQueue audioq;
@@ -40,17 +40,17 @@
 @property (nonatomic, strong) MRThread *rendererThread;
 
 //音频解码器
-@property (nonatomic, strong) FFDecoder0x30 *audioDecoder;
+@property (nonatomic, strong) FFDecoder0x31 *audioDecoder;
 //视频解码器
-@property (nonatomic, strong) FFDecoder0x30 *videoDecoder;
+@property (nonatomic, strong) FFDecoder0x31 *videoDecoder;
 //图像格式转换/缩放器
-@property (nonatomic, strong) FFVideoScale0x30 *videoScale;
+@property (nonatomic, strong) FFVideoScale0x31 *videoScale;
 //音频格式转换器
-@property (nonatomic, strong) FFAudioResample0x30 *audioResample;
+@property (nonatomic, strong) FFAudioResample0x31 *audioResample;
 //音频时钟
-@property (nonatomic, strong) FFSyncClock0x30 *audioClk;
+@property (nonatomic, strong) FFSyncClock0x31 *audioClk;
 //视频时钟
-@property (nonatomic, strong) FFSyncClock0x30 *videoClk;
+@property (nonatomic, strong) FFSyncClock0x31 *videoClk;
 
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
@@ -70,11 +70,11 @@
 
 @end
 
-@implementation  FFPlayer0x30
+@implementation  FFPlayer0x31
 
 static int decode_interrupt_cb(void *ctx)
 {
-    FFPlayer0x30 *player = (__bridge FFPlayer0x30 *)ctx;
+    FFPlayer0x31 *player = (__bridge FFPlayer0x31 *)ctx;
     return player.abort_request;
 }
 
@@ -151,12 +151,12 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)initVideoClock
 {
-    self.videoClk = [[FFSyncClock0x30 alloc] init];
+    self.videoClk = [[FFSyncClock0x31 alloc] init];
 }
 
 - (void)initAudioClock
 {
-    self.audioClk = [[FFSyncClock0x30 alloc] init];
+    self.audioClk = [[FFSyncClock0x31 alloc] init];
     enum AVSampleFormat fmt = 0;
     if (self.audioResample) {
         fmt = self.audioResample.out_sample_fmt;
@@ -175,9 +175,9 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 打开解码器创建解码线程
 
-- (FFDecoder0x30 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (FFDecoder0x31 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
-    FFDecoder0x30 *decoder = [FFDecoder0x30 new];
+    FFDecoder0x31 *decoder = [FFDecoder0x31 new];
     decoder.ic = ic;
     decoder.streamIdx = idx;
     if ([decoder open] == 0) {
@@ -292,7 +292,7 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 视频像素格式转换
 
-- (FFVideoScale0x30 *)createVideoScaleIfNeed
+- (FFVideoScale0x31 *)createVideoScaleIfNeed
 {
     //未指定期望像素格式
     if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
@@ -332,11 +332,11 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     ///创建像素格式转换上下文
-    FFVideoScale0x30 *scale = [[FFVideoScale0x30 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
+    FFVideoScale0x31 *scale = [[FFVideoScale0x31 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
     return scale;
 }
 
-- (FFAudioResample0x30 *)createAudioResampleIfNeed
+- (FFAudioResample0x31 *)createAudioResampleIfNeed
 {
     //未指定期望音频格式
     if (self.supportedSampleFormats == MR_SAMPLE_FMT_MASK_NONE) {
@@ -384,7 +384,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     ///创建音频格式转换上下文
-    FFAudioResample0x30 *resample = [[FFAudioResample0x30 alloc] initWithSrcSampleFmt:format
+    FFAudioResample0x31 *resample = [[FFAudioResample0x31 alloc] initWithSrcSampleFmt:format
                                                                          dstSampleFmt:MRSampleFormat2AV(firstSupportedFmt)
                                                                            srcChannel:self.audioDecoder.channelLayout
                                                                            dstChannel:self.audioDecoder.channelLayout
@@ -518,9 +518,9 @@ static int decode_interrupt_cb(void *ctx)
     avformat_close_input(&formatCtx);
 }
 
-#pragma mark - FFDecoderDelegate0x30
+#pragma mark - FFDecoderDelegate0x31
 
-- (int)decoder:(FFDecoder0x30 *)decoder wantAPacket:(AVPacket *)pkt
+- (int)decoder:(FFDecoder0x31 *)decoder wantAPacket:(AVPacket *)pkt
 {
     if (decoder == self.audioDecoder) {
         return packet_queue_get(&audioq, pkt, 1);
@@ -531,7 +531,7 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoder:(FFDecoder0x30 *)decoder reveivedAFrame:(AVFrame *)frame
+- (void)decoder:(FFDecoder0x31 *)decoder reveivedAFrame:(AVFrame *)frame
 {
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &sampq;

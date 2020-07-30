@@ -43,6 +43,13 @@
 		DD8BFCFB24BDB0F5009364C5 /* 0x21Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD8BFCF624BDB0F5009364C5 /* 0x21Shader.fsh */; };
 		DD8BFCFC24BDB0F5009364C5 /* 0x21Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD8BFCF724BDB0F5009364C5 /* 0x21Shader.vsh */; };
 		DD8BFCFD24BDB0F5009364C5 /* MR0x21ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD8BFCF924BDB0F5009364C5 /* MR0x21ViewController.m */; };
+		DDC487DB24D2CC1D006BB41F /* MR0x31VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC487CB24D2CC1D006BB41F /* MR0x31VideoRenderer.m */; };
+		DDC487DC24D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC487D124D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m */; };
+		DDC487DD24D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC487D324D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m */; };
+		DDC487DE24D2CC1D006BB41F /* MR0x31AudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC487D624D2CC1D006BB41F /* MR0x31AudioRenderer.m */; };
+		DDC487DF24D2CC1D006BB41F /* MR0x31ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDC487D724D2CC1D006BB41F /* MR0x31ViewController.m */; };
+		DDC487E024D2CC1D006BB41F /* 0x31Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DDC487D924D2CC1D006BB41F /* 0x31Shader.vsh */; };
+		DDC487E124D2CC1D006BB41F /* 0x31Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDC487DA24D2CC1D006BB41F /* 0x31Shader.fsh */; };
 		DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */; };
 		DDFA39DC24B872DC005C6430 /* MR0x20VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39A924B872DB005C6430 /* MR0x20VideoRenderer.m */; };
 		DDFA39DD24B872DC005C6430 /* MR0x20ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39AA24B872DB005C6430 /* MR0x20ViewController.m */; };
@@ -137,6 +144,19 @@
 		DD8BFCF724BDB0F5009364C5 /* 0x21Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 0x21Shader.vsh; sourceTree = "<group>"; };
 		DD8BFCF824BDB0F5009364C5 /* MR0x21VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x21VideoRenderer.h; sourceTree = "<group>"; };
 		DD8BFCF924BDB0F5009364C5 /* MR0x21ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x21ViewController.m; sourceTree = "<group>"; };
+		DDC487CB24D2CC1D006BB41F /* MR0x31VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x31VideoRenderer.m; sourceTree = "<group>"; };
+		DDC487CC24D2CC1D006BB41F /* MR0x31VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x31VideoRenderer.h; sourceTree = "<group>"; };
+		DDC487CD24D2CC1D006BB41F /* MR0x31ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x31ViewController.h; sourceTree = "<group>"; };
+		DDC487D024D2CC1D006BB41F /* MR0x31AudioUnitRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x31AudioUnitRenderer.h; sourceTree = "<group>"; };
+		DDC487D124D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x31AudioQueueRenderer.m; sourceTree = "<group>"; };
+		DDC487D224D2CC1D006BB41F /* MR0x31AudioRendererImpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x31AudioRendererImpProtocol.h; sourceTree = "<group>"; };
+		DDC487D324D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x31AudioUnitRenderer.m; sourceTree = "<group>"; };
+		DDC487D424D2CC1D006BB41F /* MR0x31AudioQueueRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x31AudioQueueRenderer.h; sourceTree = "<group>"; };
+		DDC487D524D2CC1D006BB41F /* MR0x31AudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x31AudioRenderer.h; sourceTree = "<group>"; };
+		DDC487D624D2CC1D006BB41F /* MR0x31AudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x31AudioRenderer.m; sourceTree = "<group>"; };
+		DDC487D724D2CC1D006BB41F /* MR0x31ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x31ViewController.m; sourceTree = "<group>"; };
+		DDC487D924D2CC1D006BB41F /* 0x31Shader.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 0x31Shader.vsh; sourceTree = "<group>"; };
+		DDC487DA24D2CC1D006BB41F /* 0x31Shader.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 0x31Shader.fsh; sourceTree = "<group>"; };
 		DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDFA39A624B872DB005C6430 /* MR0x01ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDFA39A824B872DB005C6430 /* MR0x20ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x20ViewController.h; sourceTree = "<group>"; };
@@ -256,6 +276,7 @@
 				DD8BFCF224BDB0F5009364C5 /* 0x21 */,
 				DD8B00DF24C05E9A009364C5 /* 0x22 */,
 				DD65FF4724C1AC3C0035E472 /* 0x30 */,
+				DDC487C924D2CC1D006BB41F /* 0x31 */,
 				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -432,6 +453,58 @@
 			children = (
 				DD8BFCF624BDB0F5009364C5 /* 0x21Shader.fsh */,
 				DD8BFCF724BDB0F5009364C5 /* 0x21Shader.vsh */,
+			);
+			path = Shaders;
+			sourceTree = "<group>";
+		};
+		DDC487C924D2CC1D006BB41F /* 0x31 */ = {
+			isa = PBXGroup;
+			children = (
+				DDC487CE24D2CC1D006BB41F /* Audio */,
+				DDC487D824D2CC1D006BB41F /* Shaders */,
+				DDC487CA24D2CC1D006BB41F /* Video */,
+				DDC487CD24D2CC1D006BB41F /* MR0x31ViewController.h */,
+				DDC487D724D2CC1D006BB41F /* MR0x31ViewController.m */,
+			);
+			path = 0x31;
+			sourceTree = "<group>";
+		};
+		DDC487CA24D2CC1D006BB41F /* Video */ = {
+			isa = PBXGroup;
+			children = (
+				DDC487CB24D2CC1D006BB41F /* MR0x31VideoRenderer.m */,
+				DDC487CC24D2CC1D006BB41F /* MR0x31VideoRenderer.h */,
+			);
+			path = Video;
+			sourceTree = "<group>";
+		};
+		DDC487CE24D2CC1D006BB41F /* Audio */ = {
+			isa = PBXGroup;
+			children = (
+				DDC487CF24D2CC1D006BB41F /* Imp */,
+				DDC487D524D2CC1D006BB41F /* MR0x31AudioRenderer.h */,
+				DDC487D624D2CC1D006BB41F /* MR0x31AudioRenderer.m */,
+			);
+			path = Audio;
+			sourceTree = "<group>";
+		};
+		DDC487CF24D2CC1D006BB41F /* Imp */ = {
+			isa = PBXGroup;
+			children = (
+				DDC487D024D2CC1D006BB41F /* MR0x31AudioUnitRenderer.h */,
+				DDC487D124D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m */,
+				DDC487D224D2CC1D006BB41F /* MR0x31AudioRendererImpProtocol.h */,
+				DDC487D324D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m */,
+				DDC487D424D2CC1D006BB41F /* MR0x31AudioQueueRenderer.h */,
+			);
+			path = Imp;
+			sourceTree = "<group>";
+		};
+		DDC487D824D2CC1D006BB41F /* Shaders */ = {
+			isa = PBXGroup;
+			children = (
+				DDC487D924D2CC1D006BB41F /* 0x31Shader.vsh */,
+				DDC487DA24D2CC1D006BB41F /* 0x31Shader.fsh */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -666,10 +739,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDC487E124D2CC1D006BB41F /* 0x31Shader.fsh in Resources */,
 				DD8B00EA24C05E9A009364C5 /* 0x22Shader.fsh in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				DDFA39E924B872DC005C6430 /* 0x14Shader.vsh in Resources */,
 				DDFA39E824B872DC005C6430 /* 0x14Shader.fsh in Resources */,
+				DDC487E024D2CC1D006BB41F /* 0x31Shader.vsh in Resources */,
 				DD8B00E924C05E9A009364C5 /* 0x22Shader.vsh in Resources */,
 				DDFA39DE24B872DC005C6430 /* 0x20Shader.fsh in Resources */,
 				DD8BFCFB24BDB0F5009364C5 /* 0x21Shader.fsh in Resources */,
@@ -750,6 +825,8 @@
 				DDFA39DD24B872DC005C6430 /* MR0x20ViewController.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */,
+				DDC487DC24D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m in Sources */,
+				DDC487DB24D2CC1D006BB41F /* MR0x31VideoRenderer.m in Sources */,
 				DD65FF5924C1AC3C0035E472 /* MR0x30VideoRenderer.m in Sources */,
 				DDFA39E624B872DC005C6430 /* MR0x02ViewController.m in Sources */,
 				DDFA39DC24B872DC005C6430 /* MR0x20VideoRenderer.m in Sources */,
@@ -770,11 +847,14 @@
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DD65FF5F24C1AC3C0035E472 /* MR0x30ViewController.m in Sources */,
 				DD8B00F024C06066009364C5 /* MR0x22AudioUnitRenderer.m in Sources */,
+				DDC487DE24D2CC1D006BB41F /* MR0x31AudioRenderer.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DDFA39E324B872DC005C6430 /* MR0x04ViewController.m in Sources */,
 				DD8B00F324C06079009364C5 /* MR0x22AudioQueueRenderer.m in Sources */,
+				DDC487DF24D2CC1D006BB41F /* MR0x31ViewController.m in Sources */,
 				DDFA39F024B872DC005C6430 /* MR0x15VideoRenderer.m in Sources */,
 				DD8B00E724C05E9A009364C5 /* MR0x22VideoRenderer.m in Sources */,
+				DDC487DD24D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m in Sources */,
 				DD8B00E824C05E9A009364C5 /* MR0x22ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
