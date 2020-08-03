@@ -871,6 +871,15 @@ static int decode_interrupt_cb(void *ctx)
     [self.readThread start];
 }
 
+- (void)pause
+{
+}
+
+- (void)play
+{
+    
+}
+
 - (void)stop
 {
     [self _stop];

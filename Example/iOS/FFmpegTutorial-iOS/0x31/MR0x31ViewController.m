@@ -141,6 +141,16 @@
     }];
 }
 
+- (IBAction)onTogglePause:(UIButton *)sender
+{
+    [sender setSelected:!sender.isSelected];
+    if (sender.isSelected) {
+        [self.player pause];
+    } else {
+        [self.player play];
+    }
+}
+
 - (void)onTimer:(NSTimer *)sender
 {
     if ([self.indicatorView isAnimating]) {

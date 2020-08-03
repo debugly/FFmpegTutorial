@@ -1356,6 +1356,33 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                             </textView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Nzs-2b-rbf">
+                                <rect key="frame" x="0.0" y="256" width="568" height="64"/>
+                                <subviews>
+                                    <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="V4h-zw-Y6b">
+                                        <rect key="frame" x="0.0" y="0.0" width="568" height="64"/>
+                                        <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </view>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t9U-6l-RyK">
+                                        <rect key="frame" x="49" y="20" width="20" height="25"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <state key="normal" image="pause" catalog="system"/>
+                                        <state key="selected" image="play" catalog="system"/>
+                                        <connections>
+                                            <action selector="onTogglePause:" destination="eco-My-8f9" eventType="touchUpInside" id="5O5-FE-iNL"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="V4h-zw-Y6b" firstAttribute="top" secondItem="Nzs-2b-rbf" secondAttribute="top" id="90Q-1j-poo"/>
+                                    <constraint firstItem="V4h-zw-Y6b" firstAttribute="leading" secondItem="Nzs-2b-rbf" secondAttribute="leading" id="SEy-dw-mLH"/>
+                                    <constraint firstAttribute="bottom" secondItem="V4h-zw-Y6b" secondAttribute="bottom" id="Ybm-aq-9C8"/>
+                                    <constraint firstAttribute="trailing" secondItem="V4h-zw-Y6b" secondAttribute="trailing" id="gBP-7Y-6KF"/>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="64" id="okS-sK-7W1"/>
+                                    <constraint firstAttribute="height" constant="64" id="tWI-ed-yIe"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
@@ -1363,11 +1390,14 @@
                             <constraint firstItem="7ps-Sq-5bN" firstAttribute="trailing" secondItem="hYr-FV-siJ" secondAttribute="trailing" id="OXS-ml-kfG"/>
                             <constraint firstItem="TOs-bo-S69" firstAttribute="top" secondItem="QIF-rW-rut" secondAttribute="bottom" id="U1c-Pr-NQe"/>
                             <constraint firstItem="7ps-Sq-5bN" firstAttribute="leading" secondItem="hYr-FV-siJ" secondAttribute="leading" id="USe-Mv-d3m"/>
+                            <constraint firstAttribute="trailing" secondItem="Nzs-2b-rbf" secondAttribute="trailing" id="ZMS-Ig-lTX"/>
                             <constraint firstItem="7ps-Sq-5bN" firstAttribute="top" secondItem="F0Y-hX-7CM" secondAttribute="bottom" id="aee-hj-nY2"/>
                             <constraint firstItem="UvM-Rh-ioo" firstAttribute="centerX" secondItem="hYr-FV-siJ" secondAttribute="centerX" id="fxm-jA-qkM"/>
                             <constraint firstAttribute="trailing" secondItem="QIF-rW-rut" secondAttribute="trailing" id="gc3-g9-Pow"/>
                             <constraint firstItem="UvM-Rh-ioo" firstAttribute="centerY" secondItem="hYr-FV-siJ" secondAttribute="centerY" id="itW-Zm-58q"/>
                             <constraint firstItem="QIF-rW-rut" firstAttribute="top" secondItem="F0Y-hX-7CM" secondAttribute="bottom" id="rvT-hy-BBo"/>
+                            <constraint firstItem="Nzs-2b-rbf" firstAttribute="leading" secondItem="hYr-FV-siJ" secondAttribute="leading" id="sLW-hs-pHp"/>
+                            <constraint firstItem="TOs-bo-S69" firstAttribute="top" secondItem="Nzs-2b-rbf" secondAttribute="bottom" id="tSv-Iw-tY3"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="lBZ-jM-4pg"/>
@@ -1379,7 +1409,11 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="krS-Fd-Abp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1226" y="2436"/>
+            <point key="canvasLocation" x="-1226.4084507042253" y="3187.5"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="pause" catalog="system" width="88" height="128"/>
+        <image name="play" catalog="system" width="120" height="128"/>
+    </resources>
 </document>
