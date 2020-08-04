@@ -155,11 +155,13 @@ static int decode_interrupt_cb(void *ctx)
 - (void)initVideoClock
 {
     self.videoClk = [[FFSyncClock0x31 alloc] init];
+    [self.videoClk setClock:0];
 }
 
 - (void)initAudioClock
 {
     self.audioClk = [[FFSyncClock0x31 alloc] init];
+    [self.audioClk setClock:0];
     enum AVSampleFormat fmt = 0;
     if (self.audioResample) {
         fmt = self.audioResample.out_sample_fmt;
@@ -661,6 +663,7 @@ static int decode_interrupt_cb(void *ctx)
 {
     if (frame_queue_nb_remaining(&pictq) > 0) {
         Frame *vp, *lastvp;
+        //上一帧
         lastvp = frame_queue_peek_last(&pictq);
         
         if (self.paused) {
@@ -669,8 +672,8 @@ static int decode_interrupt_cb(void *ctx)
             return;
         }
         
+        //当前帧
         vp = frame_queue_peek(&pictq);
-        
         //计算上一帧的持续时长
         const double last_duration = [self vp_durationWithP1:lastvp p2:vp];
         //参考audio clock计算上一帧真正的持续时长
