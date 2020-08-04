@@ -230,6 +230,9 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 + (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
                                                  opt:(CVPixelBufferPoolRef)poolRef
 {
+    if (NULL == frame) {
+        return NULL;
+    }
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result = kCVReturnError;
     

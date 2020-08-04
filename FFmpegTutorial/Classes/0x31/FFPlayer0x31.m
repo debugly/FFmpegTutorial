@@ -68,6 +68,8 @@
 @property (atomic, assign) BOOL eof;
 @property (atomic, assign) BOOL videoEnds;
 @property (atomic, assign) BOOL paused;
+@property (atomic, assign) BOOL audioFrameEmpty;
+@property (atomic, assign) BOOL videoFrameEmpty;
 
 @end
 
@@ -553,6 +555,7 @@ static int decode_interrupt_cb(void *ctx)
             af->duration = duration;
             af->pts = (frame->pts == AV_NOPTS_VALUE) ? NAN : frame->pts * av_q2d(tb);;
         });
+        self.audioFrameEmpty = NO;
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &pictq;
         
@@ -568,12 +571,14 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         double duration = (self.videoDecoder.frameRate.num && self.videoDecoder.frameRate.den ? av_q2d(self.videoDecoder.frameRate) : 0);
+        duration = 1.0 / duration;
         AVRational tb = self.videoDecoder.stream->time_base;
         double pts = (outP->pts == AV_NOPTS_VALUE) ? NAN : outP->pts * av_q2d(tb);
         frame_queue_push_v2(fq, outP,^(Frame * const af){
             af->duration = duration;
             af->pts = pts;
         });
+        self.videoFrameEmpty = NO;
     }
 }
 
@@ -603,6 +608,10 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
+    if(NULL == vp){
+        return;
+    }
+    
     if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
         @autoreleasepool {
             CVPixelBufferRef pixelBuffer = [self pixelBufferFromAVFrame:vp->frame];
@@ -693,12 +702,24 @@ static int decode_interrupt_cb(void *ctx)
                 av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
                 frame_drops_late);
                 frame_queue_pop(&pictq);
+                if (frame_queue_nb_remaining(&pictq) == 0) {
+                    self.videoFrameEmpty = YES;
+                }
                 //继续重试
                 [self video_refresh:remaining_time];
                 return;
             }
         }
+        
+        [self doDisplayVideoFrame:vp];
         frame_queue_pop(&pictq);
+        if (frame_queue_nb_remaining(&pictq) > 1) {
+            Frame *nextvp = frame_queue_peek(&pictq);
+            double duration = [self vp_durationWithP1:vp p2:nextvp];//vp显示时长
+            *remaining_time = FFMIN(duration, *remaining_time);
+        } else {
+            self.videoFrameEmpty = YES;
+        }
     } else if(self.eof && self.videoDecoder.eof){
         //no picture do display.
         self.videoClk.eof = YES;
@@ -765,6 +786,9 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&sampq);
+            if (frame_queue_nb_remaining(&sampq) == 0) {
+                self.audioFrameEmpty = YES;
+            }
         }
     }
     
@@ -833,6 +857,9 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&sampq);
+            if (frame_queue_nb_remaining(&sampq) == 0) {
+                self.audioFrameEmpty = YES;
+            }
         }
     }
     
