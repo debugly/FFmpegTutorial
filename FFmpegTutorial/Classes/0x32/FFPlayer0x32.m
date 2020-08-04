@@ -507,6 +507,10 @@ static int decode_interrupt_cb(void *ctx)
             return;
         }
     }
+    self.duration = (long)(formatCtx->duration/AV_TIME_BASE);
+    if ([self.delegate respondsToSelector:@selector(onDurationUpdate:)]) {
+        [self.delegate onDurationUpdate:self.duration];
+    }
     //初始化同步时钟
     [self initVideoClock];
     [self initAudioClock];

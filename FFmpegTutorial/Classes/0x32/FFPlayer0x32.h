@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @optional
 - (void)reveiveFrameToRenderer:(CVPixelBufferRef)img;
 - (void)onInitAudioRender:(MRSampleFormat)fmt;
+- (void)onDurationUpdate:(long)du;
 
 @end
 
@@ -32,6 +33,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int supportedSampleRate;
 
 @property (nonatomic, weak) id <FFPlayer0x32Delegate> delegate;
+//时长，单位s
+@property (nonatomic, assign) long duration;
+
 ///准备
 - (void)prepareToPlay;
 ///读包

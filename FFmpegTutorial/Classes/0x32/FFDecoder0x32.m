@@ -105,7 +105,6 @@
     } else {
         NSAssert(NO, @"hasn't handle other media type!");
     }
-    
     self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
     
     return 0;

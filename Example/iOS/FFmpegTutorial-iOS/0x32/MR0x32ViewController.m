@@ -122,6 +122,16 @@
     });
 }
 
+- (void)onDurationUpdate:(long)du
+{
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        long h = du / 3600;
+        long m = (du - h * 3600) / 60;
+        long s = du % 60;
+        self.durationLb.text = [NSString stringWithFormat:@"00:00:00/%02ld:%02ld:%02ld",h,m,s];
+    });
+}
+
 - (void)setupAudioRender:(MRSampleFormat)fmt
 {
     self.audioRender = [MR0x32AudioRenderer new];
