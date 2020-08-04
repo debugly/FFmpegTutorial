@@ -30,8 +30,12 @@
 
 - (double)getClock
 {
-    double time = av_gettime_relative() / 1000000.0;
-    return self.pts_drift + time - (time - self.last_update);
+    if (self.paused) {
+        return self.pts;
+    } else {
+        double time = av_gettime_relative() / 1000000.0;
+        return self.pts_drift + time;
+    }
 }
 
 @end

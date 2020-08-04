@@ -30,6 +30,7 @@ typedef UInt32(^MRFetchPlanarSample)(uint8_t*left,UInt32 leftSize,uint8_t*right,
 - (void)onFetchPacketSample:(MRFetchPacketSample)block;
 - (void)onFetchPlanarSample:(MRFetchPlanarSample)block;
 - (void)paly;
+- (void)pause;
 
 @end
 

@@ -132,6 +132,11 @@
     [self.audioRendererImp play];
 }
 
+- (void)pause
+{
+    [self.audioRendererImp pause];
+}
+
 - (float)outputVolume
 {
     return [[AVAudioSession sharedInstance]outputVolume];

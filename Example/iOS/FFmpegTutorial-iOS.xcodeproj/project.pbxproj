@@ -491,11 +491,11 @@
 		DDC487CF24D2CC1D006BB41F /* Imp */ = {
 			isa = PBXGroup;
 			children = (
-				DDC487D024D2CC1D006BB41F /* MR0x31AudioUnitRenderer.h */,
-				DDC487D124D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m */,
 				DDC487D224D2CC1D006BB41F /* MR0x31AudioRendererImpProtocol.h */,
-				DDC487D324D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m */,
 				DDC487D424D2CC1D006BB41F /* MR0x31AudioQueueRenderer.h */,
+				DDC487D124D2CC1D006BB41F /* MR0x31AudioQueueRenderer.m */,
+				DDC487D024D2CC1D006BB41F /* MR0x31AudioUnitRenderer.h */,
+				DDC487D324D2CC1D006BB41F /* MR0x31AudioUnitRenderer.m */,
 			);
 			path = Imp;
 			sourceTree = "<group>";

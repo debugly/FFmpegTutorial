@@ -8,7 +8,7 @@
 #ifndef FFPlayerInternalHeader_h
 #define FFPlayerInternalHeader_h
 
-#import <libavformat/avformat.h>
+#include <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
 
 /* no AV sync correction is done if below the minimum AV sync threshold */

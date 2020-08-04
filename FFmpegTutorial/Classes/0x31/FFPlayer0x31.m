@@ -67,6 +67,7 @@
 //读包完毕
 @property (atomic, assign) BOOL eof;
 @property (atomic, assign) BOOL videoEnds;
+@property (atomic, assign) BOOL paused;
 
 @end
 
@@ -652,12 +653,21 @@ static int decode_interrupt_cb(void *ctx)
     if (frame_queue_nb_remaining(&pictq) > 0) {
         Frame *vp, *lastvp;
         lastvp = frame_queue_peek_last(&pictq);
+        
+        if (self.paused) {
+            //仍旧显示上一帧
+            [self doDisplayVideoFrame:lastvp];
+            return;
+        }
+        
         vp = frame_queue_peek(&pictq);
+        
         //计算上一帧的持续时长
-        double last_duration = [self vp_durationWithP1:lastvp p2:vp];
+        const double last_duration = [self vp_durationWithP1:lastvp p2:vp];
         //参考audio clock计算上一帧真正的持续时长
-        double delay = [self compute_target_delay:last_duration ];
-        double time = av_gettime_relative()/1000000.0;
+        const double delay = [self compute_target_delay:last_duration];
+        //相对系统时间
+        const double time = av_gettime_relative()/1000000.0;
         //时间还没到上一帧结束点
         if (time < self.videoClk.frame_timer + delay) {
             *remaining_time = FFMIN(self.videoClk.frame_timer + delay - time, *remaining_time);
@@ -873,11 +883,19 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)pause
 {
+    self.videoClk.frame_timer = av_gettime_relative() / 1000000.0 - self.videoClk.last_update;
+    [self.videoClk setClock:[self.videoClk getClock]];
+    [self.audioClk setClock:[self.audioClk getClock]];
+    
+    self.paused = self.audioClk.paused = self.videoClk.paused = !self.paused;
 }
 
 - (void)play
 {
-    
+    self.videoClk.frame_timer = av_gettime_relative() / 1000000.0 - self.videoClk.last_update;
+    [self.videoClk setClock:[self.videoClk getClock]];
+    [self.audioClk setClock:[self.audioClk getClock]];
+    self.paused = self.audioClk.paused = self.videoClk.paused = !self.paused;
 }
 
 - (void)stop

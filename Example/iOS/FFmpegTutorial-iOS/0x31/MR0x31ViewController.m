@@ -24,6 +24,7 @@
 @property (nonatomic, strong) FFPlayer0x31 *player;
 @property (weak, nonatomic) IBOutlet MR0x31VideoRenderer *renderView;
 @property (nonatomic, strong) MR0x31AudioRenderer *audioRender;
+@property (nonatomic, assign) BOOL started;
 
 @end
 
@@ -105,10 +106,9 @@
         [self.renderView displayPixelBuffer:img];
         CVPixelBufferRelease(img);
         
-        static bool started = false;
-        if (!started) {
+        if (!self.started) {
             [self playAudio];
-            started = true;
+            self.started = true;
         }
     });
 }
@@ -146,8 +146,10 @@
     [sender setSelected:!sender.isSelected];
     if (sender.isSelected) {
         [self.player pause];
+        [self.audioRender pause];
     } else {
         [self.player play];
+        [self.audioRender paly];
     }
 }
 

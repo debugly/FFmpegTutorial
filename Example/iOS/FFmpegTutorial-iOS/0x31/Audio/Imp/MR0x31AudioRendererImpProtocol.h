@@ -17,6 +17,7 @@ typedef UInt32(^MRFetchPlanarSample)(uint8_t*left,UInt32 leftSize,uint8_t*right,
 
 @required;
 - (void)play;
+- (void)pause;
 
 @optional;
 - (void)setup:(int)sampleRate isFloatFmt:(BOOL)isFloat;

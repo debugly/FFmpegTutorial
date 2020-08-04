@@ -18,6 +18,7 @@ NS_ASSUME_NONNULL_BEGIN
 //每个采样几个字节
 @property (nonatomic, assign) int bytesPerSample;
 @property (atomic, assign) BOOL eof;
+@property (atomic, assign) BOOL paused;
 
 - (void)setClock:(double)pts;
 - (double)getClock;

@@ -122,4 +122,9 @@ static void MRAudioQueueOutputCallback(
     NSAssert(noErr == status, @"AudioOutputUnitStart");
 }
 
+- (void)pause
+{
+   AudioQueuePause(self.audioQueue);
+}
+
 @end

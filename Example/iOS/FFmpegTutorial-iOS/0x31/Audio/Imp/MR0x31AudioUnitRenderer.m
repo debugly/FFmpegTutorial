@@ -256,4 +256,10 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     NSAssert(noErr == status, @"AudioOutputUnitStart");
 }
 
+- (void)pause
+{
+    OSStatus status = AudioOutputUnitStop(_audioUnit);
+    NSAssert(noErr == status, @"AudioOutputUnitStop");
+}
+
 @end

@@ -5,7 +5,7 @@
 //  Created by Matt Reach on 2020/7/17.
 //  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-//Audio Queue Support packet fmt only!
+//Audio Queue support packet fmt only!
 
 #import <Foundation/Foundation.h>
 #import "MR0x30AudioRendererImpProtocol.h"
