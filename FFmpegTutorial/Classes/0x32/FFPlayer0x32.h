@@ -34,7 +34,9 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, weak) id <FFPlayer0x32Delegate> delegate;
 //时长，单位s
-@property (nonatomic, assign) long duration;
+@property (atomic, assign) long duration;
+//当前播放位置
+@property (nonatomic, assign) double position;
 
 ///准备
 - (void)prepareToPlay;

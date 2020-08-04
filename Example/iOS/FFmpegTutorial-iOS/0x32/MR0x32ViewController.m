@@ -69,6 +69,8 @@
     [player onVideoEnds:^{
         __strongSelf__
         self.textView.text = @"Video Ends.";
+        //fix position not end.
+        [self updatePlayedTime];
         [self.player stop];
         self.player = nil;
         [self.timer invalidate];
@@ -125,11 +127,30 @@
 - (void)onDurationUpdate:(long)du
 {
     dispatch_sync(dispatch_get_main_queue(), ^{
-        long h = du / 3600;
-        long m = (du - h * 3600) / 60;
-        long s = du % 60;
-        self.durationLb.text = [NSString stringWithFormat:@"00:00:00/%02ld:%02ld:%02ld",h,m,s];
+        [self updatePlayedTime];
     });
+}
+
+- (NSString *)formatToTime:(long)du
+{
+    long h = du / 3600;
+    long m = (du - h * 3600) / 60;
+    long s = du % 60;
+    return [NSString stringWithFormat:@"%02ld:%02ld:%02ld",h,m,s];
+}
+
+- (void)updatePlayedTime
+{
+    long du = self.player.duration;
+    if (du > 0) {
+        NSString *played = [self formatToTime:(long)self.player.position];
+        NSString *duration = [self formatToTime:self.player.duration];
+        self.durationLb.text = [NSString stringWithFormat:@"%@/%@",played,duration];
+        self.slider.value = self.player.position / self.player.duration;
+    } else {
+        self.durationLb.text = @"--:--:--/--:--:--";
+        self.slider.value = 0.0;
+    }
 }
 
 - (void)setupAudioRender:(MRSampleFormat)fmt
@@ -176,6 +197,8 @@
     } else {
         [self.textView scrollRangeToVisible:NSMakeRange(self.textView.text.length, 1)];
     }
+    
+    [self updatePlayedTime];
 }
 
 - (void)appendMsg:(NSString *)txt

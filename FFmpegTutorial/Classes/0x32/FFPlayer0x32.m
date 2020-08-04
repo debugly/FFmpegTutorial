@@ -962,4 +962,18 @@ static int decode_interrupt_cb(void *ctx)
     return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",audioq.nb_packets,videoq.nb_packets];
 }
 
+- (double)position
+{
+    if (self.videoEnds) {
+        return (double)self.duration;
+    }
+    if (self.audioClk) {
+        return self.audioClk.pts;
+    } else if(self.videoClk) {
+        return self.videoClk.pts;
+    } else {
+        return 0;
+    }
+}
+
 @end
