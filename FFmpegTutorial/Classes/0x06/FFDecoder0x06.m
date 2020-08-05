@@ -12,7 +12,7 @@
 
 @interface FFDecoder0x06()
 
-///解码线程
+//解码线程
 @property (nonatomic, strong) MRThread * workThread;
 @property (nonatomic, assign, readwrite) AVStream * stream;
 @property (nonatomic, assign) AVCodecContext * avctx;

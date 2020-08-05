@@ -97,7 +97,7 @@ static UIDeviceOrientation UIInterfaceToDeviceOrientation(UIInterfaceOrientation
     UIInterfaceOrientationMask currentStatusBarMask = 1 << [[UIApplication sharedApplication] statusBarOrientation];
     UIInterfaceOrientationMask supportedMask = [viewController supportedInterfaceOrientations];
     
-    ///是否横屏 -> 横屏？
+    //是否横屏 -> 横屏？
     BOOL ok = (UIInterfaceOrientationMaskLandscape & currentStatusBarMask) && (UIInterfaceOrientationMaskLandscape & supportedMask);
     
     if (!ok) {

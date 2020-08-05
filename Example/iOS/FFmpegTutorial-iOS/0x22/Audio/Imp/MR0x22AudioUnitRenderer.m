@@ -66,7 +66,7 @@
     AudioStreamBasicDescription outputFormat;
     
     UInt32 size = sizeof(outputFormat);
-    /// 获取默认的输入信息
+    // 获取默认的输入信息
     AudioUnitGetProperty(_audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, kOutputBus, &outputFormat, &size);
     //设置采样率
     outputFormat.mSampleRate = sampleRate;
@@ -130,7 +130,7 @@
 
 #pragma mark - 音频
 
-///音频渲染回调；
+//音频渲染回调；
 static inline OSStatus MRRenderCallback(void *inRefCon,
                                         AudioUnitRenderActionFlags    * ioActionFlags,
                                         const AudioTimeStamp          * inTimeStamp,
@@ -151,7 +151,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
         bzero(audioBuffer.mData, audioBuffer.mDataByteSize);
     }
     
-    ///目标是Packet类型
+    //目标是Packet类型
     if(self.isPacket){
     
         //    numFrames = 1115
@@ -170,11 +170,11 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
             //这个是 AudioUnit 给我们提供的用于存放采样点的buffer
             uint8_t *buffer = audioBuffer.mData;
             // 长度可以这么计算，也可以使用 audioBuffer.mDataByteSize 获取
-            //                ///每个采样点占用的字节数:
+            //                //每个采样点占用的字节数:
             //                UInt32 bytesPrePack = self.outputFormat.mBitsPerChannel / 8;
-            //                ///Audio的Frame是包括所有声道的，所以要乘以声道数；
+            //                //Audio的Frame是包括所有声道的，所以要乘以声道数；
             //                const NSUInteger frameSizeOf = 2 * bytesPrePack;
-            //                ///向缓存的音频帧索要wantBytes个音频采样点: wantFrames x frameSizeOf
+            //                //向缓存的音频帧索要wantBytes个音频采样点: wantFrames x frameSizeOf
             //                NSUInteger bufferSize = wantFrames * frameSizeOf;
             const UInt32 bufferSize = audioBuffer.mDataByteSize;
             /* 对于 AV_SAMPLE_FMT_S16 而言，采样点是这么分布的:
@@ -183,14 +183,14 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
              同理，对于 FLOAT 也是如此左右交替！
              */
             
-            ///3. 获取 bufferSize 个字节，并塞到 buffer 里；
+            //3. 获取 bufferSize 个字节，并塞到 buffer 里；
             [self fetchPacketSample:buffer wantBytes:bufferSize];
         } else {
             NSLog(@"what's wrong?");
         }
     }
     
-    ///目标是Planar类型，Mac平台支持整形和浮点型，交错和二维平面
+    //目标是Planar类型，Mac平台支持整形和浮点型，交错和二维平面
     
     else {
         

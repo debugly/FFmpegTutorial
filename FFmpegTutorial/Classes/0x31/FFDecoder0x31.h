@@ -35,7 +35,7 @@ typedef struct AVRational AVRational;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, weak) id <FFDecoderDelegate0x31> delegate;
 @property (nonatomic, assign, readonly) AVStream * stream;
-///for video is enum AVPixelFormat,for audio is enum AVSampleFormat,
+//for video is enum AVPixelFormat,for audio is enum AVSampleFormat,
 @property (nonatomic, assign, readonly) int format;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;

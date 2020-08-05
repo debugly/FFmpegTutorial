@@ -158,7 +158,7 @@
     self.audioRender = [MR0x32AudioRenderer new];
     [self.audioRender setPreferredAudioQueue:YES];
     [self.audioRender active];
-    ///播放器使用的采样率
+    //播放器使用的采样率
     [self.audioRender setupWithFmt:fmt sampleRate:self.player.supportedSampleRate];
     __weakSelf__
     [self.audioRender onFetchPacketSample:^UInt32(uint8_t * _Nonnull buffer, UInt32 bufferSize) {
@@ -206,13 +206,13 @@
     self.textView.text = txt;//[self.textView.text stringByAppendingFormat:@"\n%@",txt];
 }
 
-///滑动时就暂停自动滚到到底部
+//滑动时就暂停自动滚到到底部
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.ignoreScrollBottom = NSIntegerMax;
 }
 
-///松开手了，不需要减速就当即设定5s后自动滚动
+//松开手了，不需要减速就当即设定5s后自动滚动
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
@@ -220,7 +220,7 @@
     }
 }
 
-///需要减速时，就在停下来之后设定5s后自动滚动
+//需要减速时，就在停下来之后设定5s后自动滚动
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.ignoreScrollBottom = 5;

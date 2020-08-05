@@ -12,17 +12,17 @@
 
 @interface FFDecoder0x30()
 
-///解码线程
+//解码线程
 @property (nonatomic, strong) MRThread * workThread;
 @property (nonatomic, assign, readwrite) AVStream * stream;
 @property (nonatomic, assign) AVCodecContext * avctx;
 @property (nonatomic, assign) int abort_request;
-///for video
+//for video
 @property (nonatomic, assign, readwrite) int format;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
 @property (nonatomic, assign, readwrite) AVRational frameRate;
-///for audio
+//for audio
 @property (nonatomic, assign, readwrite) int sampleRate;
 @property (nonatomic, assign, readwrite) int channelLayout;
 

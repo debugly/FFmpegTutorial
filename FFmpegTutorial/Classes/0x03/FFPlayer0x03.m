@@ -34,7 +34,7 @@
     int eof;
 }
 
-///读包线程
+//读包线程
 @property (nonatomic, strong) MRThread *readThread;
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -55,10 +55,10 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)_stop
 {
-    ///避免重复stop做无用功
+    //避免重复stop做无用功
     if (self.readThread) {
         self.abort_request = 1;
-        ///不作过多判断，因为Thread有可能处于Pending状态，比如start之后立马stop！
+        //不作过多判断，因为Thread有可能处于Pending状态，比如start之后立马stop！
         //if ([self.readThread isExecuting]) {}
         [self.readThread cancel];
         [self.readThread join];
@@ -75,18 +75,18 @@ static int decode_interrupt_cb(void *ctx)
     [self _stop];
 }
 
-///准备
+//准备
 - (void)prepareToPlay
 {
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
     video_stream = audio_stream = -1;
-    ///初始化视频包队列
+    //初始化视频包队列
     packet_queue_init(&videoq);
-    ///初始化音频包队列
+    //初始化音频包队列
     packet_queue_init(&audioq);
-    ///初始化ffmpeg相关函数
+    //初始化ffmpeg相关函数
     init_ffmpeg_once();
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
@@ -123,13 +123,13 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         self.packetBufferIsFull = NO;
-        ///读包
+        //读包
         int ret = av_read_frame(formatCtx, pkt);
-        ///读包出错
+        //读包出错
         if (ret < 0) {
             //读到最后结束了
             if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !eof) {
-                ///最后放一个空包进去
+                //最后放一个空包进去
                 if (video_stream >= 0) {
                     packet_queue_put_nullpacket(&videoq, video_stream);
                 }
@@ -186,12 +186,12 @@ static int decode_interrupt_cb(void *ctx)
     /*
      打开输入流，读取文件头信息，不会打开解码器；
      */
-    ///低版本是 av_open_input_file 方法
+    //低版本是 av_open_input_file 方法
     const char *moviePath = [self.contentPath cStringUsingEncoding:NSUTF8StringEncoding];
     
     //打开文件流，读取头信息；
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
-        ///释放内存
+        //释放内存
         avformat_free_context(formatCtx);
         //当取消掉时，不给上层回调
         if (self.abort_request) {
@@ -221,7 +221,7 @@ static int decode_interrupt_cb(void *ctx)
     
 #if DEBUG
     NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
-    ///用于查看详细信息，调试的时候打出来看下很有必要
+    //用于查看详细信息，调试的时候打出来看下很有必要
     av_dump_format(formatCtx, 0, moviePath, false);
     
     NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
@@ -247,14 +247,14 @@ static int decode_interrupt_cb(void *ctx)
         //AVCodecContext *codec = stream->codec;
         enum AVMediaType codec_type = codecCtx->codec_type;
         switch (codec_type) {
-                ///音频流
+                //音频流
             case AVMEDIA_TYPE_AUDIO:
             {
                 audio_stream = stream->index;
                 audio_st = stream;
             }
                 break;
-                ///视频流
+                //视频流
             case AVMEDIA_TYPE_VIDEO:
             {
                 video_stream = stream->index;
@@ -278,7 +278,7 @@ static int decode_interrupt_cb(void *ctx)
     
     //读包循环
     [self readPacketLoop:formatCtx];
-    ///读包线程结束了，销毁下相关结构体
+    //读包线程结束了，销毁下相关结构体
     avformat_close_input(&formatCtx);
 }
 

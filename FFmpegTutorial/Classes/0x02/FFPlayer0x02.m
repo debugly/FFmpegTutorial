@@ -13,7 +13,7 @@
 #include <libavutil/pixdesc.h>
 
 @interface FFPlayer0x02 ()
-///读包线程
+//读包线程
 @property (nonatomic, strong) MRThread *readThread;
 @property (nonatomic, copy) void (^completionBlock)(NSError * _Nullable, NSString * _Nullable);
 
@@ -33,17 +33,16 @@
     [self _stop];
 }
 
-///准备
 - (void)prepareToPlay
 {
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
     
-    ///初始化ffmpeg相关函数
+    //初始化ffmpeg相关函数
     init_ffmpeg_once();
     
-    ///不允许重复准备
+    //不允许重复准备
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(openStreamFunc) object:nil];
     self.readThread.name = @"openStream";
 }
@@ -61,12 +60,12 @@
     /*
      打开输入流，读取文件头信息，不会打开解码器；
      */
-    ///低版本是 av_open_input_file 方法
+    //低版本是 av_open_input_file 方法
     const char *moviePath = [self.contentPath cStringUsingEncoding:NSUTF8StringEncoding];
     
     //打开文件流，读取头信息；
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
-        ///关闭，释放内存，置空
+        //关闭，释放内存，置空
         avformat_close_input(&formatCtx);
         self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
         [self performResultOnMainThread:nil];
@@ -87,7 +86,7 @@
         } else {
 #if DEBUG
             NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
-            ///用于查看详细信息，调试的时候打出来看下很有必要
+            //用于查看详细信息，调试的时候打出来看下很有必要
             av_dump_format(formatCtx, 0, moviePath, false);
             
             NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
@@ -118,7 +117,7 @@
                 //AVCodecContext *codec = stream->codec;
                 enum AVMediaType codec_type = codecCtx->codec_type;
                 switch (codec_type) {
-                        ///音频流
+                        //音频流
                     case AVMEDIA_TYPE_AUDIO:
                     {
                         //采样率
@@ -141,12 +140,12 @@
                         [text appendFormat:@"\n\nAudio\n%d Kbps，%.1f KHz， %d channels，%s，%s，duration:%ds",(int)(brate/1000.0),sample_rate/1000.0,channels,codecDesc,formatDesc,duration];
                     }
                         break;
-                        ///视频流
+                        //视频流
                     case AVMEDIA_TYPE_VIDEO:
                     {
-                        ///画面宽度，单位像素
+                        //画面宽度，单位像素
                         int vwidth = codecCtx->width;
-                        ///画面高度，单位像素
+                        //画面高度，单位像素
                         int vheight = codecCtx->height;
                         //比特率
                         int64_t brate = codecCtx->bit_rate;
@@ -158,7 +157,7 @@
                         enum AVPixelFormat format = codecCtx->pix_fmt;
                         //获取视频像素格式名称
                         const char * formatDesc = av_get_pix_fmt_name(format);
-                        ///帧率
+                        //帧率
                         CGFloat fps, timebase = 0.04;
                         if (stream->time_base.den && stream->time_base.num) {
                             timebase = av_q2d(stream->time_base);

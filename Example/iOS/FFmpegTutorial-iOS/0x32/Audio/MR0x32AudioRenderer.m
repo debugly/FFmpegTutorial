@@ -62,7 +62,7 @@
 - (void)setupWithFmt:(MRSampleFormat)fmt sampleRate:(int)rate
 {
     self.sampleFmt = fmt;
-    ///优先使用audiounit，只有明确选择 audio queue 并且格式支持时才用 audio queue！
+    //优先使用audiounit，只有明确选择 audio queue 并且格式支持时才用 audio queue！
     if (self.preferredAudioQueue) {
         if (MR_Sample_Fmt_Is_Packet(fmt)) {
             self.audioRendererImp = [[MR0x32AudioQueueRenderer alloc] init];

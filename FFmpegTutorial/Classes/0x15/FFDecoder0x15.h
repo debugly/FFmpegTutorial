@@ -34,7 +34,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, weak) id <FFDecoderDelegate0x15> delegate;
 @property (nonatomic, assign, readonly) AVStream * stream;
-///for video
+//for video
 @property (nonatomic, assign, readonly) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;

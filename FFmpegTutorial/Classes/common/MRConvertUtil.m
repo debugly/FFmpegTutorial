@@ -115,7 +115,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 //    } else if (frame->format == AV_PIX_FMT_BGRA || frame->format == AV_PIX_FMT_BGR0) {
 //        bpc = 8;
 //        bpp = 32;
-//        ///已经预乘好的，不让GPU再次计算，直接渲染就行了
+//        //已经预乘好的，不让GPU再次计算，直接渲染就行了
 //        bitMapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
 //    }
     else {

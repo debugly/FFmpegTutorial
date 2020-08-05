@@ -54,7 +54,7 @@
 - (BOOL)rescaleFrame:(AVFrame *)inF out:(AVFrame **)outP
 {
     AVFrame *out_frame = self.frame;
-    ///important！
+    //important！
     av_frame_copy_props(out_frame, inF);
 
     if(NULL == out_frame->data[0]){

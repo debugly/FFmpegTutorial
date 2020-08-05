@@ -214,7 +214,7 @@
 
 #pragma mark - 音频
 
-///音频渲染回调；
+//音频渲染回调；
 static void MRAudioQueueOutputCallback(
                                  void * __nullable       inUserData,
                                  AudioQueueRef           inAQ,
@@ -264,13 +264,13 @@ static void MRAudioQueueOutputCallback(
     self.textView.text = txt;//[self.textView.text stringByAppendingFormat:@"\n%@",txt];
 }
 
-///滑动时就暂停自动滚到到底部
+//滑动时就暂停自动滚到到底部
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
     self.ignoreScrollBottom = NSIntegerMax;
 }
 
-///松开手了，不需要减速就当即设定5s后自动滚动
+//松开手了，不需要减速就当即设定5s后自动滚动
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate) {
@@ -278,7 +278,7 @@ static void MRAudioQueueOutputCallback(
     }
 }
 
-///需要减速时，就在停下来之后设定5s后自动滚动
+//需要减速时，就在停下来之后设定5s后自动滚动
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     self.ignoreScrollBottom = 5;

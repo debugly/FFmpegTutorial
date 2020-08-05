@@ -56,11 +56,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///m/n 缓冲情况
 - (NSString *)peekPacketBufferStatus;
 
-/// 获取 packet 形式的音频数据，返回实际填充的字节数
+// 获取 packet 形式的音频数据，返回实际填充的字节数
 - (UInt32)fetchPacketSample:(uint8_t*)buffer
                   wantBytes:(UInt32)bufferSize;
 
-/// 获取 planar 形式的音频数据，返回实际填充的字节数
+// 获取 planar 形式的音频数据，返回实际填充的字节数
 - (UInt32)fetchPlanarSample:(uint8_t*)left
                    leftSize:(UInt32)leftSize
                       right:(uint8_t*)right

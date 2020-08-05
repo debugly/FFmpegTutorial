@@ -179,7 +179,7 @@ static __inline__ void _init_net_work_once()
 {
     static int flag = 0;
     if (flag == 0) {
-        ///初始化网络模块
+        //初始化网络模块
         avformat_network_init();
         flag = 1;
     }
@@ -191,7 +191,7 @@ static __inline__ void init_ffmpeg_once()
     if (flag == 0) {
         //只对av_log_default_callback有效
         av_log_set_level(AV_LOG_INFO);
-        ///初始化 libavformat，注册所有的复用器，解复用器，协议协议！
+        //初始化 libavformat，注册所有的复用器，解复用器，协议协议！
         av_register_all();
         flag = 1;
     }

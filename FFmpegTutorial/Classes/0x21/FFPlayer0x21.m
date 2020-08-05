@@ -35,9 +35,9 @@
     int eof;
 }
 
-///读包线程
+//读包线程
 @property (nonatomic, strong) MRThread *readThread;
-///渲染线程
+//渲染线程
 @property (nonatomic, strong) MRThread *rendererThread;
 
 //音频解码器
@@ -70,7 +70,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)_stop
 {
-    ///避免重复stop做无用功
+    //避免重复stop做无用功
     if (self.readThread) {
         
         self.abort_request = 1;
@@ -114,23 +114,23 @@ static int decode_interrupt_cb(void *ctx)
     [self _stop];
 }
 
-///准备
+//准备
 - (void)prepareToPlay
 {
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
     
-    ///初始化视频包队列
+    //初始化视频包队列
     packet_queue_init(&videoq);
-    ///初始化音频包队列
+    //初始化音频包队列
     packet_queue_init(&audioq);
-    ///初始化ffmpeg相关函数
+    //初始化ffmpeg相关函数
     init_ffmpeg_once();
     
-    ///初始化视频帧队列
+    //初始化视频帧队列
     frame_queue_init(&pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq", 0);
-    ///初始化音频帧队列
+    //初始化音频帧队列
     frame_queue_init(&sampq, SAMPLE_QUEUE_SIZE, "sampq", 0);
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
@@ -156,10 +156,10 @@ static int decode_interrupt_cb(void *ctx)
 //读包循环
 - (void)readPacketLoop:(AVFormatContext *)formatCtx {
     AVPacket pkt1, *pkt = &pkt1;
-    ///循环读包
+    //循环读包
     for (;;) {
         
-        ///调用了stop方法，则不再读包
+        //调用了stop方法，则不再读包
         if (self.abort_request) {
             break;
         }
@@ -181,13 +181,13 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         self.packetBufferIsFull = NO;
-        ///读包
+        //读包
         int ret = av_read_frame(formatCtx, pkt);
-        ///读包出错
+        //读包出错
         if (ret < 0) {
             //读到最后结束了
             if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !eof) {
-                ///最后放一个空包进去
+                //最后放一个空包进去
                 if (self.audioDecoder.streamIdx >= 0) {
                     packet_queue_put_nullpacket(&videoq, self.audioDecoder.streamIdx);
                 }
@@ -295,7 +295,7 @@ static int decode_interrupt_cb(void *ctx)
         return nil;
     }
     
-    ///创建像素格式转换上下文
+    //创建像素格式转换上下文
     FFVideoScale0x21 *scale = [[FFVideoScale0x21 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
     return scale;
 }
@@ -347,7 +347,7 @@ static int decode_interrupt_cb(void *ctx)
         return nil;
     }
     
-    ///创建音频格式转换上下文
+    //创建音频格式转换上下文
     FFAudioResample0x21 *resample = [[FFAudioResample0x21 alloc] initWithSrcSampleFmt:format
                                                                          dstSampleFmt:MRSampleFormat2AV(firstSupportedFmt)
                                                                            srcChannel:self.audioDecoder.channelLayout
@@ -377,12 +377,12 @@ static int decode_interrupt_cb(void *ctx)
     /*
      打开输入流，读取文件头信息，不会打开解码器；
      */
-    ///低版本是 av_open_input_file 方法
+    //低版本是 av_open_input_file 方法
     const char *moviePath = [self.contentPath cStringUsingEncoding:NSUTF8StringEncoding];
     
     //打开文件流，读取头信息；
     if (0 != avformat_open_input(&formatCtx, moviePath , NULL, NULL)) {
-        ///释放内存
+        //释放内存
         avformat_free_context(formatCtx);
         //当取消掉时，不给上层回调
         if (self.abort_request) {
@@ -412,7 +412,7 @@ static int decode_interrupt_cb(void *ctx)
     
 #if DEBUG
     NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
-    ///用于查看详细信息，调试的时候打出来看下很有必要
+    //用于查看详细信息，调试的时候打出来看下很有必要
     av_dump_format(formatCtx, 0, moviePath, false);
     
     NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
@@ -476,7 +476,7 @@ static int decode_interrupt_cb(void *ctx)
     [self.rendererThread start];
     //循环读包
     [self readPacketLoop:formatCtx];
-    ///读包线程结束了，销毁下相关结构体
+    //读包线程结束了，销毁下相关结构体
     avformat_close_input(&formatCtx);
 }
 
@@ -564,7 +564,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)rendererThreadFunc
 {
-    ///调用了stop方法，，则不再渲染
+    //调用了stop方法，则不再渲染
     while (!self.abort_request) {
         
         NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
@@ -608,7 +608,7 @@ static int decode_interrupt_cb(void *ctx)
         const void *from = src + offset;
         int left = l_src_size - offset;
         
-        ///根据剩余数据长度和需要数据长度算出应当copy的长度
+        //根据剩余数据长度和需要数据长度算出应当copy的长度
         int leftBytesToCopy = FFMIN(bufferSize, left);
         
         memcpy(buffer, from, leftBytesToCopy);
@@ -654,7 +654,7 @@ static int decode_interrupt_cb(void *ctx)
         const void *leftFrom = l_src + offset;
         int leftBytesLeft = l_src_size - offset;
         
-        ///根据剩余数据长度和需要数据长度算出应当copy的长度
+        //根据剩余数据长度和需要数据长度算出应当copy的长度
         int leftBytesToCopy = FFMIN(l_size, leftBytesLeft);
         
         memcpy(l_buffer, leftFrom, leftBytesToCopy);
@@ -668,7 +668,7 @@ static int decode_interrupt_cb(void *ctx)
             const void *right_from = r_src + offset;
             int right_bytes_left = r_src_size - offset;
             
-            ///根据剩余数据长度和需要数据长度算出应当copy的长度
+            //根据剩余数据长度和需要数据长度算出应当copy的长度
             int rightBytesToCopy = FFMIN(r_size, right_bytes_left);
             memcpy(r_buffer, right_from, rightBytesToCopy);
             r_buffer += rightBytesToCopy;

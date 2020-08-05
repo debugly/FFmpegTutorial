@@ -33,9 +33,9 @@
         self.threadSelector = selector;
         self.threadArgs = argument;
         self.joinModeName = @"joinme";
-        ///避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
+        //避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
         MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-        ///不允许重复准备
+        //不允许重复准备
         self.thread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(workFunc) object:nil];
     }
     
@@ -44,17 +44,17 @@
 
 - (void)workFunc
 {
-    ///取消了就直接返回，不再处理
+    //取消了就直接返回，不再处理
     if ([[NSThread currentThread] isCancelled]) {
         return;
     }
     
-    /// iOS 子线程需要显式创建 autoreleasepool 以释放 autorelease 对象
+    // iOS 子线程需要显式创建 autoreleasepool 以释放 autorelease 对象
     @autoreleasepool {
         
         [[NSThread currentThread] setName:self.name];
         
-        ///嵌套的这个自动释放池也是必要的！！防止在 threadSelector 里完成任务后，将线程释放，但是却进入了死等的Runloop逻辑中，由于外层的 @autoreleasepool 不能回收相关内存，最终导致整个线程得不到释放。[可以将FFPlayer0x02 _stop 方法中的join注释掉观察] 
+        //嵌套的这个自动释放池也是必要的！！防止在 threadSelector 里完成任务后，将线程释放，但是却进入了死等的Runloop逻辑中，由于外层的 @autoreleasepool 不能回收相关内存，最终导致整个线程得不到释放。[可以将FFPlayer0x02 _stop 方法中的join注释掉观察]
         @autoreleasepool {
             if ([self.threadTarget respondsToSelector:self.threadSelector]) {
                 #pragma clang diagnostic push
@@ -67,7 +67,7 @@
         }
         
         if (self.joinModeName.length > 0) {
-            ///增加一个 port，让 RunLoop run 起来
+            //增加一个 port，让 RunLoop run 起来
             [[NSRunLoop currentRunLoop] addPort:[NSPort port] forMode:self.joinModeName];
             [[NSRunLoop currentRunLoop] runMode:self.joinModeName beforeDate:[NSDate distantFuture]];
             
