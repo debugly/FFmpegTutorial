@@ -1,10 +1,10 @@
 osx_image: xcode11.3
 language: objective-c
 # cache: cocoapods
-podfile: Example/iOS/Podfile
+podfile: Example/iOS
 before_install:
  - gem install cocoapods # Since Travis is not always on latest version
- - pod install --project-directory=Example
+ - pod install --project-directory=Example/iOS
 script:
 # - set -o pipefail && xcodebuild test -enableCodeCoverage YES -workspace Example/iOS/FFmpegTutorial.xcworkspace -scheme FFmpegTutorialTests -destination 'platform=iOS Simulator,OS=13.3,name=iPhone 8' ONLY_ACTIVE_ARCH=NO | xcpretty
 - pod lib lint --allow-warnings
