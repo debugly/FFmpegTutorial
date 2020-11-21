@@ -27,6 +27,7 @@ TODO: Add long description of the pod here.
   s.source           = { :git => 'https://github.com/debugly/FFmpegTutorial.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
+  s.osx.deployment_target = '10.11'
   s.static_framework = true
   
   s.subspec 'common' do |ss|
@@ -123,6 +124,11 @@ TODO: Add long description of the pod here.
   s.subspec '0x32' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x32/*.{h,m}'
     ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h'
+  end
+
+  s.subspec '0x40' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x40/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x40/MRVideoToPicture.h'
   end
 
   s.dependency 'MRFFmpegPod'

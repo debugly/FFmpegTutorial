@@ -1,0 +1,18 @@
+# Uncomment the next line to define a global platform for your project
+
+platform :osx, '10.11'
+
+FF_VER='4.3.1'
+OpenSSL_VER='1.1.1h'
+
+target 'FFmpegTutorial-macOS' do
+  # Comment the next line if you don't want to use dynamic frameworks
+  use_frameworks!
+
+  # Pods for FFmpegTutorial-macOS
+  # pod 'MROpenSSLPod', :path => '.'
+  # pod 'MRFFmpegPod', :path => '.'
+  pod 'MROpenSSLPod', :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL#{OpenSSL_VER}.podspec"
+  pod 'MRFFmpegPod', :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg#{FF_VER}.podspec"
+  pod 'FFmpegTutorial', :path => '../../'
+end
