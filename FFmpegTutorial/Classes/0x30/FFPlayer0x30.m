@@ -225,11 +225,11 @@ static int decode_interrupt_cb(void *ctx)
             if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !self.eof) {
                 //最后放一个空包进去
                 if (self.audioDecoder.streamIdx >= 0) {
-                    packet_queue_put_nullpacket(&videoq, self.audioDecoder.streamIdx);
+                    packet_queue_put_nullpacket(&audioq, self.audioDecoder.streamIdx);
                 }
                     
                 if (self.videoDecoder.streamIdx >= 0) {
-                    packet_queue_put_nullpacket(&audioq, self.videoDecoder.streamIdx);
+                    packet_queue_put_nullpacket(&videoq, self.videoDecoder.streamIdx);
                 }
                 //标志为读包结束
                 self.eof = 1;
