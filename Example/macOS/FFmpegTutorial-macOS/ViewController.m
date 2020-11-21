@@ -35,6 +35,15 @@
 
 @implementation ViewController
 
+- (void)dealloc
+{
+    if (self.vtp) {
+        self.vtp.delegate = nil;
+        [self.vtp stop];
+        self.vtp = nil;
+    }
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     MRVideoToPicture *vtp = [[MRVideoToPicture alloc] init];
