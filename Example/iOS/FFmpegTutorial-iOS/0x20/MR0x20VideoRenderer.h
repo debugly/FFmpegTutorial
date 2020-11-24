@@ -11,7 +11,7 @@
 
 @interface MR0x20VideoRenderer : UIView
 
-@property (nonatomic , assign) BOOL isFullYUVRange;
+@property (nonatomic, assign) BOOL isFullYUVRange;
 
 - (void)setupGL;
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
