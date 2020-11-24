@@ -7,22 +7,28 @@
 
 本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，以此来熟悉 FFmpeg 的 API，了解播放器内部实现细节，谁料想在学习的过程中萌生了自己封装播放器的想法...
 
-3 年期间虽然摸索出了多种音视频渲染方法，但终究没有完成原定目标！于 2020 年年初从零重写该项目，工程采用 Pod 开发库（Development Pod）的形式来组织，所有的封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 库。
+3 年期间虽然摸索出了多种音视频渲染方法，但终究没有完成原定目标！于 2020 年年初从零重写该项目，工程采用 Pod 开发库（Development Pod）的形式来组织，所有教程均提供 iOS 和 macOS 的调用实例，封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 等库。
 
 开发语言为 Objective-C，工程目录结构如下：
 
 ```
 ├── Example
-│   └── iOS //iOS 配套demo
-│       ├── FFmpegTutorial-iOS
-│       ├── FFmpegTutorial-iOS.xcodeproj
-│       ├── FFmpegTutorial-iOS.xcworkspace
+│   ├── iOS //iOS 配套demo
+│   │   ├── FFmpegTutorial-iOS
+│   │   ├── FFmpegTutorial-iOS.xcodeproj
+│   │   ├── FFmpegTutorial-iOS.xcworkspace
+│   │   ├── Podfile
+│   │   ├── Podfile.lock
+│   │   ├── Pods
+│   │   └── Tests
+│   └── macOS //macOS 配套demo
+│       ├── FFmpegTutorial-macOS
+│       ├── FFmpegTutorial-macOS.xcodeproj
+│       ├── FFmpegTutorial-macOS.xcworkspace
 │       ├── Podfile
 │       ├── Podfile.lock
-│       ├── Pods
-│       └── Tests
-├── FFmpegTutorial // demo 工程依赖了这个 Development Pod
-│   ├── Assets
+│       └── Pods
+├── FFmpegTutorial // demo工程依赖了这个 Development Pod
 │   └── Classes
 │       ├── 0x01  //具体教程源码
 │       ├── 0x02
@@ -31,18 +37,58 @@
 │       ├── 0x05
 │       ├── 0x06
 │       ├── 0x10
-│       ...
+│       ├── 0x11
+│       ├── 0x12
+│       ├── 0x13
+│       ├── 0x14
+│       ├── 0x15
+│       ├── 0x20
+│       ├── 0x21
+│       ├── 0x22
+│       ├── 0x30
+│       ├── 0x31
+│       ├── 0x32
+│       ├── 0x40
 │       └── common //通用类
 ├── FFmpegTutorial.podspec
 ├── LICENSE
 ├── README.md
-└── md
-	├── 0x00.md //教程配套文档
-  	├── 0x01.md
-   	├── 0x02.md
-   	├── 0x03.md
-    ...
-
+└── md  //教程配套文档
+    ├── 0x00.md
+    ├── 0x01.md
+    ├── 0x02.md
+    ├── 0x03.md
+    ├── 0x04.md
+    ├── 0x05.md
+    ├── 0x06.md
+    ├── 0x10.md
+    ├── 0x11.md
+    ├── illiteracy
+    │   ├── 0x01.md
+    │   ├── 0x02.md
+    │   ├── 0x03.md
+    │   ├── 0x04-todo.md
+    │   ├── 0x04.md
+    │   └── imgs
+    ├── imgs
+    │   ├── 004-1.jpg
+    │   ├── 03-path.jpeg
+    │   ├── 0x01
+    │   ├── 0x02
+    │   ├── 0x07
+    │   ├── MR-16-9.png
+    │   ├── ffmpeg.png
+    │   ├── gray-bar.png
+    │   └── snow.jpg
+    └── todo
+        ├── 0x04.md
+        ├── 0x05.md
+        ├── 0x07.md
+        ├── 0x08.md
+        ├── 0x12-1.md
+        ├── 0x12.md
+        ├── 0x13.md
+        └── 0xF0.md
 ```
 
 # Anti-Illiteracy
@@ -115,21 +161,19 @@ Just For Fun
 
 # Usage
 
-克隆该仓库之后，项目并不能运行起来，因为项目依赖的 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 库还没有下载下来，需要执行
+克隆该仓库之后，项目并不能运行起来，因为项目依赖的 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 等库还没有下载下来，
+
+1、运行 iOS demo 需要执行:
 
 **pod install --project-directory=Example/iOS**
 
-```bash
-➜  StudyFFmpeg git:(master) ✗ pod install --project-directory=Example/iOS
-will install MRFFmpeg3.4.7
-Analyzing dependencies
-Downloading dependencies
-Generating Pods project
-Integrating client project
-Pod installation complete! There are 2 dependencies from the Podfile and 2 total pods installed.
-```
-
 成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
+
+运行 macOS demo 需要执行:
+
+**pod install --project-directory=Example/macOS**
+
+成功安装后就可以打开 **Example/iOS/FFmpegTutorial-macOS.xcworkspace** 运行了。
 
 ## Ends
 
