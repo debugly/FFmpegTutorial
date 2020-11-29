@@ -1,11 +1,11 @@
 //
-//  ViewController.m
+//  MR0x40ViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by Matt Reach on 2020/11/18.
 //
 
-#import "ViewController.h"
+#import "MR0x40ViewController.h"
 #import <FFmpegTutorial/MRVideoToPicture.h>
 #import <ImageIO/ImageIO.h>
 
@@ -25,7 +25,7 @@
 
 #endif
 
-@interface ViewController ()<MRVideoToPictureDelegate>
+@interface MR0x40ViewController ()<MRVideoToPictureDelegate>
 
 @property (nonatomic, strong) MRVideoToPicture *vtp;
 @property (nonatomic, assign) int maxCost;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation ViewController
+@implementation MR0x40ViewController
 
 - (void)dealloc
 {
@@ -42,6 +42,12 @@
         [self.vtp stop];
         self.vtp = nil;
     }
+}
+
+//-[NSNib _initWithNibNamed:bundle:options:] could not load the nibName: MR0x40ViewController in bundle (null).
+- (void)loadView
+{
+    self.view = [[NSView alloc] initWithFrame:NSMakeRect(0, 0, 300, 300)];
 }
 
 - (void)viewDidLoad {
