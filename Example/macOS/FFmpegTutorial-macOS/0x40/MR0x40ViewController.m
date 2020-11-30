@@ -62,7 +62,7 @@
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;
     //每隔10s保存一帧关键帧图片
-    vtp.frameInterval = 10;
+    vtp.perferInterval = 10;
     vtp.delegate = self;
     [vtp prepareToPlay];
     [vtp readPacket];

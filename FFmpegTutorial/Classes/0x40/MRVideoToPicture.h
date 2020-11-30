@@ -16,10 +16,23 @@
 #import <CoreGraphics/CGImage.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+//videoOpened info's key
+typedef NSString * const kMRMovieInfoKey;
+//视频时长；单位s
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieDuration;
+//视频格式
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieFormat;
+//视频宽；单位像素
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieWidth;
+//视频高；单位像素
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieHeight;
+
 @class MRVideoToPicture;
 @protocol MRVideoToPictureDelegate <NSObject>
 
 @optional
+- (void)vtp:(MRVideoToPicture*)vtp videoOpened:(NSDictionary <kMRMovieInfoKey,id> *)info;
 - (void)vtp:(MRVideoToPicture*)vtp convertAnImage:(CGImageRef)img;
 - (void)vtp:(MRVideoToPicture*)vtp convertFinished:(NSError *)err;
 
@@ -32,8 +45,10 @@ NS_ASSUME_NONNULL_BEGIN
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
 @property (nonatomic, weak) id <MRVideoToPictureDelegate> delegate;
-///帧间隔时长
-@property (nonatomic, assign) int frameInterval;
+///期望帧间隔时长
+@property (nonatomic, assign) int perferInterval;
+///总张数
+@property (nonatomic, assign) int maxCount;
 @property (nonatomic, assign, readonly) int frameCount;
 ///准备
 - (void)prepareToPlay;

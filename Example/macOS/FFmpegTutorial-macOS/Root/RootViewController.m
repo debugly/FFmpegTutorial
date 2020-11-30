@@ -38,11 +38,11 @@
     NSTableView *tableView = [[NSTableView alloc] initWithFrame:self.view.bounds];
     tableView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
     tableView.intercellSpacing = NSMakeSize(0, 0);
-    if (@available(macOS 11.0, *)) {
-        tableView.style = NSTableViewStylePlain;
-    } else {
-        // Fallback on earlier versions
-    }
+//    if (@available(macOS 11.0, *)) {
+//        tableView.style = NSTableViewStylePlain;
+//    } else {
+//        // Fallback on earlier versions
+//    }
     //设置选中行背景样式，设置成None时drawSelectionInRect就不走了;
     tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleRegular;
     NSTableColumn *column = [[NSTableColumn alloc] init];

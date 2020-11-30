@@ -14,6 +14,15 @@
 #import "MRVideoScale.h"
 #import "MRConvertUtil.h"
 
+//视频时长；单位s
+ kMRMovieInfoKey kMRMovieDuration = @"kMRMovieDuration";
+//视频格式
+ kMRMovieInfoKey kMRMovieFormat = @"kMRMovieFormat";
+//视频宽；单位像素
+kMRMovieInfoKey kMRMovieWidth = @"kMRMovieWidth";
+//视频高；单位像素
+kMRMovieInfoKey kMRMovieHeight = @"kMRMovieHeight";
+
 @interface MRVideoToPicture ()<MRDecoderDelegate>
 {
     //解码前的视频包缓存队列
@@ -139,7 +148,8 @@ static int decode_interrupt_cb(void *ctx)
 }
 
 //读包循环
-- (void)readPacketLoop:(AVFormatContext *)formatCtx {
+- (void)readPacketLoop:(AVFormatContext *)formatCtx
+{
     AVPacket pkt1, *pkt = &pkt1;
     //循环读包
     for (;;) {
@@ -194,8 +204,8 @@ static int decode_interrupt_cb(void *ctx)
                     self.lastInterval = pkt->pts - self.lastPkts;
                     self.lastPkts = pkt->pts;
                     //当帧间隔大于0时，采用seek方案
-                    if (self.frameInterval > 0) {
-                        long sec = self.frameInterval * self.frameCount;
+                    if (self.perferInterval > 0) {
+                        long sec = self.perferInterval * self.frameCount;
                         if (-1 == [self seekTo:formatCtx sec:sec]) {
                             //标志为读包结束
                             readEOF = 1;
@@ -387,6 +397,21 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
+    if (self.delegate && [self.delegate respondsToSelector:@selector(vtp:videoOpened:)]) {
+        NSMutableDictionary *info = [NSMutableDictionary dictionary];
+        const char *name = formatCtx->iformat->name;
+        if (NULL != name) {
+            NSString *format = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
+            if (format) {
+                [info setObject:format forKey:kMRMovieFormat];
+            }
+        }
+        [info setObject:@(self.videoDecoder.duration) forKey:kMRMovieDuration];
+        [info setObject:@(self.videoDecoder.picWidth) forKey:kMRMovieWidth];
+        [info setObject:@(self.videoDecoder.picHeight) forKey:kMRMovieHeight];
+        [self.delegate vtp:self videoOpened:info];
+    }
+    
     //视频解码线程开始工作
     [self.videoDecoder start];
     //准备渲染线程
@@ -462,6 +487,9 @@ static int decode_interrupt_cb(void *ctx)
             av_log(NULL, AV_LOG_ERROR, "frame->pts:%d\n",(int)(vp->frame->pts * av_q2d(self.videoDecoder.stream->time_base)));
             CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:vp->frame];
             [self.delegate vtp:self convertAnImage:img];
+        }
+        if (self.frameCount >= self.maxCount) {
+            [self stop];
         }
     }
 }
