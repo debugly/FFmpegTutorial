@@ -488,8 +488,10 @@ static int decode_interrupt_cb(void *ctx)
             CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:vp->frame];
             [self.delegate vtp:self convertAnImage:img];
         }
-        if (self.frameCount >= self.maxCount) {
-            [self stop];
+        if (self.maxCount > 1 && self.frameCount >= self.maxCount) {
+            [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+                [self stop];
+            }];
         }
     }
 }
