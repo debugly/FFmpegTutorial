@@ -9,8 +9,6 @@
 #import "MR0x40ViewController.h"
 #import <FFmpegTutorial/MRRWeakProxy.h>
 #import <FFmpegTutorial/MRVideoToPicture.h>
-#import <ImageIO/ImageIO.h>
-#import <MobileCoreServices/MobileCoreServices.h>
 #import "MR0x40VideoRenderer.h"
 
 @interface MR0x40ViewController ()<UITextViewDelegate,MRVideoToPictureDelegate>
@@ -22,7 +20,6 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet MR0x40VideoRenderer *videoRenderer;
 @property (nonatomic, strong) MRVideoToPicture *vtp;
-@property (nonatomic, assign) int maxCost;
 @property (nonatomic, assign) int frameCount;
 @property (nonatomic, assign) NSTimeInterval begin;
 
@@ -60,11 +57,9 @@
         // MR_PIX_FMT_MASK_ARGB;// MR_PIX_FMT_MASK_RGBA;
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;
-    //每隔10s保存一帧关键帧图片
-    vtp.frameInterval = 10;
     vtp.delegate = self;
     [vtp prepareToPlay];
-    [vtp readPacket];
+    [vtp startConvert];
     self.vtp = vtp;
     self.begin = CFAbsoluteTimeGetCurrent();
 
@@ -72,47 +67,6 @@
     NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
-}
-
-- (void)saveAsJpeg:(CGImageRef _Nonnull)img path:(NSString *)path
-{
-    CFStringRef imageUTType = kUTTypeJPEG;
-    NSURL *fileUrl = [NSURL fileURLWithPath:path];
-    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef) fileUrl, imageUTType, 1, NULL);
-    CGImageDestinationAddImage(destination, img, NULL);
-    CGImageDestinationFinalize(destination);
-    CFRelease(destination);
-}
-
-- (void)saveImage:(CGImageRef _Nonnull)img
-{
-    int64_t time = [[NSDate date] timeIntervalSince1970] * 10000;
-    NSString *path = [NSTemporaryDirectory() stringByAppendingFormat:@"%lld.jpg",time];
-    [self saveAsJpeg:img path:path];
-}
-
-- (void)display:(CGImageRef)cgImage
-{
-    CFRetain(cgImage);
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.videoRenderer dispalyCGImage:cgImage];
-        CFRelease(cgImage);
-    });
-}
-
-- (void)vtp:(MRVideoToPicture *)vtp convertAnImage:(CGImageRef)img
-{
-    if (self.vtp == vtp) {
-        self.frameCount = vtp.frameCount;
-        [self display:img];
-        NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-        [self saveImage:img];
-        NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-        int cost = (end - begin) * 1000;
-        if (cost > _maxCost) {
-            _maxCost = cost;
-        }
-    }
 }
 
 - (void)vtp:(MRVideoToPicture *)vtp convertFinished:(NSError *)err
@@ -147,7 +101,7 @@
 
 - (void)updateMessage
 {
-    self.textView.text = [NSString stringWithFormat:@"generate:%d,MaxCost:%dms",self.frameCount,self.maxCost];
+    self.textView.text = [NSString stringWithFormat:@"generate:%d",self.frameCount];
 }
 
 //滑动时就暂停自动滚到到底部
