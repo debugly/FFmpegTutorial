@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
+		DD21E1FE25836D10000D5DB5 /* MR0x40CellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD21E1FD25836D10000D5DB5 /* MR0x40CellView.m */; };
 		DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82A256EA4D000B93F9F /* RootViewController.m */; };
 		DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82E256EAE3000B93F9F /* RootCellView.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
@@ -27,6 +28,9 @@
 		6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		DD21E1FC25836D10000D5DB5 /* MR0x40CellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40CellView.h; sourceTree = "<group>"; };
+		DD21E1FD25836D10000D5DB5 /* MR0x40CellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40CellView.m; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E82D256EAE3000B93F9F /* RootCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootCellView.h; sourceTree = "<group>"; };
@@ -92,6 +96,8 @@
 			children = (
 				DDFDF8A72564CDC700F1CAE2 /* MR0x40ViewController.h */,
 				DDFDF8A82564CDC700F1CAE2 /* MR0x40ViewController.m */,
+				DD21E1FC25836D10000D5DB5 /* MR0x40CellView.h */,
+				DD21E1FD25836D10000D5DB5 /* MR0x40CellView.m */,
 				DDB73E972577DBFB0060EB57 /* MR0x40ViewController.xib */,
 				DDB73F6A2577DFC70060EB57 /* MR0x40Task.h */,
 				DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */,
@@ -111,8 +117,8 @@
 		DDB73E912577DB9A0060EB57 /* DragView */ = {
 			isa = PBXGroup;
 			children = (
-				DDB73E922577DB9A0060EB57 /* MRDragView.m */,
 				DDB73E932577DB9A0060EB57 /* MRDragView.h */,
+				DDB73E922577DB9A0060EB57 /* MRDragView.m */,
 			);
 			path = DragView;
 			sourceTree = "<group>";
@@ -167,6 +173,7 @@
 				DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */,
 				DDFDF8AF2564CDCA00F1CAE2 /* Info.plist */,
 				DDFDF8B02564CDCA00F1CAE2 /* main.m */,
+				DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */,
 				DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */,
 			);
 			path = "FFmpegTutorial-macOS";
@@ -274,6 +281,7 @@
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */,
 				DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */,
+				DD21E1FE25836D10000D5DB5 /* MR0x40CellView.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
@@ -415,6 +423,8 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${PRODUCT_NAME}/PrefixHeader.pch";
 				INFOPLIST_FILE = "FFmpegTutorial-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -436,6 +446,8 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "${PRODUCT_NAME}/PrefixHeader.pch";
 				INFOPLIST_FILE = "FFmpegTutorial-macOS/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

@@ -15,8 +15,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign, readonly) int frameCount;
 @property (nonatomic, assign, readonly) int duration;
 @property (nonatomic, copy, readonly) NSString *videoName;
-@property (nonatomic, assign) int maxCount;
-@property (nonatomic, copy) NSString *picSaveDir;
+@property (nonatomic, assign, readonly) NSSize dimension;
+@property (nonatomic, copy, readonly) NSString *containerFmt;
+@property (nonatomic, copy, readonly) NSString *audioFmt;
+@property (nonatomic, copy, readonly) NSString *videoFmt;
+
 
 - (instancetype)initWithURL:(NSURL *)url;
 - (void)start:(void(^)(void))completion;

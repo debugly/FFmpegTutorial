@@ -63,7 +63,7 @@
                 [bookmarkArr addObject:dic];
             }
         }
-        ///按照文件名排序
+        //按照文件名排序
         [bookmarkArr sortUsingComparator:^NSComparisonResult(NSDictionary * obj1, NSDictionary * obj2) {
             NSURL *url1 = obj1[@"url"];
             NSURL *url2 = obj2[@"url"];
@@ -74,6 +74,5 @@
     }
     return nil;
 }
-
 
 @end

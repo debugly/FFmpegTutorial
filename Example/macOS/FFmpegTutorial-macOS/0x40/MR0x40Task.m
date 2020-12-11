@@ -7,7 +7,6 @@
 
 #import "MR0x40Task.h"
 #import <FFmpegTutorial/MRVideoToPicture.h>
-#import <ImageIO/ImageIO.h>
 
 static const int kMinPictureCount = 8;
 static const int kMaxPictureCount = 30;
@@ -22,6 +21,10 @@ static const int kMaxPictureCount = 30;
 @property (nonatomic, assign, readwrite) int duration;
 @property (nonatomic, assign, readwrite) int frameCount;
 @property (nonatomic, copy, readwrite) NSString *videoName;
+@property (nonatomic, assign, readwrite) CGSize dimension;
+@property (nonatomic, copy, readwrite) NSString *containerFmt;
+@property (nonatomic, copy, readwrite) NSString *audioFmt;
+@property (nonatomic, copy, readwrite) NSString *videoFmt;
 
 @end
 
@@ -61,17 +64,19 @@ static const int kMaxPictureCount = 30;
         // MR_PIX_FMT_MASK_ARGB;// MR_PIX_FMT_MASK_RGBA;
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;
-    //每隔10s保存一帧关键帧图片
-    vtp.perferInterval = 10;
-    vtp.maxCount = self.maxCount;
     vtp.delegate = self;
+    NSString *dirName = [[vtp.contentPath lastPathComponent] stringByDeletingPathExtension];
+    vtp.picSaveDir = [NSTemporaryDirectory() stringByAppendingPathComponent:dirName];
+    [[NSFileManager defaultManager] createDirectoryAtPath:vtp.picSaveDir withIntermediateDirectories:YES attributes:nil error:nil];
     [vtp prepareToPlay];
-    [vtp readPacket];
+    [vtp startConvert];
+    vtp.maxCount = 20;
     self.vtp = vtp;
 }
 
 - (void)vtp:(MRVideoToPicture *)vtp videoOpened:(NSDictionary<NSString *,id> *)info
 {
+    NSLog(@"=====video Opened=====%@",info);
     int duration = [info[kMRMovieDuration] intValue];
     if (duration > 0) {
         self.duration = duration;
@@ -91,32 +96,18 @@ static const int kMaxPictureCount = 30;
             self.vtp.perferInterval = duration / kMaxPictureCount;;
         }
     }
+    int videoWidth = [info[kMRMovieWidth] intValue];
+    int videoHeight = [info[kMRMovieHeight] intValue];
+    self.dimension = CGSizeMake(videoWidth, videoHeight);
+    self.containerFmt = info[kMRMovieContainerFmt];
+    self.audioFmt = info[kMRMovieAudioFmt];
+    self.videoFmt = info[kMRMovieVideoFmt]; 
 }
 
-- (void)saveAsJpeg:(CGImageRef _Nonnull)img path:(NSString *)path
-{
-    CFStringRef imageUTType = kUTTypeJPEG;
-    NSURL *fileUrl = [NSURL fileURLWithPath:path];
-    CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef) fileUrl, imageUTType, 1, NULL);
-    CGImageDestinationAddImage(destination, img, NULL);
-    CGImageDestinationFinalize(destination);
-    CFRelease(destination);
-}
-
-- (NSString *)picSaveDir
-{
-    if (!_picSaveDir) {
-        _picSaveDir = NSTemporaryDirectory();
-    }
-    return _picSaveDir;
-}
-
-- (void)vtp:(MRVideoToPicture *)vtp convertAnImage:(CGImageRef)img
+- (void)vtp:(MRVideoToPicture *)vtp convertAnImage:(NSString *)imgPath
 {
     if (self.vtp == vtp) {
-        int64_t time = [[NSDate date] timeIntervalSince1970] * 10000;
-        NSString *path = [self.picSaveDir stringByAppendingFormat:@"%lld.jpg",time];
-        [self saveAsJpeg:img path:path];
+        NSLog(@"image path:%@",imgPath);
     }
 }
 
