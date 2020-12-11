@@ -21,19 +21,25 @@ NS_ASSUME_NONNULL_BEGIN
 typedef NSString * const kMRMovieInfoKey;
 //视频时长；单位s
 FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieDuration;
-//视频格式
-FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieFormat;
+//视频封装格式；可能有多个，使用 ”,“ 分割
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieContainerFmt;
 //视频宽；单位像素
 FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieWidth;
 //视频高；单位像素
 FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieHeight;
+//视频编码格式
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieVideoFmt;
+//音频编码格式
+FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieAudioFmt;
+
 
 @class MRVideoToPicture;
 @protocol MRVideoToPictureDelegate <NSObject>
 
+//代理方法均在主线程里回调
 @optional
 - (void)vtp:(MRVideoToPicture*)vtp videoOpened:(NSDictionary <kMRMovieInfoKey,id> *)info;
-- (void)vtp:(MRVideoToPicture*)vtp convertAnImage:(CGImageRef)img;
+- (void)vtp:(MRVideoToPicture*)vtp convertAnImage:(NSString *)imgPath;
 - (void)vtp:(MRVideoToPicture*)vtp convertFinished:(NSError *)err;
 
 @end
@@ -44,20 +50,20 @@ FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieHeight;
 @property (nonatomic, copy) NSString *contentPath;
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
-@property (nonatomic, weak) id <MRVideoToPictureDelegate> delegate;
+@property (nonatomic, weak) id<MRVideoToPictureDelegate> delegate;
 ///期望帧间隔时长
 @property (nonatomic, assign) int perferInterval;
 ///总张数
 @property (nonatomic, assign) int maxCount;
 @property (nonatomic, assign, readonly) int frameCount;
+@property (nonatomic, copy) NSString *picSaveDir;
+
 ///准备
 - (void)prepareToPlay;
-///读包
-- (void)readPacket;
+///开始提取
+- (void)startConvert;
 ///停止读包
 - (void)stop;
-///m/n 缓冲情况
-- (NSString *)peekPacketBufferStatus;
 
 @end
 

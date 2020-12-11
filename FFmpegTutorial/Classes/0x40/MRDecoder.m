@@ -6,22 +6,20 @@
 //
 
 #import "MRDecoder.h"
-#import "MRThread.h"
 #include <libavcodec/avcodec.h>
-#import <libavformat/avformat.h>
+#include <libavformat/avformat.h>
 
 @interface MRDecoder()
 
 //解码线程
-@property (nonatomic, strong) MRThread * workThread;
 @property (nonatomic, assign, readwrite) AVStream * stream;
 @property (nonatomic, assign) AVCodecContext * avctx;
 @property (nonatomic, assign) int abort_request;
 //for video
-@property (nonatomic, assign, readwrite) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
-@property (nonatomic, assign, readwrite) int duration;
+@property (nonatomic, copy, readwrite) NSString * codecName;
+
 @end
 
 @implementation MRDecoder
@@ -44,14 +42,14 @@
     return self;
 }
 
-- (int)open
+- (BOOL)open
 {
     if (self.ic == NULL) {
-        return -1;
+        return NO;
     }
     
     if (self.streamIdx < 0 || self.streamIdx >= self.ic->nb_streams){
-        return -1;
+        return NO;
     }
     
     AVStream *stream = self.ic->streams[self.streamIdx];
@@ -59,22 +57,22 @@
     //创建解码器上下文
     AVCodecContext *avctx = avcodec_alloc_context3(NULL);
     if (!avctx) {
-        return AVERROR(ENOMEM);
+        return NO;
     }
     
     //填充下相关参数
     if (avcodec_parameters_to_context(avctx, stream->codecpar)) {
         avcodec_free_context(&avctx);
-        return -1;
+        return NO;
     }
     
-    av_codec_set_pkt_timebase(avctx, stream->time_base);
+    //av_codec_set_pkt_timebase(avctx, stream->time_base);
     
     //查找解码器
     AVCodec *codec = avcodec_find_decoder(avctx->codec_id);
     if (!codec){
         avcodec_free_context(&avctx);
-        return -1;
+        return NO;
     }
     
     avctx->codec_id = codec->id;
@@ -82,7 +80,7 @@
     //打开解码器
     if (avcodec_open2(avctx, codec, NULL)) {
         avcodec_free_context(&avctx);
-        return -1;
+        return NO;
     }
     
     stream->discard = AVDISCARD_DEFAULT;
@@ -91,10 +89,14 @@
     self.pix_fmt = avctx->pix_fmt;
     self.picWidth = avctx->width;
     self.picHeight = avctx->height;
-    self.duration = (int)(stream->duration * av_q2d(stream->time_base));
-    self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
+    //解码器id
+    enum AVCodecID codecID = avctx->codec_id;
+    //根据解码器id找到对应名称
+    const char *codecName = avcodec_get_name(codecID);
+    self.codecName = [[NSString alloc] initWithUTF8String:codecName];
+    //(int)stream->duration * av_q2d(stream->time_base);
     
-    return 0;
+    return YES;
 }
 
 #pragma mark - 音视频通用解码方法
@@ -147,9 +149,9 @@
     }
 }
 
-#pragma mark - 解码线程
+#pragma mark - 解码开始
 
-- (void)workFunc
+- (void)start
 {
     //创建一个frame就行了，可以复用
     AVFrame *frame = av_frame_alloc();
@@ -199,26 +201,10 @@
     }
 }
 
-- (void)start
-{
-    if (self.workThread) {
-        self.workThread.name = self.name;
-        [self.workThread start];
-    }
-}
-
 - (void)cancel
 {
     self.abort_request = 1;
-    if (self.workThread) {
-        [self.workThread cancel];
-    }
 }
 
-- (void)join
-{
-    [self.workThread join];
-    self.workThread = nil;
-}
 
 @end

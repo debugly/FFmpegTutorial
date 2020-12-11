@@ -39,24 +39,21 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, weak) id <MRDecoderDelegate> delegate;
 @property (nonatomic, assign, readonly) AVStream * stream;
 //for video
-@property (nonatomic, assign, readonly) enum AVPixelFormat pix_fmt;
+@property (nonatomic, assign) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;
-@property (nonatomic, assign, readonly) int duration;
+@property (nonatomic, copy, readonly) NSString * codecName;
 
 /**
  打开解码器，创建解码线程;
  return 0;（没有错误）
  */
-- (int)open;
+- (BOOL)open;
 //开始解码
 - (void)start;
 //取消解码
 - (void)cancel;
-//内部线程join
-- (void)join;
 
 @end
-
 
 NS_ASSUME_NONNULL_END
