@@ -12,7 +12,6 @@ NS_ASSUME_NONNULL_BEGIN
 @interface NSNavigationController : NSViewController
 
 @property (nonatomic, strong)NSViewController *rootViewController;
-@property (nonatomic, copy) NSString *title;
 
 - (instancetype)initWithRootViewController:(NSViewController *)rootViewController;
 - (void)pushViewController:(NSViewController *)viewController animated:(BOOL)animated;
