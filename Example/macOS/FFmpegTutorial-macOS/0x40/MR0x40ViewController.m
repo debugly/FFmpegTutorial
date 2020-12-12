@@ -10,6 +10,7 @@
 #import "MRUtil.h"
 #import "MR0x40Task.h"
 #import "MR0x40CellView.h"
+#import "MR0x40TableHeaderCell.h"
 
 static NSString *const kVideoNameIdentifier = @"videoName";
 static NSString *const kDimensionIdentifier = @"dimension";
@@ -30,6 +31,13 @@ static NSString *const kCostTimeIdentifier = @"costTime";
 @end
 
 @implementation MR0x40ViewController
+
+- (NSTableColumn *)createTableColumn {
+    NSTableColumn *column = [[NSTableColumn alloc] init];
+    column.headerCell = [MR0x40TableHeaderCell new];
+    column.editable = NO;
+    return column;
+}
 
 //-[NSNib _initWithNibNamed:bundle:options:] could not load the nibName: MR0x40ViewController in bundle (null).
 //- (void)loadView
@@ -72,10 +80,9 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     
     CGFloat remindWidth = CGRectGetWidth(self.view.bounds);
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn * column = [self createTableColumn];
         column.title = @"文件";
         column.identifier = kVideoNameIdentifier;
-        column.editable = NO;
         column.width = remindWidth * 0.3;
         column.minWidth = 200;
         column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
@@ -84,10 +91,9 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     }
     
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"支持容器";
         column.identifier = kContainerFmtIdentifier;
-        column.editable = NO;
         column.width = remindWidth * 0.2;
         column.minWidth = 200;
         column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
@@ -97,50 +103,45 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     
     remindWidth = remindWidth / 6;
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"音频";
         column.identifier = kAudioFmtIdentifier;
-        column.editable = NO;
         column.width = 50;
         column.resizingMask = NSTableColumnAutoresizingMask;
         [tableView addTableColumn:column];
     }
     
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"视频";
         column.identifier = kVideoFmtIdentifier;
-        column.editable = NO;
         column.width = 50;
         column.resizingMask = NSTableColumnAutoresizingMask;
         [tableView addTableColumn:column];
     }
     
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"宽高";
         column.identifier = kDimensionIdentifier;
-        column.editable = NO;
         column.width = 80;
         column.resizingMask = NSTableColumnAutoresizingMask;
         [tableView addTableColumn:column];
     }
     
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"时长";
         column.identifier = kDurationIdentifier;
-        column.editable = NO;
         column.width = 50;
         column.resizingMask = NSTableColumnAutoresizingMask;
         [tableView addTableColumn:column];
     }
     
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"图片";
         column.identifier = kPicCountIdentifier;
-        column.editable = NO;
         column.width = remindWidth;
         column.minWidth = 30;
         column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
@@ -148,10 +149,9 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     }
     
     {
-        NSTableColumn *column = [[NSTableColumn alloc] init];
+        NSTableColumn *column = [self createTableColumn];
         column.title = @"耗时";
         column.identifier = kCostTimeIdentifier;
-        column.editable = NO;
         column.width = remindWidth;
         column.minWidth = 30;
         column.resizingMask = NSTableColumnAutoresizingMask;

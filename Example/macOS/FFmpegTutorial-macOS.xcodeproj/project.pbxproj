@@ -18,6 +18,7 @@
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDB73F6C2577DFC70060EB57 /* MR0x40Task.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
+		DDE70E4E2584AEE400580A80 /* MR0x40TableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E4D2584AEE400580A80 /* MR0x40TableHeaderCell.m */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
 		DDFDF8A92564CDC700F1CAE2 /* MR0x40ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A82564CDC700F1CAE2 /* MR0x40ViewController.m */; };
 		DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */; };
@@ -49,6 +50,8 @@
 		DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40Task.m; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
+		DDE70E4C2584AEE400580A80 /* MR0x40TableHeaderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40TableHeaderCell.h; sourceTree = "<group>"; };
+		DDE70E4D2584AEE400580A80 /* MR0x40TableHeaderCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40TableHeaderCell.m; sourceTree = "<group>"; };
 		DDFDF8A12564CDC700F1CAE2 /* FFmpegTutorial-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FFmpegTutorial-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -104,6 +107,8 @@
 				DDB73E972577DBFB0060EB57 /* MR0x40ViewController.xib */,
 				DDB73F6A2577DFC70060EB57 /* MR0x40Task.h */,
 				DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */,
+				DDE70E4C2584AEE400580A80 /* MR0x40TableHeaderCell.h */,
+				DDE70E4D2584AEE400580A80 /* MR0x40TableHeaderCell.m */,
 			);
 			path = 0x40;
 			sourceTree = "<group>";
@@ -297,6 +302,7 @@
 				DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */,
 				DD21E1FE25836D10000D5DB5 /* MR0x40CellView.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
+				DDE70E4E2584AEE400580A80 /* MR0x40TableHeaderCell.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 			);
