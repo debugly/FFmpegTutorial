@@ -88,7 +88,7 @@
 
 - (BOOL)join
 {
-    if (![self.thread isFinished] && self.joinModeName.length > 0) {
+    if ([self.thread isExecuting] && ![self.thread isFinished] && self.joinModeName.length > 0) {
 //        for (;![self.thread isFinished];) {
 //            mr_usleep(2);
 //        }
