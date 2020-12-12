@@ -17,6 +17,7 @@
 		DDB73E982577DBFB0060EB57 /* MR0x40ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB73E972577DBFB0060EB57 /* MR0x40ViewController.xib */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDB73F6C2577DFC70060EB57 /* MR0x40Task.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */; };
+		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
 		DDFDF8A92564CDC700F1CAE2 /* MR0x40ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A82564CDC700F1CAE2 /* MR0x40ViewController.m */; };
 		DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */; };
@@ -46,6 +47,8 @@
 		DDB73F662577DDE60060EB57 /* MRUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRUtil.m; sourceTree = "<group>"; };
 		DDB73F6A2577DFC70060EB57 /* MR0x40Task.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40Task.h; sourceTree = "<group>"; };
 		DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40Task.m; sourceTree = "<group>"; };
+		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
+		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
 		DDFDF8A12564CDC700F1CAE2 /* FFmpegTutorial-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FFmpegTutorial-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -132,6 +135,15 @@
 			path = MRUtil;
 			sourceTree = "<group>";
 		};
+		DDE70E462584AC2900580A80 /* TextFieldCell */ = {
+			isa = PBXGroup;
+			children = (
+				DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */,
+				DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */,
+			);
+			path = TextFieldCell;
+			sourceTree = "<group>";
+		};
 		DDEC031CF725852BB0A5A612 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -164,6 +176,7 @@
 			children = (
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
+				DDE70E462584AC2900580A80 /* TextFieldCell */,
 				DDB73F642577DDD10060EB57 /* MRUtil */,
 				DDB73E912577DB9A0060EB57 /* DragView */,
 				DD97E8482572B05400B93F9F /* NSNavigationController */,
@@ -277,6 +290,7 @@
 				DDFDF8A92564CDC700F1CAE2 /* MR0x40ViewController.m in Sources */,
 				DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
+				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
 				DDB73F6C2577DFC70060EB57 /* MR0x40Task.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */,

@@ -6,6 +6,7 @@
 //
 
 #import "MR0x40CellView.h"
+#import "MRVerticallyCenteredTextFieldCell.h"
 
 @interface MR0x40CellView ()
 
@@ -24,6 +25,7 @@
     tx.bordered = NO;
     tx.backgroundColor = [NSColor clearColor];
     tx.font = [NSFont systemFontOfSize:14];
+    [tx setCell:[MRVerticallyCenteredTextFieldCell new]];
     return tx;
 }
 
