@@ -99,7 +99,7 @@ av_unused static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
         case MR_PIX_FMT_NONE:
             return AV_PIX_FMT_NONE;
         case MR_PIX_FMT_EOF:
-        return AV_PIX_FMT_NONE;
+            return AV_PIX_FMT_NONE;
     }
 }
 
