@@ -32,10 +32,12 @@ static NSString *const kCostTimeIdentifier = @"costTime";
 
 @implementation MR0x40ViewController
 
-- (NSTableColumn *)createTableColumn {
+- (NSTableColumn *)createTableColumn
+{
     NSTableColumn *column = [[NSTableColumn alloc] init];
     column.headerCell = [MR0x40TableHeaderCell new];
     column.editable = NO;
+    column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
     return column;
 }
 
@@ -62,11 +64,11 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     NSTableView *tableView = [[NSTableView alloc] initWithFrame:self.view.bounds];
     tableView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
     tableView.intercellSpacing = NSMakeSize(0, 0);
-//    if (@available(macOS 11.0, *)) {
-//        tableView.style = NSTableViewStylePlain;
-//    } else {
-//        // Fallback on earlier versions
-//    }
+    if (@available(macOS 11.0, *)) {
+        tableView.style = NSTableViewStylePlain;
+    } else {
+        // Fallback on earlier versions
+    }
     //设置选中行背景样式，设置成None时drawSelectionInRect就不走了;
     tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleRegular;
     
@@ -82,22 +84,22 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     CGFloat remindWidth = CGRectGetWidth(self.view.bounds);
     {
         NSTableColumn * column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"videoName" ascending:YES];
         column.title = @"文件";
         column.identifier = kVideoNameIdentifier;
         column.width = remindWidth * 0.3;
         column.minWidth = 200;
-        column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
         [tableView addTableColumn:column];
         remindWidth = remindWidth*0.7;
     }
     
     {
         NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"containerFmt" ascending:YES];
         column.title = @"支持容器";
         column.identifier = kContainerFmtIdentifier;
         column.width = remindWidth * 0.2;
         column.minWidth = 200;
-        column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
         [tableView addTableColumn:column];
         remindWidth = remindWidth*0.8;
     }
@@ -105,63 +107,78 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     remindWidth = remindWidth / 6;
     {
         NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"audioFmt" ascending:YES];
         column.title = @"音频";
         column.identifier = kAudioFmtIdentifier;
-        column.width = 50;
-        column.resizingMask = NSTableColumnAutoresizingMask;
+        column.width = remindWidth;
+        column.minWidth = 50;
         [tableView addTableColumn:column];
     }
     
     {
         NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"videoFmt" ascending:YES];
         column.title = @"视频";
         column.identifier = kVideoFmtIdentifier;
-        column.width = 50;
-        column.resizingMask = NSTableColumnAutoresizingMask;
+        column.width = remindWidth;
+        column.minWidth = 50;
         [tableView addTableColumn:column];
     }
     
     {
         NSTableColumn *column = [self createTableColumn];
         column.title = @"宽高";
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"dimension" ascending:YES comparator:^NSComparisonResult(id  _Nonnull obj1, id  _Nonnull obj2) {
+            CGSize size1 = [obj1 sizeValue];
+            CGSize size2 = [obj2 sizeValue];
+            long r = (long)(size1.width * size1.height) - (long)(size2.width * size2.height);
+            if (r < 0) {
+                return NSOrderedAscending;
+            } else if (r > 0){
+                return NSOrderedDescending;
+            } else {
+                return NSOrderedSame;
+            }
+        }];
         column.identifier = kDimensionIdentifier;
-        column.width = 80;
-        column.resizingMask = NSTableColumnAutoresizingMask;
+        column.width = remindWidth;
+        column.minWidth = 80;
         [tableView addTableColumn:column];
     }
     
     {
         NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"duration" ascending:YES];
         column.title = @"时长";
         column.identifier = kDurationIdentifier;
-        column.width = 50;
-        column.resizingMask = NSTableColumnAutoresizingMask;
+        column.width = remindWidth;
+        column.minWidth = 50;
         [tableView addTableColumn:column];
     }
     
     {
         NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"frameCount" ascending:YES];
         column.title = @"图片";
         column.identifier = kPicCountIdentifier;
         column.width = remindWidth;
         column.minWidth = 30;
-        column.resizingMask = NSTableColumnAutoresizingMask | NSTableColumnUserResizingMask;
         [tableView addTableColumn:column];
     }
     
     {
         NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"cost" ascending:YES];
         column.title = @"耗时";
         column.identifier = kCostTimeIdentifier;
         column.width = remindWidth;
         column.minWidth = 30;
-        column.resizingMask = NSTableColumnAutoresizingMask;
         [tableView addTableColumn:column];
     }
     
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.rowHeight = 40;
+    tableView.rowHeight = 35;
     scrollView.contentView.documentView = tableView;
     
     self.tableView = tableView;
@@ -201,21 +218,15 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     return view;
 }
 
-//- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row
-//{
-//    RootTableRowView *rowView = [[RootTableRowView alloc] init];
-//    rowView.backgroundColor = [NSColor blueColor];
-//    return rowView;
-//}
-
-//- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
-//{
-//    return 35;
-//}
-
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
 {
     return NO;
+}
+
+- (void)tableView:(NSTableView *)tableView sortDescriptorsDidChange:(NSArray<NSSortDescriptor *> *)oldDescriptors
+{
+    [self.taskArr sortUsingDescriptors:oldDescriptors];
+    [tableView reloadData];
 }
 
 - (void)handleDragFileList:(nonnull NSArray<NSURL *> *)fileUrls
@@ -252,12 +263,15 @@ static NSString *const kCostTimeIdentifier = @"costTime";
                 self.taskArr = [NSMutableArray array];
             }
             [self.taskArr addObject:task];
+            __weakSelf__
             [self.queue addOperationWithBlock:^{
                 [task start:^{
+                    __strongSelf__
                     NSLog(@"%@:%0.2fs,%d,%0.2ffpms;时长:%d秒",task.videoName,task.cost,task.frameCount,1000 * task.cost/task.frameCount,task.duration);
-#warning TODO refresh
+                    NSUInteger row = [self.taskArr indexOfObject:task];
                     [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        [self.tableView reloadData];
+                        __strongSelf__
+                        [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row] columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfColumns)]];
                     }];
                 }];
             }];
