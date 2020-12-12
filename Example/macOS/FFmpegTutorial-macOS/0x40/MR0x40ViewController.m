@@ -48,6 +48,7 @@ static NSString *const kCostTimeIdentifier = @"costTime";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.title = @"视频抽帧";
     self.queue = [[NSOperationQueue alloc] init];
     self.queue.maxConcurrentOperationCount = 5;
     

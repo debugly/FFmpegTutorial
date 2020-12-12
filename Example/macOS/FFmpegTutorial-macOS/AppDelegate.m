@@ -17,7 +17,8 @@
 
 @implementation AppDelegate
 
-- (void)applicationDidFinishLaunching:(NSNotification *)aNotification {
+- (void)applicationDidFinishLaunching:(NSNotification *)aNotification
+{
     // Insert code here to initialize your application
     NSWindow *window = [[NSWindow alloc] initWithContentRect:CGRectZero styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable backing:NSBackingStoreBuffered defer:YES];
     window.title = @"FFmpeg学习教程";
@@ -31,7 +32,6 @@
     RootViewController *rootViewController = [[RootViewController alloc] init];
     
     NSNavigationController *navController = [[NSNavigationController alloc] initWithRootViewController:rootViewController];
-    navController.title = @"FFmpeg-Tutorial";
     window.contentViewController = navController;
     [window center];
     [window makeKeyWindow];

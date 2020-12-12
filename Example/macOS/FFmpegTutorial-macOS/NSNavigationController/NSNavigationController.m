@@ -101,6 +101,7 @@ static CGFloat kNavigationBarHeight = 64;
         NSViewController *rootViewController = [self.viewControllerArr firstObject];
         if (rootViewController) {
             [self.contentView addSubview:rootViewController.view];
+            self.title = rootViewController.title;
             rootViewController.view.frame = [rootViewController.view superview].bounds;
             rootViewController.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         }
@@ -139,14 +140,18 @@ static CGFloat kNavigationBarHeight = 64;
     [self popViewControllerAnimated:YES];
 }
 
-- (void)pushViewController:(NSViewController *)viewController animated:(BOOL)animated
+- (void)pushViewController:(NSViewController *)toVC animated:(BOOL)animated
 {
     NSViewController *fromViewController = [self.viewControllerArr lastObject];
-    [self.viewControllerArr addObject:viewController];
-    [self.view addSubview:viewController.view];
-    viewController.view.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin | NSViewMinYMargin;
-    [self addChildViewController:viewController];
-    [self transitionFromViewController:fromViewController toViewController:viewController options:animated?NSViewControllerTransitionSlideLeft:NSViewControllerTransitionNone completionHandler:NULL];
+    [self.viewControllerArr addObject:toVC];
+    [self.view addSubview:toVC.view];
+    toVC.view.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin | NSViewMinYMargin;
+    [self addChildViewController:toVC];
+    __weakSelf__
+    [self transitionFromViewController:fromViewController toViewController:toVC options:animated?NSViewControllerTransitionSlideLeft:NSViewControllerTransitionNone completionHandler:^{
+        __strongSelf__
+        self.title = toVC.title;
+    }];
     [self.backView setHidden:NO];
 }
 
@@ -156,15 +161,16 @@ static CGFloat kNavigationBarHeight = 64;
     if ([self.viewControllerArr count] > 1) {
         popViewController = [self.viewControllerArr lastObject];
         [self.viewControllerArr removeObject:popViewController];
-        NSViewController *toViewController = [self.viewControllerArr lastObject];
+        NSViewController *backVC = [self.viewControllerArr lastObject];
         BOOL animated = YES;
-        [self transitionFromViewController:popViewController toViewController:toViewController options:animated?NSViewControllerTransitionSlideRight:NSViewControllerTransitionNone completionHandler:^{
+        [self transitionFromViewController:popViewController toViewController:backVC options:animated?NSViewControllerTransitionSlideRight:NSViewControllerTransitionNone completionHandler:^{
             [popViewController.view removeFromSuperview];
             [popViewController removeFromParentViewController];
+            self.title = backVC.title;
+            if ([self.viewControllerArr count] == 1) {
+                [self.backView setHidden:YES];
+            }
         }];
-        if ([self.viewControllerArr count] == 1) {
-            [self.backView setHidden:YES];
-        }
     }
     return popViewController;
 }

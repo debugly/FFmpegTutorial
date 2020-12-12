@@ -28,6 +28,9 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
+    
+    self.title = @"FFmpeg-Tutorial";
+    
     NSScrollView * scrollView = [[NSScrollView alloc] init];
     scrollView.hasVerticalScroller = NO;
     scrollView.hasHorizontalScroller = NO;
