@@ -43,7 +43,12 @@ static CGFloat kNavigationBarHeight = 64;
 
 - (void)loadView
 {
-    self.view = [[NSView alloc] initWithFrame:CGRectMake(0, 0, 800, 600)];
+    //self.view = [[NSView alloc] initWithFrame:CGRectMake(0, 0, 800, 600)];
+    NSVisualEffectView *effectView = [[NSVisualEffectView alloc] initWithFrame:CGRectMake(0, 0, 800, 600)];
+    effectView.blendingMode = NSVisualEffectBlendingModeBehindWindow;
+    effectView.state = NSVisualEffectStateFollowsWindowActiveState;
+    effectView.material = NSVisualEffectMaterialLight;
+    self.view = effectView;
 }
 
 - (void)viewDidLoad
