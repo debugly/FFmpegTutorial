@@ -220,13 +220,27 @@ static NSString *const kCostTimeIdentifier = @"costTime";
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
 {
-    return NO;
+    MR0x40Task *task = self.taskArr[row];
+    [[NSWorkspace sharedWorkspace] openURL:[NSURL fileURLWithPath:task.saveDir]];
+    return YES;
 }
 
 - (void)tableView:(NSTableView *)tableView sortDescriptorsDidChange:(NSArray<NSSortDescriptor *> *)oldDescriptors
 {
     [self.taskArr sortUsingDescriptors:oldDescriptors];
     [tableView reloadData];
+}
+
+- (MR0x40Task *)existTaskForUrl:(NSURL *)url
+{
+    MR0x40Task *t = nil;
+    for (MR0x40Task *task in [self.taskArr copy]) {
+        if ([[url absoluteString] isEqualToString:[task.fileURL absoluteString]]) {
+            t = task;
+            break;
+        }
+    }
+    return t;
 }
 
 - (void)handleDragFileList:(nonnull NSArray<NSURL *> *)fileUrls
@@ -258,11 +272,17 @@ static NSString *const kCostTimeIdentifier = @"costTime";
     if ([bookmarkArr count] > 0) {
         for (NSDictionary *dic in bookmarkArr) {
             NSURL *url = dic[@"url"];
+            
+            if ([self existTaskForUrl:url]) {
+                continue;
+            }
+            
             MR0x40Task *task = [[MR0x40Task alloc] initWithURL:url];
             if (!self.taskArr) {
                 self.taskArr = [NSMutableArray array];
             }
             [self.taskArr addObject:task];
+            
             __weakSelf__
             [self.queue addOperationWithBlock:^{
                 [task start:^{

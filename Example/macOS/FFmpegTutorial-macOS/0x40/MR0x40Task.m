@@ -13,7 +13,7 @@ static const int kMaxPictureCount = 30;
 
 @interface MR0x40Task ()<MRVideoToPictureDelegate>
 
-@property (nonatomic, strong) NSURL *url;
+@property (nonatomic, strong, readwrite) NSURL *fileURL;
 @property (nonatomic, copy) void(^completion)(void);
 @property (nonatomic, strong) MRVideoToPicture *vtp;
 @property (nonatomic, assign) NSTimeInterval begin;
@@ -43,7 +43,7 @@ static const int kMaxPictureCount = 30;
 {
     self = [super init];
     if (self) {
-        self.url = url;
+        self.fileURL = url;
         self.videoName = [url lastPathComponent];
     }
     return self;
@@ -53,24 +53,37 @@ static const int kMaxPictureCount = 30;
 {
     self.completion = completion;
     self.begin = CFAbsoluteTimeGetCurrent();
-    [self startVtp];
+    //remove old pics
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        [[NSFileManager defaultManager] removeItemAtPath:[self saveDir] error:nil];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self startVtp];
+        });
+    });
+}
+
+- (NSString *)saveDir
+{
+    NSParameterAssert(self.fileURL);
+    NSString *dirName = [[[self.fileURL path] lastPathComponent] stringByDeletingPathExtension];
+    NSString *fullPath = [NSTemporaryDirectory() stringByAppendingPathComponent:dirName];
+    [[NSFileManager defaultManager] createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
+    return fullPath;
 }
 
 - (void)startVtp
 {
     MRVideoToPicture *vtp = [[MRVideoToPicture alloc] init];
-    vtp.contentPath = [self.url path];
+    vtp.contentPath = [self.fileURL path];
     vtp.supportedPixelFormats = MR_PIX_FMT_MASK_0RGB;
         // MR_PIX_FMT_MASK_ARGB;// MR_PIX_FMT_MASK_RGBA;
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;
     vtp.delegate = self;
-    NSString *dirName = [[vtp.contentPath lastPathComponent] stringByDeletingPathExtension];
-    vtp.picSaveDir = [NSTemporaryDirectory() stringByAppendingPathComponent:dirName];
-    [[NSFileManager defaultManager] createDirectoryAtPath:vtp.picSaveDir withIntermediateDirectories:YES attributes:nil error:nil];
+    vtp.picSaveDir = [self saveDir];
+    vtp.maxCount = 30;
     [vtp prepareToPlay];
     [vtp startConvert];
-    vtp.maxCount = 20;
     self.vtp = vtp;
 }
 

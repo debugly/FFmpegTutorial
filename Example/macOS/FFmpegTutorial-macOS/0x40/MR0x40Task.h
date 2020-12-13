@@ -19,10 +19,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *containerFmt;
 @property (nonatomic, copy, readonly) NSString *audioFmt;
 @property (nonatomic, copy, readonly) NSString *videoFmt;
-
+@property (nonatomic, strong, readonly) NSURL *fileURL;
 
 - (instancetype)initWithURL:(NSURL *)url;
 - (void)start:(void(^)(void))completion;
+- (NSString *)saveDir;
 
 @end
 
