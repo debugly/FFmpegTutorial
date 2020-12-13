@@ -9,8 +9,9 @@
 #import "MRDragView.h"
 #import "MRUtil.h"
 #import "MR0x40Task.h"
-#import "MR0x40CellView.h"
+#import "MR0x40TextCellView.h"
 #import "MR0x40TableHeaderCell.h"
+#import "MR0x40IndicatorCellView.h"
 
 static NSString *const kVideoNameIdentifier = @"videoName";
 static NSString *const kDimensionIdentifier = @"dimension";
@@ -20,12 +21,13 @@ static NSString *const kVideoFmtIdentifier = @"videoFmt";
 static NSString *const kDurationIdentifier = @"duration";
 static NSString *const kPicCountIdentifier = @"picCount";
 static NSString *const kCostTimeIdentifier = @"costTime";
+static NSString *const kTaskStatusIdentifier = @"status";
 
 @interface MR0x40ViewController ()<MRDragViewDelegate,NSTableViewDelegate,NSTableViewDataSource>
 
 @property (weak) IBOutlet MRDragView *dragView;
 @property (strong) NSMutableArray *taskArr;
-@property (strong) NSOperationQueue *queue;
+@property (strong) NSArray *executingQueue;
 @property (strong) NSTableView *tableView;
 
 @end
@@ -51,8 +53,6 @@ static NSString *const kCostTimeIdentifier = @"costTime";
 {
     [super viewDidLoad];
     self.title = @"视频抽帧";
-    self.queue = [[NSOperationQueue alloc] init];
-    self.queue.maxConcurrentOperationCount = 5;
     
     NSScrollView * scrollView = [[NSScrollView alloc] init];
     scrollView.hasVerticalScroller = NO;
@@ -176,6 +176,16 @@ static NSString *const kCostTimeIdentifier = @"costTime";
         [tableView addTableColumn:column];
     }
     
+    {
+        NSTableColumn *column = [self createTableColumn];
+        column.sortDescriptorPrototype = [NSSortDescriptor sortDescriptorWithKey:@"status" ascending:YES];
+        column.title = @"任务状态";
+        column.identifier = kTaskStatusIdentifier;
+        column.width = remindWidth;
+        column.minWidth = 30;
+        [tableView addTableColumn:column];
+    }
+    
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.rowHeight = 35;
@@ -191,29 +201,48 @@ static NSString *const kCostTimeIdentifier = @"costTime";
 
 - (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    MR0x40CellView *view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
+    NSView *view = [tableView makeViewWithIdentifier:tableColumn.identifier owner:self];
     if (view == nil) {
-        view = [[MR0x40CellView alloc]init];
+        if ([tableColumn.identifier isEqualToString:kTaskStatusIdentifier]) {
+            view = [[MR0x40IndicatorCellView alloc]init];
+        } else {
+            view = [[MR0x40TextCellView alloc]init];
+        }
         view.identifier = tableColumn.identifier;
     }
     MR0x40Task *task = self.taskArr[row];
     
-    if ([kVideoNameIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:task.videoName];
-    } else if ([kDimensionIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:NSStringFromSize(task.dimension)];
-    } else if ([kContainerFmtIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:task.containerFmt];
-    } else if ([kAudioFmtIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:task.audioFmt];
-    } else if ([kVideoFmtIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:task.videoFmt];
-    } else if ([kDurationIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:[NSString stringWithFormat:@"%ds",task.duration]];
-    } else if ([kPicCountIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:[NSString stringWithFormat:@"%d张",task.frameCount]];
-    } else if ([kCostTimeIdentifier isEqualToString:tableColumn.identifier]) {
-        [view updateText:[NSString stringWithFormat:@"%0.2fs",task.cost]];
+    if ([kTaskStatusIdentifier isEqualToString:tableColumn.identifier]) {
+        MR0x40IndicatorCellView *indicator = (MR0x40IndicatorCellView *)view;
+        if (task.status == MR0x40TaskProcessingStatus) {
+            [indicator start];
+        } else if (task.status == MR0x40TaskFinishedStatus) {
+            [indicator stop];
+        } else if (task.status == MR0x40TaskWaitingStatus){
+            [indicator waiting];
+        } else {
+            [indicator wrong];
+        }
+    } else {
+        MR0x40TextCellView *cellView = (MR0x40TextCellView *)view;
+        
+        if ([kVideoNameIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:task.videoName];
+        } else if ([kDimensionIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:NSStringFromSize(task.dimension)];
+        } else if ([kContainerFmtIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:task.containerFmt];
+        } else if ([kAudioFmtIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:task.audioFmt];
+        } else if ([kVideoFmtIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:task.videoFmt];
+        } else if ([kDurationIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:[NSString stringWithFormat:@"%ds",task.duration]];
+        } else if ([kPicCountIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:[NSString stringWithFormat:@"%d张",task.frameCount]];
+        } else if ([kCostTimeIdentifier isEqualToString:tableColumn.identifier]) {
+            [cellView updateText:[NSString stringWithFormat:@"%0.2fs",task.cost]];
+        }
     }
     return view;
 }
@@ -241,6 +270,42 @@ static NSString *const kCostTimeIdentifier = @"costTime";
         }
     }
     return t;
+}
+
+- (void)executeMoreTask
+{
+    while ([self.executingQueue count] < 3) {
+        
+        MR0x40Task *firstWaitTask = nil;
+        for (MR0x40Task *task in [self.taskArr copy]) {
+            if (task.status == MR0x40TaskWaitingStatus) {
+                firstWaitTask = task;
+                break;
+            }
+        }
+        
+        if (firstWaitTask) {
+            
+            NSMutableArray *executingQueue = [NSMutableArray arrayWithArray:self.executingQueue];
+            [executingQueue addObject:firstWaitTask];
+            self.executingQueue = executingQueue;
+            
+            __weakSelf__
+            [firstWaitTask start:^(MR0x40Task *task){
+                __strongSelf__
+                NSUInteger row = [self.taskArr indexOfObject:task];
+                [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row] columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfColumns)]];
+                NSMutableArray *executingQueue = [NSMutableArray arrayWithArray:self.executingQueue];
+                [executingQueue removeObject:task];
+                self.executingQueue = executingQueue;
+                [self executeMoreTask];
+            }];
+        } else {
+            break;
+        }
+    }
+    
+    [self.tableView reloadData];
 }
 
 - (void)handleDragFileList:(nonnull NSArray<NSURL *> *)fileUrls
@@ -282,21 +347,9 @@ static NSString *const kCostTimeIdentifier = @"costTime";
                 self.taskArr = [NSMutableArray array];
             }
             [self.taskArr addObject:task];
-            
-            __weakSelf__
-            [self.queue addOperationWithBlock:^{
-                [task start:^{
-                    __strongSelf__
-                    NSLog(@"%@:%0.2fs,%d,%0.2ffpms;时长:%d秒",task.videoName,task.cost,task.frameCount,1000 * task.cost/task.frameCount,task.duration);
-                    NSUInteger row = [self.taskArr indexOfObject:task];
-                    [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-                        __strongSelf__
-                        [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row] columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfColumns)]];
-                    }];
-                }];
-            }];
         }
-        [self.tableView reloadData];
+        
+        [self executeMoreTask];
     }
 }
 

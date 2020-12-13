@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
-		DD21E1FE25836D10000D5DB5 /* MR0x40CellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD21E1FD25836D10000D5DB5 /* MR0x40CellView.m */; };
+		DD21E1FE25836D10000D5DB5 /* MR0x40TextCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD21E1FD25836D10000D5DB5 /* MR0x40TextCellView.m */; };
 		DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82A256EA4D000B93F9F /* RootViewController.m */; };
 		DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82E256EAE3000B93F9F /* RootCellView.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
@@ -17,6 +17,7 @@
 		DDB73E982577DBFB0060EB57 /* MR0x40ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB73E972577DBFB0060EB57 /* MR0x40ViewController.xib */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDB73F6C2577DFC70060EB57 /* MR0x40Task.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */; };
+		DDB782E725862F8800A7E68A /* MR0x40IndicatorCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB782E625862F8800A7E68A /* MR0x40IndicatorCellView.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
 		DDE70E4E2584AEE400580A80 /* MR0x40TableHeaderCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E4D2584AEE400580A80 /* MR0x40TableHeaderCell.m */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
@@ -31,8 +32,8 @@
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
-		DD21E1FC25836D10000D5DB5 /* MR0x40CellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40CellView.h; sourceTree = "<group>"; };
-		DD21E1FD25836D10000D5DB5 /* MR0x40CellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40CellView.m; sourceTree = "<group>"; };
+		DD21E1FC25836D10000D5DB5 /* MR0x40TextCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40TextCellView.h; sourceTree = "<group>"; };
+		DD21E1FD25836D10000D5DB5 /* MR0x40TextCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40TextCellView.m; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E82D256EAE3000B93F9F /* RootCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootCellView.h; sourceTree = "<group>"; };
@@ -48,6 +49,8 @@
 		DDB73F662577DDE60060EB57 /* MRUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRUtil.m; sourceTree = "<group>"; };
 		DDB73F6A2577DFC70060EB57 /* MR0x40Task.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40Task.h; sourceTree = "<group>"; };
 		DDB73F6B2577DFC70060EB57 /* MR0x40Task.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40Task.m; sourceTree = "<group>"; };
+		DDB782E525862F8800A7E68A /* MR0x40IndicatorCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40IndicatorCellView.h; sourceTree = "<group>"; };
+		DDB782E625862F8800A7E68A /* MR0x40IndicatorCellView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x40IndicatorCellView.m; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
 		DDE70E4C2584AEE400580A80 /* MR0x40TableHeaderCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x40TableHeaderCell.h; sourceTree = "<group>"; };
@@ -100,8 +103,10 @@
 		DD97E83625720E4100B93F9F /* 0x40 */ = {
 			isa = PBXGroup;
 			children = (
-				DD21E1FC25836D10000D5DB5 /* MR0x40CellView.h */,
-				DD21E1FD25836D10000D5DB5 /* MR0x40CellView.m */,
+				DD21E1FC25836D10000D5DB5 /* MR0x40TextCellView.h */,
+				DD21E1FD25836D10000D5DB5 /* MR0x40TextCellView.m */,
+				DDB782E525862F8800A7E68A /* MR0x40IndicatorCellView.h */,
+				DDB782E625862F8800A7E68A /* MR0x40IndicatorCellView.m */,
 				DDE70E4C2584AEE400580A80 /* MR0x40TableHeaderCell.h */,
 				DDE70E4D2584AEE400580A80 /* MR0x40TableHeaderCell.m */,
 				DDB73F6A2577DFC70060EB57 /* MR0x40Task.h */,
@@ -299,8 +304,9 @@
 				DDB73F6C2577DFC70060EB57 /* MR0x40Task.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */,
+				DDB782E725862F8800A7E68A /* MR0x40IndicatorCellView.m in Sources */,
 				DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */,
-				DD21E1FE25836D10000D5DB5 /* MR0x40CellView.m in Sources */,
+				DD21E1FE25836D10000D5DB5 /* MR0x40TextCellView.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DDE70E4E2584AEE400580A80 /* MR0x40TableHeaderCell.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,

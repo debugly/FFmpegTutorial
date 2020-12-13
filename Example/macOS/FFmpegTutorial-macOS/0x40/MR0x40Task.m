@@ -14,7 +14,7 @@ static const int kMaxPictureCount = 30;
 @interface MR0x40Task ()<MRVideoToPictureDelegate>
 
 @property (nonatomic, strong, readwrite) NSURL *fileURL;
-@property (nonatomic, copy) void(^completion)(void);
+@property (nonatomic, copy) void(^completion)(MR0x40Task*);
 @property (nonatomic, strong) MRVideoToPicture *vtp;
 @property (nonatomic, assign) NSTimeInterval begin;
 @property (nonatomic, assign, readwrite) NSTimeInterval cost;
@@ -25,6 +25,7 @@ static const int kMaxPictureCount = 30;
 @property (nonatomic, copy, readwrite) NSString *containerFmt;
 @property (nonatomic, copy, readwrite) NSString *audioFmt;
 @property (nonatomic, copy, readwrite) NSString *videoFmt;
+@property (nonatomic, assign, readwrite) MR0x40TaskStatus status;
 
 @end
 
@@ -49,7 +50,7 @@ static const int kMaxPictureCount = 30;
     return self;
 }
 
-- (void)start:(void(^)(void))completion
+- (void)start:(void(^)(MR0x40Task*))completion
 {
     self.completion = completion;
     self.begin = CFAbsoluteTimeGetCurrent();
@@ -60,6 +61,7 @@ static const int kMaxPictureCount = 30;
             [self startVtp];
         });
     });
+    self.status = MR0x40TaskProcessingStatus;
 }
 
 - (NSString *)saveDir
@@ -137,14 +139,16 @@ static const int kMaxPictureCount = 30;
         if (err) {
             [self.vtp stop];
             self.vtp = nil;
+            self.status = MR0x40TaskErrorStatus;
             NSLog(@"convert faild:%@",err);
         } else {
             [self.vtp stop];
             self.vtp = nil;
+            self.status = MR0x40TaskFinishedStatus;
         }
         
         if (self.completion) {
-            self.completion();
+            self.completion(self);
         }
     }
 }

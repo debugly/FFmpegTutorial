@@ -1,20 +1,20 @@
 //
-//  MR0x40CellView.m
+//  MR0x40TextCellView.m
 //  FFmpegTutorial-macOS
 //
 //  Created by Matt Reach on 2020/12/11.
 //
 
-#import "MR0x40CellView.h"
+#import "MR0x40TextCellView.h"
 #import "MRVerticallyCenteredTextFieldCell.h"
 
-@interface MR0x40CellView ()
+@interface MR0x40TextCellView ()
 
 @property (nonatomic, weak) NSTextField *label;
 
 @end
 
-@implementation MR0x40CellView
+@implementation MR0x40TextCellView
 
 - (NSTextField *)createLabel
 {

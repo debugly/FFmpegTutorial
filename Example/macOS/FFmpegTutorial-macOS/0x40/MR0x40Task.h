@@ -9,6 +9,14 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+typedef enum : NSUInteger {
+    MR0x40TaskWaitingStatus,
+    MR0x40TaskProcessingStatus,
+    MR0x40TaskFinishedStatus,
+    MR0x40TaskErrorStatus,
+} MR0x40TaskStatus;
+
+@class MR0x40Task;
 @interface MR0x40Task : NSObject
 
 @property (nonatomic, assign, readonly) NSTimeInterval cost;
@@ -20,9 +28,10 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy, readonly) NSString *audioFmt;
 @property (nonatomic, copy, readonly) NSString *videoFmt;
 @property (nonatomic, strong, readonly) NSURL *fileURL;
+@property (nonatomic, assign, readonly) MR0x40TaskStatus status;
 
 - (instancetype)initWithURL:(NSURL *)url;
-- (void)start:(void(^)(void))completion;
+- (void)start:(void(^)(MR0x40Task*))completion;
 - (NSString *)saveDir;
 
 @end

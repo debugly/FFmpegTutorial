@@ -1,5 +1,5 @@
 //
-//  MR0x40CellView.h
+//  MR0x40TextCellView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by Matt Reach on 2020/12/11.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x40CellView : NSView
+@interface MR0x40TextCellView : NSView
 
 - (void)updateText:(NSString *)text;
 
