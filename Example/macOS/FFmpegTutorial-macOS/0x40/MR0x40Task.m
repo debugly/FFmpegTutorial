@@ -65,8 +65,10 @@ static const int kMaxPictureCount = 30;
 - (NSString *)saveDir
 {
     NSParameterAssert(self.fileURL);
-    NSString *dirName = [[[self.fileURL path] lastPathComponent] stringByDeletingPathExtension];
-    NSString *fullPath = [NSTemporaryDirectory() stringByAppendingPathComponent:dirName];
+    NSString *dirName = [[self.fileURL path] lastPathComponent];
+    NSString *pictureDir = [NSSearchPathForDirectoriesInDomains(NSPicturesDirectory, NSUserDomainMask, YES) firstObject];
+    pictureDir = [pictureDir stringByAppendingPathComponent:@"视频抽帧"];
+    NSString *fullPath = [pictureDir stringByAppendingPathComponent:dirName];
     [[NSFileManager defaultManager] createDirectoryAtPath:fullPath withIntermediateDirectories:YES attributes:nil error:nil];
     return fullPath;
 }

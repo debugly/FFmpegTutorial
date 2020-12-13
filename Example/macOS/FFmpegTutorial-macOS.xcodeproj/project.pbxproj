@@ -443,6 +443,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PRODUCT_NAME}/PrefixHeader.pch";
 				INFOPLIST_FILE = "FFmpegTutorial-macOS/Info.plist";
@@ -466,6 +467,7 @@
 				CODE_SIGN_IDENTITY = "-";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
+				DEVELOPMENT_TEAM = "";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PRODUCT_NAME}/PrefixHeader.pch";
 				INFOPLIST_FILE = "FFmpegTutorial-macOS/Info.plist";
