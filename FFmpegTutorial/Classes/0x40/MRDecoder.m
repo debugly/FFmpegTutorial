@@ -42,6 +42,30 @@
     return self;
 }
 
+- (void)dumpStreamFormat
+{
+    if (self.ic == NULL) {
+        return;
+    }
+    
+    if (self.streamIdx < 0 || self.streamIdx >= self.ic->nb_streams){
+        return;
+    }
+    
+    AVStream *stream = self.ic->streams[self.streamIdx];
+    
+    if (stream->codecpar) {
+        self.pix_fmt   = stream->codecpar->format;
+        self.picWidth  = stream->codecpar->width;
+        self.picHeight = stream->codecpar->height;
+        //解码器id
+        enum AVCodecID codecID = stream->codecpar->codec_id;
+        //根据解码器id找到对应名称
+        const char *codecName = avcodec_get_name(codecID);
+        self.codecName = [[NSString alloc] initWithUTF8String:codecName];
+    }
+}
+
 - (BOOL)open
 {
     if (self.ic == NULL) {
@@ -82,19 +106,9 @@
         avcodec_free_context(&avctx);
         return NO;
     }
-    
-    stream->discard = AVDISCARD_DEFAULT;
+    //stream->discard = AVDISCARD_DEFAULT;
     self.stream = stream;
     self.avctx = avctx;
-    self.pix_fmt = avctx->pix_fmt;
-    self.picWidth = avctx->width;
-    self.picHeight = avctx->height;
-    //解码器id
-    enum AVCodecID codecID = avctx->codec_id;
-    //根据解码器id找到对应名称
-    const char *codecName = avcodec_get_name(codecID);
-    self.codecName = [[NSString alloc] initWithUTF8String:codecName];
-    //(int)stream->duration * av_q2d(stream->time_base);
     
     return YES;
 }

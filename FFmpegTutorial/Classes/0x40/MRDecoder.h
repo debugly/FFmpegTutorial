@@ -44,6 +44,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, assign, readonly) int picHeight;
 @property (nonatomic, copy, readonly) NSString * codecName;
 
+- (void)dumpStreamFormat;
 /**
  打开解码器，创建解码线程;
  return 0;（没有错误）

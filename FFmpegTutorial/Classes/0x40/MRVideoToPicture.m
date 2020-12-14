@@ -22,7 +22,7 @@
 //视频时长；单位s
 kMRMovieInfoKey kMRMovieDuration = @"kMRMovieDuration";
 //视频格式
-kMRMovieInfoKey kMRMovieContainerFmt = @"kMRMovieFormat";
+kMRMovieInfoKey kMRMovieContainerFmt = @"kMRMovieContainerFmt";
 //视频宽；单位像素
 kMRMovieInfoKey kMRMovieWidth = @"kMRMovieWidth";
 //视频高；单位像素
@@ -119,16 +119,13 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 打开解码器创建解码线程
 
-- (MRDecoder *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (MRDecoder *)dumpStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
     MRDecoder *decoder = [MRDecoder new];
     decoder.ic = ic;
     decoder.streamIdx = idx;
-    if ([decoder open]) {
-        return decoder;
-    } else {
-        return nil;
-    }
+    [decoder dumpStreamFormat];
+    return decoder;
 }
 
 #pragma -mark 读包线程
@@ -353,8 +350,8 @@ static int decode_interrupt_cb(void *ctx)
     /* 刚才只是打开了文件，检测了下文件头而已，并不知道流信息；因此开始读包以获取流信息
      设置读包探测大小和最大时长，避免读太多的包！
     */
-    formatCtx->probesize = 500 * 1024;
-    formatCtx->max_analyze_duration = 5 * AV_TIME_BASE;
+    formatCtx->probesize = 1024 * 1024;
+    formatCtx->max_analyze_duration = 10 * AV_TIME_BASE;
 #if DEBUG
     NSTimeInterval begin = [[NSDate date] timeIntervalSinceReferenceDate];
 #endif
@@ -371,79 +368,81 @@ static int decode_interrupt_cb(void *ctx)
     NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
     //用于查看详细信息，调试的时候打出来看下很有必要
     av_dump_format(formatCtx, 0, moviePath, false);
-    
     NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
-    
+
     //确定最优的音视频流
     int st_index[AVMEDIA_TYPE_NB];
     memset(st_index, -1, sizeof(st_index));
     [self findBestStreams:formatCtx result:&st_index];
-
-    //打开视频解码器，创建解码线程
-    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0) {
-        self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
-        if(self.videoDecoder){
-            self.videoDecoder.delegate = self;
-            self.videoDecoder.name = @"videoDecoder";
-            [self createVideoScaleIfNeed];
-        } else {
-            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
-            NSError* error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
-            [self performErrorResultOnMainThread:error];
-            //出错了，销毁下相关结构体
-            avformat_close_input(&formatCtx);
-            return;
-        }
-    }
     
-    //打开视频解码器，创建解码线程
-    if (st_index[AVMEDIA_TYPE_AUDIO] >= 0) {
-        self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
-        if(self.audioDecoder){
-            self.audioDecoder.delegate = self;
-            self.audioDecoder.name = @"audioDecoder";
-        } else {
-            av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
-        }
-    }
-    
-    NSMutableDictionary *info = [NSMutableDictionary dictionary];
+    NSMutableDictionary *dumpDic = [NSMutableDictionary dictionary];
     const char *name = formatCtx->iformat->name;
     if (NULL != name) {
         NSString *format = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
         if (format) {
-            [info setObject:format forKey:kMRMovieContainerFmt];
+            [dumpDic setObject:format forKey:kMRMovieContainerFmt];
         }
     }
     self.duration = (int)(formatCtx->duration / 1000000);
-    [info setObject:@(self.duration) forKey:kMRMovieDuration];
-    [info setObject:@(self.videoDecoder.picWidth) forKey:kMRMovieWidth];
-    [info setObject:@(self.videoDecoder.picHeight) forKey:kMRMovieHeight];
+    [dumpDic setObject:@(self.duration) forKey:kMRMovieDuration];
     
-    if (self.videoDecoder.codecName) {
-        [info setObject:self.videoDecoder.codecName forKey:kMRMovieVideoFmt];
+    //创建解码器
+    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0) {
+        MRDecoder *videoDecoder = [self dumpStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+        
+        [dumpDic setObject:@(videoDecoder.picWidth) forKey:kMRMovieWidth];
+        [dumpDic setObject:@(videoDecoder.picHeight) forKey:kMRMovieHeight];
+        
+        if (videoDecoder.codecName) {
+            [dumpDic setObject:videoDecoder.codecName forKey:kMRMovieVideoFmt];
+        }
+        
+        if ([videoDecoder open]) {
+            self.videoDecoder = videoDecoder;
+            self.videoDecoder.delegate = self;
+            self.videoDecoder.name = @"videoDecoder";
+            [self createVideoScaleIfNeed];
+        }
     }
     
-    if (self.audioDecoder.codecName) {
-        [info setObject:self.audioDecoder.codecName forKey:kMRMovieAudioFmt];
+    //创建解码器
+    if (st_index[AVMEDIA_TYPE_AUDIO] >= 0) {
+        MRDecoder *audioDecoder = [self dumpStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
+        
+        if (audioDecoder.codecName) {
+            [dumpDic setObject:audioDecoder.codecName forKey:kMRMovieAudioFmt];
+        }
+        
+        //目前抽帧没必要打开音频流解码器
+//        if([audioDecoder open]){
+//            self.audioDecoder = audioDecoder;
+//            self.audioDecoder.delegate = self;
+//            self.audioDecoder.name = @"audioDecoder";
+//        } else {
+//            av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
+//        }
     }
     
     dispatch_async(dispatch_get_main_queue(), ^{
         if (self.delegate && [self.delegate respondsToSelector:@selector(vtp:videoOpened:)]) {
-            [self.delegate vtp:self videoOpened:info];
+            [self.delegate vtp:self videoOpened:dumpDic];
         }
     });
-    
+
     if (self.videoDecoder) {
         //视频解码线程开始工作，读包完全由解码器控制，解码后转成图片也由解码回调控制
         [self.videoDecoder start];
+        //解码线程结束了，销毁下相关结构体
+        avformat_close_input(&formatCtx);
     } else {
-        //有的视频只有一个头，没有包
-        [self performErrorResultOnMainThread:nil];
+        //出错了，销毁下相关结构体
+        avformat_close_input(&formatCtx);
+        //有的视频只有一个头，没有包也不能打开解码器；有的是编码格式不支持
+        av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
+        NSError* error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
+        [self performErrorResultOnMainThread:error];
     }
-    //读包线程结束了，销毁下相关结构体
-    avformat_close_input(&formatCtx);
 }
 
 #pragma mark - MRDecoderDelegate
