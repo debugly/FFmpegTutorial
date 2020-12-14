@@ -198,7 +198,11 @@
             break;
         } else {
             //正常解码
-            av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
+            if (frame->pts != AV_NOPTS_VALUE) {
+                av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
+            } else {
+                #warning todo fill pts
+            }
             if ([self.delegate respondsToSelector:@selector(decoder:reveivedAFrame:)]) {
                 [self.delegate decoder:self reveivedAFrame:frame];
             }

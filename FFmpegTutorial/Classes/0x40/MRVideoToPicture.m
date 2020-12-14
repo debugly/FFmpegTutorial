@@ -137,7 +137,7 @@ static int decode_interrupt_cb(void *ctx)
         int64_t seek_target = seek_pos;
         int64_t seek_min    = INT64_MIN;
         int64_t seek_max    = INT64_MAX;
-        av_log(NULL, AV_LOG_ERROR,
+        av_log(NULL, AV_LOG_INFO,
                "seek to %d\n",sec);
         int ret = avformat_seek_file(formatCtx, -1, seek_min, seek_target, seek_max, AVSEEK_FLAG_ANY);
         if (ret < 0) {
@@ -440,8 +440,11 @@ static int decode_interrupt_cb(void *ctx)
         //出错了，销毁下相关结构体
         avformat_close_input(&formatCtx);
         //有的视频只有一个头，没有包也不能打开解码器；有的是编码格式不支持
-        av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
-        NSError* error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
+        NSString *videoFmt = dumpDic[kMRMovieVideoFmt];
+        NSString *msg = [NSString stringWithFormat:@"can't open [%@] video stream",videoFmt];
+        av_log(NULL, AV_LOG_ERROR, "%s\n",[msg UTF8String]);
+        
+        NSError* error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, msg);
         [self performErrorResultOnMainThread:error];
     }
 }
@@ -538,7 +541,9 @@ static int decode_interrupt_cb(void *ctx)
     NSString *imgPath = nil;
     @autoreleasepool {
         if (self.videoDecoder) {
-            av_log(NULL, AV_LOG_ERROR, "frame->pts:%d\n",(int)(frame->pts * av_q2d(self.videoDecoder.stream->time_base)));
+            if (frame->pts != AV_NOPTS_VALUE) {
+                av_log(NULL, AV_LOG_INFO, "frame->pts:%d\n",(int)(frame->pts * av_q2d(self.videoDecoder.stream->time_base)));
+            }
         }
         CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
         if (img) {
