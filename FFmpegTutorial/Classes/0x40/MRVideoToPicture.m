@@ -199,25 +199,48 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //视频包入视频队列
             if (pkt->stream_index == self.videoDecoder.streamIdx) {
+                
+                if (!(pkt->flags & AV_PKT_FLAG_KEY)) {
+                    av_packet_unref(pkt);
+                    continue;
+                }
+                
                 //lastPkts记录上一个关键帧的时间戳，避免seek后出现回退，解码出一样的图片！
-                if ((pkt->flags & AV_PKT_FLAG_KEY) && (lastPkts < pkt->pts)) {
+                int64_t myts = -1;
+                if (AV_NOPTS_VALUE != pkt->pts) {
+                    myts = pkt->pts;
+                } else if(AV_NOPTS_VALUE != pkt->dts) {
+                    myts = pkt->dts;
+                } else {
+                    
+                }
+                
+                if (myts != -1) {
+                    if (lastPkts < myts) {
+                        lastInterval = myts - lastPkts;
+                        lastPkts = myts;
+                        
+                        packet_queue_put(&videoq, pkt);
+                        packet_queue_put_nullpacket(&videoq, pkt->stream_index);
+                        self.pktCount ++;
+                    } else {
+                        av_packet_unref(pkt);
+                    }
+                } else {
                     packet_queue_put(&videoq, pkt);
                     packet_queue_put_nullpacket(&videoq, pkt->stream_index);
                     self.pktCount ++;
-                    lastInterval = pkt->pts - lastPkts;
-                    lastPkts = pkt->pts;
-                    //当帧间隔大于0时，采用seek方案
-                    if (self.perferInterval > 0) {
-                        int sec = self.perferInterval * self.pktCount;
-                        if (-1 == [self seekTo:formatCtx sec:sec]) {
-                            //标志为读包结束
-                            //标志为读包结束
-                            av_log(NULL, AV_LOG_INFO,"logic read eof\n");
-                            self.readEOF = YES;
-                        }
+                }
+                
+                //当帧间隔大于0时，采用seek方案
+                if (self.perferInterval > 0) {
+                    int sec = self.perferInterval * self.pktCount;
+                    if (-1 == [self seekTo:formatCtx sec:sec]) {
+                        //标志为读包结束
+                        //标志为读包结束
+                        av_log(NULL, AV_LOG_INFO,"logic read eof\n");
+                        self.readEOF = YES;
                     }
-                } else {
-                    av_packet_unref(pkt);
                 }
             } else {
                 //其他包释放内存忽略掉
