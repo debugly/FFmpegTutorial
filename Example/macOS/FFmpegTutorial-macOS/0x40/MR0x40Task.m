@@ -144,7 +144,11 @@ static const int kMaxPictureCount = 30;
         } else {
             [self.vtp stop];
             self.vtp = nil;
-            self.status = MR0x40TaskFinishedStatus;
+            if (self.frameCount == 0) {
+                self.status = MR0x40TaskErrorStatus;
+            } else {
+                self.status = MR0x40TaskFinishedStatus;
+            }
         }
         
         if (self.completion) {
