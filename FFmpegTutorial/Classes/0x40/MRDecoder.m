@@ -100,13 +100,13 @@
     }
     
     avctx->codec_id = codec->id;
-    
+    // important! 前面设置成了 AVDISCARD_ALL，这里必须修改下，否则可能导致读包失败；根据vtp的场景，这里使用丢弃非关键帧比较合适
+    stream->discard = AVDISCARD_NONKEY;
     //打开解码器
     if (avcodec_open2(avctx, codec, NULL)) {
         avcodec_free_context(&avctx);
         return NO;
     }
-    //stream->discard = AVDISCARD_DEFAULT;
     self.stream = stream;
     self.avctx = avctx;
     

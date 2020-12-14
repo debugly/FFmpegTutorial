@@ -236,6 +236,7 @@ static int decode_interrupt_cb(void *ctx)
     for (int i = 0; i < formatCtx->nb_streams; i++) {
         AVStream *st = formatCtx->streams[i];
         enum AVMediaType type = st->codecpar->codec_type;
+        //这里设置为了丢弃所有帧，解码器里会进行修改！
         st->discard = AVDISCARD_ALL;
 
         if (type == AVMEDIA_TYPE_VIDEO) {
