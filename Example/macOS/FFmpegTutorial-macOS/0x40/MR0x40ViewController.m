@@ -239,7 +239,7 @@ static NSString *const kTaskStatusIdentifier = @"status";
         } else if ([kDurationIdentifier isEqualToString:tableColumn.identifier]) {
             [cellView updateText:[NSString stringWithFormat:@"%ds",task.duration]];
         } else if ([kPicCountIdentifier isEqualToString:tableColumn.identifier]) {
-            [cellView updateText:[NSString stringWithFormat:@"%d张",task.frameCount]];
+            [cellView updateText:[NSString stringWithFormat:@"%d/%d",task.frameCount,task.perferCount]];
         } else if ([kCostTimeIdentifier isEqualToString:tableColumn.identifier]) {
             [cellView updateText:[NSString stringWithFormat:@"%0.2fs",task.cost]];
         }

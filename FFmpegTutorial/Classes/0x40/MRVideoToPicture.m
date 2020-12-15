@@ -37,8 +37,8 @@ kMRMovieInfoKey kMRMovieAudioFmt = @"kMRMovieAudioFmt";
     //解码前的视频包缓存队列
     PacketQueue videoq;
     int64_t lastPkts;
-    int64_t lastInterval;
     int lastSeekPos;
+    int lastFramePts;//单位s
 }
 
 //读包线程
@@ -97,7 +97,7 @@ static int decode_interrupt_cb(void *ctx)
 {
     self = [super init];
     if (self) {
-        self.maxCount = INT_MAX;
+        self.perferMaxCount = INT_MAX;
     }
     return self;
 }
@@ -110,7 +110,6 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     lastPkts = -1;
-    lastInterval = -1;
     lastSeekPos = -1;
     //初始化视频包队列
     packet_queue_init(&videoq);
@@ -132,7 +131,7 @@ static int decode_interrupt_cb(void *ctx)
     return decoder;
 }
 
-#pragma -mark 读包线程
+#pragma -mark 读包逻辑
 
 - (int)seekTo:(AVFormatContext *)formatCtx sec:(int)sec
 {
@@ -143,6 +142,7 @@ static int decode_interrupt_cb(void *ctx)
         int64_t seek_max    = INT64_MAX;
         av_log(NULL, AV_LOG_INFO,
                "seek to %d\n",sec);
+        
         int ret = avformat_seek_file(formatCtx, -1, seek_min, seek_target, seek_max, AVSEEK_FLAG_ANY);
         if (ret < 0) {
             av_log(NULL, AV_LOG_ERROR,
@@ -204,6 +204,7 @@ static int decode_interrupt_cb(void *ctx)
             //视频包入视频队列
             if (pkt->stream_index == self.videoDecoder.streamIdx) {
                 
+                //gif 不能按关键帧处理
                 if (![self.videoDecoder.codecName isEqualTo:@"gif"]) {
                     if (!(pkt->flags & AV_PKT_FLAG_KEY)) {
                         av_packet_unref(pkt);
@@ -211,21 +212,39 @@ static int decode_interrupt_cb(void *ctx)
                     }
                 }
                 
-                //lastPkts记录上一个关键帧的时间戳，避免seek后出现回退，解码出一样的图片！
-                int64_t myts = -1;
-                if (AV_NOPTS_VALUE != pkt->pts) {
-                    myts = pkt->pts;
-                } else if(AV_NOPTS_VALUE != pkt->dts) {
-                    myts = pkt->dts;
-                } else {
-                    
+                //没有pts，则使用dts当做pts
+                if (AV_NOPTS_VALUE == pkt->pts && AV_NOPTS_VALUE != pkt->dts) {
+                    pkt->pts = pkt->dts;
                 }
                 
-                if (myts != -1) {
-                    if (lastPkts < myts) {
-                        lastInterval = myts - lastPkts;
-                        lastPkts = myts;
+                //lastPkts记录上一个关键帧的时间戳，避免seek后出现回退，解码出一样的图片！
+                if (AV_NOPTS_VALUE != pkt->pts) {
+
+                    AVRational tb = self.videoDecoder.stream->time_base;
+                    int64_t pts = lround(pkt->pts * av_q2d(tb));
+                    
+                    if (lastPkts < pts) {
+                        lastPkts = pts;
                         
+                        NSLog(@"xql pts:%lld",pts);
+                        packet_queue_put(&videoq, pkt);
+                        packet_queue_put_nullpacket(&videoq, pkt->stream_index);
+                        self.pktCount ++;
+                        if (!self.perferUseSeek) {
+                            lastPkts += self.perferInterval;
+                        }
+                    } else {
+                        av_packet_unref(pkt);
+                    }
+//                    packet_queue_put(&videoq, pkt);
+//                    packet_queue_put_nullpacket(&videoq, pkt->stream_index);
+//                    self.pktCount ++;
+//                    if (!self.perferUseSeek) {
+//                        lastPkts += self.perferInterval;
+//                    }
+                } else if(AV_NOPTS_VALUE != pkt->dts) {
+                    if (lastPkts < pkt->dts) {
+                        lastPkts = pkt->dts;
                         packet_queue_put(&videoq, pkt);
                         packet_queue_put_nullpacket(&videoq, pkt->stream_index);
                         self.pktCount ++;
@@ -238,8 +257,8 @@ static int decode_interrupt_cb(void *ctx)
                     self.pktCount ++;
                 }
                 
-                //当帧间隔大于0时，采用seek方案
-                if (self.perferInterval > 0) {
+                //当帧间隔大于10s时，时长大于 1min 才采用seek方案
+                if (self.perferUseSeek && self.perferInterval > 10 && self.duration > 60) {
                     int sec = self.perferInterval * self.pktCount;
                     //对于seek间隔很小的视频，seek后很可能回退，因此要想办法避免回退，避免ABAB循环导致的seek死循环
                     if (sec <= lastSeekPos) {
@@ -247,7 +266,6 @@ static int decode_interrupt_cb(void *ctx)
                     }
                     lastSeekPos = sec;
                     if (-1 == [self seekTo:formatCtx sec:sec]) {
-                        //标志为读包结束
                         //标志为读包结束
                         av_log(NULL, AV_LOG_INFO,"logic read eof\n");
                         self.readEOF = YES;
@@ -459,7 +477,8 @@ static int decode_interrupt_cb(void *ctx)
 //        }
     }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    //这里采用同步目的是为了，让代理能够修改 vtp 的属性，比如根据视频时长修改perferInterval等
+    dispatch_sync(dispatch_get_main_queue(), ^{
         if (self.delegate && [self.delegate respondsToSelector:@selector(vtp:videoOpened:)]) {
             [self.delegate vtp:self videoOpened:dumpDic];
         }
@@ -492,17 +511,20 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     if (decoder == self.videoDecoder) {
-        if (packet_queue_get(&videoq, pkt, 0) != 1) {
-            if (self.readEOF) {
-                return -1;
+        int ret = -1;
+        do {
+            int r = packet_queue_get(&videoq, pkt, 0);
+            if (r == 1) {
+                ret = 1;
+                break;
+            } else if (r == 0 && !self.readEOF) {
+                //不能从队列里获取pkt，就去读取
+                [self readPacketLoop:decoder.ic];
+            } else {
+                break;
             }
-            //不能从队列里获取pkt，就去读取
-            [self readPacketLoop:decoder.ic];
-            //再次从队列里获取
-            return packet_queue_get(&videoq, pkt, 0);
-        } else {
-            return 1;
-        }
+        } while (1);
+        return ret;
     } else {
         return -1;
     }
@@ -530,6 +552,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             outP = frame;
         }
+        
         [self convertToPic:outP];
     }
 }
@@ -552,14 +575,18 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)saveAsJpeg:(CGImageRef _Nonnull)img path:(NSString *)path
+- (BOOL)saveAsJpeg:(CGImageRef _Nonnull)img path:(NSString *)path
 {
     CFStringRef imageUTType = kUTTypeJPEG;
     NSURL *fileUrl = [NSURL fileURLWithPath:path];
     CGImageDestinationRef destination = CGImageDestinationCreateWithURL((__bridge CFURLRef) fileUrl, imageUTType, 1, NULL);
-    CGImageDestinationAddImage(destination, img, NULL);
-    CGImageDestinationFinalize(destination);
-    CFRelease(destination);
+    if (destination) {
+        CGImageDestinationAddImage(destination, img, NULL);
+        CGImageDestinationFinalize(destination);
+        CFRelease(destination);
+        return YES;
+    }
+    return NO;
 }
 
 - (NSString *)picSaveDir
@@ -570,30 +597,56 @@ static int decode_interrupt_cb(void *ctx)
     return _picSaveDir;
 }
 
-- (void)convertToPic:(AVFrame *)frame
+- (NSString *)convertAngSaveAsJPEG:(AVFrame *)frame
 {
     NSString *imgPath = nil;
     @autoreleasepool {
-        if (self.videoDecoder) {
-            if (frame->pts != AV_NOPTS_VALUE) {
-                av_log(NULL, AV_LOG_INFO, "frame->pts:%d\n",(int)(frame->pts * av_q2d(self.videoDecoder.stream->time_base)));
-            }
-        }
         CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
         if (img) {
             int64_t time = [[NSDate date] timeIntervalSince1970] * 10000;
-            imgPath = [self.picSaveDir stringByAppendingFormat:@"/%lld.jpg",time];
-            [self saveAsJpeg:img path:imgPath];
+            NSString *_imgPath = [self.picSaveDir stringByAppendingFormat:@"/%lld.jpg",time];
+            if ([self saveAsJpeg:img path:_imgPath]) {
+                imgPath = _imgPath;
+            }
         }
     }
+    return imgPath;
+}
+
+- (void)convertToPic:(AVFrame *)frame
+{
+    if (!self.videoDecoder) {
+        return;
+    }
     
-    dispatch_async(dispatch_get_main_queue(), ^{
+    NSString * imgPath = nil;
+    BOOL hasPts = YES;
+    if (frame->pts != AV_NOPTS_VALUE) {
+        int sec = (int)(frame->pts * av_q2d(self.videoDecoder.stream->time_base));
+        if (lastFramePts < sec) {
+            av_log(NULL, AV_LOG_DEBUG, "frame->pts:%ds\n",sec);
+            imgPath = [self convertAngSaveAsJPEG:frame];
+            lastFramePts = sec + self.perferInterval;
+        } else {
+            av_log(NULL, AV_LOG_DEBUG, "ignored frame->pts:%ds\n",sec);
+        }
+    } else {
+        // 没有pts
+        hasPts = NO;
+        imgPath = [self convertAngSaveAsJPEG:frame];
+    }
+    
+    if (!imgPath) {
+        return;
+    }
+    
+    dispatch_sync(dispatch_get_main_queue(), ^{
         self.frameCount++;
         
         if ([self.delegate respondsToSelector:@selector(vtp:convertAnImage:)]) {
             [self.delegate vtp:self convertAnImage:imgPath];
-            
-            if (self.frameCount >= self.maxCount) {
+            //有pts的时候有保障，才提前停止
+            if (hasPts && self.frameCount >= self.perferMaxCount) {
                 [self stop];
                 //主动回调下
                 [self performErrorResultOnMainThread:nil];
@@ -617,6 +670,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)startConvert
 {
+    NSParameterAssert(self.contentPath);
     [self.workThread start];
 }
 

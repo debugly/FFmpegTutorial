@@ -53,10 +53,12 @@ FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieAudioFmt;
 @property (nonatomic, weak) id<MRVideoToPictureDelegate> delegate;
 ///期望帧间隔时长
 @property (nonatomic, assign) int perferInterval;
-///总张数
-@property (nonatomic, assign) int maxCount;
+///期望总张数，当获取不到pts时，会超出期望值
+@property (nonatomic, assign) int perferMaxCount;
 @property (nonatomic, assign, readonly) int frameCount;
 @property (nonatomic, copy) NSString *picSaveDir;
+///期望使用seek代替逐帧读取
+@property (nonatomic, assign) BOOL perferUseSeek;
 
 ///准备
 - (void)prepareToPlay;

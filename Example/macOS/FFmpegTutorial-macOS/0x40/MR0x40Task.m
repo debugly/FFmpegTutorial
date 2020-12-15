@@ -21,6 +21,7 @@ static const int kMaxPictureCount = 30;
 @property (nonatomic, assign, readwrite) NSTimeInterval cost;
 @property (nonatomic, assign, readwrite) int duration;
 @property (nonatomic, assign, readwrite) int frameCount;
+@property (nonatomic, assign, readwrite) int perferCount;
 @property (nonatomic, copy, readwrite) NSString *videoName;
 @property (nonatomic, assign, readwrite) CGSize dimension;
 @property (nonatomic, copy, readwrite) NSString *containerFmt;
@@ -91,7 +92,8 @@ static const int kMaxPictureCount = 30;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;
     vtp.delegate = self;
     vtp.picSaveDir = [self saveDir];
-    vtp.maxCount = 30;
+    vtp.perferMaxCount = kMaxPictureCount;
+    vtp.perferUseSeek = NO;
     [vtp prepareToPlay];
     [vtp startConvert];
     self.vtp = vtp;
@@ -115,10 +117,13 @@ static const int kMaxPictureCount = 30;
             {
                 self.vtp.perferInterval = 1;
             }
+            self.perferCount = kMinPictureCount;
         } else {
-            self.vtp.perferInterval = duration / kMaxPictureCount;;
+            self.vtp.perferInterval = duration / kMaxPictureCount;
+            self.perferCount = kMaxPictureCount;
         }
     }
+    
     int videoWidth = [info[kMRMovieWidth] intValue];
     int videoHeight = [info[kMRMovieHeight] intValue];
     self.dimension = CGSizeMake(videoWidth, videoHeight);

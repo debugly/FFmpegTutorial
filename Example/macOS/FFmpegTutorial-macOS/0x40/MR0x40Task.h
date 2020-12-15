@@ -21,6 +21,8 @@ typedef enum : NSUInteger {
 
 @property (nonatomic, assign, readonly) NSTimeInterval cost;
 @property (nonatomic, assign, readonly) int frameCount;
+@property (nonatomic, assign, readonly) int perferCount;
+
 @property (nonatomic, assign, readonly) int duration;
 @property (nonatomic, copy, readonly) NSString *videoName;
 @property (nonatomic, assign, readonly) NSSize dimension;
