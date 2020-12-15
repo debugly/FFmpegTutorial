@@ -204,9 +204,11 @@ static int decode_interrupt_cb(void *ctx)
             //视频包入视频队列
             if (pkt->stream_index == self.videoDecoder.streamIdx) {
                 
-                if (!(pkt->flags & AV_PKT_FLAG_KEY)) {
-                    av_packet_unref(pkt);
-                    continue;
+                if (![self.videoDecoder.codecName isEqualTo:@"gif"]) {
+                    if (!(pkt->flags & AV_PKT_FLAG_KEY)) {
+                        av_packet_unref(pkt);
+                        continue;
+                    }
                 }
                 
                 //lastPkts记录上一个关键帧的时间戳，避免seek后出现回退，解码出一样的图片！
