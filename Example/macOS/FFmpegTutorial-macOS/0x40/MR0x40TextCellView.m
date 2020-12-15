@@ -49,7 +49,7 @@
 - (void)updateText:(NSString *)text
 {
     if (!text) {
-        text = @"";
+        text = @"-";
     }
     self.label.stringValue = text;
 }

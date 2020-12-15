@@ -14,7 +14,8 @@ static const int kMaxPictureCount = 30;
 @interface MR0x40Task ()<MRVideoToPictureDelegate>
 
 @property (nonatomic, strong, readwrite) NSURL *fileURL;
-@property (nonatomic, copy) void(^completion)(MR0x40Task*);
+@property (nonatomic, copy) void(^onCompletionBlock)(MR0x40Task*);
+@property (nonatomic, copy) void (^onReceivedBlock)(MR0x40Task * _Nonnull, NSString * _Nonnull);
 @property (nonatomic, strong) MRVideoToPicture *vtp;
 @property (nonatomic, assign) NSTimeInterval begin;
 @property (nonatomic, assign, readwrite) NSTimeInterval cost;
@@ -52,7 +53,7 @@ static const int kMaxPictureCount = 30;
 
 - (void)start:(void(^)(MR0x40Task*))completion
 {
-    self.completion = completion;
+    self.onCompletionBlock = completion;
     self.begin = CFAbsoluteTimeGetCurrent();
     //remove old pics
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
@@ -62,6 +63,11 @@ static const int kMaxPictureCount = 30;
         });
     });
     self.status = MR0x40TaskProcessingStatus;
+}
+
+- (void)onReceivedAPicture:(void (^)(MR0x40Task * _Nonnull, NSString * _Nonnull))block
+{
+    self.onReceivedBlock = block;
 }
 
 - (NSString *)saveDir
@@ -124,7 +130,11 @@ static const int kMaxPictureCount = 30;
 - (void)vtp:(MRVideoToPicture *)vtp convertAnImage:(NSString *)imgPath
 {
     if (self.vtp == vtp) {
-        NSLog(@"image path:%@",imgPath);
+        self.cost = CFAbsoluteTimeGetCurrent() - self.begin;
+        self.frameCount = vtp.frameCount;
+        if (self.onReceivedBlock) {
+            self.onReceivedBlock(self, imgPath);
+        }
     }
 }
 
@@ -132,8 +142,7 @@ static const int kMaxPictureCount = 30;
 {
     if (self.vtp == vtp) {
         
-        NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-        self.cost = end - self.begin;
+        self.cost = CFAbsoluteTimeGetCurrent() - self.begin;
         self.frameCount = vtp.frameCount;
         
         if (err) {
@@ -151,8 +160,8 @@ static const int kMaxPictureCount = 30;
             }
         }
         
-        if (self.completion) {
-            self.completion(self);
+        if (self.onCompletionBlock) {
+            self.onCompletionBlock(self);
         }
     }
 }

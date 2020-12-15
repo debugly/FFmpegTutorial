@@ -32,6 +32,8 @@ typedef enum : NSUInteger {
 
 - (instancetype)initWithURL:(NSURL *)url;
 - (void)start:(void(^)(MR0x40Task*))completion;
+- (void)onReceivedAPicture:(void(^)(MR0x40Task*,NSString *picPath))block;
+
 - (NSString *)saveDir;
 
 @end

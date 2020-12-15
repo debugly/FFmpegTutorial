@@ -272,6 +272,12 @@ static NSString *const kTaskStatusIdentifier = @"status";
     return t;
 }
 
+- (void)refreshRowWithTask:(MR0x40Task *)task
+{
+    NSUInteger row = [self.taskArr indexOfObject:task];
+    [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row] columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfColumns)]];
+}
+
 - (void)executeMoreTask
 {
     while ([self.executingQueue count] < 3) {
@@ -291,10 +297,15 @@ static NSString *const kTaskStatusIdentifier = @"status";
             self.executingQueue = executingQueue;
             
             __weakSelf__
+            
+            [firstWaitTask onReceivedAPicture:^(MR0x40Task * _Nonnull task, NSString * _Nonnull picPath) {
+                __strongSelf__
+                [self refreshRowWithTask:task];
+            }];
+            
             [firstWaitTask start:^(MR0x40Task *task){
                 __strongSelf__
-                NSUInteger row = [self.taskArr indexOfObject:task];
-                [self.tableView reloadDataForRowIndexes:[NSIndexSet indexSetWithIndex:row] columnIndexes:[NSIndexSet indexSetWithIndexesInRange:NSMakeRange(0, self.tableView.numberOfColumns)]];
+                [self refreshRowWithTask:task];
                 NSMutableArray *executingQueue = [NSMutableArray arrayWithArray:self.executingQueue];
                 [executingQueue removeObject:task];
                 self.executingQueue = executingQueue;
