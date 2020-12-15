@@ -38,6 +38,7 @@ kMRMovieInfoKey kMRMovieAudioFmt = @"kMRMovieAudioFmt";
     PacketQueue videoq;
     int64_t lastPkts;
     int64_t lastInterval;
+    int lastSeekPos;
 }
 
 //读包线程
@@ -108,6 +109,9 @@ static int decode_interrupt_cb(void *ctx)
         NSAssert(NO, @"不允许重复创建");
     }
     
+    lastPkts = -1;
+    lastInterval = -1;
+    lastSeekPos = -1;
     //初始化视频包队列
     packet_queue_init(&videoq);
     //初始化ffmpeg相关函数
@@ -235,6 +239,11 @@ static int decode_interrupt_cb(void *ctx)
                 //当帧间隔大于0时，采用seek方案
                 if (self.perferInterval > 0) {
                     int sec = self.perferInterval * self.pktCount;
+                    //对于seek间隔很小的视频，seek后很可能回退，因此要想办法避免回退，避免ABAB循环导致的seek死循环
+                    if (sec <= lastSeekPos) {
+                        sec = lastSeekPos + self.perferInterval;
+                    }
+                    lastSeekPos = sec;
                     if (-1 == [self seekTo:formatCtx sec:sec]) {
                         //标志为读包结束
                         //标志为读包结束
