@@ -205,7 +205,7 @@ static int decode_interrupt_cb(void *ctx)
             if (pkt->stream_index == self.videoDecoder.streamIdx) {
                 
                 //gif 不能按关键帧处理
-                if (![self.videoDecoder.codecName isEqualTo:@"gif"]) {
+                if (![self.videoDecoder.codecName isEqualToString:@"gif"]) {
                     if (!(pkt->flags & AV_PKT_FLAG_KEY)) {
                         av_packet_unref(pkt);
                         continue;
