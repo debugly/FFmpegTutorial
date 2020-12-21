@@ -51,7 +51,6 @@ kMRMovieInfoKey kMRMovieAudioFmt = @"kMRMovieAudioFmt";
 @property (nonatomic, strong) MRVideoScale *videoScale;
 //读包完毕？
 @property (atomic, assign) BOOL readEOF;
-@property (atomic, assign) BOOL abort_request;
 @property (nonatomic, assign) int frameCount;
 @property (nonatomic, assign) int pktCount;
 @property (nonatomic, assign) int duration;
@@ -63,7 +62,7 @@ kMRMovieInfoKey kMRMovieAudioFmt = @"kMRMovieAudioFmt";
 static int decode_interrupt_cb(void *ctx)
 {
     MRVideoToPicture *player = (__bridge MRVideoToPicture *)ctx;
-    return player.abort_request;
+    return [player isAbort];
 }
 
 - (void)_stop
@@ -71,7 +70,6 @@ static int decode_interrupt_cb(void *ctx)
     //避免重复stop做无用功
     if (self.workThread) {
         
-        self.abort_request = 1;
         videoq.abort_request = 1;
         
         [self.audioDecoder cancel];
@@ -100,6 +98,11 @@ static int decode_interrupt_cb(void *ctx)
         self.perferMaxCount = INT_MAX;
     }
     return self;
+}
+
+- (BOOL)isAbort
+{
+    return !self.workThread || [self.workThread isCanceled];
 }
 
 //准备
@@ -164,9 +167,9 @@ static int decode_interrupt_cb(void *ctx)
     AVPacket pkt1, *pkt = &pkt1;
     //循环读包，读满了就停止
     for (;;) {
-        
+
         //调用了stop方法，则不再读包
-        if (self.abort_request) {
+        if ([self isAbort]) {
             break;
         }
         
@@ -392,7 +395,7 @@ static int decode_interrupt_cb(void *ctx)
         //释放内存
         avformat_free_context(formatCtx);
         //当取消掉时，不给上层回调
-        if (self.abort_request) {
+        if ([self isAbort]) {
             return;
         }
         NSError* error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
@@ -506,7 +509,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (int)decoder:(MRDecoder *)decoder wantAPacket:(AVPacket *)pkt
 {
-    if (self.abort_request) {
+    if ([self isAbort]) {
         return -1;
     }
     

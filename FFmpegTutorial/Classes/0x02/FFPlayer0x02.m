@@ -23,9 +23,11 @@
 
 - (void)_stop
 {
-    [self.readThread cancel];
-    [self.readThread join];
-    self.readThread = nil;
+    if (self.readThread) {
+        [self.readThread cancel];
+        [self.readThread join];
+        self.readThread = nil;
+    }
 }
 
 - (void)dealloc
@@ -43,7 +45,12 @@
     init_ffmpeg_once();
     
     //不允许重复准备
-    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(openStreamFunc) object:nil];
+    //self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(openStreamFunc) object:nil];
+    __weak __typeof(self)weakSelf = self;
+    self.readThread = [[MRThread alloc] initWithBlock:^{
+        [weakSelf openStreamFunc];
+    }];
+    
     self.readThread.name = @"openStream";
 }
 

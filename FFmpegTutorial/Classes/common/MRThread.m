@@ -6,15 +6,16 @@
 //
 
 #import "MRThread.h"
-#import "MRRWeakProxy.h"
 
 @interface MRThread ()
 
-@property (nonatomic, weak) MRRWeakProxy *threadTarget;
-
+@property (nonatomic, weak) id threadTarget;
 @property (nonatomic, strong) NSThread *thread;
 @property (nonatomic, assign) SEL threadSelector;//实际调度任务
 @property (nonatomic, strong) id threadArgs;
+@property (nonatomic, copy) void(^workBlock)(void);
+@property (nonatomic, strong) NSRunLoop *currentRunloop;
+@property (nonatomic, strong) NSPort *runloopPort;
 
 @end
 
@@ -22,30 +23,43 @@
 
 - (void)dealloc
 {
-    NSLog(@"%@ dealloc",self.name);
+    //NSLog(@"%@ thread dealloc",self.name);
+}
+
+- (instancetype)init
+{
+    self = [super init];
+    if (self) {
+        self.runloopPort = [NSPort port];
+        self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
+    }
+    return self;
 }
 
 - (instancetype)initWithTarget:(id)target selector:(SEL)selector object:(nullable id)argument
 {
-    self = [super init];
+    self = [self init];
     if (self) {
         self.threadTarget = target;
         self.threadSelector = selector;
         self.threadArgs = argument;
-        self.joinModeName = @"joinme";
-        //避免NSThread和self相互持有，外部释放self时，NSThread延长self的生命周期，带来副作用！
-        MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-        //不允许重复准备
-        self.thread = [[NSThread alloc] initWithTarget:weakProxy selector:@selector(workFunc) object:nil];
     }
-    
+    return self;
+}
+
+- (instancetype)initWithBlock:(void (^)(void))block
+{
+    self = [self init];
+    if (self) {
+        self.workBlock = block;
+    }
     return self;
 }
 
 - (void)workFunc
 {
     //取消了就直接返回，不再处理
-    if ([[NSThread currentThread] isCancelled]) {
+    if ([self isCanceled]) {
         return;
     }
     
@@ -61,24 +75,33 @@
                 #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
                 [self.threadTarget performSelector:self.threadSelector withObject:self.threadArgs];
                 #pragma clang diagnostic pop
-            } else {
-                NSAssert(NO, @"WTF?? %@ can't responds the selector:%@",NSStringFromClass([self.threadTarget class]),NSStringFromSelector(self.threadSelector));
+            }
+            
+            if (self.workBlock) {
+                self.workBlock();
             }
         }
         
-        if (self.joinModeName.length > 0) {
-            //增加一个 port，让 RunLoop run 起来
-            [[NSRunLoop currentRunLoop] addPort:[NSPort port] forMode:self.joinModeName];
-            [[NSRunLoop currentRunLoop] runMode:self.joinModeName beforeDate:[NSDate distantFuture]];
+        //线程即使已经取消仍旧使用runloop等待join；除非明确不需要等待
+        while (self.runloopPort) {
+            //NSLog(@"%@ will runUntilDate!",[[NSThread currentThread] name]);
+            if (!self.currentRunloop) {
+                self.currentRunloop = [NSRunLoop currentRunLoop];
+                //增加一个 port，让 RunLoop run 起来
+                [self.currentRunloop addPort:self.runloopPort forMode:NSDefaultRunLoopMode];
+            }
+           
+            [self.currentRunloop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
             
-            NSLog(@"%@ joined!",[[NSThread currentThread] name]);
+            //NSLog(@"%@ after runUntilDate!",[[NSThread currentThread] name]);
         }
     }
 }
 
 - (void)bye
 {
-    NSLog(@"bye:%@",self.name);
+    //NSLog(@"bye:%@",self.name);
+    [self notJoin];
 }
 
 - (void)start
@@ -88,15 +111,19 @@
 
 - (BOOL)join
 {
-    if ([self.thread isExecuting] && ![self.thread isFinished] && self.joinModeName.length > 0) {
-//        for (;![self.thread isFinished];) {
-//            mr_usleep(2);
-//        }
-//        [self bye];
-        [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES modes:@[self.joinModeName]];
+    if ([self.thread isExecuting] && ![self.thread isFinished]) {
+        [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES];
         return YES;
     }
     return NO;
+}
+
+- (void)notJoin
+{
+    if (self.runloopPort) {
+        [self.runloopPort removeFromRunLoop:self.currentRunloop forMode:NSDefaultRunLoopMode];
+        self.runloopPort = nil;
+    }
 }
 
 - (void)cancel
@@ -104,6 +131,11 @@
     if (![self.thread isCancelled]) {
         [self.thread cancel];
     }
+}
+
+- (BOOL)isCanceled
+{
+    return [self.thread isCancelled];
 }
 
 - (BOOL)isFinished
