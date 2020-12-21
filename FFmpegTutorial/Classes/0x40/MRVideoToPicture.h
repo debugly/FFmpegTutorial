@@ -32,8 +32,12 @@ FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieVideoFmt;
 //音频编码格式
 FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieAudioFmt;
 
-
 @class MRVideoToPicture;
+
+typedef void (^MROnVideoOpenedBlock)(MRVideoToPicture*, NSDictionary <kMRMovieInfoKey,id> *);
+typedef void (^MROnConvertAnImageBlock)(MRVideoToPicture*, NSString *);
+typedef void (^MROnConvertFinishedBlock)(MRVideoToPicture*, NSError *);
+
 @protocol MRVideoToPictureDelegate <NSObject>
 
 //代理方法均在主线程里回调
@@ -50,7 +54,13 @@ FOUNDATION_EXPORT kMRMovieInfoKey kMRMovieAudioFmt;
 @property (nonatomic, copy) NSString *contentPath;
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
+///通过代理接收回调
 @property (nonatomic, weak) id<MRVideoToPictureDelegate> delegate;
+///通过block接收回调
+@property (nonatomic, copy) MROnVideoOpenedBlock onVideoOpenedBlock;
+@property (nonatomic, copy) MROnConvertAnImageBlock onConvertAnImageBlock;
+@property (nonatomic, copy) MROnConvertFinishedBlock onConvertFinishedBlock;
+
 ///期望帧间隔时长
 @property (nonatomic, assign) int perferInterval;
 ///期望总张数，当获取不到pts时，会超出期望值

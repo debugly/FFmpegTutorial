@@ -485,6 +485,9 @@ static int decode_interrupt_cb(void *ctx)
         if (self.delegate && [self.delegate respondsToSelector:@selector(vtp:videoOpened:)]) {
             [self.delegate vtp:self videoOpened:dumpDic];
         }
+        if (self.onVideoOpenedBlock) {
+            self.onVideoOpenedBlock(self, dumpDic);
+        }
     });
 
     if (self.videoDecoder) {
@@ -607,7 +610,8 @@ static int decode_interrupt_cb(void *ctx)
         CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
         if (img) {
             int64_t time = [[NSDate date] timeIntervalSince1970] * 10000;
-            NSString *_imgPath = [self.picSaveDir stringByAppendingFormat:@"/%lld.jpg",time];
+            NSString *fileName = [NSString stringWithFormat:@"%lld.jpg",time];
+            NSString *_imgPath = [self.picSaveDir stringByAppendingPathComponent:fileName];
             if ([self saveAsJpeg:img path:_imgPath]) {
                 imgPath = _imgPath;
             }
@@ -648,12 +652,17 @@ static int decode_interrupt_cb(void *ctx)
         
         if ([self.delegate respondsToSelector:@selector(vtp:convertAnImage:)]) {
             [self.delegate vtp:self convertAnImage:imgPath];
-            //有pts的时候有保障，才提前停止
-            if (hasPts && self.frameCount >= self.perferMaxCount) {
-                [self stop];
-                //主动回调下
-                [self performErrorResultOnMainThread:nil];
-            }
+        }
+        
+        if (self.onConvertAnImageBlock) {
+            self.onConvertAnImageBlock(self, imgPath);
+        }
+        
+        //有pts的时候有保障，才提前停止
+        if (hasPts && self.frameCount >= self.perferMaxCount) {
+            [self stop];
+            //主动回调下
+            [self performErrorResultOnMainThread:nil];
         }
     });
 }
@@ -667,6 +676,10 @@ static int decode_interrupt_cb(void *ctx)
     } else {
         if ([self.delegate respondsToSelector:@selector(vtp:convertFinished:)]) {
             [self.delegate vtp:self convertFinished:error];
+        }
+        
+        if (self.onConvertFinishedBlock) {
+            self.onConvertFinishedBlock(self, error);
         }
     }
 }
