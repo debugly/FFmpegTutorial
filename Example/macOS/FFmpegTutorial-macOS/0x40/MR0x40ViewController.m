@@ -280,7 +280,7 @@ static NSString *const kTaskStatusIdentifier = @"status";
 
 - (void)executeMoreTask
 {
-    while ([self.executingQueue count] < 3) {
+    while ([self.executingQueue count] < 5) {
         
         MR0x40Task *firstWaitTask = nil;
         for (MR0x40Task *task in [self.taskArr copy]) {

@@ -93,6 +93,7 @@ static const int kMaxPictureCount = 30;
     vtp.delegate = self;
     vtp.picSaveDir = [self saveDir];
     vtp.perferMaxCount = kMaxPictureCount;
+    vtp.maxPicDimension = 640;
     vtp.perferUseSeek = NO;
     [vtp prepareToPlay];
     [vtp startConvert];
@@ -117,10 +118,10 @@ static const int kMaxPictureCount = 30;
             {
                 self.vtp.perferInterval = 1;
             }
-            self.perferCount = kMinPictureCount;
+            self.vtp.perferMaxCount = kMinPictureCount;
         } else {
             self.vtp.perferInterval = duration / kMaxPictureCount;
-            self.perferCount = kMaxPictureCount;
+            self.vtp.perferMaxCount = kMaxPictureCount;
         }
     }
     
@@ -129,7 +130,8 @@ static const int kMaxPictureCount = 30;
     self.dimension = CGSizeMake(videoWidth, videoHeight);
     self.containerFmt = info[kMRMovieContainerFmt];
     self.audioFmt = info[kMRMovieAudioFmt];
-    self.videoFmt = info[kMRMovieVideoFmt]; 
+    self.videoFmt = info[kMRMovieVideoFmt];
+    self.perferCount = self.vtp.perferMaxCount;
 }
 
 - (void)vtp:(MRVideoToPicture *)vtp convertAnImage:(NSString *)imgPath

@@ -23,6 +23,10 @@
         [self addSubview:imgView];
         self.imgView = imgView;
     }
+    
+    if (self.indicator) {
+        [self.indicator setHidden:YES];
+    }
 }
 
 - (void)prepareIndicatorIfNeed
@@ -33,6 +37,16 @@
         indicator.displayedWhenStopped = NO;
         [self addSubview:indicator];
         self.indicator = indicator;
+        [self.indicator setHidden:YES];
+    }
+    
+    if ([self.indicator isHidden]) {
+        [self.indicator setHidden:NO];
+        [self.indicator startAnimation:nil];
+    }
+    
+    if (self.imgView) {
+        [self.imgView setHidden:YES];
     }
 }
 
@@ -53,7 +67,6 @@
         rect.origin = CGPointMake(x, y);
         view.frame = rect;
     }
-    
 }
 
 - (void)start
@@ -63,7 +76,6 @@
         _imgView = nil;
     }
     [self prepareIndicatorIfNeed];
-    [self.indicator startAnimation:nil];
 }
 
 - (void)stop
