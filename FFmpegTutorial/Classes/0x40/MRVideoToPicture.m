@@ -96,6 +96,7 @@ static int decode_interrupt_cb(void *ctx)
     self = [super init];
     if (self) {
         self.perferMaxCount = INT_MAX;
+        self.maxPicDimension = INT_MAX;
     }
     return self;
 }
@@ -363,8 +364,25 @@ static int decode_interrupt_cb(void *ctx)
         return;
     }
     
+    int dstWidth = 0;
+    int dstHeight = 0;
+    //宽屏视频
+    if (self.videoDecoder.picWidth > self.videoDecoder.picHeight) {
+        dstWidth = MIN(self.videoDecoder.picWidth, self.maxPicDimension);
+        dstHeight = dstWidth * self.videoDecoder.picHeight / self.videoDecoder.picWidth;
+    } else {
+        //竖屏视频
+        dstHeight = MIN(self.videoDecoder.picHeight, self.maxPicDimension);
+        dstWidth = dstHeight * self.videoDecoder.picWidth / self.videoDecoder.picHeight;
+    }
+    
     //创建像素格式转换上下文
-    self.videoScale = [[MRVideoScale alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
+    self.videoScale = [[MRVideoScale alloc] initWithSrcPixFmt:format
+                                                    dstPixFmt:MRPixelFormat2AV(firstSupportedFmt)
+                                                     srcWidth:self.videoDecoder.picWidth
+                                                    srcHeight:self.videoDecoder.picHeight
+                                                     dstWidth:dstWidth
+                                                    dstHeight:dstHeight];
 }
 
 - (void)workFunc

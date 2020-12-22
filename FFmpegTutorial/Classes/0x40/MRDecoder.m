@@ -184,7 +184,7 @@
                     hasMorePkt = [self.delegate decoderHasMorePacket:self];
                 }
                 if (hasMorePkt) {
-                    av_log(NULL, AV_LOG_INFO, "has more pkt need decode.\n");
+                    av_log(NULL, AV_LOG_DEBUG, "has more pkt need decode.\n");
                     continue;
                 } else {
                     av_log(NULL, AV_LOG_ERROR, "%s eof.\n",[self.name UTF8String]);

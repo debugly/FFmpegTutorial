@@ -69,7 +69,8 @@ typedef void (^MROnConvertFinishedBlock)(MRVideoToPicture*, NSError *);
 @property (nonatomic, copy) NSString *picSaveDir;
 ///期望使用seek代替逐帧读取
 @property (nonatomic, assign) BOOL perferUseSeek;
-
+///图片最大尺寸
+@property (nonatomic, assign) int maxPicDimension;
 ///准备
 - (void)prepareToPlay;
 ///开始提取
