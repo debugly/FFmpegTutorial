@@ -162,6 +162,19 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
+- (int)compatibleStride
+{
+    if (self.duration < 60) {
+        return 0;
+    } else if (self.duration < 300) {
+        return MAX(self.perferInterval / 3, 1);
+    } else if (self.duration < 1800) {
+        return MAX(self.perferInterval / 2, 3);
+    } else {
+        return MAX(self.perferInterval * 3 / 4, 10);
+    }
+}
+
 //读包循环
 - (void)readPacketLoop:(AVFormatContext *)formatCtx
 {
@@ -229,23 +242,16 @@ static int decode_interrupt_cb(void *ctx)
                     
                     if (lastPkts < pts) {
                         lastPkts = pts;
-                        
-                        NSLog(@"xql pts:%lld",pts);
+
                         packet_queue_put(&videoq, pkt);
                         packet_queue_put_nullpacket(&videoq, pkt->stream_index);
                         self.pktCount ++;
                         if (!self.perferUseSeek) {
-                            lastPkts += self.perferInterval;
+                            lastPkts += [self compatibleStride];
                         }
                     } else {
                         av_packet_unref(pkt);
                     }
-//                    packet_queue_put(&videoq, pkt);
-//                    packet_queue_put_nullpacket(&videoq, pkt->stream_index);
-//                    self.pktCount ++;
-//                    if (!self.perferUseSeek) {
-//                        lastPkts += self.perferInterval;
-//                    }
                 } else if(AV_NOPTS_VALUE != pkt->dts) {
                     if (lastPkts < pkt->dts) {
                         lastPkts = pkt->dts;
@@ -651,7 +657,7 @@ static int decode_interrupt_cb(void *ctx)
         if (lastFramePts < sec) {
             av_log(NULL, AV_LOG_DEBUG, "frame->pts:%ds\n",sec);
             imgPath = [self convertAngSaveAsJPEG:frame];
-            lastFramePts = sec + self.perferInterval;
+            lastFramePts = sec + imgPath.length > 0 ? [self compatibleStride] : 0;
         } else {
             av_log(NULL, AV_LOG_DEBUG, "ignored frame->pts:%ds\n",sec);
         }
@@ -665,24 +671,26 @@ static int decode_interrupt_cb(void *ctx)
         return;
     }
     
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    if (self.frameCount >= self.perferMaxCount) {
+        //提取的图片够了，就提前停止
+        [[NSFileManager defaultManager] removeItemAtPath:imgPath error:nil];
+        //因为stop里有join操作，使用 dispatch_sync 时会导致线程卡住，一直等待join
+        [self stop];
+        //主动回调下
+        [self performErrorResultOnMainThread:nil];
+    } else {
         self.frameCount++;
         
-        if ([self.delegate respondsToSelector:@selector(vtp:convertAnImage:)]) {
-            [self.delegate vtp:self convertAnImage:imgPath];
-        }
-        
-        if (self.onConvertAnImageBlock) {
-            self.onConvertAnImageBlock(self, imgPath);
-        }
-        
-        //有pts的时候有保障，才提前停止
-        if (hasPts && self.frameCount >= self.perferMaxCount) {
-            [self stop];
-            //主动回调下
-            [self performErrorResultOnMainThread:nil];
-        }
-    });
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if ([self.delegate respondsToSelector:@selector(vtp:convertAnImage:)]) {
+                [self.delegate vtp:self convertAnImage:imgPath];
+            }
+            
+            if (self.onConvertAnImageBlock) {
+                self.onConvertAnImageBlock(self, imgPath);
+            }
+        });
+    }
 }
 
 - (void)performErrorResultOnMainThread:(NSError*)error

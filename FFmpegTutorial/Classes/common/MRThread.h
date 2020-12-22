@@ -7,10 +7,12 @@
 
 #import <Foundation/Foundation.h>
 
+NS_ASSUME_NONNULL_BEGIN
+
 @interface MRThread : NSObject
 
 ///在任务开始前指定线程的名字
-@property (atomic, copy) NSString *name;
+@property (atomic, copy) NSString * _Nullable name;
 
 - (instancetype)initWithTarget:(id)target selector:(SEL)selector object:(nullable id)argument;
 - (instancetype)initWithBlock:(void(^)(void))block;
@@ -32,3 +34,5 @@
 - (BOOL)isFinished;
 
 @end
+
+NS_ASSUME_NONNULL_END

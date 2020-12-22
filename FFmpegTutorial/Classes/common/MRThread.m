@@ -112,8 +112,13 @@
 - (BOOL)join
 {
     if ([self.thread isExecuting] && ![self.thread isFinished]) {
-        [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES];
-        return YES;
+        if ([NSThread currentThread] == self.thread) {
+            [self notJoin];
+            return YES;
+        } else {
+            [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES];
+            return YES;
+        }
     }
     return NO;
 }
