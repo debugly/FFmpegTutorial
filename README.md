@@ -132,9 +132,11 @@
 - 0x31：[支持播放和暂停]
 - 0x32：[显示播放进度和时长]
 
-实用工具
+## Tools
 
-- 0x40：[抽取关键帧图片]
+通过上面教程的学习，对 FFmpeg 有了一定的了解，写了下面几个小工具：
+
+- 视频抽帧器：抽取视频关键帧图片，非常高效，开源地址：[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)。
 
 # TODO
 
