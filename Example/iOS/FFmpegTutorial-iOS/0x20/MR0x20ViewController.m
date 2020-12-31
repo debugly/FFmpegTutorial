@@ -9,7 +9,7 @@
 
 #import "MR0x20ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x20.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import "MR0x20VideoRenderer.h"
 #import <AVFoundation/AVFoundation.h>

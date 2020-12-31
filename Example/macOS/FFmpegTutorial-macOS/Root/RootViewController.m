@@ -80,11 +80,6 @@
             @"title":@"0x03",
             @"detail":@"读包线程与 AVPacket 缓存队列",
             @"class":@"",
-        },
-        @{
-            @"title":@"0x40",
-            @"detail":@"抽取关键帧图片",
-            @"class":@"MR0x40ViewController",
         }
     ];
     

@@ -9,7 +9,7 @@
 
 #import "MR0x14ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x14.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import "MR0x14VideoRenderer.h"
 

@@ -8,7 +8,7 @@
 
 #import "MR0x11ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x11.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 
 @interface MR0x11ViewController ()<UITextViewDelegate,FFPlayer0x11Delegate>
 

@@ -9,7 +9,7 @@
 
 #import "MR0x21ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x21.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import "MR0x21VideoRenderer.h"
 #import <AVFoundation/AVFoundation.h>

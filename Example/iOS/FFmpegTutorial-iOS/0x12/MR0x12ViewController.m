@@ -8,7 +8,7 @@
 
 #import "MR0x12ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x12.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import <AVFoundation/AVCaptureVideoDataOutput.h>
 

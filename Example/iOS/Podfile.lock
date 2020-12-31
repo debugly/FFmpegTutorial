@@ -18,7 +18,6 @@ PODS:
     - FFmpegTutorial/0x30 (= 0.4.0)
     - FFmpegTutorial/0x31 (= 0.4.0)
     - FFmpegTutorial/0x32 (= 0.4.0)
-    - FFmpegTutorial/0x40 (= 0.4.0)
     - FFmpegTutorial/common (= 0.4.0)
     - MRFFmpegPod
   - FFmpegTutorial/0x01 (0.4.0):
@@ -57,27 +56,31 @@ PODS:
     - MRFFmpegPod
   - FFmpegTutorial/0x32 (0.4.0):
     - MRFFmpegPod
-  - FFmpegTutorial/0x40 (0.4.0):
-    - MRFFmpegPod
   - FFmpegTutorial/common (0.4.0):
     - MRFFmpegPod
   - GDPerformanceView-Swift (2.0.3)
-  - MRFFmpegPod (3.4.7):
-    - MRFFmpegPod/libavcodec (= 3.4.7)
-    - MRFFmpegPod/libavformat (= 3.4.7)
-    - MRFFmpegPod/libavutil (= 3.4.7)
-    - MRFFmpegPod/libswresample (= 3.4.7)
-    - MRFFmpegPod/libswscale (= 3.4.7)
-  - MRFFmpegPod/libavcodec (3.4.7)
-  - MRFFmpegPod/libavformat (3.4.7)
-  - MRFFmpegPod/libavutil (3.4.7)
-  - MRFFmpegPod/libswresample (3.4.7)
-  - MRFFmpegPod/libswscale (3.4.7)
+  - MRFFmpegPod (4.3):
+    - MRFFmpegPod/libavcodec (= 4.3)
+    - MRFFmpegPod/libavdevice (= 4.3)
+    - MRFFmpegPod/libavfilter (= 4.3)
+    - MRFFmpegPod/libavformat (= 4.3)
+    - MRFFmpegPod/libavutil (= 4.3)
+    - MRFFmpegPod/libswresample (= 4.3)
+    - MRFFmpegPod/libswscale (= 4.3)
+  - MRFFmpegPod/libavcodec (4.3)
+  - MRFFmpegPod/libavdevice (4.3)
+  - MRFFmpegPod/libavfilter (4.3)
+  - MRFFmpegPod/libavformat (4.3)
+  - MRFFmpegPod/libavutil (4.3)
+  - MRFFmpegPod/libswresample (4.3)
+  - MRFFmpegPod/libswscale (4.3)
+  - MROpenSSLPod (1.1.1h)
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
   - GDPerformanceView-Swift
-  - MRFFmpegPod (from `https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg3.4.7.podspec`)
+  - MRFFmpegPod (from `https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg4.3.podspec`)
+  - MROpenSSLPod (from `https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL1.1.1h.podspec`)
 
 SPEC REPOS:
   trunk:
@@ -87,13 +90,16 @@ EXTERNAL SOURCES:
   FFmpegTutorial:
     :path: "../../"
   MRFFmpegPod:
-    :podspec: https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg3.4.7.podspec
+    :podspec: https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg4.3.podspec
+  MROpenSSLPod:
+    :podspec: https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL1.1.1h.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: b548169d1d40f999b26c3a44371badbb5fad914f
+  FFmpegTutorial: e08434cd1ea8ddb81dcfbe7dce39f85e38fa06be
   GDPerformanceView-Swift: ef3d05deb103e472a5494d3f60aeca5a58b88a7d
-  MRFFmpegPod: 02be39b414c2e1119e9f71541aee56ddb8f1afa5
+  MRFFmpegPod: 30943db3429fd840e0121eaad251f0b5d0fdc4e5
+  MROpenSSLPod: d8ba147324b0ff04c2588440e9c0b43deffa943d
 
-PODFILE CHECKSUM: 2f4474c20fd578521d5a76f755a9379072731baf
+PODFILE CHECKSUM: 21a58fbdd9966dcb62904f20f90ee101cb1bca58
 
 COCOAPODS: 1.10.0

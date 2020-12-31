@@ -9,7 +9,7 @@
 
 #import "MR0x32ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x32.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import "MR0x32VideoRenderer.h"
 #import "MR0x32AudioRenderer.h"

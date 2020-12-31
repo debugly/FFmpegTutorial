@@ -195,6 +195,7 @@ static __inline__ void init_ffmpeg_once()
 #else
         av_log_set_level(AV_LOG_WARNING);
 #endif
+//        av_log_set_level(AV_LOG_WARNING);
         //初始化 libavformat，注册所有的复用器，解复用器，协议协议！
         av_register_all();
         flag = 1;

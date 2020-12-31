@@ -8,7 +8,7 @@
 
 #import "MR0x10ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
-#import <FFmpegTutorial/MRRWeakProxy.h>
+#import "MRRWeakProxy.h"
 #import "MR0x10VideoRenderer.h"
 
 @interface MR0x10ViewController ()<UITextViewDelegate,FFPlayer0x10Delegate>
