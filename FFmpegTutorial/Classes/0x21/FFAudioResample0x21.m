@@ -80,7 +80,7 @@
     if(ret < 0){
         // convert error, try next frame
         av_log(NULL, AV_LOG_ERROR, "fail resample audio");
-        return -1;
+        return NO;
     }
     
     *outP = out_frame;
