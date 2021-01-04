@@ -65,8 +65,8 @@ static const GLfloat kColorConversion601FullRange[] = {
 	EAGLContext *_context;
 	CVOpenGLESTextureRef _lumaTexture;
 	CVOpenGLESTextureRef _chromaTexture;
+    //for iphone
 	CVOpenGLESTextureCacheRef _videoTextureCache;
-	
     //for simulator
     GLuint _lumaTextureS;
     GLuint _chromaTextureS;
@@ -135,15 +135,6 @@ static const GLfloat kColorConversion601FullRange[] = {
 	glUniform1i(uniforms[UNIFORM_UV], 1);
 	
 	glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
-	
-	// Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
-	if (!_videoTextureCache) {
-		CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _context, NULL, &_videoTextureCache);
-		if (err != noErr) {
-			NSLog(@"Error at CVOpenGLESTextureCacheCreate %d", err);
-			return;
-		}
-	}
 }
 
 #pragma mark - Utilities
@@ -186,8 +177,10 @@ static const GLfloat kColorConversion601FullRange[] = {
 		_chromaTexture = NULL;
 	}
 	
-	// Periodic texture cache flush every frame
-	CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
+    if (_videoTextureCache) {
+        // Periodic texture cache flush every frame
+        CVOpenGLESTextureCacheFlush(_videoTextureCache, 0);
+    }
 }
 
 - (void)dealloc
@@ -203,6 +196,7 @@ static const GLfloat kColorConversion601FullRange[] = {
         glDeleteFramebuffers(1, &_chromaTextureS);
         _chromaTextureS = 0;
     }
+    
 	if(_videoTextureCache) {
 		CFRelease(_videoTextureCache);
 	}
@@ -231,10 +225,6 @@ static const GLfloat kColorConversion601FullRange[] = {
 		int frameWidth = (int)CVPixelBufferGetWidth(pixelBuffer);
 		int frameHeight = (int)CVPixelBufferGetHeight(pixelBuffer);
 		
-		if (!_videoTextureCache) {
-			NSLog(@"No video texture cache");
-			return;
-		}
         if ([EAGLContext currentContext] != _context) {
             [EAGLContext setCurrentContext:_context]; // 非常重要的一行代码
         }
@@ -267,6 +257,14 @@ static const GLfloat kColorConversion601FullRange[] = {
         glActiveTexture(GL_TEXTURE0);
         
         if ([self supportsFastTextureUpload]) {
+            // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
+            if (!_videoTextureCache) {
+                CVReturn err = CVOpenGLESTextureCacheCreate(kCFAllocatorDefault, NULL, _context, NULL, &_videoTextureCache);
+                if (err != noErr) {
+                    NSLog(@"Error at CVOpenGLESTextureCacheCreate %d", err);
+                    return;
+                }
+            }
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                _videoTextureCache,
                                                                pixelBuffer,
@@ -324,7 +322,7 @@ static const GLfloat kColorConversion601FullRange[] = {
             }
             CVPixelBufferLockBaseAddress(pixelBuffer, 1);
             glBindTexture(GL_TEXTURE_2D, _chromaTextureS);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, frameWidth, frameHeight/4, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,1));
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, frameWidth/2, frameHeight/2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,1));
             CVPixelBufferUnlockBaseAddress(pixelBuffer, 1);
         }
         
@@ -342,10 +340,10 @@ static const GLfloat kColorConversion601FullRange[] = {
 	glClearColor(0.1f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT);
 	
-	// Use shader program.
-	glUseProgram(self.program);
 	glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
 	
+    // Use shader program.
+    glUseProgram(self.program);
 	// Set up the quad vertices with respect to the orientation and aspect ratio of the video.
 	CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(_backingWidth, _backingHeight), self.layer.bounds);
 	
