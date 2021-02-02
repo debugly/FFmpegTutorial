@@ -73,21 +73,26 @@ PODS:
   - MRFFmpegPod/libavutil (4.3)
   - MRFFmpegPod/libswresample (4.3)
   - MRFFmpegPod/libswscale (4.3)
+  - MROpenSSLPod (1.1.1h)
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
   - MRFFmpegPod (from `https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg4.3.podspec`)
+  - MROpenSSLPod (from `https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL1.1.1h.podspec`)
 
 EXTERNAL SOURCES:
   FFmpegTutorial:
     :path: "../../"
   MRFFmpegPod:
     :podspec: https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg4.3.podspec
+  MROpenSSLPod:
+    :podspec: https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL1.1.1h.podspec
 
 SPEC CHECKSUMS:
   FFmpegTutorial: e08434cd1ea8ddb81dcfbe7dce39f85e38fa06be
   MRFFmpegPod: 30943db3429fd840e0121eaad251f0b5d0fdc4e5
+  MROpenSSLPod: d8ba147324b0ff04c2588440e9c0b43deffa943d
 
-PODFILE CHECKSUM: cfd8e015b4d06a6ad20b1419762d5d2e6a69206a
+PODFILE CHECKSUM: 3e700a30ac8b93fbfa71a127f63f33d4d66d9485
 
 COCOAPODS: 1.10.0

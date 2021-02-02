@@ -12,7 +12,7 @@ target 'FFmpegTutorial-macOS' do
   # Pods for FFmpegTutorial-macOS
   # pod 'MROpenSSLPod', :path => '.'
   # pod 'MRFFmpegPod', :path => '.'
-  # pod 'MROpenSSLPod', :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL#{OpenSSL_VER}.podspec"
+   pod 'MROpenSSLPod', :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL#{OpenSSL_VER}.podspec"
   pod 'MRFFmpegPod', :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg#{FF_VER}.podspec"
   pod 'FFmpegTutorial', :path => '../../'
 end
