@@ -9,19 +9,12 @@
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
   s.version          = '0.4.0'
-  s.summary          = 'A short description of FFmpegTutorial.'
-
-# This description is used to generate tags and improve search results.
-#   * Think: What does it do? Why did you write it? What is the focus?
-#   * Try to keep it short, snappy and to the point.
-#   * Write the description between the DESC delimiters below.
-#   * Finally, don't worry about the indent, CocoaPods strips it!
-
+  s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
-TODO: Add long description of the pod here.
+  为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
                        DESC
 
-  s.homepage         = 'https://github.com/qianlongxu/FFmpegTutorial'
+  s.homepage         = 'https://debugly.cn/FFmpegTutorial/'
   s.license          = { :type => 'MIT', :file => 'LICENSE' }
   s.author           = { 'MattReach' => 'qianlongxu@gmail.com' }
   s.source           = { :git => 'https://github.com/debugly/FFmpegTutorial.git', :tag => s.version.to_s }
@@ -126,6 +119,6 @@ TODO: Add long description of the pod here.
     ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h'
   end
 
-  s.dependency 'MRFFmpegPod'
+  s.dependency 'MRFFmpegPod', podspec => "https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg4.3.podspec"
   
 end
