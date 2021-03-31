@@ -8,10 +8,10 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--FFmpeg Tutotial-->
+        <!--Tableview-->
         <scene sceneID="kfP-Nd-Hrg">
             <objects>
-                <tableViewController id="cR7-4z-k62" customClass="MRTableViewController" sceneMemberID="viewController">
+                <tableViewController title="Tableview" id="cR7-4z-k62" customClass="MRTableViewController" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="static" style="grouped" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="18" sectionFooterHeight="18" id="eSi-pC-zph">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="320"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -437,21 +437,21 @@
                             <tableViewSection headerTitle="封装播放器" id="otk-FF-tYq">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="3UQ-48-Efk" detailTextLabel="9xU-s1-z9W" style="IBUITableViewCellStyleValue1" id="eEA-64-AjR">
-                                        <rect key="frame" x="0.0" y="838.5" width="568" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="876" width="568" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="eEA-64-AjR" id="KP8-XX-a2K">
-                                            <rect key="frame" x="0.0" y="0.0" width="537" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="549" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0x30" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="3UQ-48-Efk">
-                                                    <rect key="frame" x="20" y="12" width="39.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="12" width="39.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="音视频同步" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="9xU-s1-z9W">
-                                                    <rect key="frame" x="442" y="12" width="87" height="20.5"/>
+                                                    <rect key="frame" x="454" y="12" width="87" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -464,21 +464,21 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="MbS-fM-uFo" detailTextLabel="u6H-OI-GTK" style="IBUITableViewCellStyleValue1" id="6ls-BT-2b1">
-                                        <rect key="frame" x="0.0" y="882" width="568" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="919.5" width="568" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="6ls-BT-2b1" id="C0B-PY-QM6">
-                                            <rect key="frame" x="0.0" y="0.0" width="537" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="549" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0x31" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="MbS-fM-uFo">
-                                                    <rect key="frame" x="20" y="12" width="36.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="12" width="36.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="支持播放和暂停" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="u6H-OI-GTK">
-                                                    <rect key="frame" x="407.5" y="12" width="121.5" height="20.5"/>
+                                                    <rect key="frame" x="419.5" y="12" width="121.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -491,21 +491,21 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="ZIW-iS-aO2" detailTextLabel="PmC-O5-109" style="IBUITableViewCellStyleValue1" id="ur7-SI-CZv">
-                                        <rect key="frame" x="0.0" y="925.5" width="568" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="963" width="568" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ur7-SI-CZv" id="6tI-Mc-GY8">
-                                            <rect key="frame" x="0.0" y="0.0" width="537" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="549" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0x32" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="ZIW-iS-aO2">
-                                                    <rect key="frame" x="20" y="12" width="39" height="20.5"/>
+                                                    <rect key="frame" x="15" y="12" width="39" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="播放进度和时长" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="PmC-O5-109">
-                                                    <rect key="frame" x="407.5" y="12" width="121.5" height="20.5"/>
+                                                    <rect key="frame" x="419.5" y="12" width="121.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -522,21 +522,21 @@
                             <tableViewSection headerTitle="实用工具" id="a9U-Mn-DJ5">
                                 <cells>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="7nR-Zo-7xC" detailTextLabel="qRA-IG-8WL" style="IBUITableViewCellStyleValue1" id="Il2-Mw-I3j">
-                                        <rect key="frame" x="0.0" y="1025" width="568" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="1062.5" width="568" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Il2-Mw-I3j" id="n71-jW-NDx">
-                                            <rect key="frame" x="0.0" y="0.0" width="537" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="549" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0x40" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="7nR-Zo-7xC">
-                                                    <rect key="frame" x="20" y="12" width="39.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="12" width="39.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="qRA-IG-8WL">
-                                                    <rect key="frame" x="481.5" y="12" width="47.5" height="20.5"/>
+                                                    <rect key="frame" x="493.5" y="12" width="47.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -546,21 +546,21 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="8Kz-l3-1hC" detailTextLabel="QJx-vg-XMH" style="IBUITableViewCellStyleValue1" id="qoJ-hu-Q24">
-                                        <rect key="frame" x="0.0" y="1068.5" width="568" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="1106" width="568" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="qoJ-hu-Q24" id="ziV-L0-Znu">
-                                            <rect key="frame" x="0.0" y="0.0" width="537" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="549" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0x41" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="8Kz-l3-1hC">
-                                                    <rect key="frame" x="20" y="12" width="36.5" height="20.5"/>
+                                                    <rect key="frame" x="15" y="12" width="36.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="QJx-vg-XMH">
-                                                    <rect key="frame" x="481.5" y="12" width="47.5" height="20.5"/>
+                                                    <rect key="frame" x="493.5" y="12" width="47.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -570,21 +570,21 @@
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" textLabel="l9w-RW-faC" detailTextLabel="dVH-of-gPU" style="IBUITableViewCellStyleValue1" id="Uog-rW-xbL">
-                                        <rect key="frame" x="0.0" y="1112" width="568" height="43.5"/>
+                                        <rect key="frame" x="0.0" y="1149.5" width="568" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="Uog-rW-xbL" id="RgV-BJ-HQ6">
-                                            <rect key="frame" x="0.0" y="0.0" width="537" height="43.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="549" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="0x42" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="l9w-RW-faC">
-                                                    <rect key="frame" x="20" y="12" width="39" height="20.5"/>
+                                                    <rect key="frame" x="15" y="12" width="39" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" insetsLayoutMarginsFromSafeArea="NO" text="TODO" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="dVH-of-gPU">
-                                                    <rect key="frame" x="481.5" y="12" width="47.5" height="20.5"/>
+                                                    <rect key="frame" x="493.5" y="12" width="47.5" height="20.5"/>
                                                     <autoresizingMask key="autoresizingMask"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
@@ -607,10 +607,10 @@
             </objects>
             <point key="canvasLocation" x="-1111" y="-1271"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Root Navigation-->
         <scene sceneID="twm-OI-uvj">
             <objects>
-                <navigationController id="rrw-oB-fM5" customClass="MRNavigationController" sceneMemberID="viewController">
+                <navigationController title="Root Navigation" id="rrw-oB-fM5" customClass="MRNavigationController" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="arF-0A-d4b">
                         <rect key="frame" x="0.0" y="0.0" width="568" height="32"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -623,10 +623,10 @@
             </objects>
             <point key="canvasLocation" x="-1842" y="-1271"/>
         </scene>
-        <!--0x01 View Controller-->
+        <!--0x01-->
         <scene sceneID="wQg-tq-qST">
             <objects>
-                <viewController id="whP-gf-Uak" customClass="MR0x01ViewController" sceneMemberID="viewController">
+                <viewController title="0x01" id="whP-gf-Uak" customClass="MR0x01ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="uEw-UM-LJ8"/>
                         <viewControllerLayoutGuide type="bottom" id="Mvr-aV-6Um"/>
@@ -660,10 +660,10 @@
             </objects>
             <point key="canvasLocation" x="448" y="-1967"/>
         </scene>
-        <!--0x02 View Controller-->
+        <!--0x02-->
         <scene sceneID="3oI-mS-Wvh">
             <objects>
-                <viewController id="1f7-wG-hdc" customClass="MR0x02ViewController" sceneMemberID="viewController">
+                <viewController title="0x02" id="1f7-wG-hdc" customClass="MR0x02ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="MBp-5j-qjT"/>
                         <viewControllerLayoutGuide type="bottom" id="hLf-ef-M5G"/>
@@ -703,10 +703,10 @@
             </objects>
             <point key="canvasLocation" x="448" y="-1253"/>
         </scene>
-        <!--0x03 View Controller-->
+        <!--0x03-->
         <scene sceneID="aTn-Di-vXQ">
             <objects>
-                <viewController id="a4L-uM-WbY" customClass="MR0x03ViewController" sceneMemberID="viewController">
+                <viewController title="0x03" id="a4L-uM-WbY" customClass="MR0x03ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="1wq-nv-80d"/>
                         <viewControllerLayoutGuide type="bottom" id="UNc-ft-ygC"/>
@@ -764,10 +764,10 @@
             </objects>
             <point key="canvasLocation" x="448" y="-533"/>
         </scene>
-        <!--0x04 View Controller-->
+        <!--0x04-->
         <scene sceneID="QBO-JI-G8n">
             <objects>
-                <viewController id="UgP-TB-aiD" customClass="MR0x04ViewController" sceneMemberID="viewController">
+                <viewController title="0x04" id="UgP-TB-aiD" customClass="MR0x04ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="csb-Vg-a74"/>
                         <viewControllerLayoutGuide type="bottom" id="xs1-Jr-1Dt"/>
@@ -807,10 +807,10 @@
             </objects>
             <point key="canvasLocation" x="1256" y="-1969"/>
         </scene>
-        <!--0x05 View Controller-->
+        <!--0x05-->
         <scene sceneID="gr5-RK-c6t">
             <objects>
-                <viewController id="yyp-A4-fBx" customClass="MR0x05ViewController" sceneMemberID="viewController">
+                <viewController title="0x05" id="yyp-A4-fBx" customClass="MR0x05ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FTl-d8-vy7"/>
                         <viewControllerLayoutGuide type="bottom" id="n3q-Bn-6aD"/>
@@ -850,10 +850,10 @@
             </objects>
             <point key="canvasLocation" x="1256" y="-1254"/>
         </scene>
-        <!--0x06 View Controller-->
+        <!--0x06-->
         <scene sceneID="NPd-Yq-KcE">
             <objects>
-                <viewController id="klt-zw-ITQ" customClass="MR0x06ViewController" sceneMemberID="viewController">
+                <viewController title="0x06" id="klt-zw-ITQ" customClass="MR0x06ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="GsO-ke-uvq"/>
                         <viewControllerLayoutGuide type="bottom" id="Zeb-zV-3Rl"/>
@@ -893,10 +893,10 @@
             </objects>
             <point key="canvasLocation" x="1256" y="-534"/>
         </scene>
-        <!--0x10 View Controller-->
+        <!--0x10-->
         <scene sceneID="ODo-hZ-TtT">
             <objects>
-                <viewController id="jVR-uU-Y0i" customClass="MR0x10ViewController" sceneMemberID="viewController">
+                <viewController title="0x10" id="jVR-uU-Y0i" customClass="MR0x10ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="DJz-xY-XEb"/>
                         <viewControllerLayoutGuide type="bottom" id="J4f-Kl-hlq"/>
@@ -947,10 +947,10 @@
             </objects>
             <point key="canvasLocation" x="448" y="716"/>
         </scene>
-        <!--0x12 View Controller-->
+        <!--0x12-->
         <scene sceneID="AzJ-rX-thJ">
             <objects>
-                <viewController id="ZDJ-tD-zUw" customClass="MR0x12ViewController" sceneMemberID="viewController">
+                <viewController title="0x12" id="ZDJ-tD-zUw" customClass="MR0x12ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cuI-4Z-lrl"/>
                         <viewControllerLayoutGuide type="bottom" id="GeS-44-gZR"/>
@@ -1000,10 +1000,10 @@
             </objects>
             <point key="canvasLocation" x="448" y="2291"/>
         </scene>
-        <!--0x11 View Controller-->
+        <!--0x11-->
         <scene sceneID="grF-JE-Zty">
             <objects>
-                <viewController id="ZzP-hg-PMa" customClass="MR0x11ViewController" sceneMemberID="viewController">
+                <viewController title="0x11" id="ZzP-hg-PMa" customClass="MR0x11ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="FJO-HN-Ql6"/>
                         <viewControllerLayoutGuide type="bottom" id="lvZ-HV-ai0"/>
@@ -1053,10 +1053,10 @@
             </objects>
             <point key="canvasLocation" x="448" y="1479"/>
         </scene>
-        <!--0x13 View Controller-->
+        <!--0x13-->
         <scene sceneID="ZTQ-BB-6rj">
             <objects>
-                <viewController id="e9J-KQ-rpj" customClass="MR0x13ViewController" sceneMemberID="viewController">
+                <viewController title="0x13" id="e9J-KQ-rpj" customClass="MR0x13ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="bzf-cd-AdR"/>
                         <viewControllerLayoutGuide type="bottom" id="1vb-5F-Bn8"/>
@@ -1107,10 +1107,10 @@
             </objects>
             <point key="canvasLocation" x="1168" y="714"/>
         </scene>
-        <!--0x14 View Controller-->
+        <!--0x14-->
         <scene sceneID="Fio-Wz-ioA">
             <objects>
-                <viewController id="KbD-tu-Nm6" customClass="MR0x14ViewController" sceneMemberID="viewController">
+                <viewController title="0x14" id="KbD-tu-Nm6" customClass="MR0x14ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="0a5-BW-VSB"/>
                         <viewControllerLayoutGuide type="bottom" id="Y5n-cN-ZvG"/>
@@ -1161,10 +1161,10 @@
             </objects>
             <point key="canvasLocation" x="1167" y="1478"/>
         </scene>
-        <!--0x15 View Controller-->
+        <!--0x15-->
         <scene sceneID="yUx-21-dgt">
             <objects>
-                <viewController id="MdX-hz-JEC" customClass="MR0x15ViewController" sceneMemberID="viewController">
+                <viewController title="0x15" id="MdX-hz-JEC" customClass="MR0x15ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="OxP-z4-k0n"/>
                         <viewControllerLayoutGuide type="bottom" id="2gk-Td-J87"/>
@@ -1215,10 +1215,10 @@
             </objects>
             <point key="canvasLocation" x="1166" y="2289"/>
         </scene>
-        <!--0x20 View Controller-->
+        <!--0x20-->
         <scene sceneID="cAa-c9-LKx">
             <objects>
-                <viewController id="TJS-EQ-dSu" customClass="MR0x20ViewController" sceneMemberID="viewController">
+                <viewController title="0x20" id="TJS-EQ-dSu" customClass="MR0x20ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="Yb7-fI-pSj"/>
                         <viewControllerLayoutGuide type="bottom" id="Ntl-kR-Xgo"/>
@@ -1269,10 +1269,10 @@
             </objects>
             <point key="canvasLocation" x="-762" y="714"/>
         </scene>
-        <!--0x21 View Controller-->
+        <!--0x21-->
         <scene sceneID="bl4-bC-ffI">
             <objects>
-                <viewController id="qCq-dd-NbL" customClass="MR0x21ViewController" sceneMemberID="viewController">
+                <viewController title="0x21" id="qCq-dd-NbL" customClass="MR0x21ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3E-Hj-6bp"/>
                         <viewControllerLayoutGuide type="bottom" id="0K0-YA-2Ou"/>
@@ -1323,10 +1323,10 @@
             </objects>
             <point key="canvasLocation" x="-762" y="1515"/>
         </scene>
-        <!--0x22 View Controller-->
+        <!--0x22-->
         <scene sceneID="yII-3b-lIR">
             <objects>
-                <viewController id="KnQ-4z-ELH" customClass="MR0x22ViewController" sceneMemberID="viewController">
+                <viewController title="0x22" id="KnQ-4z-ELH" customClass="MR0x22ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="hbW-Wz-2Ie"/>
                         <viewControllerLayoutGuide type="bottom" id="OIH-55-zHs"/>
@@ -1377,10 +1377,10 @@
             </objects>
             <point key="canvasLocation" x="-763" y="2338"/>
         </scene>
-        <!--0x30 View Controller-->
+        <!--0x30-->
         <scene sceneID="kQL-Rf-sKO">
             <objects>
-                <viewController id="ow8-6n-oT9" customClass="MR0x30ViewController" sceneMemberID="viewController">
+                <viewController title="0x30" id="ow8-6n-oT9" customClass="MR0x30ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="p9w-xz-x25"/>
                         <viewControllerLayoutGuide type="bottom" id="wpA-uX-sga"/>
@@ -1431,10 +1431,10 @@
             </objects>
             <point key="canvasLocation" x="-1684" y="714"/>
         </scene>
-        <!--0x31 View Controller-->
+        <!--0x31-->
         <scene sceneID="gav-Il-KTd">
             <objects>
-                <viewController id="eco-My-8f9" customClass="MR0x31ViewController" sceneMemberID="viewController">
+                <viewController title="0x31" id="eco-My-8f9" customClass="MR0x31ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="F0Y-hX-7CM"/>
                         <viewControllerLayoutGuide type="bottom" id="TOs-bo-S69"/>
@@ -1515,10 +1515,10 @@
             </objects>
             <point key="canvasLocation" x="-1685" y="1515"/>
         </scene>
-        <!--0x32 View Controller-->
+        <!--0x32-->
         <scene sceneID="xgx-cd-AKG">
             <objects>
-                <viewController id="s3v-60-o9G" customClass="MR0x32ViewController" sceneMemberID="viewController">
+                <viewController title="0x32" id="s3v-60-o9G" customClass="MR0x32ViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="qqB-bz-fYA"/>
                         <viewControllerLayoutGuide type="bottom" id="q5h-e1-6WK"/>
@@ -1562,14 +1562,11 @@
                                                     <action selector="onTogglePause:" destination="s3v-60-o9G" eventType="touchUpInside" id="Qlk-4j-GlD"/>
                                                 </connections>
                                             </button>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="EG8-o6-pvW">
-                                                <rect key="frame" x="58" y="17" width="332" height="31"/>
+                                            <slider opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="749" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="EG8-o6-pvW">
+                                                <rect key="frame" x="58" y="17" width="389" height="31"/>
                                             </slider>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--:--/--:--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IsR-8P-yvw">
-                                                <rect key="frame" x="403" y="23.5" width="140" height="17"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="width" constant="140" id="eDo-uV-Gc2"/>
-                                                </constraints>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="--:--:--/--:--:--" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IsR-8P-yvw">
+                                                <rect key="frame" x="460" y="23.5" width="98" height="17"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
@@ -1578,7 +1575,7 @@
                                         <color key="backgroundColor" systemColor="systemGreenColor"/>
                                         <constraints>
                                             <constraint firstItem="xBN-gT-bzy" firstAttribute="leading" secondItem="Blb-Hh-cm6" secondAttribute="leading" constant="15" id="4Ls-P7-6sg"/>
-                                            <constraint firstAttribute="trailing" secondItem="IsR-8P-yvw" secondAttribute="trailing" constant="25" id="A7J-lN-Aci"/>
+                                            <constraint firstAttribute="trailing" secondItem="IsR-8P-yvw" secondAttribute="trailing" constant="10" id="A7J-lN-Aci"/>
                                             <constraint firstItem="xBN-gT-bzy" firstAttribute="centerY" secondItem="Blb-Hh-cm6" secondAttribute="centerY" id="CI9-ed-dU3"/>
                                             <constraint firstItem="EG8-o6-pvW" firstAttribute="leading" secondItem="xBN-gT-bzy" secondAttribute="trailing" constant="15" id="hA7-xv-taX"/>
                                             <constraint firstItem="IsR-8P-yvw" firstAttribute="leading" secondItem="EG8-o6-pvW" secondAttribute="trailing" constant="15" id="lrF-jd-Lzd"/>
