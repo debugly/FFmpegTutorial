@@ -89,10 +89,10 @@ EXTERNAL SOURCES:
     :podspec: https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL1.1.1h.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: e08434cd1ea8ddb81dcfbe7dce39f85e38fa06be
+  FFmpegTutorial: 78065e22b5d432a68b4f09e6df4b438159d7f457
   MRFFmpegPod: 30943db3429fd840e0121eaad251f0b5d0fdc4e5
   MROpenSSLPod: d8ba147324b0ff04c2588440e9c0b43deffa943d
 
-PODFILE CHECKSUM: 3e700a30ac8b93fbfa71a127f63f33d4d66d9485
+PODFILE CHECKSUM: 15387634ce0c3507109aa8dc8102a09bb5a0963b
 
 COCOAPODS: 1.10.0

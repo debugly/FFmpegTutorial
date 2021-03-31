@@ -119,6 +119,6 @@ Pod::Spec.new do |s|
     ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h'
   end
 
-  s.dependency 'MRFFmpegPod', podspec => "https://ifoxdev.hd.sohu.com/ffpods/MRFFmpeg4.3.podspec"
+  s.dependency 'MRFFmpegPod'
   
 end
