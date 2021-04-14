@@ -102,24 +102,22 @@
             NSMutableString *text = [[NSMutableString alloc]init];
             
             /*AVFormatContext 的 streams 变量是个数组，里面存放了 nb_streams 个元素，每个元素都是一个 AVStream */
-            [text appendFormat:@"共%u个流，总时长:%llds",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
+            [text appendFormat:@"共 %u 个流，总时长: %lld 秒",formatCtx->nb_streams,formatCtx->duration/AV_TIME_BASE];
             //遍历所有的流
             for (int i = 0; i < formatCtx->nb_streams; i++) {
                 
                 AVStream *stream = formatCtx->streams[i];
                 
                 AVCodecContext *codecCtx = avcodec_alloc_context3(NULL);
-                if (!codecCtx){
+                if (!codecCtx) {
                     continue;
                 }
                 
                 int ret = avcodec_parameters_to_context(codecCtx, stream->codecpar);
-                if (ret < 0){
+                if (ret < 0) {
                     avcodec_free_context(&codecCtx);
                     continue;
                 }
-                
-                av_codec_set_pkt_timebase(codecCtx, stream->time_base);
                 
                 //AVCodecContext *codec = stream->codec;
                 enum AVMediaType codec_type = codecCtx->codec_type;

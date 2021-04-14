@@ -35,7 +35,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///准备
 - (void)prepareToPlay;
 ///读包
-- (void)readPacket;
+- (void)play;
 ///停止读包
 - (void)stop;
 ///发生错误，具体错误为 self.error

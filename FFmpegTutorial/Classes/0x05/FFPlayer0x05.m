@@ -609,7 +609,7 @@ static int decode_interrupt_cb(void *ctx)
     });
 }
 
-- (void)readPacket
+- (void)play
 {
     [self.readThread start];
 }

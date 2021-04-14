@@ -67,7 +67,7 @@
     //MR_PIX_FMT_MASK_RGBA;//MR_PIX_FMT_MASK_NV12; //MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_0RGB;// MR_PIX_FMT_MASK_RGB555BE;//MR_PIX_FMT_MASK_RGB24;//MR_PIX_FMT_MASK_RGB555LE | MR_PIX_FMT_MASK_RGB555BE | MR_PIX_FMT_MASK_RGBA;MR_PIX_FMT_MASK_NV12;
     player.delegate = self;
     [player prepareToPlay];
-    [player readPacket];
+    [player play];
     self.player = player;
     
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];

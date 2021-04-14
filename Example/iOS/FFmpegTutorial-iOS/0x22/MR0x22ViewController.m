@@ -75,7 +75,7 @@
     
     player.delegate = self;
     [player prepareToPlay];
-    [player readPacket];
+    [player play];
     self.player = player;
     
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];

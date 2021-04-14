@@ -60,7 +60,7 @@
     }];
     
     [player prepareToPlay];
-    [player readPacket];
+    [player play];
     self.player = player;
 }
 

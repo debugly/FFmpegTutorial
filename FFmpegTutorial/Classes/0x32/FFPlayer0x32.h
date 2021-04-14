@@ -40,8 +40,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 ///准备
 - (void)prepareToPlay;
-///读包
-- (void)readPacket;
 - (void)pause;
 - (void)play;
 ///停止读包

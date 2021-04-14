@@ -63,7 +63,7 @@
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     player.delegate = self;
     [player prepareToPlay];
-    [player readPacket];
+    [player play];
     self.player = player;
     
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];

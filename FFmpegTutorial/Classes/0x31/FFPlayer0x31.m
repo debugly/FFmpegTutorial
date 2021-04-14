@@ -148,6 +148,7 @@ static int decode_interrupt_cb(void *ctx)
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"readPackets";
+    [self.readThread start];
 }
 
 #pragma mark - clock
@@ -900,11 +901,6 @@ static int decode_interrupt_cb(void *ctx)
             self.onErrorBlock();
         }
     });
-}
-
-- (void)readPacket
-{
-    [self.readThread start];
 }
 
 - (void)pause

@@ -6,14 +6,6 @@
 
 #import <Availability.h>
 
-#ifndef __IPHONE_5_0
-#warning "This project uses features only available in iOS SDK 5.0 and later."
-#endif
-
-#ifdef __OBJC__
-    @import UIKit;
-    @import Foundation;
-
 #ifndef __MRWS__
 #define __MRWS__
 
@@ -27,7 +19,5 @@
 
 #define __weakObj(obj)   __weak   typeof(obj)weak##obj = obj;
 #define __strongObj(obj) __strong typeof(weak##obj)obj = weak##obj;
-
-#endif
 
 #endif

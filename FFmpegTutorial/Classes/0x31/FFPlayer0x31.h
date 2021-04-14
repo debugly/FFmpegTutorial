@@ -34,8 +34,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, weak) id <FFPlayer0x31Delegate> delegate;
 ///准备
 - (void)prepareToPlay;
-///读包
-- (void)readPacket;
 - (void)pause;
 - (void)play;
 ///停止读包
