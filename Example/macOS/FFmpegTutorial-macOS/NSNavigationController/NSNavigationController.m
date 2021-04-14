@@ -99,7 +99,7 @@ static CGFloat kNavigationBarHeight = 64;
         contentRect.size.height = y;
         self.contentView = [[NSView alloc] initWithFrame:contentRect];
         [self.view addSubview:self.contentView];
-        self.contentView.autoresizingMask = NSViewWidthSizable | NSViewMinYMargin;
+        self.contentView.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     }
     
     {
@@ -150,7 +150,7 @@ static CGFloat kNavigationBarHeight = 64;
     NSViewController *fromViewController = [self.viewControllerArr lastObject];
     [self.viewControllerArr addObject:toVC];
     [self.view addSubview:toVC.view];
-    toVC.view.autoresizingMask = NSViewWidthSizable | NSViewMaxYMargin | NSViewMinYMargin;
+    toVC.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addChildViewController:toVC];
     __weakSelf__
     [self transitionFromViewController:fromViewController toViewController:toVC options:animated?NSViewControllerTransitionSlideLeft:NSViewControllerTransitionNone completionHandler:^{

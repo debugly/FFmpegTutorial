@@ -69,7 +69,7 @@
         @{
             @"title":@"0x01",
             @"detail":@"编译配置和版本信息",
-            @"class":@"",
+            @"class":@"MR0x01ViewController",
         },
         @{
             @"title":@"0x02",
