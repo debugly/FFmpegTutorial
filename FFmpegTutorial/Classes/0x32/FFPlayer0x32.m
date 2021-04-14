@@ -888,26 +888,22 @@ static int decode_interrupt_cb(void *ctx)
     if (!self.videoEnds) {
         if (self.audioClk.eof && self.videoClk.eof) {
             self.videoEnds = YES;
-            [self performOnMainThread:self.onVideoEndsBlock];
+            MR_sync_main_queue(^{
+                if (self.onVideoEndsBlock) {
+                    self.onVideoEndsBlock();
+                }
+            });
         }
-    }
-}
-
-- (void)performOnMainThread:(dispatch_block_t)block
-{
-    if (!block) {
-        return;
-    }
-    if (![NSThread isMainThread]) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:block];
-    } else {
-        block();
     }
 }
 
 - (void)performErrorResultOnMainThread
 {
-    [self performOnMainThread:self.onErrorBlock];
+    MR_sync_main_queue(^{
+        if (self.onErrorBlock) {
+            self.onErrorBlock();
+        }
+    });
 }
 
 - (void)readPacket

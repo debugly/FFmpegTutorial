@@ -481,17 +481,11 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)performErrorResultOnMainThread
 {
-    if (![NSThread isMainThread]) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (self.onErrorBlock) {
-                self.onErrorBlock();
-            }
-        }];
-    } else {
+    MR_sync_main_queue(^{
         if (self.onErrorBlock) {
             self.onErrorBlock();
         }
-    }
+    });
 }
 
 - (void)readPacket

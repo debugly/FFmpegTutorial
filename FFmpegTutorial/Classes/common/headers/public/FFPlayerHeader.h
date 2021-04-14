@@ -113,6 +113,23 @@ static inline bool MR_Sample_Fmt_Is_S16X(MRSampleFormat fmt){
     }
 }
 
+static inline void MR_sync_main_queue(dispatch_block_t block){
+    assert(block);
+    if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {
+        // already in main thread.
+        block();
+    } else {
+        // sync to main queue.
+        dispatch_sync(dispatch_get_main_queue(), block);
+    }
+}
+
+static inline void MR_async_main_queue(dispatch_block_t block){
+    assert(block);
+    // async to main queue.
+    dispatch_async(dispatch_get_main_queue(), block);
+}
+
 
 typedef enum MRColorRange {
     MRCOL_RANGE_UNSPECIFIED = 0,

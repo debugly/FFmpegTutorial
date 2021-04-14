@@ -205,17 +205,11 @@
 
 - (void)performResultOnMainThread:(NSString *)info
 {
-    if (![NSThread isMainThread]) {
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            if (self.completionBlock) {
-                self.completionBlock(self.error, info);
-            }
-        }];
-    } else {
+    MR_sync_main_queue(^{
         if (self.completionBlock) {
             self.completionBlock(self.error, info);
         }
-    }
+    });
 }
 
 - (void)openStream:(void (^)(NSError * _Nullable, NSString * _Nullable))completion
