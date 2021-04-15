@@ -20,8 +20,6 @@
     [super viewDidLoad];
     // Do view setup here.
     
-    self.title = @"0x01";
-    
     NSMutableString *txt = [NSMutableString string];
     
     {

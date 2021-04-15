@@ -74,7 +74,7 @@
         @{
             @"title":@"0x02",
             @"detail":@"查看视频流信息",
-            @"class":@"",
+            @"class":@"MR0x02ViewController",
         },
         @{
             @"title":@"0x03",
@@ -122,6 +122,7 @@
     Class clazz = NSClassFromString(dic[@"class"]);
     if (clazz) {
         NSViewController *vc = [[clazz alloc] init];
+        vc.title = dic[@"detail"];
         [self.navigationController pushViewController:vc animated:YES];
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
