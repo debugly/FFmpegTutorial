@@ -14,6 +14,9 @@
 		DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E83A25720F2A00B93F9F /* NSNavigationController.m */; };
 		DDB14453262822FC00495754 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB14451262822FC00495754 /* MR0x02ViewController.m */; };
 		DDB14454262822FC00495754 /* MR0x02ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB14452262822FC00495754 /* MR0x02ViewController.xib */; };
+		DDB144CF26282D8900495754 /* MR0x03ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB144CC26282D8900495754 /* MR0x03ViewController.m */; };
+		DDB144D026282D8900495754 /* MR0x03ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB144CE26282D8900495754 /* MR0x03ViewController.xib */; };
+		DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB144D226282E4100495754 /* MRRWeakProxy.m */; };
 		DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73E922577DB9A0060EB57 /* MRDragView.m */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
@@ -54,6 +57,11 @@
 		DDB14450262822FC00495754 /* MR0x02ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x02ViewController.h; sourceTree = "<group>"; };
 		DDB14451262822FC00495754 /* MR0x02ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x02ViewController.m; sourceTree = "<group>"; };
 		DDB14452262822FC00495754 /* MR0x02ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x02ViewController.xib; sourceTree = "<group>"; };
+		DDB144CC26282D8900495754 /* MR0x03ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x03ViewController.m; sourceTree = "<group>"; };
+		DDB144CD26282D8900495754 /* MR0x03ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x03ViewController.h; sourceTree = "<group>"; };
+		DDB144CE26282D8900495754 /* MR0x03ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x03ViewController.xib; sourceTree = "<group>"; };
+		DDB144D126282E4100495754 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRRWeakProxy.h; path = "../../iOS/FFmpegTutorial-iOS/MRRWeakProxy.h"; sourceTree = "<group>"; };
+		DDB144D226282E4100495754 /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRRWeakProxy.m; path = "../../iOS/FFmpegTutorial-iOS/MRRWeakProxy.m"; sourceTree = "<group>"; };
 		DDB73E922577DB9A0060EB57 /* MRDragView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRDragView.m; sourceTree = "<group>"; };
 		DDB73E932577DB9A0060EB57 /* MRDragView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRDragView.h; sourceTree = "<group>"; };
 		DDB73F652577DDE60060EB57 /* MRUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRUtil.h; sourceTree = "<group>"; };
@@ -125,6 +133,16 @@
 			path = 0x02;
 			sourceTree = "<group>";
 		};
+		DDB144CB26282D5100495754 /* 0x03 */ = {
+			isa = PBXGroup;
+			children = (
+				DDB144CD26282D8900495754 /* MR0x03ViewController.h */,
+				DDB144CC26282D8900495754 /* MR0x03ViewController.m */,
+				DDB144CE26282D8900495754 /* MR0x03ViewController.xib */,
+			);
+			path = 0x03;
+			sourceTree = "<group>";
+		};
 		DDB73E912577DB9A0060EB57 /* DragView */ = {
 			isa = PBXGroup;
 			children = (
@@ -192,10 +210,13 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				DDB144CB26282D5100495754 /* 0x03 */,
 				DDB1444F262822E000495754 /* 0x02 */,
 				DDF6576426273C3700116F05 /* 0x01 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
+				DDB144D126282E4100495754 /* MRRWeakProxy.h */,
+				DDB144D226282E4100495754 /* MRRWeakProxy.m */,
 				DDE70E462584AC2900580A80 /* TextFieldCell */,
 				DDB73F642577DDD10060EB57 /* MRUtil */,
 				DDB73E912577DB9A0060EB57 /* DragView */,
@@ -270,6 +291,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */,
+				DDB144D026282D8900495754 /* MR0x03ViewController.xib in Resources */,
 				DDB14454262822FC00495754 /* MR0x02ViewController.xib in Resources */,
 				DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
@@ -310,7 +332,9 @@
 			files = (
 				DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
+				DDB144CF26282D8900495754 /* MR0x03ViewController.m in Sources */,
 				DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */,
+				DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */,
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
 				DDB14453262822FC00495754 /* MR0x02ViewController.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,

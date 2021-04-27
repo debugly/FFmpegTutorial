@@ -79,7 +79,7 @@
         @{
             @"title":@"0x03",
             @"detail":@"读包线程与 AVPacket 缓存队列",
-            @"class":@"",
+            @"class":@"MR0x03ViewController",
         }
     ];
     
