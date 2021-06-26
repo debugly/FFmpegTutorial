@@ -1,19 +1,37 @@
 [![](md/imgs/ffmpeg.png)](http://ffmpeg.org/) 
 
 
-> 从我个人的经验来看使用 **FFmpeg** 封装一个播放器，是有一定门槛的，为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个教程。
+> 使用 **FFmpeg** 封装播放器是有一定门槛的，不仅需要学习交叉编译，视频解码知识，还要学习视频渲染，我花了很多力气在上面！
+> 
+> 随着 4G 网络的普及，视频回放和直播基本成了很多应用的标配，相信 5G 网络普及后能衍生出更多的玩法，因此了解底层音视频技术是很有必要的，为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个教程。
 
-# Foreword
+## Usage
+
+克隆该仓库之后，项目并不能运行起来，因为项目依赖的 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 等库还没有下载下来，先进入到工程跟目录
+
+1、运行 iOS demo 需要执行:
+
+**pod install --project-directory=Example/iOS**
+
+成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
+
+2、运行 macOS demo 需要执行:
+
+**pod install --project-directory=Example/macOS**
+
+成功安装后就可以打开 **Example/iOS/FFmpegTutorial-macOS.xcworkspace** 运行了。
+
+# Introduction
 
 本工程是笔者 2017 年创建的，原本是想把 kxmovie 的源码比葫芦画瓢自己写一遍，以此来熟悉 FFmpeg 的 API，了解播放器内部实现细节，谁料想在学习的过程中萌生了自己封装播放器的想法...
 
-3 年期间虽然摸索出了多种音视频渲染方法，但终究没有完成原定目标！于 2020 年年初从零重写该项目，工程采用 Pod 开发库（Development Pod）的形式来组织，所有教程均提供 iOS 和 macOS 的调用实例，封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 等库。
+3 年期间虽然摸索出了多种音视频渲染方法，但终究没有完成原定目标！于 2020 年年初从零重写该项目，工程采用 Pod 开发库（Development Pod）的形式来组织，所有教程均提供 iOS 和 macOS 的上层调用示例，底层封装代码都放在 FFmpegTutorial 里，该开发库依赖了 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 等库。
 
 开发语言为 Objective-C，工程目录结构如下：
 
 ```
 ├── Example
-│   ├── iOS //iOS 配套demo
+│   ├── iOS //iOS 示例工程
 │   │   ├── FFmpegTutorial-iOS
 │   │   ├── FFmpegTutorial-iOS.xcodeproj
 │   │   ├── FFmpegTutorial-iOS.xcworkspace
@@ -21,16 +39,16 @@
 │   │   ├── Podfile.lock
 │   │   ├── Pods
 │   │   └── Tests
-│   └── macOS //macOS 配套demo
+│   └── macOS //macOS 示例工程
 │       ├── FFmpegTutorial-macOS
 │       ├── FFmpegTutorial-macOS.xcodeproj
 │       ├── FFmpegTutorial-macOS.xcworkspace
 │       ├── Podfile
 │       ├── Podfile.lock
 │       └── Pods
-├── FFmpegTutorial // demo工程依赖了这个 Development Pod
+├── FFmpegTutorial // 示例工程依赖了这个 Development Pod
 │   └── Classes
-│       ├── 0x01  //具体教程源码
+│       ├── 0x01  //底层封装代码
 │       ├── 0x02
 │       ├── 0x03
 │       ├── 0x04
@@ -132,13 +150,7 @@
 - 0x31：[支持播放和暂停]
 - 0x32：[显示播放进度和时长]
 
-## Tools
-
-通过上面教程的学习，对 FFmpeg 有了一定的了解，写了下面几个小工具：
-
-- 视频抽帧器：抽取视频关键帧图片，非常高效，开源地址：[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)。
-
-# TODO
+### TODO
 
 - 0x15：[使用 Metal 渲染视频帧]
 - 0x33：[支持 seek]
@@ -149,33 +161,23 @@ Just For Fun
 
 - 0x41：[黑白电视机雪花屏、灰色色阶图] 
 
-### Cross-platform
+# Little Tools
+
+通过上面教程的学习，对 FFmpeg 有了一定的了解，写了下面几个小工具：
+
+- 视频抽帧器：抽取视频关键帧图片，非常高效，开源地址：[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)。
+
+## Cross-platform
 
 本教程的终极目标是写一款 **跨平台播放器**，理想很丰满，现实很骨感，这是一项庞大的工程，我会分四个阶段来完成，计划如下：
 
-第一阶段：先完成 iOS 平台的播放，由于没写过播放器，因此代码可能不是很成熟，前期改动可能会多些，以弥补思考不严密与规划不正确带来的问题。从长远来讲为了实现跨平台，不应当使用 Cocoa 特有的技术，比如 NSThread，GCD等，这完全是给自己挖坑😂！但是为了照顾广大 iOS 开发者零基础入门，我还是放弃了 C++ Thread 或 pthread 等实现方式，从而降低学习的门槛，让大家不用去学那么多乱七八糟的东西。
+第一阶段：先完成 iOS 平台的播放，由于没写过播放器，因此代码可能不是很成熟，前期改动可能会多些，以弥补思考不严密与规划不正确带来的问题。从长远来讲为了实现跨平台，不应当使用 Cocoa 特有的NSThread，GCD 等技术，这完全是给自己挖坑😂！但是为了照顾广大 iOS 开发者零基础入门，我还是放弃了 C++ Thread 或 C pthread 等实现方式，从而降低学习的门槛，让大家不用去学那么多乱七八糟的东西。
 
 第二阶段：移植到 macOS 平台，这一阶段需要处理平台特有接口，主要是视频渲染方面的，另外需要考虑后续的移植问题，设计出优良的方便移植的接口。移植完毕后考虑学习下使用 MetalKit 渲染，和 VideoToolbox 硬解等。
 
-第三阶段：移植到 Android 平台，这个阶段的主要问题是将前两个阶段使用的 Cocoa API 替换成跨平台 API，主要包括线程和锁，还要学习 JNI 调用，音视频如何渲染，重新创建配套的 Demo 工程，学习如何管理依赖（有没有 Cocoapods 一样的工具呢？）...
+第三阶段：移植到 Android 平台，这个阶段的主要问题是将前两个阶段使用的 Cocoa API 替换成跨平台 API，主要包括线程和锁，还要学习 JNI 调用，音视频如何渲染，重新创建配套的 Demo 工程，学习如何管理依赖（有没有与 Cocoapods 类似的依赖管理工具呢？）...
 
 第四阶段：移植到 Windows 平台，好多年没有使用 Windows 系统了，有余力了搞下。
-
-# Usage
-
-克隆该仓库之后，项目并不能运行起来，因为项目依赖的 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod) 等库还没有下载下来，
-
-1、运行 iOS demo 需要执行:
-
-**pod install --project-directory=Example/iOS**
-
-成功安装后就可以打开 **Example/iOS/FFmpegTutorial-iOS.xcworkspace** 运行了，支持模拟器和真机！
-
-运行 macOS demo 需要执行:
-
-**pod install --project-directory=Example/macOS**
-
-成功安装后就可以打开 **Example/iOS/FFmpegTutorial-macOS.xcworkspace** 运行了。
 
 ## Ends
 
