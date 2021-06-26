@@ -1,9 +1,9 @@
 //
-//  MRRWeakProxy.m
-//  SohuCoreFoundation
+// MRRWeakProxy.m
+// FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 16/3/9.
-//  Copyright © 2016年 sohu-inc. All rights reserved.
+//  Created by qianlongxu on 04/18/2020.
+//  Copyright (c) 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import "MRRWeakProxy.h"

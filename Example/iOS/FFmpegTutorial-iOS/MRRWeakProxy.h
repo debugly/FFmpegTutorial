@@ -1,9 +1,9 @@
 //
-//  MRRWeakProxy.h
-//  SohuCoreFoundation
-
-//  Created by qianlongxu on 16/3/9.
-//  Copyright © 2016年 sohu-inc. All rights reserved.
+// MRRWeakProxy.h
+// FFmpegTutorial-iOS
+//
+//  Created by qianlongxu on 04/18/2020.
+//  Copyright (c) 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 傀儡代理，防止持有target；内部做消息转发；常结合NSTimer或者自身持有 self 时可以用此傀儡！
 
