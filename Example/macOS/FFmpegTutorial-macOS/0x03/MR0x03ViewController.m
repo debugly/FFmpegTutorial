@@ -24,15 +24,18 @@
 
 - (void)dealloc
 {
-    if (self.timer) {
-        [self.timer invalidate];
-        self.timer = nil;
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
     }
     
-    if (self.player) {
-        [self.player stop];
-        self.player = nil;
+    if (_player) {
+        [_player stop];
+        _player = nil;
     }
+    
+    _textView.delegate = nil;
+    _textView = nil;
 }
 
 - (void)appendMsg:(NSString *)txt
@@ -66,11 +69,15 @@
 {
     if (self.player) {
         [self.player stop];
+        self.player = nil;
+        [self.timer invalidate];
+        self.timer = nil;
     }
     
     FFPlayer0x03 *player = [[FFPlayer0x03 alloc] init];
     player.contentPath = url;
     
+    [self.indicatorView startAnimation:nil];
     __weakSelf__
     [player onError:^{
         __strongSelf__
@@ -90,7 +97,11 @@
     }];
     
     [player onPacketBufferEmpty:^{
-        __strongSelf__
+        MR_sync_main_queue(^{
+            __strongSelf__
+            [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+            [self appendMsg:[self.player peekPacketBufferStatus]];
+        });
     }];
     
     [player prepareToPlay];
@@ -117,12 +128,20 @@
 
 - (IBAction)onConsumePackets:(id)sender
 {
+    if (!self.player) {
+        [self appendMsg:@"请先点击查看！"];
+        return;
+    }
     [self.player consumePackets];
     [self appendMsg:[self.player peekPacketBufferStatus]];
 }
 
 - (IBAction)onConsumeAllPackets:(id)sender
 {
+    if (!self.player) {
+        [self appendMsg:@"请先点击查看！"];
+        return;
+    }
     [self.player consumeAllPackets];
     [self appendMsg:[self.player peekPacketBufferStatus]];
 }

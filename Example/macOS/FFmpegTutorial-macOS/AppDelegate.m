@@ -44,5 +44,16 @@
     // Insert code here to tear down your application
 }
 
+- (BOOL)applicationShouldHandleReopen:(NSApplication *)sender hasVisibleWindows:(BOOL)flag
+{
+    if (self.rootWinController) {
+        if (self.rootWinController.window.isMiniaturized) {
+            [self.rootWinController.window deminiaturize:nil];
+        } else if (!self.rootWinController.window.isVisible) {
+            [self.rootWinController showWindow:nil];
+        }
+    }
+    return YES;
+}
 
 @end

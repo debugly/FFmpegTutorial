@@ -318,7 +318,11 @@ static int decode_interrupt_cb(void *ctx)
 
 - (NSString *)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",audioq.nb_packets,videoq.nb_packets];
+    if (audioq.nb_packets == 0 && videoq.nb_packets == 0) {
+        return @"Packet Buffer is Empty，audio(0)，video(0)";
+    } else {
+        return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",audioq.nb_packets,videoq.nb_packets];
+    }
 }
 
 - (void)consumePackets

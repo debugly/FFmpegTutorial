@@ -142,7 +142,7 @@
                         //获取音频采样格式名称
                         const char * formatDesc = av_get_sample_fmt_name(format);
                         
-                        [text appendFormat:@"\n\nAudio\n%d Kbps，%.1f KHz， %d channels，%s，%s，duration:%ds",(int)(brate/1000.0),sample_rate/1000.0,channels,codecDesc,formatDesc,duration];
+                        [text appendFormat:@"\n\nAudio Stream：\n%d/%d；%d Kbps，%.1f KHz， %d channels，%s，%s，duration:%ds",stream->time_base.num,stream->time_base.den,(int)(brate/1000.0),sample_rate/1000.0,channels,codecDesc,formatDesc,duration];
                     }
                         break;
                         //视频流
@@ -177,7 +177,7 @@
                         }
                         //时长
                         int duration = stream->duration * av_q2d(stream->time_base);
-                        [text appendFormat:@"\n\nVideo:\n%dKbps，%d*%d，at %.3fps， %s， %s，duration:%ds",(int)(brate/1024.0),vwidth,vheight,fps,codecDesc,formatDesc,duration];
+                        [text appendFormat:@"\n\nVideo Stream：\n%d/%d；%dKbps，%d*%d，%dfps， %s， %s，duration:%ds",stream->time_base.num,stream->time_base.den,(int)(brate/1024.0),vwidth,vheight,(int)fps,codecDesc,formatDesc,duration];
                     }
                         break;
                     case AVMEDIA_TYPE_ATTACHMENT:
