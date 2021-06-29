@@ -41,6 +41,10 @@ NS_ASSUME_NONNULL_BEGIN
 
 + (NSArray<NSString *> *)supportedInputProtocols;
 + (NSArray<NSString *> *)supportedOutputProtocols;
++ (NSDictionary *)supportedCodecs;
+
+//above all info
++ (NSString *)ffmpegAllInfo;
 
 @end
 

@@ -115,4 +115,100 @@
     return [self _supportedProtocols:NO];
 }
 
++ (NSDictionary *)supportedCodecs
+{
+    void *iterate_data = NULL;
+    const AVCodec *codec = NULL;
+    NSMutableDictionary *codesByType = [NSMutableDictionary dictionary];
+    while(NULL != (codec = av_codec_iterate(&iterate_data))) {
+        NSMutableDictionary *dic = [NSMutableDictionary dictionary];
+        if (NULL != codec->name) {
+            NSString *name = [[NSString alloc]initWithUTF8String:codec->name];
+            [dic setObject:name forKey:@"name"];
+        }
+        if (NULL != codec->long_name) {
+            NSString *longName = [[NSString alloc]initWithUTF8String:codec->long_name];
+            [dic setObject:longName forKey:@"longName"];
+        }
+        [dic setObject:[NSString stringWithFormat:@"%d",codec->id] forKey:@"id"];
+        
+        if (av_codec_is_encoder(codec)) {
+            if (av_codec_is_decoder(codec)) {
+                [dic setObject:@"Encoder,Decoder" forKey:@"type"];
+            } else {
+                [dic setObject:@"Encoder" forKey:@"type"];
+            }
+        } else if (av_codec_is_decoder(codec)) {
+            [dic setObject:@"Decoder" forKey:@"type"];
+        }
+        
+        NSString *typeKey = nil;
+        
+        if (codec->type == AVMEDIA_TYPE_VIDEO) {
+            typeKey = @"Video";
+        } else if (codec->type == AVMEDIA_TYPE_AUDIO) {
+            typeKey = @"Audio";
+        } else {
+            typeKey = @"Other";
+        }
+        
+        NSMutableArray *codecArr = [codesByType objectForKey:typeKey];
+        
+        if (!codecArr) {
+            codecArr = [NSMutableArray array];
+            [codesByType setObject:codecArr forKey:typeKey];
+        }
+        [codecArr addObject:dic];
+    }
+    return codesByType;
+}
+
++ (NSString *)ffmpegAllInfo
+{
+    NSMutableString *txt = [NSMutableString string];
+    
+    {
+        //编译配置信息
+        [txt appendFormat:@"\n【FFmpeg Build Info】\n%@",[FFVersionHelper configuration]];
+    }
+    
+    [txt appendString:@"\n"];
+    
+    {
+        //各个lib库的版本信息
+        [txt appendFormat:@"\n\n【FFmpeg Libs Version】\n%@",[FFVersionHelper formatedLibsVersion]];
+    }
+    
+    [txt appendString:@"\n"];
+    
+    {
+        //支持的输入流协议
+        NSString *inputProtocol = [[FFVersionHelper supportedInputProtocols] componentsJoinedByString:@","];
+        [txt appendFormat:@"\n\n【Input protocols】 \n%@",inputProtocol];
+    }
+    
+    [txt appendString:@"\n"];
+    
+    {
+        //支持的输出流协议
+        NSString *outputProtocol = [[FFVersionHelper supportedOutputProtocols] componentsJoinedByString:@","];
+        
+        [txt appendFormat:@"\n\n【Output protocols】 \n%@",outputProtocol];
+    }
+    
+    [txt appendString:@"\n"];
+    
+    {
+        //支持的输出流协议
+        NSDictionary *codecDic = [FFVersionHelper supportedCodecs];
+        NSData *data = [NSJSONSerialization dataWithJSONObject:codecDic options:NSJSONWritingPrettyPrinted error:nil];
+        NSString *codecStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];;
+        [txt appendFormat:@"\n\n【Codecs】 \n%@",codecStr];
+    }
+    
+    [txt appendString:@"\n"];
+    
+    return txt;
+}
+
 @end
