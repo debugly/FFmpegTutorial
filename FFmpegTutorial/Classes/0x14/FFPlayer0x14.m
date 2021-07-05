@@ -352,7 +352,7 @@ static int decode_interrupt_cb(void *ctx)
     //用于查看详细信息，调试的时候打出来看下很有必要
     av_dump_format(formatCtx, 0, moviePath, false);
     
-    NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
+    MRFF_DEBUG_LOG(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
     
     //确定最优的音视频流

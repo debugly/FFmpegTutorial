@@ -95,8 +95,7 @@
             NSTimeInterval end = [[NSDate date] timeIntervalSinceReferenceDate];
             //用于查看详细信息，调试的时候打出来看下很有必要
             av_dump_format(formatCtx, 0, moviePath, false);
-            
-            NSLog(@"avformat_find_stream_info coast time:%g",end-begin);
+            MRFF_DEBUG_LOG(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
             /* 接下来，尝试找到我们关心的信息*/
             NSMutableString *text = [[NSMutableString alloc]init];
@@ -182,12 +181,12 @@
                         break;
                     case AVMEDIA_TYPE_ATTACHMENT:
                     {
-                        NSLog(@"附加信息流:%d",i);
+                        MRFF_DEBUG_LOG(@"附加信息流:%d",i);
                     }
                         break;
                     default:
                     {
-                        NSLog(@"其他流:%d",i);
+                        MRFF_DEBUG_LOG(@"其他流:%d",i);
                     }
                         break;
                 }

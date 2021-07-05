@@ -10,6 +10,7 @@
 
 #include <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
+#import "MRAbstractLogger.h"
 
 /* no AV sync correction is done if below the minimum AV sync threshold */
 #define AV_SYNC_THRESHOLD_MIN 0.04
