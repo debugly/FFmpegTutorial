@@ -120,7 +120,8 @@
     void *iterate_data = NULL;
     const AVCodec *codec = NULL;
     NSMutableDictionary *codesByType = [NSMutableDictionary dictionary];
-    while(NULL != (codec = av_codec_iterate(&iterate_data))) {
+    
+    while (NULL != (codec = av_codec_iterate(&iterate_data))) {
         NSMutableDictionary *dic = [NSMutableDictionary dictionary];
         if (NULL != codec->name) {
             NSString *name = [[NSString alloc]initWithUTF8String:codec->name];
@@ -160,7 +161,7 @@
         }
         [codecArr addObject:dic];
     }
-    return codesByType;
+    return [codesByType copy];
 }
 
 + (NSString *)ffmpegAllInfo
@@ -208,7 +209,7 @@
     
     [txt appendString:@"\n"];
     
-    return txt;
+    return [txt copy];
 }
 
 @end

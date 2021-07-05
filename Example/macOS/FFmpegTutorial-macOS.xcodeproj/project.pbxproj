@@ -260,7 +260,9 @@
 		DDFDF8992564CDC700F1CAE2 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				CLASSPREFIX = MR;
 				LastUpgradeCheck = 1220;
+				ORGANIZATIONNAME = "Matt Reach's Awesome FFmpeg Tutotial";
 				TargetAttributes = {
 					DDFDF8A02564CDC700F1CAE2 = {
 						CreatedOnToolsVersion = 12.0.1;

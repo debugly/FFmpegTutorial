@@ -2,7 +2,8 @@
 //  MR0x03ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by Matt Reach on 2021/4/15.
+//  Created by qianlongxu on 2021/4/15.
+//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import "MR0x03ViewController.h"
@@ -17,6 +18,7 @@
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
+@property (assign) BOOL scrolling;
 
 @end
 
@@ -36,11 +38,15 @@
     
     _textView.delegate = nil;
     _textView = nil;
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)appendMsg:(NSString *)txt
 {
     self.textView.string = [self.textView.string stringByAppendingFormat:@"\n%@",txt];
+    if (self.scrolling) {
+        return;
+    }
     [self.textView scrollToEndOfDocument:nil];
 }
 
@@ -58,11 +64,6 @@
 - (void)onTimer:(NSTimer *)sender
 {
     [self appendMsg:[self.player peekPacketBufferStatus]];
-//    if (self.ignoreScrollBottom > 0) {
-//        self.ignoreScrollBottom --;
-//    } else {
-//        [self.textView scrollRangeToVisible:NSMakeRange(self.textView.text.length, 1)];
-//    }
 }
 
 - (void)parserURL:(NSString *)url
@@ -113,6 +114,22 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willStartScroll:) name:NSScrollViewWillStartLiveScrollNotification object:self.textView.enclosingScrollView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndScroll:) name:NSScrollViewDidEndLiveScrollNotification object:self.textView.enclosingScrollView];
+}
+
+- (void)willStartScroll:(NSScrollView *)sender
+{
+    self.scrolling = YES;
+}
+
+- (void)didEndScroll:(NSScrollView *)sender
+{
+    if ([self.timer isValid]) {
+        [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:1]];
+    }
+    self.scrolling = NO;
 }
 
 #pragma - mark actions
