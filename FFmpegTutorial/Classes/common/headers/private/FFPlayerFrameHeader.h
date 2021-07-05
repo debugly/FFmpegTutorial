@@ -105,7 +105,7 @@ static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame,double dura
         }
         //等待10ms
         dispatch_semaphore_signal(f->mutex);
-        mr_usleep(10000);
+        mr_msleep(10);
         dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     }
     
@@ -156,7 +156,7 @@ static __inline__ int frame_queue_push_v2(FrameQueue *f, AVFrame *frame,void(^ma
         }
         //等待10ms
         dispatch_semaphore_signal(f->mutex);
-        mr_usleep(10000);
+        mr_msleep(10);
         dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
     }
     

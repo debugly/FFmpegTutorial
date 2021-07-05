@@ -174,7 +174,7 @@ typedef struct MRPicture{
     MRPixelFormat format;
 }MRPicture;
 
-// safe usleep
+// safe sleep us
 static inline void mr_usleep(long s) {
     //mr_usleep is uint32 type!
     if (s >= 0) {
@@ -182,7 +182,13 @@ static inline void mr_usleep(long s) {
     }
 }
 
-// safe sleep
+// safe sleep ms
+static inline void mr_msleep(long s) {
+    //mr_usleep is uint32 type!
+    mr_usleep(s * 1000);
+}
+
+// safe sleep s
 static inline void mr_sleep(long s) {
     //sleep is unsigned int type!
     if (s >= 0) {

@@ -218,7 +218,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         }
         
@@ -245,7 +245,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         } else {
             //音频包入音频队列
@@ -738,7 +738,7 @@ static int decode_interrupt_cb(void *ctx)
     //调用了stop方法，则不再渲染
     while (!self.abort_request) {
         if (remaining_time > 0.0){
-            mr_usleep((long)(remaining_time * 1000000.0));
+            mr_sleep(remaining_time);
         }
         remaining_time = REFRESH_RATE;
         [self video_refresh:&remaining_time];

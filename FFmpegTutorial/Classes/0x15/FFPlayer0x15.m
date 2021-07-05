@@ -172,7 +172,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         }
         
@@ -199,7 +199,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         } else {
             //音频包入音频队列
@@ -503,7 +503,7 @@ static int decode_interrupt_cb(void *ctx)
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
         int cost = (end - begin) * 1000;
         av_log(NULL, AV_LOG_DEBUG, "render video frame cost:%dms\n", cost);
-        mr_usleep(1000 * (40-cost));
+        mr_msleep(40 - cost);
     }
 }
 

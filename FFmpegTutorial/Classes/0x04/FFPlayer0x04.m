@@ -13,7 +13,7 @@
 #include <libavutil/pixdesc.h>
 
 
-@interface  FFPlayer0x04 ()
+@interface FFPlayer0x04 ()
 {
     //解码前的音频包缓存队列
     PacketQueue audioq;
@@ -189,7 +189,8 @@ static int decode_interrupt_cb(void *ctx)
 #pragma -mark 读包线程
 
 //读包循环
-- (void)readPacketLoop:(AVFormatContext *)formatCtx {
+- (void)readPacketLoop:(AVFormatContext *)formatCtx
+{
     AVPacket pkt1, *pkt = &pkt1;
     //循环读包
     for (;;) {
@@ -211,7 +212,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         }
         
@@ -238,7 +239,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         } else {
             //音频包入音频队列
@@ -258,8 +259,8 @@ static int decode_interrupt_cb(void *ctx)
 }
 
 #pragma mark - 查找最优的音视频流
-- (void)findBestStreams:(AVFormatContext *)formatCtx result:(int (*) [AVMEDIA_TYPE_NB])st_index {
-
+- (void)findBestStreams:(AVFormatContext *)formatCtx result:(int (*) [AVMEDIA_TYPE_NB])st_index
+{
     int first_video_stream = -1;
     int first_h264_stream = -1;
     //查找H264格式的视频流
@@ -466,13 +467,13 @@ static int decode_interrupt_cb(void *ctx)
             } else if (self.abort_request){
                 av_log(NULL, AV_LOG_ERROR, "audioDecoder cancel.\n");
             } else {
-                av_log(NULL, AV_LOG_ERROR, "audioDecoder decode err %d.\n",got_frame);
+                av_log(NULL, AV_LOG_ERROR, "audioDecoder decode err %d.\n", got_frame);
             }
             break;
         } else {
             //正常解码
-            av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
-            mr_sleep(1);
+            av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n", frame->pts);
+            mr_msleep(arc4random() % 85 + 10);
         }
     } while (1);
     
@@ -522,8 +523,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
-            
-            mr_sleep(2);
+            mr_msleep(arc4random() % 85 + 15);
         }
     } while (1);
     

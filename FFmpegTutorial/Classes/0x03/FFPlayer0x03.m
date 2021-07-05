@@ -96,7 +96,8 @@ static int decode_interrupt_cb(void *ctx)
 #pragma -mark 读包线程
 
 //读包循环
-- (void)readPacketLoop:(AVFormatContext *)formatCtx {
+- (void)readPacketLoop:(AVFormatContext *)formatCtx
+{
     AVPacket pkt1, *pkt = &pkt1;
     //循环读包
     for (;;) {
@@ -118,7 +119,7 @@ static int decode_interrupt_cb(void *ctx)
                 }
             }
             /* wait 10 ms */
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         }
         
@@ -145,7 +146,7 @@ static int decode_interrupt_cb(void *ctx)
                 break;
             }
             
-            mr_usleep(10000);
+            mr_msleep(10);
             continue;
         } else {
             //音频包入音频队列
