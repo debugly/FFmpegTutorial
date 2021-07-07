@@ -105,8 +105,7 @@ static __inline__ int packet_queue_put_nullpacket(PacketQueue *q, int stream_ind
  AV_DISPOSITION_ATTACHED_PIC ：有些流存在 video stream，但是却只是一张图片而已，常见于 mp3 的封面。
  包个数大于 25，并且总时长大于 1s。
  */
-static __inline__ int stream_has_enough_packets(AVStream *st, int stream_id, PacketQueue *queue) {
-    
+static __inline__ int stream_has_enough_packets(const AVStream *st, int stream_id, PacketQueue *queue) {
     //printf("queue->nb_packets:%d,duration:%0.2f\n",queue->nb_packets,av_q2d(st->time_base) * queue->duration);
     return stream_id < 0 ||
            (st->disposition & AV_DISPOSITION_ATTACHED_PIC) ||

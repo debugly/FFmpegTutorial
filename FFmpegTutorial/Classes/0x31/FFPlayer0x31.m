@@ -24,14 +24,14 @@
 @interface FFPlayer0x31 ()<FFDecoderDelegate0x31>
 {
     //解码前的音频包缓存队列
-    PacketQueue audioq;
+    PacketQueue _audioq;
     //解码前的视频包缓存队列
-    PacketQueue videoq;
+    PacketQueue _videoq;
     
     //解码后的音频帧缓存队列
-    FrameQueue sampq;
+    FrameQueue _sampq;
     //解码后的视频帧缓存队列
-    FrameQueue pictq;
+    FrameQueue _pictq;
 }
 
 //读包线程
@@ -87,10 +87,10 @@ static int decode_interrupt_cb(void *ctx)
     if (self.readThread) {
         
         self.abort_request = 1;
-        audioq.abort_request = 1;
-        videoq.abort_request = 1;
-        sampq.abort_request = 1;
-        pictq.abort_request = 1;
+        _audioq.abort_request = 1;
+        _videoq.abort_request = 1;
+        _sampq.abort_request = 1;
+        _pictq.abort_request = 1;
         
         [self.audioDecoder cancel];
         [self.videoDecoder cancel];
@@ -109,11 +109,11 @@ static int decode_interrupt_cb(void *ctx)
         [self.rendererThread join];
         self.rendererThread = nil;
         
-        packet_queue_destroy(&audioq);
-        packet_queue_destroy(&videoq);
+        packet_queue_destroy(&_audioq);
+        packet_queue_destroy(&_videoq);
         
-        frame_queue_destory(&pictq);
-        frame_queue_destory(&sampq);
+        frame_queue_destory(&_pictq);
+        frame_queue_destory(&_sampq);
     }
     
     if (self.pixelBufferPool){
@@ -135,16 +135,16 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     //初始化视频包队列
-    packet_queue_init(&videoq);
+    packet_queue_init(&_videoq);
     //初始化音频包队列
-    packet_queue_init(&audioq);
+    packet_queue_init(&_audioq);
     //初始化ffmpeg相关函数
     init_ffmpeg_once();
     
     //初始化视频帧队列
-    frame_queue_init(&pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq", 1);
+    frame_queue_init(&_pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq", 1);
     //初始化音频帧队列
-    frame_queue_init(&sampq, SAMPLE_QUEUE_SIZE, "sampq", 1);
+    frame_queue_init(&_sampq, SAMPLE_QUEUE_SIZE, "sampq", 1);
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"readPackets";
@@ -196,7 +196,8 @@ static int decode_interrupt_cb(void *ctx)
 #pragma -mark 读包线程
 
 //读包循环
-- (void)readPacketLoop:(AVFormatContext *)formatCtx {
+- (void)readPacketLoop:(AVFormatContext *)formatCtx
+{
     AVPacket pkt1, *pkt = &pkt1;
     //循环读包
     for (;;) {
@@ -207,9 +208,9 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         /* 队列不满继续读，满了则休眠10 ms */
-        if (audioq.size + videoq.size > MAX_QUEUE_SIZE
-            || (stream_has_enough_packets(self.audioDecoder.stream, self.audioDecoder.streamIdx, &audioq) &&
-                stream_has_enough_packets(self.videoDecoder.stream, self.videoDecoder.streamIdx, &videoq))) {
+        if (_audioq.size + _videoq.size > MAX_QUEUE_SIZE
+            || (stream_has_enough_packets(self.audioDecoder.stream, self.audioDecoder.streamIdx, &_audioq) &&
+                stream_has_enough_packets(self.videoDecoder.stream, self.videoDecoder.streamIdx, &_videoq))) {
             
             if (!self.packetBufferIsFull) {
                 self.packetBufferIsFull = YES;
@@ -231,11 +232,11 @@ static int decode_interrupt_cb(void *ctx)
             if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !self.eof) {
                 //最后放一个空包进去
                 if (self.audioDecoder.streamIdx >= 0) {
-                    packet_queue_put_nullpacket(&audioq, self.audioDecoder.streamIdx);
+                    packet_queue_put_nullpacket(&_audioq, self.audioDecoder.streamIdx);
                 }
                     
                 if (self.videoDecoder.streamIdx >= 0) {
-                    packet_queue_put_nullpacket(&videoq, self.videoDecoder.streamIdx);
+                    packet_queue_put_nullpacket(&_videoq, self.videoDecoder.streamIdx);
                 }
                 //标志为读包结束
                 self.eof = 1;
@@ -250,11 +251,11 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //音频包入音频队列
             if (pkt->stream_index == self.audioDecoder.streamIdx) {
-                packet_queue_put(&audioq, pkt);
+                packet_queue_put(&_audioq, pkt);
             }
             //视频包入视频队列
             else if (pkt->stream_index == self.videoDecoder.streamIdx) {
-                packet_queue_put(&videoq, pkt);
+                packet_queue_put(&_videoq, pkt);
             }
             //其他包释放内存忽略掉
             else {
@@ -529,9 +530,9 @@ static int decode_interrupt_cb(void *ctx)
 - (int)decoder:(FFDecoder0x31 *)decoder wantAPacket:(AVPacket *)pkt
 {
     if (decoder == self.audioDecoder) {
-        return packet_queue_get(&audioq, pkt, 1);
+        return packet_queue_get(&_audioq, pkt, 1);
     } else if (decoder == self.videoDecoder) {
-        return packet_queue_get(&videoq, pkt, 1);
+        return packet_queue_get(&_videoq, pkt, 1);
     } else {
         return -1;
     }
@@ -540,7 +541,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)decoder:(FFDecoder0x31 *)decoder reveivedAFrame:(AVFrame *)frame
 {
     if (decoder == self.audioDecoder) {
-        FrameQueue *fq = &sampq;
+        FrameQueue *fq = &_sampq;
         
         AVFrame *outP = nil;
         if (self.audioResample) {
@@ -560,7 +561,7 @@ static int decode_interrupt_cb(void *ctx)
         });
         self.audioFrameEmpty = NO;
     } else if (decoder == self.videoDecoder) {
-        FrameQueue *fq = &pictq;
+        FrameQueue *fq = &_pictq;
         
         AVFrame *outP = nil;
         if (self.videoScale) {
@@ -662,10 +663,10 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)video_refresh:(double *)remaining_time
 {
-    if (frame_queue_nb_remaining(&pictq) > 0) {
+    if (frame_queue_nb_remaining(&_pictq) > 0) {
         Frame *vp, *lastvp;
         //上一帧
-        lastvp = frame_queue_peek_last(&pictq);
+        lastvp = frame_queue_peek_last(&_pictq);
         
         if (self.paused) {
             //仍旧显示上一帧
@@ -674,7 +675,7 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         //当前帧
-        vp = frame_queue_peek(&pictq);
+        vp = frame_queue_peek(&_pictq);
         //计算上一帧的持续时长
         const double last_duration = [self vp_durationWithP1:lastvp p2:vp];
         //参考audio clock计算上一帧真正的持续时长
@@ -697,16 +698,16 @@ static int decode_interrupt_cb(void *ctx)
         [self.videoClk setClock:vp->pts];
         
         //丢帧逻辑
-        if (frame_queue_nb_remaining(&pictq) > 1) {
-            Frame *nextvp = frame_queue_peek_next(&pictq);
+        if (frame_queue_nb_remaining(&_pictq) > 1) {
+            Frame *nextvp = frame_queue_peek_next(&_pictq);
             double duration = [self vp_durationWithP1:vp p2:nextvp];//当前帧显示时长
             if(time > self.videoClk.frame_timer + duration){//如果系统时间已经大于当前帧，则丢弃当前帧
                 static int frame_drops_late = 0;
                 frame_drops_late++;
                 av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
                 frame_drops_late);
-                frame_queue_pop(&pictq);
-                if (frame_queue_nb_remaining(&pictq) == 0) {
+                frame_queue_pop(&_pictq);
+                if (frame_queue_nb_remaining(&_pictq) == 0) {
                     self.videoFrameEmpty = YES;
                 }
                 //继续重试
@@ -716,9 +717,9 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         [self doDisplayVideoFrame:vp];
-        frame_queue_pop(&pictq);
-        if (frame_queue_nb_remaining(&pictq) > 1) {
-            Frame *nextvp = frame_queue_peek(&pictq);
+        frame_queue_pop(&_pictq);
+        if (frame_queue_nb_remaining(&_pictq) > 1) {
+            Frame *nextvp = frame_queue_peek(&_pictq);
             double duration = [self vp_durationWithP1:vp p2:nextvp];//vp显示时长
             *remaining_time = FFMIN(duration, *remaining_time);
         } else {
@@ -760,8 +761,8 @@ static int decode_interrupt_cb(void *ctx)
     Frame *ap = NULL;
     while (bufferSize > 0) {
         //队列里缓存帧大于0，则取出
-        if (frame_queue_nb_remaining(&sampq) > 0) {
-            ap = frame_queue_peek(&sampq);
+        if (frame_queue_nb_remaining(&_sampq) > 0) {
+            ap = frame_queue_peek(&_sampq);
             av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
         } else {
             //队列里没有音频桢了，跳出循环
@@ -789,8 +790,8 @@ static int decode_interrupt_cb(void *ctx)
         if (leftBytesToCopy >= left){
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
-            frame_queue_pop(&sampq);
-            if (frame_queue_nb_remaining(&sampq) == 0) {
+            frame_queue_pop(&_sampq);
+            if (frame_queue_nb_remaining(&_sampq) == 0) {
                 self.audioFrameEmpty = YES;
             }
         }
@@ -818,8 +819,8 @@ static int decode_interrupt_cb(void *ctx)
     Frame *ap = NULL;
     while (l_size > 0 || r_size > 0) {
         //队列里缓存帧大于0，则取出
-        if (frame_queue_nb_remaining(&sampq) > 0) {
-            ap = frame_queue_peek(&sampq);
+        if (frame_queue_nb_remaining(&_sampq) > 0) {
+            ap = frame_queue_peek(&_sampq);
             av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
         } else {
             //队列里没有音频桢了，跳出循环
@@ -860,8 +861,8 @@ static int decode_interrupt_cb(void *ctx)
         if (leftBytesToCopy >= leftBytesLeft){
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
-            frame_queue_pop(&sampq);
-            if (frame_queue_nb_remaining(&sampq) == 0) {
+            frame_queue_pop(&_sampq);
+            if (frame_queue_nb_remaining(&_sampq) == 0) {
                 self.audioFrameEmpty = YES;
             }
         }
@@ -947,7 +948,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (NSString *)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",audioq.nb_packets,videoq.nb_packets];
+    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
 }
 
 @end
