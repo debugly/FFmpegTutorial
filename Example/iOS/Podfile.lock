@@ -67,21 +67,13 @@ PODS:
     - MRFFmpegPod/libavutil (= 4.3)
     - MRFFmpegPod/libswresample (= 4.3)
     - MRFFmpegPod/libswscale (= 4.3)
-    - MROpenSSLPod
-  - MRFFmpegPod/libavcodec (4.3):
-    - MROpenSSLPod
-  - MRFFmpegPod/libavdevice (4.3):
-    - MROpenSSLPod
-  - MRFFmpegPod/libavfilter (4.3):
-    - MROpenSSLPod
-  - MRFFmpegPod/libavformat (4.3):
-    - MROpenSSLPod
-  - MRFFmpegPod/libavutil (4.3):
-    - MROpenSSLPod
-  - MRFFmpegPod/libswresample (4.3):
-    - MROpenSSLPod
-  - MRFFmpegPod/libswscale (4.3):
-    - MROpenSSLPod
+  - MRFFmpegPod/libavcodec (4.3)
+  - MRFFmpegPod/libavdevice (4.3)
+  - MRFFmpegPod/libavfilter (4.3)
+  - MRFFmpegPod/libavformat (4.3)
+  - MRFFmpegPod/libavutil (4.3)
+  - MRFFmpegPod/libswresample (4.3)
+  - MRFFmpegPod/libswscale (4.3)
   - MROpenSSLPod (1.1.1h)
 
 DEPENDENCIES:
@@ -105,7 +97,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   FFmpegTutorial: 78065e22b5d432a68b4f09e6df4b438159d7f457
   GDPerformanceView-Swift: ef3d05deb103e472a5494d3f60aeca5a58b88a7d
-  MRFFmpegPod: 9457d543c8da4021c54effc0bf996df1439bf375
+  MRFFmpegPod: 30943db3429fd840e0121eaad251f0b5d0fdc4e5
   MROpenSSLPod: d8ba147324b0ff04c2588440e9c0b43deffa943d
 
 PODFILE CHECKSUM: 92a7d97ef4daff10d2be2da7c9dd3743d0bb5cb1

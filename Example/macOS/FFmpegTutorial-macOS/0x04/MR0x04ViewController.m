@@ -1,18 +1,18 @@
 //
-//  MR0x03ViewController.m
+//  MR0x04ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/4/15.
+//  Created by qianlongxu on 2021/7/5.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x03ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x03.h>
+#import "MR0x04ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x04.h>
 #import "MRRWeakProxy.h"
 
-@interface MR0x03ViewController ()
+@interface MR0x04ViewController ()
 
-@property (strong) FFPlayer0x03 *player;
+@property (strong) FFPlayer0x04 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation MR0x03ViewController
+@implementation MR0x04ViewController
 
 - (void)dealloc
 {
@@ -75,7 +75,7 @@
         self.timer = nil;
     }
     
-    FFPlayer0x03 *player = [[FFPlayer0x03 alloc] init];
+    FFPlayer0x04 *player = [[FFPlayer0x04 alloc] init];
     player.contentPath = url;
     
     [self.indicatorView startAnimation:nil];
@@ -149,7 +149,6 @@
         [self appendMsg:@"请先点击查看！"];
         return;
     }
-    [self.player consumePackets];
     [self appendMsg:[self.player peekPacketBufferStatus]];
 }
 
@@ -159,7 +158,6 @@
         [self appendMsg:@"请先点击查看！"];
         return;
     }
-    [self.player consumeAllPackets];
     [self appendMsg:[self.player peekPacketBufferStatus]];
 }
 

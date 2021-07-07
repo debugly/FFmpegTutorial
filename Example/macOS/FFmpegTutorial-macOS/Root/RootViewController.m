@@ -80,6 +80,21 @@
             @"title":@"0x03",
             @"detail":@"读包线程与 AVPacket 缓存队列",
             @"class":@"MR0x03ViewController",
+        },
+        @{
+            @"title":@"0x04",
+            @"detail":@"多线程解码",
+            @"class":@"MR0x04ViewController",
+        },
+        @{
+            @"title":@"0x05",
+            @"detail":@"渲染线程与 AVFrame 缓存队列",
+            @"class":@"MR0x05ViewController",
+        },
+        @{
+            @"title":@"0x06",
+            @"detail":@"整理代码，封装解码器",
+            @"class":@"MR0x06ViewController",
         }
     ];
     

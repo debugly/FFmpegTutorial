@@ -31,13 +31,13 @@
 - (IBAction)go:(NSButton *)sender
 {
     if (self.inputField.stringValue.length > 0) {
-        [self parserURL:self.inputField.stringValue];
+        [self parseURL:self.inputField.stringValue];
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
 }
 
-- (void)parserURL:(NSString *)url
+- (void)parseURL:(NSString *)url
 {
     [self.indicatorView startAnimation:nil];
     if (self.player) {

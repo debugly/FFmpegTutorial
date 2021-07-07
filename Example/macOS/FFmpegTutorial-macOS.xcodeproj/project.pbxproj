@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
+		DD91F141268B6B4100B96334 /* MR0x04ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F13F268B6B4100B96334 /* MR0x04ViewController.m */; };
+		DD91F142268B6B4100B96334 /* MR0x04ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F140268B6B4100B96334 /* MR0x04ViewController.xib */; };
+		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
+		DD91F14E2692137900B96334 /* MR0x05ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F14C2692137900B96334 /* MR0x05ViewController.m */; };
+		DD91F14F2692137900B96334 /* MR0x05ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F14D2692137900B96334 /* MR0x05ViewController.xib */; };
+		DD91F1CE269361C800B96334 /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F1CB269361C800B96334 /* MR0x06ViewController.m */; };
+		DD91F1CF269361C800B96334 /* MR0x06ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F1CC269361C800B96334 /* MR0x06ViewController.xib */; };
 		DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82A256EA4D000B93F9F /* RootViewController.m */; };
 		DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82E256EAE3000B93F9F /* RootCellView.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
@@ -46,6 +53,16 @@
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		DD91F13E268B6B4100B96334 /* MR0x04ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x04ViewController.h; sourceTree = "<group>"; };
+		DD91F13F268B6B4100B96334 /* MR0x04ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x04ViewController.m; sourceTree = "<group>"; };
+		DD91F140268B6B4100B96334 /* MR0x04ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x04ViewController.xib; sourceTree = "<group>"; };
+		DD91F143268CC78A00B96334 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		DD91F14B2692137900B96334 /* MR0x05ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x05ViewController.h; sourceTree = "<group>"; };
+		DD91F14C2692137900B96334 /* MR0x05ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x05ViewController.m; sourceTree = "<group>"; };
+		DD91F14D2692137900B96334 /* MR0x05ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x05ViewController.xib; sourceTree = "<group>"; };
+		DD91F1CB269361C800B96334 /* MR0x06ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x06ViewController.m; sourceTree = "<group>"; };
+		DD91F1CC269361C800B96334 /* MR0x06ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x06ViewController.xib; sourceTree = "<group>"; };
+		DD91F1CD269361C800B96334 /* MR0x06ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x06ViewController.h; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E82D256EAE3000B93F9F /* RootCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootCellView.h; sourceTree = "<group>"; };
@@ -86,6 +103,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */,
 				9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -96,9 +114,40 @@
 		7242AB7453C4217BF5311C6C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD91F143268CC78A00B96334 /* AVFoundation.framework */,
 				D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		DD91F13A268B6A9E00B96334 /* 0x04 */ = {
+			isa = PBXGroup;
+			children = (
+				DD91F13E268B6B4100B96334 /* MR0x04ViewController.h */,
+				DD91F13F268B6B4100B96334 /* MR0x04ViewController.m */,
+				DD91F140268B6B4100B96334 /* MR0x04ViewController.xib */,
+			);
+			path = 0x04;
+			sourceTree = "<group>";
+		};
+		DD91F14A2692137900B96334 /* 0x05 */ = {
+			isa = PBXGroup;
+			children = (
+				DD91F14B2692137900B96334 /* MR0x05ViewController.h */,
+				DD91F14C2692137900B96334 /* MR0x05ViewController.m */,
+				DD91F14D2692137900B96334 /* MR0x05ViewController.xib */,
+			);
+			path = 0x05;
+			sourceTree = "<group>";
+		};
+		DD91F1CA269361C800B96334 /* 0x06 */ = {
+			isa = PBXGroup;
+			children = (
+				DD91F1CD269361C800B96334 /* MR0x06ViewController.h */,
+				DD91F1CB269361C800B96334 /* MR0x06ViewController.m */,
+				DD91F1CC269361C800B96334 /* MR0x06ViewController.xib */,
+			);
+			path = 0x06;
 			sourceTree = "<group>";
 		};
 		DD97E83525720E3000B93F9F /* Root */ = {
@@ -210,6 +259,9 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				DD91F1CA269361C800B96334 /* 0x06 */,
+				DD91F14A2692137900B96334 /* 0x05 */,
+				DD91F13A268B6A9E00B96334 /* 0x04 */,
 				DDB144CB26282D5100495754 /* 0x03 */,
 				DDB1444F262822E000495754 /* 0x02 */,
 				DDF6576426273C3700116F05 /* 0x01 */,
@@ -293,10 +345,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */,
+				DD91F142268B6B4100B96334 /* MR0x04ViewController.xib in Resources */,
 				DDB144D026282D8900495754 /* MR0x03ViewController.xib in Resources */,
 				DDB14454262822FC00495754 /* MR0x02ViewController.xib in Resources */,
 				DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */,
+				DD91F1CF269361C800B96334 /* MR0x06ViewController.xib in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
+				DD91F14F2692137900B96334 /* MR0x05ViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -343,8 +398,11 @@
 				DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */,
 				DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
+				DD91F141268B6B4100B96334 /* MR0x04ViewController.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
+				DD91F1CE269361C800B96334 /* MR0x06ViewController.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
+				DD91F14E2692137900B96334 /* MR0x05ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
