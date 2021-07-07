@@ -15,6 +15,9 @@
 		DD91F14F2692137900B96334 /* MR0x05ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F14D2692137900B96334 /* MR0x05ViewController.xib */; };
 		DD91F1CE269361C800B96334 /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F1CB269361C800B96334 /* MR0x06ViewController.m */; };
 		DD91F1CF269361C800B96334 /* MR0x06ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F1CC269361C800B96334 /* MR0x06ViewController.xib */; };
+		DD91F1D426960C3300B96334 /* MR0x10ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F1D126960C3300B96334 /* MR0x10ViewController.xib */; };
+		DD91F1D526960C3300B96334 /* MR0x10ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F1D226960C3300B96334 /* MR0x10ViewController.m */; };
+		DD91F1D826960CEC00B96334 /* MR0x10VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F1D726960CEC00B96334 /* MR0x10VideoRenderer.m */; };
 		DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82A256EA4D000B93F9F /* RootViewController.m */; };
 		DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82E256EAE3000B93F9F /* RootCellView.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
@@ -63,6 +66,11 @@
 		DD91F1CB269361C800B96334 /* MR0x06ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x06ViewController.m; sourceTree = "<group>"; };
 		DD91F1CC269361C800B96334 /* MR0x06ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x06ViewController.xib; sourceTree = "<group>"; };
 		DD91F1CD269361C800B96334 /* MR0x06ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x06ViewController.h; sourceTree = "<group>"; };
+		DD91F1D126960C3300B96334 /* MR0x10ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x10ViewController.xib; sourceTree = "<group>"; };
+		DD91F1D226960C3300B96334 /* MR0x10ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x10ViewController.m; sourceTree = "<group>"; };
+		DD91F1D326960C3300B96334 /* MR0x10ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x10ViewController.h; sourceTree = "<group>"; };
+		DD91F1D626960CEC00B96334 /* MR0x10VideoRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x10VideoRenderer.h; sourceTree = "<group>"; };
+		DD91F1D726960CEC00B96334 /* MR0x10VideoRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x10VideoRenderer.m; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E82D256EAE3000B93F9F /* RootCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootCellView.h; sourceTree = "<group>"; };
@@ -148,6 +156,18 @@
 				DD91F1CC269361C800B96334 /* MR0x06ViewController.xib */,
 			);
 			path = 0x06;
+			sourceTree = "<group>";
+		};
+		DD91F1D026960C3300B96334 /* 0x10 */ = {
+			isa = PBXGroup;
+			children = (
+				DD91F1D326960C3300B96334 /* MR0x10ViewController.h */,
+				DD91F1D226960C3300B96334 /* MR0x10ViewController.m */,
+				DD91F1D126960C3300B96334 /* MR0x10ViewController.xib */,
+				DD91F1D626960CEC00B96334 /* MR0x10VideoRenderer.h */,
+				DD91F1D726960CEC00B96334 /* MR0x10VideoRenderer.m */,
+			);
+			path = 0x10;
 			sourceTree = "<group>";
 		};
 		DD97E83525720E3000B93F9F /* Root */ = {
@@ -259,6 +279,7 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				DD91F1D026960C3300B96334 /* 0x10 */,
 				DD91F1CA269361C800B96334 /* 0x06 */,
 				DD91F14A2692137900B96334 /* 0x05 */,
 				DD91F13A268B6A9E00B96334 /* 0x04 */,
@@ -349,6 +370,7 @@
 				DDB144D026282D8900495754 /* MR0x03ViewController.xib in Resources */,
 				DDB14454262822FC00495754 /* MR0x02ViewController.xib in Resources */,
 				DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */,
+				DD91F1D426960C3300B96334 /* MR0x10ViewController.xib in Resources */,
 				DD91F1CF269361C800B96334 /* MR0x06ViewController.xib in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
 				DD91F14F2692137900B96334 /* MR0x05ViewController.xib in Resources */,
@@ -387,11 +409,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD91F1D526960C3300B96334 /* MR0x10ViewController.m in Sources */,
 				DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
 				DDB144CF26282D8900495754 /* MR0x03ViewController.m in Sources */,
 				DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */,
 				DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */,
+				DD91F1D826960CEC00B96334 /* MR0x10VideoRenderer.m in Sources */,
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
 				DDB14453262822FC00495754 /* MR0x02ViewController.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,

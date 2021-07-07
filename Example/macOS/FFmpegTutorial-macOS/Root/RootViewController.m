@@ -95,6 +95,11 @@
             @"title":@"0x06",
             @"detail":@"整理代码，封装解码器",
             @"class":@"MR0x06ViewController",
+        },
+        @{
+            @"title":@"0x10",
+            @"detail":@"使用 Core Graphics 渲染视频桢",
+            @"class":@"MR0x10ViewController",
         }
     ];
     
