@@ -238,12 +238,10 @@ static const GLfloat kColorConversion601FullRange[] = {
         if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
             if (self.isFullYUVRange) {
                 _preferredConversion = kColorConversion601FullRange;
-            }
-            else {
+            } else {
                 _preferredConversion = kColorConversion601;
             }
-        }
-        else {
+        } else {
             _preferredConversion = kColorConversion709;
         }
         
@@ -355,8 +353,7 @@ static const GLfloat kColorConversion601FullRange[] = {
     if (cropScaleAmount.width > cropScaleAmount.height) {
         normalizedSamplingSize.width = 1.0;
         normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-    }
-    else {
+    } else {
         normalizedSamplingSize.width = 1.0;
         normalizedSamplingSize.height = cropScaleAmount.width/cropScaleAmount.height;
     }
@@ -393,7 +390,6 @@ static const GLfloat kColorConversion601FullRange[] = {
     if ([EAGLContext currentContext] == _context) {
         [_context presentRenderbuffer:GL_RENDERBUFFER];
     }
-    
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
@@ -403,18 +399,17 @@ static const GLfloat kColorConversion601FullRange[] = {
     GLuint vertShader, fragShader;
     NSURL *vertShaderURL, *fragShaderURL;
     
-    
     self.program = glCreateProgram();
     
     // Create and compile the vertex shader.
-    vertShaderURL = [[NSBundle mainBundle] URLForResource:@"0x32Shader" withExtension:@"vsh"];
+    vertShaderURL = [[NSBundle mainBundle] URLForResource:@"0x14Shader" withExtension:@"vsh"];
     if (![self compileShader:&vertShader type:GL_VERTEX_SHADER URL:vertShaderURL]) {
         NSLog(@"Failed to compile vertex shader");
         return NO;
     }
     
     // Create and compile fragment shader.
-    fragShaderURL = [[NSBundle mainBundle] URLForResource:@"0x32Shader" withExtension:@"fsh"];
+    fragShaderURL = [[NSBundle mainBundle] URLForResource:@"0x14Shader" withExtension:@"fsh"];
     if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER URL:fragShaderURL]) {
         NSLog(@"Failed to compile fragment shader");
         return NO;
