@@ -1,23 +1,23 @@
 //
-//  MR0x11ViewController.m
+//  MR0x13ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/9.
+//  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x11ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x11.h>
+#import "MR0x13ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x13.h>
 #import "MRRWeakProxy.h"
-#import "MR0x11VideoRenderer.h"
+#import "MR0x13VideoRenderer.h"
 
-@interface MR0x11ViewController ()<FFPlayer0x11Delegate>
+@interface MR0x13ViewController ()<FFPlayer0x13Delegate>
 
-@property (strong) FFPlayer0x11 *player;
+@property (strong) FFPlayer0x13 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x11VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x13VideoRenderer *videoRenderer;
 
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation MR0x11ViewController
+@implementation MR0x13ViewController
 
 - (void)dealloc
 {
@@ -64,14 +64,12 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(CGImageRef)cgImage
+- (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
 {
-    size_t width = CGImageGetWidth(cgImage);
-    size_t height = CGImageGetHeight(cgImage);
-    
-    NSImage *img = [[NSImage alloc] initWithCGImage:cgImage size:CGSizeMake(width, height)];
+    CFRetain(sampleBuffer);
     dispatch_sync(dispatch_get_main_queue(), ^{
-        self.videoRenderer.image = img;
+        [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
+        CFRelease(sampleBuffer);
     });
 }
 
@@ -89,7 +87,7 @@
         self.timer = nil;
     }
     
-    FFPlayer0x11 *player = [[FFPlayer0x11 alloc] init];
+    FFPlayer0x13 *player = [[FFPlayer0x13 alloc] init];
     player.contentPath = url;
     
     [self.indicatorView startAnimation:nil];
@@ -119,7 +117,7 @@
         });
     }];
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
         // MR_PIX_FMT_MASK_ARGB;// MR_PIX_FMT_MASK_RGBA;
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
         //MR_PIX_FMT_MASK_RGB555LE MR_PIX_FMT_MASK_RGB555BE;

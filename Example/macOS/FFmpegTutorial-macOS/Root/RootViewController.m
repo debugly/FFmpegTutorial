@@ -105,7 +105,13 @@
             @"title":@"0x11",
             @"detail":@"使用 Core Animation 渲染视频桢",
             @"class":@"MR0x11ViewController",
+        },
+        @{
+            @"title":@"0x13",
+            @"detail":@"使用 Core Media 渲染视频桢",
+            @"class":@"MR0x13ViewController",
         }
+        
     ];
     
     [tableView reloadData];
