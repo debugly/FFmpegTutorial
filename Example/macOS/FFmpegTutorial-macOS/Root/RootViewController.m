@@ -111,7 +111,12 @@
             @"detail":@"使用 Core Media 渲染视频桢",
             @"class":@"MR0x13ViewController",
         }
-        
+        ,
+        @{
+            @"title":@"0x14",
+            @"detail":@"使用 OpenGL 渲染视频桢",
+            @"class":@"MR0x14ViewController",
+        }
     ];
     
     [tableView reloadData];
