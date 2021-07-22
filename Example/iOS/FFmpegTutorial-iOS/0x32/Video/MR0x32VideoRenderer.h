@@ -13,7 +13,6 @@
 
 @property (nonatomic, assign) BOOL isFullYUVRange;
 
-- (void)setupGL;
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
 @end
