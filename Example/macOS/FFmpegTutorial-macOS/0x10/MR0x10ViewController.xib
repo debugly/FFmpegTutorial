@@ -42,9 +42,9 @@
                         </textField>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Hh-br-Haq">
                             <rect key="frame" x="440" y="3" width="61" height="32"/>
-                            <buttonCell key="cell" type="push" title="查看" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
+                            <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
+                                <font key="font" size="13" name=".PingFangSC-Regular"/>
                             </buttonCell>
                             <connections>
                                 <action selector="go:" target="-2" id="gpZ-YI-9b1"/>

@@ -1,12 +1,12 @@
 //
-//  MR0x14VideoRenderer.m
+//  MR0x141VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x14VideoRenderer.h"
+#import "MR0x141VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/glext.h>
 #import <QuartzCore/QuartzCore.h>
@@ -14,6 +14,7 @@
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
 #import "renderer_pixfmt.h"
+#import "MR0x141OpenGLCompiler.h"
 
 // Uniform index.
 enum
@@ -23,8 +24,6 @@ enum
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
-static GLint uniforms[NUM_UNIFORMS];
-static GLint textureDimension[2];
 
 // Attribute index.
 enum
@@ -33,6 +32,10 @@ enum
     ATTRIB_TEXCOORD,
     NUM_ATTRIBUTES
 };
+
+static GLint uniforms[NUM_UNIFORMS];
+static GLint attributers[NUM_ATTRIBUTES];
+static GLint textureDimension[2];
 
 // Color Conversion Constants (YUV to RGB) including adjustment from 16-235/16-240 (video range)
 
@@ -63,7 +66,7 @@ typedef struct _Frame_Size
     int h;
 }Frame_Size;
 
-@interface MR0x14VideoRenderer ()
+@interface MR0x141VideoRenderer ()
 {
     // The pixel dimensions of the CAEAGLLayer.
     GLint _backingWidth;
@@ -77,11 +80,11 @@ typedef struct _Frame_Size
     Frame_Size frameSize[2];
 }
 
-@property GLuint program;
+@property MR0x141OpenGLCompiler * openglCompiler;
 
 @end
 
-@implementation MR0x14VideoRenderer
+@implementation MR0x141VideoRenderer
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -112,7 +115,6 @@ typedef struct _Frame_Size
         // but it would be more difficult to see where that function was called.
         CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
     #endif
-        
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
         CGLContextObj ctx = context.CGLContextObj;
@@ -125,6 +127,30 @@ typedef struct _Frame_Size
     return self;
 }
 
+- (void)setupOpenGLProgram
+{
+    if (!self.openglCompiler) {
+        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2DRect.fsh"];
+        
+        if ([self.openglCompiler compileIfNeed]) {
+            // Get uniform locations.
+            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
+            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
+            uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            
+            GLint textureDimensionX = [self.openglCompiler getUniformLocation:"textureDimensionX"];
+            assert(textureDimensionX >= 0);
+            textureDimension[0] = textureDimensionX;
+            
+            GLint textureDimensionY = [self.openglCompiler getUniformLocation:"textureDimensionY"];
+            assert(textureDimensionY >= 0);
+            textureDimension[1] = textureDimensionY;
+            
+            attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
+            attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
+        }
+    }
+}
 
 - (void)resetViewPort
 {
@@ -204,23 +230,26 @@ typedef struct _Frame_Size
 {
     [[self openGLContext] makeCurrentContext];
     CGLLockContext([[self openGLContext] CGLContextObj]);
+    
+    //active opengl program
     {
-        if (self.program == 0) {
-            
+        [self setupOpenGLProgram];
+        [self.openglCompiler active];
+    }
+    
+    {
+        if (0 == plane_textures[0]) {
+            glGenTextures(2, plane_textures);
             glDisable(GL_DEPTH_TEST);
-            
-            BOOL succ = [self loadShaders];
-            NSAssert(succ, @"build error");
-            
-            glUseProgram(self.program);
-            
-            glUniform1i(uniforms[UNIFORM_Y], 0);
-            glUniform1i(uniforms[UNIFORM_UV], 1);
+            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+            glEnable(GL_TEXTURE_RECTANGLE);
         }
-        
+    }
+    
+    {
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
          
-        assert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type);
+        NSAssert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type,@"not supported pixel format:%d", type);
         
         CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         
@@ -236,19 +265,6 @@ typedef struct _Frame_Size
             _preferredConversion = kColorConversion709;
         }
         
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        glEnable(GL_TEXTURE_RECTANGLE);
-        glUseProgram(self.program);
-        
-        if (0 == plane_textures[0])
-            glGenTextures(2, plane_textures);
-        
-        //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_Y], 0);
-        glUniform1i(uniforms[UNIFORM_UV], 1);
-        
-        glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
-        
         IOSurfaceRef surface  = CVPixelBufferGetIOSurface(pixelBuffer);
         uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
         struct vt_format *f = vt_get_gl_format(cvpixfmt);
@@ -260,6 +276,11 @@ typedef struct _Frame_Size
         const bool planar = CVPixelBufferIsPlanar(pixelBuffer);
         const int planes  = (int)CVPixelBufferGetPlaneCount(pixelBuffer);
         assert(planar && planes == f->planes || f->planes == 1);
+        
+        //设置纹理和采样器的对应关系
+        glUniform1i(uniforms[UNIFORM_Y], 0);
+        glUniform1i(uniforms[UNIFORM_UV], 1);
+        glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
         
         GLenum gl_target = GL_TEXTURE_RECTANGLE;
         
@@ -287,7 +308,7 @@ typedef struct _Frame_Size
                                                   i);
 
             if (err != kCGLNoError) {
-                printf("error creating IOSurface texture for plane %d: %s\n",
+                NSLog(@"error creating IOSurface texture for plane %d: %s\n",
                        0, CGLErrorString(err));
                 return;
             } else {
@@ -297,7 +318,6 @@ typedef struct _Frame_Size
                 glTexParameterf(gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
             }
         }
-        
         
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(_backingWidth, _backingHeight), self.layer.bounds);
@@ -328,8 +348,8 @@ typedef struct _Frame_Size
         };
         
         // 更新顶点数据
-        glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, quadVertexData);
-        glEnableVertexAttribArray(ATTRIB_VERTEX);
+        glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
+        glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
         
         GLfloat quadTextureData[] =  { // 坐标不对可能导致画面显示方向不对
             0, 1,
@@ -338,186 +358,13 @@ typedef struct _Frame_Size
             1, 0,
         };
         
-        glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, 0, 0, quadTextureData);
-        glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+        glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
+        glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
         
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
-
-#pragma mark -  OpenGL shader compilation
-
-static void IJK_GLES2_printString(const char *name, GLenum s) {
-    const char *v = (const char *) glGetString(s);
-    NSLog(@"[GLES2] %s = %s\n", name, v);
-}
-
-- (BOOL)loadShaders
-{
-    IJK_GLES2_printString("Version", GL_VERSION);
-    IJK_GLES2_printString("Vendor", GL_VENDOR);
-    IJK_GLES2_printString("Renderer", GL_RENDERER);
-    IJK_GLES2_printString("Extensions", GL_EXTENSIONS);
-    
-    GLuint vertShader, fragShader;
-    NSURL *vertShaderURL, *fragShaderURL;
-    
-    self.program = glCreateProgram();
-    
-    // Create and compile the vertex shader.
-    vertShaderURL = [[NSBundle mainBundle] URLForResource:@"common" withExtension:@"vsh"];
-    
-    if (![self compileShader:&vertShader type:GL_VERTEX_SHADER URL:vertShaderURL]) {
-        NSAssert(NO, @"Failed to compile vertex shader");
-        return NO;
-    }
-    
-    // Create and compile fragment shader.
-    fragShaderURL = [[NSBundle mainBundle] URLForResource:@"2_sampler2DRect" withExtension:@"fsh"];
-    if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER URL:fragShaderURL]) {
-        NSAssert(NO, @"Failed to compile fragment shader");
-        return NO;
-    }
-    
-    // Attach vertex shader to program.
-    glAttachShader(self.program, vertShader);
-    
-    // Attach fragment shader to program.
-    glAttachShader(self.program, fragShader);
-    
-    // Bind attribute locations. This needs to be done prior to linking.
-    glBindAttribLocation(self.program, ATTRIB_VERTEX, "position");
-    glBindAttribLocation(self.program, ATTRIB_TEXCOORD, "texCoord");
-    
-    // Link the program.
-    if (![self linkProgram:self.program]) {
-        NSAssert(NO, @"Failed link program");
-        if (vertShader) {
-            glDeleteShader(vertShader);
-            vertShader = 0;
-        }
-        if (fragShader) {
-            glDeleteShader(fragShader);
-            fragShader = 0;
-        }
-        if (self.program) {
-            glDeleteProgram(self.program);
-            self.program = 0;
-        }
-        
-        return NO;
-    }
-    
-    // Get uniform locations.
-    uniforms[UNIFORM_Y] = glGetUniformLocation(self.program, "SamplerY");
-    uniforms[UNIFORM_UV] = glGetUniformLocation(self.program, "SamplerUV");
-    uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = glGetUniformLocation(self.program, "colorConversionMatrix");
-    
-    GLint textureDimensionX = glGetUniformLocation(self.program, "textureDimensionX");
-    assert(textureDimensionX >= 0);
-    textureDimension[0] = textureDimensionX;
-    
-    GLint textureDimensionY = glGetUniformLocation(self.program, "textureDimensionY");
-    assert(textureDimensionY >= 0);
-    textureDimension[1] = textureDimensionY;
-    
-    // Release vertex and fragment shaders.
-    if (vertShader) {
-        glDetachShader(self.program, vertShader);
-        glDeleteShader(vertShader);
-    }
-    
-    if (fragShader) {
-        glDetachShader(self.program, fragShader);
-        glDeleteShader(fragShader);
-    }
-    
-    return YES;
-}
-
-- (BOOL)compileShader:(GLuint *)shader type:(GLenum)type URL:(NSURL *)URL
-{
-    NSError *error;
-    NSString *sourceString = [[NSString alloc] initWithContentsOfURL:URL encoding:NSUTF8StringEncoding error:&error];
-    if (sourceString == nil) {
-        NSLog(@"Failed to load vertex shader: %@", [error localizedDescription]);
-        return NO;
-    }
-    
-    GLint status;
-    const GLchar *source;
-    source = (GLchar *)[sourceString UTF8String];
-    
-    *shader = glCreateShader(type);
-    glShaderSource(*shader, 1, &source, NULL);
-    glCompileShader(*shader);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetShaderInfoLog(*shader, logLength, &logLength, log);
-        NSLog(@"Shader compile log:\n%s", log);
-        free(log);
-    }
-#endif
-    
-    glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
-    if (status == 0) {
-        glDeleteShader(*shader);
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)linkProgram:(GLuint)prog
-{
-    GLint status;
-    glLinkProgram(prog);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program link log:\n%s", log);
-        free(log);
-    }
-#endif
-    
-    glGetProgramiv(prog, GL_LINK_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)validateProgram:(GLuint)prog
-{
-    GLint logLength, status;
-    
-    glValidateProgram(prog);
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program validate log:\n%s", log);
-        free(log);
-    }
-    
-    glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
-}
-
 
 @end
