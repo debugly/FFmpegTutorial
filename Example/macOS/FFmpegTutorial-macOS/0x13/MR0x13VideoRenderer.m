@@ -18,26 +18,30 @@
 
 - (void)setContentMode:(MRViewContentMode)contentMode
 {
+    AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
     switch (contentMode) {
         case MRViewContentModeScaleAspectFill:
         {
-            AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
             layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         }
             break;
         case MRViewContentModeScaleAspectFit:
         {
-            AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
             layer.videoGravity = AVLayerVideoGravityResizeAspect;
         }
             break;
         default:
         {
-            AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
             layer.videoGravity = AVLayerVideoGravityResize;
+            
         }
             break;
     }
+    
+    //上面的修改在frame发生变化时生效
+    CGRect oldFrame = layer.frame;
+    oldFrame.size.height += 0.01;
+    [layer setFrame:oldFrame];
 }
 
 - (MRViewContentMode)contentMode
