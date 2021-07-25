@@ -415,13 +415,13 @@ static void IJK_GLES2_printString(const char *name, GLenum s) {
     uniforms[UNIFORM_UV] = glGetUniformLocation(self.program, "SamplerUV");
     uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = glGetUniformLocation(self.program, "colorConversionMatrix");
     
-    GLint textureDimensionX = glGetUniformLocation(self.program, "textureDimensionX");
-    assert(textureDimensionX >= 0);
-    textureDimension[0] = textureDimensionX;
-    
     GLint textureDimensionY = glGetUniformLocation(self.program, "textureDimensionY");
     assert(textureDimensionY >= 0);
-    textureDimension[1] = textureDimensionY;
+    textureDimension[0] = textureDimensionY;
+    
+    GLint textureDimensionUV = glGetUniformLocation(self.program, "textureDimensionUV");
+    assert(textureDimensionUV >= 0);
+    textureDimension[1] = textureDimensionUV;
     
     // Release vertex and fragment shaders.
     if (vertShader) {

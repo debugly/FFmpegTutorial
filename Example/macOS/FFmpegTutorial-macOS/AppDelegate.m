@@ -40,7 +40,13 @@
     self.rootWinController = rootWinController;
 }
 
-- (void)applicationWillTerminate:(NSNotification *)aNotification {
+- (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender
+{
+    return YES;
+}
+
+- (void)applicationWillTerminate:(NSNotification *)aNotification
+{
     // Insert code here to tear down your application
 }
 

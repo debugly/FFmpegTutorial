@@ -138,13 +138,13 @@ typedef struct _Frame_Size
             uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            GLint textureDimensionX = [self.openglCompiler getUniformLocation:"textureDimensionX"];
-            assert(textureDimensionX >= 0);
-            textureDimension[0] = textureDimensionX;
-            
             GLint textureDimensionY = [self.openglCompiler getUniformLocation:"textureDimensionY"];
             assert(textureDimensionY >= 0);
-            textureDimension[1] = textureDimensionY;
+            textureDimension[0] = textureDimensionY;
+            
+            GLint textureDimensionUV = [self.openglCompiler getUniformLocation:"textureDimensionUV"];
+            assert(textureDimensionUV >= 0);
+            textureDimension[1] = textureDimensionUV;
             
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
