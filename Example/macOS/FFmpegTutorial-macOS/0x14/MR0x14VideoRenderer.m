@@ -65,14 +65,6 @@ typedef struct _Frame_Size
 
 @interface MR0x14VideoRenderer ()
 {
-    // The pixel dimensions of the CAEAGLLayer.
-    GLint _backingWidth;
-    GLint _backingHeight;
-
-    NSOpenGLContext *_context;
-    
-    const GLfloat *_preferredConversion;
-    
     GLuint plane_textures[2];
     Frame_Size frameSize[2];
 }
@@ -164,10 +156,10 @@ typedef struct _Frame_Size
     
 #endif // !SUPPORT_RETINA_RESOLUTION
     
-    _backingWidth = viewRectPixels.size.width;
-    _backingHeight = viewRectPixels.size.height;
+    GLsizei backingWidth = viewRectPixels.size.width;
+    GLsizei backingHeight = viewRectPixels.size.height;
     // Set the new dimensions in our renderer
-    glViewport(0, 0, _backingWidth, _backingHeight);
+    glViewport(0, 0, backingWidth, backingHeight);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
 
@@ -222,20 +214,14 @@ typedef struct _Frame_Size
          
         assert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type);
         
-        CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
-        
-        if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
-            if (self.isFullYUVRange) {
-                _preferredConversion = kColorConversion601FullRange;
-            }
-            else {
-                _preferredConversion = kColorConversion601;
-            }
+        IOSurfaceRef surface  = CVPixelBufferGetIOSurface(pixelBuffer);
+        uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
+        struct vt_format *f = vt_get_gl_format(cvpixfmt);
+        if (!f) {
+            printf("CVPixelBuffer has unsupported format type\n");
+            return;
         }
-        else {
-            _preferredConversion = kColorConversion709;
-        }
-        
+
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glEnable(GL_TEXTURE_RECTANGLE);
         glUseProgram(self.program);
@@ -247,16 +233,24 @@ typedef struct _Frame_Size
         glUniform1i(uniforms[UNIFORM_Y], 0);
         glUniform1i(uniforms[UNIFORM_UV], 1);
         
-        glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
+        CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         
-        IOSurfaceRef surface  = CVPixelBufferGetIOSurface(pixelBuffer);
-        uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
-        struct vt_format *f = vt_get_gl_format(cvpixfmt);
-        if (!f) {
-            printf("CVPixelBuffer has unsupported format type\n");
-            return;
+        const GLfloat * preferredConversion = NULL;
+        if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
+            BOOL isFullYUVRange = kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type;
+            if (isFullYUVRange) {
+                preferredConversion = kColorConversion601FullRange;
+            }
+            else {
+                preferredConversion = kColorConversion601;
+            }
         }
-
+        else {
+            preferredConversion = kColorConversion709;
+        }
+        
+        glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
+        
         const bool planar = CVPixelBufferIsPlanar(pixelBuffer);
         const int planes  = (int)CVPixelBufferGetPlaneCount(pixelBuffer);
         assert(planar && planes == f->planes || f->planes == 1);
@@ -298,9 +292,10 @@ typedef struct _Frame_Size
             }
         }
         
-        
+        const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
+        const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
-        CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(_backingWidth, _backingHeight), self.layer.bounds);
+        CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
         
         // Compute normalized quad coordinates to draw the frame into.
         CGSize normalizedSamplingSize = CGSizeMake(0.0, 0.0);
@@ -312,8 +307,8 @@ typedef struct _Frame_Size
             normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
         }
         else {
-            normalizedSamplingSize.width = 1.0;
-            normalizedSamplingSize.height = cropScaleAmount.width/cropScaleAmount.height;
+            normalizedSamplingSize.height = 1.0;
+            normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
         }
         
         /*

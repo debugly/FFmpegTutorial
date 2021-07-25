@@ -13,8 +13,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x141VideoRenderer : NSOpenGLView
 
-@property (nonatomic, assign) BOOL isFullYUVRange;
-
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
 @end
