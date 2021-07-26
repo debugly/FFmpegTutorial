@@ -67,6 +67,7 @@ typedef struct _Frame_Size
 {
     GLuint plane_textures[2];
     Frame_Size frameSize[2];
+    MRViewContentMode _contentMode;
 }
 
 @property GLuint program;
@@ -116,7 +117,6 @@ typedef struct _Frame_Size
     }
     return self;
 }
-
 
 - (void)resetViewPort
 {
@@ -192,6 +192,16 @@ typedef struct _Frame_Size
     [self resetViewPort];
 }
 
+- (void)setContentMode:(MRViewContentMode)contentMode
+{
+    _contentMode = contentMode;
+}
+
+- (MRViewContentMode)contentMode
+{
+    return _contentMode;
+}
+
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
     [[self openGLContext] makeCurrentContext];
@@ -225,6 +235,8 @@ typedef struct _Frame_Size
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glEnable(GL_TEXTURE_RECTANGLE);
         glUseProgram(self.program);
+        glClearColor(0.0,0.0,0.0,0.0);
+        glClear(GL_COLOR_BUFFER_BIT);
         
         if (0 == plane_textures[0])
             glGenTextures(2, plane_textures);
@@ -292,23 +304,38 @@ typedef struct _Frame_Size
             }
         }
         
-        const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
-        const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
-        // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
-        CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
-        
         // Compute normalized quad coordinates to draw the frame into.
-        CGSize normalizedSamplingSize = CGSizeMake(0.0, 0.0);
-        CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
+        CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
         
-        // Normalize the quad vertices.
-        if (cropScaleAmount.width > cropScaleAmount.height) {
-            normalizedSamplingSize.width = 1.0;
-            normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-        }
-        else {
-            normalizedSamplingSize.height = 1.0;
-            normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+        if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
+            const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
+            const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
+            // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
+            CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
+            
+            CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
+            
+            // hold max
+            if (_contentMode == MRViewContentModeScaleAspectFit) {
+                if (cropScaleAmount.width > cropScaleAmount.height) {
+                    normalizedSamplingSize.width = 1.0;
+                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
+                }
+                else {
+                    normalizedSamplingSize.height = 1.0;
+                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+                }
+            } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+                // hold min
+                if (cropScaleAmount.width > cropScaleAmount.height) {
+                    normalizedSamplingSize.height = 1.0;
+                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+                }
+                else {
+                    normalizedSamplingSize.width = 1.0;
+                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
+                }
+            }
         }
         
         /*

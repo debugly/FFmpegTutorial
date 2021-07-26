@@ -8,10 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreVideo/CVPixelBuffer.h>
+#import "MRVideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x14VideoRenderer : NSOpenGLView
+@interface MR0x14VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
