@@ -113,6 +113,7 @@
 		DD91F29026AC082C00B96334 /* renderer_pixfmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer_pixfmt.h; sourceTree = "<group>"; };
 		DD91F29426AC08D400B96334 /* MR0x141OpenGLCompiler.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLCompiler.h; sourceTree = "<group>"; };
 		DD91F29526AC08D400B96334 /* MR0x141OpenGLCompiler.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLCompiler.m; sourceTree = "<group>"; };
+		DD91F30E26AEEDD900B96334 /* MRVideoRendererProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoRendererProtocol.h; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E82D256EAE3000B93F9F /* RootCellView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootCellView.h; sourceTree = "<group>"; };
@@ -203,11 +204,11 @@
 		DD91F1D026960C3300B96334 /* 0x10 */ = {
 			isa = PBXGroup;
 			children = (
+				DD91F1D626960CEC00B96334 /* MR0x10VideoRenderer.h */,
+				DD91F1D726960CEC00B96334 /* MR0x10VideoRenderer.m */,
 				DD91F1D326960C3300B96334 /* MR0x10ViewController.h */,
 				DD91F1D226960C3300B96334 /* MR0x10ViewController.m */,
 				DD91F1D126960C3300B96334 /* MR0x10ViewController.xib */,
-				DD91F1D626960CEC00B96334 /* MR0x10VideoRenderer.h */,
-				DD91F1D726960CEC00B96334 /* MR0x10VideoRenderer.m */,
 			);
 			path = 0x10;
 			sourceTree = "<group>";
@@ -267,6 +268,7 @@
 			children = (
 				DD91F29026AC082C00B96334 /* renderer_pixfmt.h */,
 				DD91F28C26AC082C00B96334 /* Shaders */,
+				DD91F30E26AEEDD900B96334 /* MRVideoRendererProtocol.h */,
 			);
 			path = OpenGLAssets;
 			sourceTree = "<group>";
