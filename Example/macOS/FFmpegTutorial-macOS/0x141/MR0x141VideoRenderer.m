@@ -70,6 +70,7 @@ typedef struct _Frame_Size
 {
     GLuint plane_textures[2];
     Frame_Size frameSize[2];
+    MRViewContentMode _contentMode;
 }
 
 @property MR0x141OpenGLCompiler * openglCompiler;
@@ -239,6 +240,11 @@ typedef struct _Frame_Size
     }
     
     {
+        glClearColor(0.0,0.0,0.0,0.0);
+        glClear(GL_COLOR_BUFFER_BIT);
+    }
+    
+    {
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
          
         NSAssert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type,@"not supported pixel format:%d", type);
@@ -313,23 +319,38 @@ typedef struct _Frame_Size
             }
         }
         
-        const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
-        const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
-        // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
-        CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
-        
         // Compute normalized quad coordinates to draw the frame into.
-        CGSize normalizedSamplingSize = CGSizeMake(0.0, 0.0);
-        CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
+        CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
         
-        // Normalize the quad vertices.
-        if (cropScaleAmount.width > cropScaleAmount.height) {
-            normalizedSamplingSize.width = 1.0;
-            normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-        }
-        else {
-            normalizedSamplingSize.height = 1.0;
-            normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+        if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
+            const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
+            const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
+            // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
+            CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
+            
+            CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
+            
+            // hold max
+            if (_contentMode == MRViewContentModeScaleAspectFit) {
+                if (cropScaleAmount.width > cropScaleAmount.height) {
+                    normalizedSamplingSize.width = 1.0;
+                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
+                }
+                else {
+                    normalizedSamplingSize.height = 1.0;
+                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+                }
+            } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+                // hold min
+                if (cropScaleAmount.width > cropScaleAmount.height) {
+                    normalizedSamplingSize.height = 1.0;
+                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+                }
+                else {
+                    normalizedSamplingSize.width = 1.0;
+                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
+                }
+            }
         }
         
         /*
@@ -361,6 +382,16 @@ typedef struct _Frame_Size
     }
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
+}
+
+- (void)setContentMode:(MRViewContentMode)contentMode
+{
+    _contentMode = contentMode;
+}
+
+- (MRViewContentMode)contentMode
+{
+    return _contentMode;
 }
 
 @end

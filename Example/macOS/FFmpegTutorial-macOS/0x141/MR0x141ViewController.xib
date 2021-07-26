@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -68,8 +69,31 @@
                 <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qce-dG-gbW">
                     <rect key="frame" x="0.0" y="192" width="530" height="40"/>
                     <subviews>
+                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ohP-6S-w0k">
+                            <rect key="frame" x="7" y="6" width="152" height="25"/>
+                            <popUpButtonCell key="cell" type="push" title="Scale To Fill" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="yzr-ff-CJ4" id="xpv-0r-RZn">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="pHB-9l-x1W">
+                                    <items>
+                                        <menuItem title="Scale To Fill" state="on" tag="1" id="yzr-ff-CJ4">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Scale Aspect Fill" tag="2" id="vBl-ui-Ch5">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Scale Aspect Fit" tag="3" id="6gx-HZ-piu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="onSelectedVideMode:" target="-2" id="6Es-xu-eKz"/>
+                            </connections>
+                        </popUpButton>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FEr-03-e9w">
-                            <rect key="frame" x="3" y="3" width="259" height="32"/>
+                            <rect key="frame" x="168" y="3" width="159" height="32"/>
                             <buttonCell key="cell" type="push" title="模拟解码线程消耗" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="w2e-f0-1Wi">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -79,7 +103,7 @@
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="eER-VT-ORW">
-                            <rect key="frame" x="268" y="3" width="259" height="32"/>
+                            <rect key="frame" x="333" y="3" width="194" height="32"/>
                             <buttonCell key="cell" type="push" title="模拟解码线程消耗（全部）" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iWK-IR-HS1">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -96,8 +120,10 @@
                     <visibilityPriorities>
                         <integer value="1000"/>
                         <integer value="1000"/>
+                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
@@ -109,14 +135,14 @@
                     <rect key="frame" x="0.0" y="0.0" width="530" height="192"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="LuP-6m-7b7">
                         <rect key="frame" x="0.0" y="0.0" width="530" height="192"/>
-                        <autoresizingMask key="autoresizingMask"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Yzs-Jl-8Tf">
                                 <rect key="frame" x="0.0" y="0.0" width="490" height="192"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="520" height="192"/>
+                                <size key="minSize" width="490" height="192"/>
                                 <size key="maxSize" width="530" height="10000000"/>
                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             </textView>
