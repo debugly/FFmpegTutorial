@@ -178,4 +178,17 @@
     [self appendMsg:[self.player peekPacketBufferStatus]];
 }
 
+- (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
+{
+    NSMenuItem *item = [sender selectedItem];
+        
+    if (item.tag == 1) {
+        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill];
+    } else if (item.tag == 2) {
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill];
+    } else if (item.tag == 3) {
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit];
+    }
+}
+
 @end

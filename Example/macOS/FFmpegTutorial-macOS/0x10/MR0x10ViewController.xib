@@ -44,7 +44,7 @@
                             <rect key="frame" x="440" y="3" width="61" height="32"/>
                             <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" size="13" name=".PingFangSC-Regular"/>
+                                <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
                                 <action selector="go:" target="-2" id="gpZ-YI-9b1"/>
@@ -69,8 +69,31 @@
                 <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qce-dG-gbW">
                     <rect key="frame" x="0.0" y="192" width="504" height="40"/>
                     <subviews>
+                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="t88-iE-qG4">
+                            <rect key="frame" x="7" y="6" width="139" height="25"/>
+                            <popUpButtonCell key="cell" type="push" title="Scale To Fill" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="Twe-1G-oyj" id="ej0-K1-l8G">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="tMg-uR-S84">
+                                    <items>
+                                        <menuItem title="Scale To Fill" state="on" tag="1" id="Twe-1G-oyj">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Scale Aspect Fill" tag="2" id="eAF-Lc-UL9">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Scale Aspect Fit" tag="3" id="Had-01-FsK">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="onSelectedVideMode:" target="-2" id="CWk-6O-kh0"/>
+                            </connections>
+                        </popUpButton>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FEr-03-e9w">
-                            <rect key="frame" x="3" y="3" width="246" height="32"/>
+                            <rect key="frame" x="155" y="3" width="146" height="32"/>
                             <buttonCell key="cell" type="push" title="模拟解码线程消耗" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="w2e-f0-1Wi">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -80,7 +103,7 @@
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="eER-VT-ORW">
-                            <rect key="frame" x="255" y="3" width="246" height="32"/>
+                            <rect key="frame" x="307" y="3" width="194" height="32"/>
                             <buttonCell key="cell" type="push" title="模拟解码线程消耗（全部）" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iWK-IR-HS1">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -97,8 +120,10 @@
                     <visibilityPriorities>
                         <integer value="1000"/>
                         <integer value="1000"/>
+                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>

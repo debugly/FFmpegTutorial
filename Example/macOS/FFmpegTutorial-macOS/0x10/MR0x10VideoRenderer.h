@@ -8,10 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreGraphics/CGImage.h>
+#import "MRVideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x10VideoRenderer : NSView
+@interface MR0x10VideoRenderer : NSView<MRVideoRendererProtocol>
 
 - (void)dispalyCGImage:(CGImageRef)img;
 

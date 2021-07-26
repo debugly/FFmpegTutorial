@@ -11,6 +11,7 @@
 @implementation MR0x10VideoRenderer
 {
     CGImageRef _img;
+    MRViewContentMode _contentMode;
 }
 
 - (void)dealloc
@@ -44,28 +45,52 @@
 //        CGContextTranslateCTM(context, 0.0f, self.bounds.size.height);
 //        CGContextScaleCTM(context, 1.0f, -1.0f);
         
-        CGSize aspectRatio = CGSizeMake(CGImageGetWidth(_img), CGImageGetHeight(_img));;
-            
-        CGFloat maxWidth  = CGRectGetWidth(self.bounds);
-        CGFloat maxHeight = CGRectGetHeight(self.bounds);
-            
-        CGFloat aspectWidth = maxHeight / aspectRatio.height * aspectRatio.width;
-        CGFloat aspectHeight = maxWidth / aspectRatio.width * aspectRatio.height;
         
-        CGFloat width,height = 0;
+            
+        CGFloat viewWidth  = CGRectGetWidth(self.bounds);
+        CGFloat viewHeight = CGRectGetHeight(self.bounds);
         
-        if (aspectWidth < maxWidth) {
-            width = aspectWidth;
-            height = maxHeight;
-        } else {
-            width = maxWidth;
-            height = aspectHeight;
+        CGSize aspectRatio = CGSizeMake(CGImageGetWidth(_img), CGImageGetHeight(_img));
+        CGFloat aspectWidth = viewHeight / aspectRatio.height * aspectRatio.width;
+        CGFloat aspectHeight = viewWidth / aspectRatio.width * aspectRatio.height;
+        
+        CGFloat targetWidth = viewWidth;
+        CGFloat targetHeight = viewHeight;
+        
+        if (_contentMode == MRViewContentModeScaleAspectFit) {
+            //按高度最大等比缩放的宽度还没到边，说明视频的高度方向已经充满了屏幕，让高度使用最大值，宽度等比缩放，左右留黑边即可
+            if (aspectWidth < viewWidth) {
+                targetWidth = aspectWidth;
+                targetHeight = viewHeight;
+            } else {
+                targetWidth = viewWidth;
+                targetHeight = aspectHeight;
+            }
+        } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+            //按高度最大等比缩放的宽度超过屏幕了，说明视频已经完全充满了屏幕；就让高度使用最大值，宽度等比缩放
+            if (aspectWidth > viewWidth) {
+                targetWidth = aspectWidth;
+                targetHeight = viewHeight;
+            } else {
+                targetWidth = viewWidth;
+                targetHeight = aspectHeight;
+            }
         }
         
-        CGRect inRect = CGRectMake((maxWidth-width)/2.0, (maxHeight-height)/2.0,width, height);
+        CGRect inRect = CGRectMake((viewWidth-targetWidth)/2.0, (viewHeight-targetHeight)/2.0,targetWidth, targetHeight);
         
         CGContextDrawImage(context, inRect, _img);
     }
+}
+
+- (void)setContentMode:(MRViewContentMode)contentMode
+{
+    _contentMode = contentMode;
+}
+
+- (MRViewContentMode)contentMode
+{
+    return _contentMode;
 }
 
 //- (BOOL)isFlipped
