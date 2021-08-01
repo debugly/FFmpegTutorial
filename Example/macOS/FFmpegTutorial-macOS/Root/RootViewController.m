@@ -113,13 +113,18 @@
         },
         @{
             @"title":@"0x14",
-            @"detail":@"使用 OpenGL 渲染视频桢",
+            @"detail":@"使用 OpenGL 渲染 NV12 视频桢",
             @"class":@"MR0x14ViewController",
         },
         @{
             @"title":@"0x14-1",
-            @"detail":@"使用 OpenGL 渲染视频桢，封装 OpenGL 相关逻辑",
+            @"detail":@"代码重构 0x14 教程，封装 OpenGL Shader 相关逻辑",
             @"class":@"MR0x141ViewController",
+        },
+        @{
+            @"title":@"0x14-2",
+            @"detail":@"使用 OpenGL 渲染 YUV420P 视频桢",
+            @"class":@"MR0x142ViewController",
         }
     ];
     

@@ -188,6 +188,8 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         //for AV_PIX_FMT_NV21: later will swap VU. we won't modify the avframe data, because the frame can be dispaly again!
     } else if(format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0){
         pixelFormatType = kCVPixelFormatType_32BGRA;
+    } else if(format == AV_PIX_FMT_YUV420P){
+        pixelFormatType = kCVPixelFormatType_420YpCbCr8Planar;
     }
 //    RGB555 可以创建出 CVPixelBuffer，但是显示时失败了。
 //    else if (format == AV_PIX_FMT_RGB555BE) {
@@ -277,7 +279,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
          AV_PIX_FMT_RGB555BE,
          AV_PIX_FMT_RGB555LE,
          */
-        if(format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0 || format == AV_PIX_FMT_ARGB || format == AV_PIX_FMT_0RGB || format == AV_PIX_FMT_RGB24 || format == AV_PIX_FMT_RGB555BE || format == AV_PIX_FMT_RGB555LE){
+        if (format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0 || format == AV_PIX_FMT_ARGB || format == AV_PIX_FMT_0RGB || format == AV_PIX_FMT_RGB24 || format == AV_PIX_FMT_RGB555BE || format == AV_PIX_FMT_RGB555LE) {
            uint8_t *rgb_src  = frame->data[0];
            uint8_t *rgb_dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
            size_t src_bytesPerRow  = frame->linesize[0];
@@ -288,7 +290,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                rgb_src  += src_bytesPerRow;
                rgb_dest += dest_bytesPerRow;
            }
-        } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21){
+        } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21) {
             
             // Here y_src is Y-Plane of YUV(NV12) data.
             uint8_t *y_src  = frame->data[0];
@@ -342,6 +344,21 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                     memcpy(uv_dest, uv_src, MIN(uv_src_bytesPerRow,uv_dest_bytesPerRow));
                     uv_src  += uv_src_bytesPerRow;
                     uv_dest += uv_dest_bytesPerRow;
+                }
+            }
+        } else if(format == AV_PIX_FMT_YUV420P){
+            
+            for (int p = 0; p < 3; p++) {
+                uint8_t *src  = frame->data[p];
+                uint8_t *dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, p);
+                size_t src_bytesPerRow  = frame->linesize[p];
+                size_t dest_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, p);
+                
+                for (int i = 0; i < CVPixelBufferGetHeightOfPlane(pixelBuffer, p); i ++) {
+                    bzero(dest, dest_bytesPerRow);
+                    memcpy(dest, src, MIN(src_bytesPerRow, dest_bytesPerRow));
+                    src  += src_bytesPerRow;
+                    dest += dest_bytesPerRow;
                 }
             }
         } else {

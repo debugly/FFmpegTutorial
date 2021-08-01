@@ -167,7 +167,10 @@ static struct vt_format vt_formats[] = {
 #if TARGET_OS_OSX
             { GL_RED, GL_UNSIGNED_BYTE, GL_RED },
             { GL_RED, GL_UNSIGNED_BYTE, GL_RED },
-            { GL_RED, GL_UNSIGNED_BYTE, GL_RED }
+            { GL_RED, GL_UNSIGNED_BYTE, GL_RED },
+
+            { GL_GREEN, GL_UNSIGNED_BYTE, GL_GREEN },
+            { GL_BLUE, GL_UNSIGNED_BYTE, GL_BLUE }
 #else
             { GL_RED_EXT, GL_UNSIGNED_BYTE, GL_RED_EXT },
             { GL_RED_EXT, GL_UNSIGNED_BYTE, GL_RED_EXT },
@@ -198,12 +201,11 @@ static struct vt_format *vt_get_gl_format(uint32_t cvpixfmt)
     return NULL;
 }
 
+#if DEBUG
 static void printf_opengl_string(const char *name, GLenum s) {
     const char *v = (const char *) glGetString(s);
     NSLog(@"[OpenGL] %s = %s\n", name, v);
 }
-
-#if DEBUG
 #define debug_opengl_string(name,s) printf_opengl_string(name,s)
 #else
 #define debug_opengl_string(name,s)
