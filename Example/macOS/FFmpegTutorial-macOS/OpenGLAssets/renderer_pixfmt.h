@@ -11,8 +11,10 @@
 //提交：
 //5258c012febdfba0ef56ad8ce6f7cb003611c47b
 
-#ifndef IJKSDL__renderer_pixfmt__INTERNAL__H
-#define IJKSDL__renderer_pixfmt__INTERNAL__H
+#ifndef __renderer_pixfmt__INTERNAL__H
+#define __renderer_pixfmt__INTERNAL__H
+
+#import <CoreVideo/CVPixelBuffer.h>
 
 #if TARGET_OS_OSX
     #define OpenGLTextureCacheRef   CVOpenGLTextureCacheRef
@@ -195,5 +197,16 @@ static struct vt_format *vt_get_gl_format(uint32_t cvpixfmt)
     }
     return NULL;
 }
+
+static void printf_opengl_string(const char *name, GLenum s) {
+    const char *v = (const char *) glGetString(s);
+    NSLog(@"[OpenGL] %s = %s\n", name, v);
+}
+
+#if DEBUG
+#define debug_opengl_string(name,s) printf_opengl_string(name,s)
+#else
+#define debug_opengl_string(name,s)
+#endif
 
 #endif

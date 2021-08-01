@@ -7,6 +7,7 @@
 //
 // 使用 OpenGL 渲染视频桢
 // 封装 OpenGL 相关逻辑
+// 渲染 NV12
 
 #import <Cocoa/Cocoa.h>
 

@@ -371,17 +371,12 @@ typedef struct _Frame_Size
 
 #pragma mark -  OpenGL shader compilation
 
-static void IJK_GLES2_printString(const char *name, GLenum s) {
-    const char *v = (const char *) glGetString(s);
-    NSLog(@"[GLES2] %s = %s\n", name, v);
-}
-
 - (BOOL)loadShaders
 {
-    IJK_GLES2_printString("Version", GL_VERSION);
-    IJK_GLES2_printString("Vendor", GL_VENDOR);
-    IJK_GLES2_printString("Renderer", GL_RENDERER);
-    IJK_GLES2_printString("Extensions", GL_EXTENSIONS);
+    debug_opengl_string("Version", GL_VERSION);
+    debug_opengl_string("Vendor", GL_VENDOR);
+    debug_opengl_string("Renderer", GL_RENDERER);
+    debug_opengl_string("Extensions", GL_EXTENSIONS);
     
     GLuint vertShader, fragShader;
     NSURL *vertShaderURL, *fragShaderURL;
