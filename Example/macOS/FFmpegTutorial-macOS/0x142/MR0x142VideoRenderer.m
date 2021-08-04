@@ -38,16 +38,9 @@ static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 static GLint textureDimension[3];
 
-typedef struct _Frame_Size
-{
-    int w;
-    int h;
-}Frame_Size;
-
 @interface MR0x142VideoRenderer ()
 {
     GLuint plane_textures[3];
-    Frame_Size frameSize[3];
     MRViewContentMode _contentMode;
 }
 
@@ -271,13 +264,7 @@ typedef struct _Frame_Size
         for (int i = 0; i < f->planes; i++) {
             GLfloat w = (GLfloat)IOSurfaceGetWidthOfPlane(surface, i);
             GLfloat h = (GLfloat)IOSurfaceGetHeightOfPlane(surface, i);
-            Frame_Size size = frameSize[i];
-            //if (size.w != w || size.h != h) {
-                glUniform2f(textureDimension[i], w, h);
-                size.w = w;
-                size.h = h;
-                frameSize[i] = size;
-            //}
+            glUniform2f(textureDimension[i], w, h);
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(gl_target, plane_textures[i]);
             struct vt_gl_plane_format plane_format = f->gl[i];
