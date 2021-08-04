@@ -8,6 +8,7 @@
 #import "AppDelegate.h"
 #import "NSNavigationController.h"
 #import "RootViewController.h"
+#include "renderer_pixfmt.h"
 
 @interface AppDelegate ()
 
@@ -38,6 +39,8 @@
     [rootWinController showWindow:nil];
     
     self.rootWinController = rootWinController;
+    
+    PrintPixelFormatTypes();
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender

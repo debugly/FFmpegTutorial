@@ -111,8 +111,6 @@ typedef struct _Frame_Size
     #endif
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
-        CGLContextObj ctx = context.CGLContextObj;
-        NSLog(@"CGLContextObj:%p",ctx);
     #if 1 || SUPPORT_RETINA_RESOLUTION
         // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
@@ -255,13 +253,13 @@ typedef struct _Frame_Size
     {
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
          
-        NSAssert(kCVPixelFormatType_420YpCbCr8Planar == type,@"not supported pixel format:%d", type);
+        NSAssert(kCVPixelFormatType_420YpCbCr8Planar == type || kCVPixelFormatType_420YpCbCr8PlanarFullRange == type,@"not supported pixel format:%d", type);
         
         IOSurfaceRef surface = CVPixelBufferGetIOSurface(pixelBuffer);
         uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
         struct vt_format *f = vt_get_gl_format(cvpixfmt);
         if (!f) {
-            printf("CVPixelBuffer has unsupported format type\n");
+            NSAssert(!f,@"please add pixel format:%d to renderer_pixfmt.h", cvpixfmt);
             return;
         }
 
