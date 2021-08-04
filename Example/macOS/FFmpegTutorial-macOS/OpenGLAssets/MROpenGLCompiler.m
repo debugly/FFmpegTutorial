@@ -1,22 +1,22 @@
 //
-//  MR0x142OpenGLCompiler.m
+//  MROpenGLCompiler.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/8/1.
+//  Created by qianlongxu on 2021/8/2.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x142OpenGLCompiler.h"
+#import "MROpenGLCompiler.h"
 #import <OpenGL/gl.h>
 #import "renderer_pixfmt.h"
 
-@interface MR0x142OpenGLCompiler ()
+@interface MROpenGLCompiler ()
 
 @property uint32_t program;
 
 @end
 
-@implementation MR0x142OpenGLCompiler
+@implementation MROpenGLCompiler
 
 - (instancetype)initWithvshName:(NSString *)vshName
                         fshName:(NSString *)fshName

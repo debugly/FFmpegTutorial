@@ -14,7 +14,7 @@
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
 #import "renderer_pixfmt.h"
-#import "MR0x141OpenGLCompiler.h"
+#import "MROpenGLCompiler.h"
 
 // Uniform index.
 enum
@@ -37,29 +37,6 @@ static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 static GLint textureDimension[2];
 
-// Color Conversion Constants (YUV to RGB) including adjustment from 16-235/16-240 (video range)
-
-// BT.601, which is the standard for SDTV.
-static const GLfloat kColorConversion601[] = {
-        1.164,  1.164, 1.164,
-          0.0, -0.392, 2.017,
-        1.596, -0.813,   0.0,
-};
-
-// BT.709, which is the standard for HDTV.
-static const GLfloat kColorConversion709[] = {
-        1.164,  1.164, 1.164,
-          0.0, -0.213, 2.112,
-        1.793, -0.533,   0.0,
-};
-
-// BT.601 full range (ref: http://www.equasys.de/colorconversion.html)
-static const GLfloat kColorConversion601FullRange[] = {
-    1.0,    1.0,    1.0,
-    0.0,    -0.343, 1.765,
-    1.4,    -0.711, 0.0,
-};
-
 typedef struct _Frame_Size
 {
     int w;
@@ -73,7 +50,7 @@ typedef struct _Frame_Size
     MRViewContentMode _contentMode;
 }
 
-@property MR0x141OpenGLCompiler * openglCompiler;
+@property MROpenGLCompiler * openglCompiler;
 
 @end
 
@@ -121,7 +98,7 @@ typedef struct _Frame_Size
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2DRect.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2DRect.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
