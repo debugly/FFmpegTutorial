@@ -11,7 +11,7 @@
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
 #import "FFDecoder0x22.h"
-#import "FFVideoScale0x22.h"
+#import "FFVideoScale.h"
 #import "FFAudioResample0x22.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
@@ -45,7 +45,7 @@
 //视频解码器
 @property (nonatomic, strong) FFDecoder0x22 *videoDecoder;
 //图像格式转换/缩放器
-@property (nonatomic, strong) FFVideoScale0x22 *videoScale;
+@property (nonatomic, strong) FFVideoScale *videoScale;
 //音频格式转换器
 @property (nonatomic, strong) FFAudioResample0x22 *audioResample;
 
@@ -257,7 +257,7 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 视频像素格式转换
 
-- (FFVideoScale0x22 *)createVideoScaleIfNeed
+- (FFVideoScale *)createVideoScaleIfNeed
 {
     //未指定期望像素格式
     if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
@@ -296,9 +296,15 @@ static int decode_interrupt_cb(void *ctx)
         return nil;
     }
     
-    //创建像素格式转换上下文
-    FFVideoScale0x22 *scale = [[FFVideoScale0x22 alloc] initWithSrcPixFmt:format dstPixFmt:MRPixelFormat2AV(firstSupportedFmt) picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
-    return scale;
+    int dest = MRPixelFormat2AV(firstSupportedFmt);
+    if ([FFVideoScale checkCanConvertFrom:format to:dest]) {
+        //创建像素格式转换上下文
+        FFVideoScale *scale = [[FFVideoScale alloc] initWithSrcPixFmt:format dstPixFmt:dest picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
+        return scale;
+    } else {
+        //TODO ??
+        return nil;
+    }
 }
 
 - (FFAudioResample0x22 *)createAudioResampleIfNeed

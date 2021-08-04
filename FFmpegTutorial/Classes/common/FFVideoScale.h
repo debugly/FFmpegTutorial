@@ -1,8 +1,8 @@
 //
-//  FFVideoScale0x30.h
+//  FFVideoScale.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/7/17.
+//  Created by Matt Reach on 2020/7/10.
 //
 // 像素格式转换类
 
@@ -13,7 +13,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef struct AVFrame AVFrame;
 
-@interface FFVideoScale0x30 : NSObject
+@interface FFVideoScale : NSObject
+
+/// @param src 原帧像素格式
+/// @param dest 目标帧像素格式
+/// @return YES:可以转换； NO:无法转换
++ (BOOL)checkCanConvertFrom:(int)src to:(int)dest;
 
 /// @param srcPixFmt 原帧像素格式
 /// @param dstPixFmt 目标帧像素格式

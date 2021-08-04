@@ -1,16 +1,16 @@
 //
-//  FFVideoScale0x20.m
+//  FFVideoScale.m
 //  FFmpegTutorial
 //
 //  Created by Matt Reach on 2020/7/10.
 //
 
-#import "FFVideoScale0x20.h"
+#import "FFVideoScale.h"
 #import "FFPlayerInternalHeader.h"
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
 
-@interface FFVideoScale0x20()
+@interface FFVideoScale()
 
 @property (nonatomic, assign) enum AVPixelFormat dstPixFmt;
 @property (nonatomic, assign) struct SwsContext *sws_ctx;
@@ -21,7 +21,19 @@
 
 @end
 
-@implementation FFVideoScale0x20
+@implementation FFVideoScale
+
++ (BOOL)checkCanConvertFrom:(int)src to:(int)dest
+{
+    if (sws_isSupportedInput(src) <= 0) {
+        NSAssert(NO, @"%d is not supported as input format",src);
+        return NO;
+    } else if (sws_isSupportedOutput(dest) <= 0) {
+        NSAssert(NO, @"%d is not supported as output format",dest);
+        return NO;
+    }
+    return YES;
+}
 
 - (void)dealloc
 {
@@ -46,6 +58,10 @@
         
         self.sws_ctx = sws_getContext(picWidth, picHeight, srcPixFmt, picWidth, picHeight, dstPixFmt, SWS_POINT, NULL, NULL, NULL);
         
+        if (NULL == self.sws_ctx) {
+            NSAssert(NO, @"create sws ctx failed");
+            return nil;
+        }
         self.frame = av_frame_alloc();
     }
     return self;
