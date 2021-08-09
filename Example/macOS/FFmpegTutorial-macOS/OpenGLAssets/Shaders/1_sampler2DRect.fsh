@@ -50,26 +50,13 @@
 //precision mediump float;
 
 uniform sampler2DRect SamplerY;
-uniform sampler2DRect SamplerUV;
 uniform vec2 textureDimensionY;
-uniform vec2 textureDimensionUV;
 
 uniform mat3 colorConversionMatrix;
 varying vec2 texCoordVarying;
 
 void main()
 {
-    vec3 yuv;
-    vec3 rgb;
-    
-    vec2 recTexCoordY = texCoordVarying * textureDimensionY;
-    vec2 recTexCoordUV = texCoordVarying * textureDimensionUV;
-    
-    //使用 r,g,b 都可以，a不行！
-    yuv.x = texture2DRect(SamplerY, recTexCoordY).r;
-    //使用 ra,ga,ba 都可以！
-    yuv.yz = texture2DRect(SamplerUV, recTexCoordUV).ra - vec2(0.5, 0.5);
-    rgb = colorConversionMatrix * yuv;
-    
-    gl_FragColor = vec4(rgb, 1);
+    vec2 recTexCoordX = texCoordVarying * textureDimensionY;
+    gl_FragColor = texture2DRect(SamplerY, recTexCoordX);
 }

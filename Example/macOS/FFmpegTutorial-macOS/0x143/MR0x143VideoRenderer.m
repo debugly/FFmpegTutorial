@@ -1,12 +1,12 @@
 //
-//  MR0x141VideoRenderer.m
+//  MR0x143VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/11.
+//  Created by qianlongxu on 2021/8/2.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x141VideoRenderer.h"
+#import "MR0x143VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/glext.h>
 #import <QuartzCore/QuartzCore.h>
@@ -20,7 +20,6 @@
 enum
 {
     UNIFORM_Y,
-    UNIFORM_UV,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -35,11 +34,11 @@ enum
 
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
-static GLint textureDimension[2];
+static GLint textureDimension[3];
 
-@interface MR0x141VideoRenderer ()
+@interface MR0x143VideoRenderer ()
 {
-    GLuint plane_textures[2];
+    GLuint plane_textures[1];
     MRViewContentMode _contentMode;
 }
 
@@ -47,7 +46,7 @@ static GLint textureDimension[2];
 
 @end
 
-@implementation MR0x141VideoRenderer
+@implementation MR0x143VideoRenderer
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -91,21 +90,17 @@ static GLint textureDimension[2];
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2DRect.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"1_sampler2DRect.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
-            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
+            
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
             GLint textureDimensionY = [self.openglCompiler getUniformLocation:"textureDimensionY"];
             assert(textureDimensionY >= 0);
             textureDimension[0] = textureDimensionY;
-            
-            GLint textureDimensionUV = [self.openglCompiler getUniformLocation:"textureDimensionUV"];
-            assert(textureDimensionUV >= 0);
-            textureDimension[1] = textureDimensionUV;
             
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -215,9 +210,9 @@ static GLint textureDimension[2];
     {
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
          
-        NSAssert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type,@"not supported pixel format:%d", type);
+        NSAssert(kCVPixelFormatType_422YpCbCr8 == type || kCVPixelFormatType_422YpCbCr8FullRange == type,@"not supported pixel format:%d", type);
         
-        IOSurfaceRef surface  = CVPixelBufferGetIOSurface(pixelBuffer);
+        IOSurfaceRef surface = CVPixelBufferGetIOSurface(pixelBuffer);
         uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
         struct vt_format *f = vt_get_gl_format(cvpixfmt);
         if (!f) {
@@ -231,13 +226,12 @@ static GLint textureDimension[2];
         
         //设置纹理和采样器的对应关系
         glUniform1i(uniforms[UNIFORM_Y], 0);
-        glUniform1i(uniforms[UNIFORM_UV], 1);
         
         CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         
         const GLfloat * preferredConversion = NULL;
         if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
-            BOOL isFullYUVRange = kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type;
+            BOOL isFullYUVRange = kCVPixelFormatType_422YpCbCr8FullRange == type;
             if (isFullYUVRange) {
                 preferredConversion = kColorConversion601FullRange;
             }

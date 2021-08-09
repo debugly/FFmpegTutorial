@@ -207,7 +207,7 @@ enum
         glClear(GL_COLOR_BUFFER_BIT);
         
         if (0 == plane_textures[0])
-            glGenTextures(2, plane_textures);
+            glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
         
         //设置纹理和采样器的对应关系
         glUniform1i(uniforms[UNIFORM_Y], 0);

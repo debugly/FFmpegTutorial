@@ -17,11 +17,14 @@ typedef enum : NSUInteger {
     FFPlayerErrorCode_ResampleFrameFailed,  //音频帧格式重采样失败
 } FFPlayerErrorCode;
 
+
 typedef enum : NSUInteger {
     MR_PIX_FMT_NONE = 0,
     MR_PIX_FMT_YUV420P,     // planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
-    MR_PIX_FMT_NV12,        // planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components, which are in leaved (first byte U and the following byte V)
+    MR_PIX_FMT_NV12,        // semi-planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components, which are in leaved (first byte U and the following byte V)
     MR_PIX_FMT_NV21,        // like NV12, but U and V bytes are swapped
+    MR_PIX_FMT_NV16,        // semi-planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples interleaved chroma)
+    MR_PIX_FMT_UYVY422,     // packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
     MR_PIX_FMT_RGB24,       // packed RGB 8:8:8, 24bpp, RGBRGB...
     MR_PIX_FMT_0RGB,        // packed RGB 8:8:8, 32bpp, XRGBXRGB...   X=unused/undefined
     MR_PIX_FMT_RGB0,        // packed RGB 8:8:8, 32bpp, RGBXRGBX...   X=unused/undefined
@@ -45,6 +48,8 @@ typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_YUV420P = 1 << MR_PIX_FMT_YUV420P,    // planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
     MR_PIX_FMT_MASK_NV12    = 1 << MR_PIX_FMT_NV12,       // planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components, which are in leaved (first byte U and the following byte V)
     MR_PIX_FMT_MASK_NV21    = 1 << MR_PIX_FMT_NV21,       // like NV12, but U and V bytes are swapped
+    MR_PIX_FMT_MASK_NV16    = 1 << MR_PIX_FMT_NV16,       // semi-planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples interleaved chroma)
+    MR_PIX_FMT_MASK_UYVY422 = 1 << MR_PIX_FMT_UYVY422,    // packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
     MR_PIX_FMT_MASK_RGB24   = 1 << MR_PIX_FMT_RGB24,      // packed RGB 8:8:8, 24bpp, RGBRGB...
     MR_PIX_FMT_MASK_0RGB    = 1 << MR_PIX_FMT_0RGB,       // packed RGB 8:8:8, 32bpp, XRGBXRGB...   X=unused/undefined
     MR_PIX_FMT_MASK_RGB0    = 1 << MR_PIX_FMT_RGB0,       // packed RGB 8:8:8, 32bpp, RGBXRGBX...   X=unused/undefined

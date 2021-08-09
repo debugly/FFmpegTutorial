@@ -208,14 +208,14 @@ static GLint textureDimension[3];
     
     {
         if (0 == plane_textures[0]) {
-            glGenTextures(3, plane_textures);
-            glDisable(GL_DEPTH_TEST);
-            glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-            glEnable(GL_TEXTURE_RECTANGLE);
+            glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
         }
     }
     
     {
+        glDisable(GL_DEPTH_TEST);
+        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+        glEnable(GL_TEXTURE_RECTANGLE);
         glClearColor(0.0,0.0,0.0,0.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }

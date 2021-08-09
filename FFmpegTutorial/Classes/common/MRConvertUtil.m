@@ -7,6 +7,7 @@
 
 #import "MRConvertUtil.h"
 #import <libavutil/frame.h>
+#import <libavutil/imgutils.h>
 
 #define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
 
@@ -176,20 +177,23 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 + (NSDictionary* _Nullable)_prepareCVPixelBufferAttibutes:(const int)format fullRange:(const bool)fullRange h:(const int)h w:(const int)w
 {
     //CoreVideo does not provide support for all of these formats; this list just defines their names.
-    
     int pixelFormatType = 0;
     
-    if (format == AV_PIX_FMT_RGB24){
+    if (format == AV_PIX_FMT_RGB24) {
         pixelFormatType = kCVPixelFormatType_24RGB;
-    } else if(format == AV_PIX_FMT_ARGB || format == AV_PIX_FMT_0RGB){
+    } else if (format == AV_PIX_FMT_ARGB || format == AV_PIX_FMT_0RGB) {
         pixelFormatType = kCVPixelFormatType_32ARGB;
-    } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21){
+    } else if (format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21) {
         pixelFormatType = fullRange ? kCVPixelFormatType_420YpCbCr8BiPlanarFullRange : kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange;
         //for AV_PIX_FMT_NV21: later will swap VU. we won't modify the avframe data, because the frame can be dispaly again!
-    } else if(format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0){
+    } else if (format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0) {
         pixelFormatType = kCVPixelFormatType_32BGRA;
-    } else if(format == AV_PIX_FMT_YUV420P){
-        pixelFormatType = kCVPixelFormatType_420YpCbCr8Planar;
+    } else if (format == AV_PIX_FMT_YUV420P) {
+        pixelFormatType = fullRange ? kCVPixelFormatType_420YpCbCr8PlanarFullRange : kCVPixelFormatType_420YpCbCr8Planar;
+    } else if (format == AV_PIX_FMT_NV16) {
+        pixelFormatType = fullRange ? kCVPixelFormatType_422YpCbCr8BiPlanarFullRange : kCVPixelFormatType_422YpCbCr8BiPlanarVideoRange;
+    } else if (format == AV_PIX_FMT_UYVY422) {
+        pixelFormatType = fullRange ? kCVPixelFormatType_422YpCbCr8FullRange : kCVPixelFormatType_422YpCbCr8;
     }
 //    RGB555 可以创建出 CVPixelBuffer，但是显示时失败了。
 //    else if (format == AV_PIX_FMT_RGB555BE) {
@@ -267,6 +271,24 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     if (kCVReturnSuccess == result) {
         CVPixelBufferLockBaseAddress(pixelBuffer,0);
         
+        int planes = 1;
+        if (CVPixelBufferIsPlanar(pixelBuffer)) {
+            planes = CVPixelBufferGetPlaneCount(pixelBuffer);
+        }
+        
+        for (int p = 0; p < planes; p++) {
+            uint8_t *src = frame->data[p];
+            uint8_t *dst = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, p);
+            int src_linesize = (int)frame->linesize[p];
+            int dst_linesize = (int)CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, p);
+            int height = (int)CVPixelBufferGetHeightOfPlane(pixelBuffer, p);
+            int bytewidth = MIN(src_linesize, dst_linesize);
+            av_image_copy_plane(dst, dst_linesize, src, src_linesize, bytewidth, height);
+        }
+        
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+        return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
+        
         /**
          kCVReturnInvalidPixelFormat
          AV_PIX_FMT_BGR24,
@@ -290,7 +312,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                rgb_src  += src_bytesPerRow;
                rgb_dest += dest_bytesPerRow;
            }
-        } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21) {
+        } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21 || format == AV_PIX_FMT_NV16) {
             
             // Here y_src is Y-Plane of YUV(NV12) data.
             uint8_t *y_src  = frame->data[0];
@@ -310,6 +332,8 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                 先把该行全部填 0 ，然后最大限度的将 FFmpeg 解码数据（包括对齐字节）copy 到 CVPixelBuffer 中；
                 因为有上面分析的对齐不相等问题，所以只能一行一行的处理，不能直接使用 memcpy 简单处理！
              */
+            
+            
             for (int i = 0; i < h; i ++) {
                 bzero(y_dest, y_dest_bytesPerRow);
                 memcpy(y_dest, y_src, MIN(y_src_bytesPerRow, y_dest_bytesPerRow));
@@ -346,21 +370,22 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                     uv_dest += uv_dest_bytesPerRow;
                 }
             }
-        } else if(format == AV_PIX_FMT_YUV420P){
-            
-            for (int p = 0; p < 3; p++) {
+        } else if (format == AV_PIX_FMT_YUV420P || format == AV_PIX_FMT_YUV422P) {
+            for (int p = 0; p < CVPixelBufferGetPlaneCount(pixelBuffer); p++) {
                 uint8_t *src  = frame->data[p];
                 uint8_t *dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, p);
                 size_t src_bytesPerRow  = frame->linesize[p];
                 size_t dest_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, p);
-                
-                for (int i = 0; i < CVPixelBufferGetHeightOfPlane(pixelBuffer, p); i ++) {
+                int height = CVPixelBufferGetHeightOfPlane(pixelBuffer, p);
+                for (; height > 0; height--) {
                     bzero(dest, dest_bytesPerRow);
                     memcpy(dest, src, MIN(src_bytesPerRow, dest_bytesPerRow));
                     src  += src_bytesPerRow;
                     dest += dest_bytesPerRow;
                 }
             }
+        } else if (format == AV_PIX_FMT_UYVY422) {
+//            av_image_copy_to_buffer
         } else {
             CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
             NSAssert(NO,@"unsupported pixel format!");
