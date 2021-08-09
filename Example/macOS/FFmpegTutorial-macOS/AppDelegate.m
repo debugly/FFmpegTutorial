@@ -40,7 +40,7 @@
     
     self.rootWinController = rootWinController;
     
-    PrintPixelFormatTypes();
+    printSupportedPixelFormats(false);
 }
 
 - (BOOL)applicationShouldTerminateAfterLastWindowClosed:(NSApplication *)sender

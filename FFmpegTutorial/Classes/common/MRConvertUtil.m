@@ -273,7 +273,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         
         int planes = 1;
         if (CVPixelBufferIsPlanar(pixelBuffer)) {
-            planes = CVPixelBufferGetPlaneCount(pixelBuffer);
+            planes = (int)CVPixelBufferGetPlaneCount(pixelBuffer);
         }
         
         for (int p = 0; p < planes; p++) {

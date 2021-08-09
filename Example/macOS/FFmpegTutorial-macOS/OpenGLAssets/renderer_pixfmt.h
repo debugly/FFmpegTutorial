@@ -173,38 +173,124 @@ __unused static void printf_opengl_string(const char *name, GLenum s) {
 #endif
 
 
-//https://developer.apple.com/library/archive/qa/qa1501/_index.html
-
-static void PrintPixelFormatTypes()
+static void printSupportedPixelFormats(bool showPrivate)
 {
-    CFArrayRef pixelFormatDescriptionsArray =
-    CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes(kCFAllocatorDefault);
+    // As of the 10.13 SDK
+    NSDictionary * knownFormats = @{
+      @(kCVPixelFormatType_1Monochrome):                   @"kCVPixelFormatType_1Monochrome",
+      @(kCVPixelFormatType_2Indexed):                      @"kCVPixelFormatType_2Indexed",
+      @(kCVPixelFormatType_4Indexed):                      @"kCVPixelFormatType_4Indexed",
+      @(kCVPixelFormatType_8Indexed):                      @"kCVPixelFormatType_8Indexed",
+      @(kCVPixelFormatType_1IndexedGray_WhiteIsZero):      @"kCVPixelFormatType_1IndexedGray_WhiteIsZero",
+      @(kCVPixelFormatType_2IndexedGray_WhiteIsZero):      @"kCVPixelFormatType_2IndexedGray_WhiteIsZero",
+      @(kCVPixelFormatType_4IndexedGray_WhiteIsZero):      @"kCVPixelFormatType_4IndexedGray_WhiteIsZero",
+      @(kCVPixelFormatType_8IndexedGray_WhiteIsZero):      @"kCVPixelFormatType_8IndexedGray_WhiteIsZero",
+      @(kCVPixelFormatType_16BE555):                       @"kCVPixelFormatType_16BE555",
+      @(kCVPixelFormatType_16LE555):                       @"kCVPixelFormatType_16LE555",
+      @(kCVPixelFormatType_16LE5551):                      @"kCVPixelFormatType_16LE5551",
+      @(kCVPixelFormatType_16BE565):                       @"kCVPixelFormatType_16BE565",
+      @(kCVPixelFormatType_16LE565):                       @"kCVPixelFormatType_16LE565",
+      @(kCVPixelFormatType_24RGB):                         @"kCVPixelFormatType_24RGB",
+      @(kCVPixelFormatType_24BGR):                         @"kCVPixelFormatType_24BGR",
+      @(kCVPixelFormatType_32ARGB):                        @"kCVPixelFormatType_32ARGB",
+      @(kCVPixelFormatType_32BGRA):                        @"kCVPixelFormatType_32BGRA",
+      @(kCVPixelFormatType_32ABGR):                        @"kCVPixelFormatType_32ABGR",
+      @(kCVPixelFormatType_32RGBA):                        @"kCVPixelFormatType_32RGBA",
+      @(kCVPixelFormatType_64ARGB):                        @"kCVPixelFormatType_64ARGB",
+      @(kCVPixelFormatType_48RGB):                         @"kCVPixelFormatType_48RGB",
+      @(kCVPixelFormatType_32AlphaGray):                   @"kCVPixelFormatType_32AlphaGray",
+      @(kCVPixelFormatType_16Gray):                        @"kCVPixelFormatType_16Gray",
+      @(kCVPixelFormatType_30RGB):                         @"kCVPixelFormatType_30RGB",
+      @(kCVPixelFormatType_422YpCbCr8):                    @"kCVPixelFormatType_422YpCbCr8",
+      @(kCVPixelFormatType_4444YpCbCrA8):                  @"kCVPixelFormatType_4444YpCbCrA8",
+      @(kCVPixelFormatType_4444YpCbCrA8R):                 @"kCVPixelFormatType_4444YpCbCrA8R",
+      @(kCVPixelFormatType_4444AYpCbCr8):                  @"kCVPixelFormatType_4444AYpCbCr8",
+      @(kCVPixelFormatType_4444AYpCbCr16):                 @"kCVPixelFormatType_4444AYpCbCr16",
+      @(kCVPixelFormatType_444YpCbCr8):                    @"kCVPixelFormatType_444YpCbCr8",
+      @(kCVPixelFormatType_422YpCbCr16):                   @"kCVPixelFormatType_422YpCbCr16",
+      @(kCVPixelFormatType_422YpCbCr10):                   @"kCVPixelFormatType_422YpCbCr10",
+      @(kCVPixelFormatType_444YpCbCr10):                   @"kCVPixelFormatType_444YpCbCr10",
+      @(kCVPixelFormatType_420YpCbCr8Planar):              @"kCVPixelFormatType_420YpCbCr8Planar",
+      @(kCVPixelFormatType_420YpCbCr8PlanarFullRange):     @"kCVPixelFormatType_420YpCbCr8PlanarFullRange",
+      @(kCVPixelFormatType_422YpCbCr_4A_8BiPlanar):        @"kCVPixelFormatType_422YpCbCr_4A_8BiPlanar",
+      @(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange):  @"kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange",
+      @(kCVPixelFormatType_420YpCbCr8BiPlanarFullRange):   @"kCVPixelFormatType_420YpCbCr8BiPlanarFullRange",
+      @(kCVPixelFormatType_422YpCbCr8_yuvs):               @"kCVPixelFormatType_422YpCbCr8_yuvs",
+      @(kCVPixelFormatType_422YpCbCr8FullRange):           @"kCVPixelFormatType_422YpCbCr8FullRange",
+      @(kCVPixelFormatType_OneComponent8):                 @"kCVPixelFormatType_OneComponent8",
+      @(kCVPixelFormatType_TwoComponent8):                 @"kCVPixelFormatType_TwoComponent8",
+      @(kCVPixelFormatType_30RGBLEPackedWideGamut):        @"kCVPixelFormatType_30RGBLEPackedWideGamut",
+      @(kCVPixelFormatType_ARGB2101010LEPacked):           @"kCVPixelFormatType_ARGB2101010LEPacked",
+      @(kCVPixelFormatType_OneComponent16Half):            @"kCVPixelFormatType_OneComponent16Half",
+      @(kCVPixelFormatType_OneComponent32Float):           @"kCVPixelFormatType_OneComponent32Float",
+      @(kCVPixelFormatType_TwoComponent16Half):            @"kCVPixelFormatType_TwoComponent16Half",
+      @(kCVPixelFormatType_TwoComponent32Float):           @"kCVPixelFormatType_TwoComponent32Float",
+      @(kCVPixelFormatType_64RGBAHalf):                    @"kCVPixelFormatType_64RGBAHalf",
+      @(kCVPixelFormatType_128RGBAFloat):                  @"kCVPixelFormatType_128RGBAFloat",
+      @(kCVPixelFormatType_14Bayer_GRBG):                  @"kCVPixelFormatType_14Bayer_GRBG",
+      @(kCVPixelFormatType_14Bayer_RGGB):                  @"kCVPixelFormatType_14Bayer_RGGB",
+      @(kCVPixelFormatType_14Bayer_BGGR):                  @"kCVPixelFormatType_14Bayer_BGGR",
+      @(kCVPixelFormatType_14Bayer_GBRG):                  @"kCVPixelFormatType_14Bayer_GBRG",
+      @(kCVPixelFormatType_DisparityFloat16):              @"kCVPixelFormatType_DisparityFloat16",
+      @(kCVPixelFormatType_DisparityFloat32):              @"kCVPixelFormatType_DisparityFloat32",
+      @(kCVPixelFormatType_DepthFloat16):                  @"kCVPixelFormatType_DepthFloat16",
+      @(kCVPixelFormatType_DepthFloat32):                  @"kCVPixelFormatType_DepthFloat32",
+      @(kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange): @"kCVPixelFormatType_420YpCbCr10BiPlanarVideoRange",
+      @(kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange): @"kCVPixelFormatType_422YpCbCr10BiPlanarVideoRange",
+      @(kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange): @"kCVPixelFormatType_444YpCbCr10BiPlanarVideoRange",
+      @(kCVPixelFormatType_420YpCbCr10BiPlanarFullRange):  @"kCVPixelFormatType_420YpCbCr10BiPlanarFullRange",
+      @(kCVPixelFormatType_422YpCbCr10BiPlanarFullRange):  @"kCVPixelFormatType_422YpCbCr10BiPlanarFullRange",
+      @(kCVPixelFormatType_444YpCbCr10BiPlanarFullRange):  @"kCVPixelFormatType_444YpCbCr10BiPlanarFullRange",
+    };
+    
+    //https://developer.apple.com/library/archive/qa/qa1501/_index.html
+    //    打印出来的格式，有的没有包含在 CVPixelBuffer.h 头文件里
+    // https://stackoverflow.com/questions/27129698/creating-an-rgb-cvopenglestexture-in-ios
+       
+    CFArrayRef pixelFormatDescriptionsArray = NULL;
+    CFIndex i;
 
-    printf("Core Video Supported Pixel Format Types:\n\n");
+    pixelFormatDescriptionsArray = CVPixelFormatDescriptionArrayCreateWithAllPixelFormatTypes(kCFAllocatorDefault);
 
-    for (CFIndex i = 0; i < CFArrayGetCount(pixelFormatDescriptionsArray); i++) {
-        CFStringRef pixelFormat = NULL;
+    printf("Core Video Supported IOSurfaceOpenGLTextureCompatibility Pixel Format Types:\n\n");
+
+    for (i = 0; i < CFArrayGetCount(pixelFormatDescriptionsArray); i++) {
         CFNumberRef pixelFormatFourCC = (CFNumberRef)CFArrayGetValueAtIndex(pixelFormatDescriptionsArray, i);
 
         if (pixelFormatFourCC != NULL) {
             UInt32 value;
-
             CFNumberGetValue(pixelFormatFourCC, kCFNumberSInt32Type, &value);
-
-            if (value <= 0x28) {
-                pixelFormat = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("Core Video Pixel Format Type: %d"), value);
-            } else {
-                pixelFormat = CFStringCreateWithFormat(kCFAllocatorDefault, NULL, CFSTR("Core Video Pixel Format Type (FourCC):%c%c%c%c"), (char)(value >> 24), (char)(value >> 16), (char)(value >> 8), (char)value);
-            }
-            CFShow(pixelFormat);
-            CFRelease(pixelFormat);
             
+            NSString * name = [knownFormats objectForKey:@(value)];
+            CFStringRef pixelFormat = NULL;
+            if (name) {
+                pixelFormat = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
+                                                       CFSTR("%s\n"), name.UTF8String);
+            } else if (showPrivate) {
+                if (value <= 0x28) {
+                    pixelFormat = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
+                                                           CFSTR("Unnamed Format: %d\n"), value);
+                } else {
+                    pixelFormat = CFStringCreateWithFormat(kCFAllocatorDefault, NULL,
+                                                           CFSTR("Unnamed Format: '%c%c%c%c'\n"), (char)(value >> 24), (char)(value >> 16),
+                                                           (char)(value >> 8), (char)value);
+                }
+            } else {
+                continue;
+            }
             CFDictionaryRef dicRef = CVPixelFormatDescriptionCreateWithPixelFormatType(NULL, value);
             if (dicRef) {
-                CFShow(dicRef);
+                if (CFDictionaryContainsKey(dicRef, CFSTR("IOSurfaceOpenGLTextureCompatibility"))) {
+                    CFBooleanRef supportIOSurface = CFDictionaryGetValue(dicRef, CFSTR("IOSurfaceOpenGLTextureCompatibility"));
+                    if (CFBooleanGetValue(supportIOSurface)) {
+                        CFShow(pixelFormat);
+                        CFShow(dicRef);
+                        printf("\n");
+                    }
+                }
                 CFRelease(dicRef);
             }
-            printf("\n");
+            CFRelease(pixelFormat);
         }
     }
     
@@ -212,50 +298,10 @@ static void PrintPixelFormatTypes()
     
     AVCaptureVideoDataOutput *videoOutput = [[AVCaptureVideoDataOutput alloc] init];
 
-    NSDictionary *formats = [NSDictionary dictionaryWithObjectsAndKeys:
-           @"kCVPixelFormatType_1Monochrome", [NSNumber numberWithInt:kCVPixelFormatType_1Monochrome],
-           @"kCVPixelFormatType_2Indexed", [NSNumber numberWithInt:kCVPixelFormatType_2Indexed],
-           @"kCVPixelFormatType_4Indexed", [NSNumber numberWithInt:kCVPixelFormatType_4Indexed],
-           @"kCVPixelFormatType_8Indexed", [NSNumber numberWithInt:kCVPixelFormatType_8Indexed],
-           @"kCVPixelFormatType_1IndexedGray_WhiteIsZero", [NSNumber numberWithInt:kCVPixelFormatType_1IndexedGray_WhiteIsZero],
-           @"kCVPixelFormatType_2IndexedGray_WhiteIsZero", [NSNumber numberWithInt:kCVPixelFormatType_2IndexedGray_WhiteIsZero],
-           @"kCVPixelFormatType_4IndexedGray_WhiteIsZero", [NSNumber numberWithInt:kCVPixelFormatType_4IndexedGray_WhiteIsZero],
-           @"kCVPixelFormatType_8IndexedGray_WhiteIsZero", [NSNumber numberWithInt:kCVPixelFormatType_8IndexedGray_WhiteIsZero],
-           @"kCVPixelFormatType_16BE555", [NSNumber numberWithInt:kCVPixelFormatType_16BE555],
-           @"kCVPixelFormatType_16LE555", [NSNumber numberWithInt:kCVPixelFormatType_16LE555],
-           @"kCVPixelFormatType_16LE5551", [NSNumber numberWithInt:kCVPixelFormatType_16LE5551],
-           @"kCVPixelFormatType_16BE565", [NSNumber numberWithInt:kCVPixelFormatType_16BE565],
-           @"kCVPixelFormatType_16LE565", [NSNumber numberWithInt:kCVPixelFormatType_16LE565],
-           @"kCVPixelFormatType_24RGB", [NSNumber numberWithInt:kCVPixelFormatType_24RGB],
-           @"kCVPixelFormatType_24BGR", [NSNumber numberWithInt:kCVPixelFormatType_24BGR],
-           @"kCVPixelFormatType_32ARGB", [NSNumber numberWithInt:kCVPixelFormatType_32ARGB],
-           @"kCVPixelFormatType_32BGRA", [NSNumber numberWithInt:kCVPixelFormatType_32BGRA],
-           @"kCVPixelFormatType_32ABGR", [NSNumber numberWithInt:kCVPixelFormatType_32ABGR],
-           @"kCVPixelFormatType_32RGBA", [NSNumber numberWithInt:kCVPixelFormatType_32RGBA],
-           @"kCVPixelFormatType_64ARGB", [NSNumber numberWithInt:kCVPixelFormatType_64ARGB],
-           @"kCVPixelFormatType_48RGB", [NSNumber numberWithInt:kCVPixelFormatType_48RGB],
-           @"kCVPixelFormatType_32AlphaGray", [NSNumber numberWithInt:kCVPixelFormatType_32AlphaGray],
-           @"kCVPixelFormatType_16Gray", [NSNumber numberWithInt:kCVPixelFormatType_16Gray],
-           @"kCVPixelFormatType_422YpCbCr8", [NSNumber numberWithInt:kCVPixelFormatType_422YpCbCr8],
-           @"kCVPixelFormatType_4444YpCbCrA8", [NSNumber numberWithInt:kCVPixelFormatType_4444YpCbCrA8],
-           @"kCVPixelFormatType_4444YpCbCrA8R", [NSNumber numberWithInt:kCVPixelFormatType_4444YpCbCrA8R],
-           @"kCVPixelFormatType_444YpCbCr8", [NSNumber numberWithInt:kCVPixelFormatType_444YpCbCr8],
-           @"kCVPixelFormatType_422YpCbCr16", [NSNumber numberWithInt:kCVPixelFormatType_422YpCbCr16],
-           @"kCVPixelFormatType_422YpCbCr10", [NSNumber numberWithInt:kCVPixelFormatType_422YpCbCr10],
-           @"kCVPixelFormatType_444YpCbCr10", [NSNumber numberWithInt:kCVPixelFormatType_444YpCbCr10],
-           @"kCVPixelFormatType_420YpCbCr8Planar", [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8Planar],
-           @"kCVPixelFormatType_420YpCbCr8PlanarFullRange", [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8PlanarFullRange],
-           @"kCVPixelFormatType_422YpCbCr_4A_8BiPlanar", [NSNumber numberWithInt:kCVPixelFormatType_422YpCbCr_4A_8BiPlanar],
-           @"kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange", [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange],
-           @"kCVPixelFormatType_420YpCbCr8BiPlanarFullRange", [NSNumber numberWithInt:kCVPixelFormatType_420YpCbCr8BiPlanarFullRange],
-           @"kCVPixelFormatType_422YpCbCr8_yuvs", [NSNumber numberWithInt:kCVPixelFormatType_422YpCbCr8_yuvs],
-           @"kCVPixelFormatType_422YpCbCr8FullRange", [NSNumber numberWithInt:kCVPixelFormatType_422YpCbCr8FullRange],
-        nil];
-
     printf("AVCapture VideoOutput Supported Pixel Format Types:\n\n");
     for (NSNumber *fmt in [videoOutput availableVideoCVPixelFormatTypes]) {
-        assert([formats objectForKey:fmt]);
-        printf("%s\n", [[formats objectForKey:fmt] UTF8String]);
+        assert([knownFormats objectForKey:fmt]);
+        printf("%s\n", [[knownFormats objectForKey:fmt] UTF8String]);
     }
     
     printf("========================================\n");
