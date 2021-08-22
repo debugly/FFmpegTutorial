@@ -16,6 +16,10 @@
 		DD7D80AE26C1725B00D968F3 /* MR0x144ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80AA26C1725B00D968F3 /* MR0x144ViewController.m */; };
 		DD7D80AF26C1725B00D968F3 /* MR0x144ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80AB26C1725B00D968F3 /* MR0x144ViewController.xib */; };
 		DD7D80B026C1725B00D968F3 /* MR0x144VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80AC26C1725B00D968F3 /* MR0x144VideoRenderer.m */; };
+		DD7D80B926D29D0800D968F3 /* MR0x145ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80B526D29D0800D968F3 /* MR0x145ViewController.m */; };
+		DD7D80BA26D29D0800D968F3 /* MR0x145ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80B626D29D0800D968F3 /* MR0x145ViewController.xib */; };
+		DD7D80BB26D29D0800D968F3 /* MR0x145VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80B726D29D0800D968F3 /* MR0x145VideoRenderer.m */; };
+		DD7D80BD26D29DFA00D968F3 /* NV21.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80BC26D29DF900D968F3 /* NV21.fsh */; };
 		DD91F141268B6B4100B96334 /* MR0x04ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD91F13F268B6B4100B96334 /* MR0x04ViewController.m */; };
 		DD91F142268B6B4100B96334 /* MR0x04ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD91F140268B6B4100B96334 /* MR0x04ViewController.xib */; };
 		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
@@ -96,6 +100,12 @@
 		DD7D80AB26C1725B00D968F3 /* MR0x144ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x144ViewController.xib; sourceTree = "<group>"; };
 		DD7D80AC26C1725B00D968F3 /* MR0x144VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x144VideoRenderer.m; sourceTree = "<group>"; };
 		DD7D80AD26C1725B00D968F3 /* MR0x144ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x144ViewController.h; sourceTree = "<group>"; };
+		DD7D80B426D29D0800D968F3 /* MR0x145VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x145VideoRenderer.h; sourceTree = "<group>"; };
+		DD7D80B526D29D0800D968F3 /* MR0x145ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x145ViewController.m; sourceTree = "<group>"; };
+		DD7D80B626D29D0800D968F3 /* MR0x145ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x145ViewController.xib; sourceTree = "<group>"; };
+		DD7D80B726D29D0800D968F3 /* MR0x145VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x145VideoRenderer.m; sourceTree = "<group>"; };
+		DD7D80B826D29D0800D968F3 /* MR0x145ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x145ViewController.h; sourceTree = "<group>"; };
+		DD7D80BC26D29DF900D968F3 /* NV21.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = NV21.fsh; sourceTree = "<group>"; };
 		DD91F13E268B6B4100B96334 /* MR0x04ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x04ViewController.h; sourceTree = "<group>"; };
 		DD91F13F268B6B4100B96334 /* MR0x04ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x04ViewController.m; sourceTree = "<group>"; };
 		DD91F140268B6B4100B96334 /* MR0x04ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x04ViewController.xib; sourceTree = "<group>"; };
@@ -223,6 +233,18 @@
 			path = 0x144;
 			sourceTree = "<group>";
 		};
+		DD7D80B326D29D0800D968F3 /* 0x145 */ = {
+			isa = PBXGroup;
+			children = (
+				DD7D80B426D29D0800D968F3 /* MR0x145VideoRenderer.h */,
+				DD7D80B726D29D0800D968F3 /* MR0x145VideoRenderer.m */,
+				DD7D80B826D29D0800D968F3 /* MR0x145ViewController.h */,
+				DD7D80B526D29D0800D968F3 /* MR0x145ViewController.m */,
+				DD7D80B626D29D0800D968F3 /* MR0x145ViewController.xib */,
+			);
+			path = 0x145;
+			sourceTree = "<group>";
+		};
 		DD91F13A268B6A9E00B96334 /* 0x04 */ = {
 			isa = PBXGroup;
 			children = (
@@ -328,6 +350,7 @@
 		DD91F28C26AC082C00B96334 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				DD7D80BC26D29DF900D968F3 /* NV21.fsh */,
 				DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */,
 				DD91F28D26AC082C00B96334 /* 2_sampler2DRect.fsh */,
 				DD91F31B26B6E99800B96334 /* 3_sampler2DRect.fsh */,
@@ -458,6 +481,7 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				DD7D80B326D29D0800D968F3 /* 0x145 */,
 				DD7D80A826C1725B00D968F3 /* 0x144 */,
 				DD7D809426B8351500D968F3 /* 0x143 */,
 				DD91F30F26B1A41E00B96334 /* 0x142 */,
@@ -558,6 +582,8 @@
 				DD91F29326AC082C00B96334 /* common.vsh in Resources */,
 				DD91F142268B6B4100B96334 /* MR0x04ViewController.xib in Resources */,
 				DD91F25F269B2CAF00B96334 /* MR0x13ViewController.xib in Resources */,
+				DD7D80BA26D29D0800D968F3 /* MR0x145ViewController.xib in Resources */,
+				DD7D80BD26D29DFA00D968F3 /* NV21.fsh in Resources */,
 				DD7D80A726C1687F00D968F3 /* 1_sampler2DRect.fsh in Resources */,
 				DD91F31C26B6E99800B96334 /* 3_sampler2DRect.fsh in Resources */,
 				DDB144D026282D8900495754 /* MR0x03ViewController.xib in Resources */,
@@ -609,6 +635,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD91F1D526960C3300B96334 /* MR0x10ViewController.m in Sources */,
+				DD7D80BB26D29D0800D968F3 /* MR0x145VideoRenderer.m in Sources */,
 				DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
 				DD7D80B026C1725B00D968F3 /* MR0x144VideoRenderer.m in Sources */,
@@ -620,6 +647,7 @@
 				DD91F1E12697437F00B96334 /* MR0x11VideoRenderer.m in Sources */,
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
 				DDB14453262822FC00495754 /* MR0x02ViewController.m in Sources */,
+				DD7D80B926D29D0800D968F3 /* MR0x145ViewController.m in Sources */,
 				DD91F28726AC06C900B96334 /* MR0x141ViewController.m in Sources */,
 				DD91F31826B1A41E00B96334 /* MR0x142VideoRenderer.m in Sources */,
 				DD91F1E02697437F00B96334 /* MR0x11ViewController.m in Sources */,

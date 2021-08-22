@@ -1,18 +1,19 @@
 //
-//  MR0x14ViewController.h
+//  MR0x145ViewController.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/11.
+//  Created by qianlongxu on 2021/8/22.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 使用 OpenGL 渲染视频桢
-// 渲染 NV12
+// 封装 OpenGL 相关逻辑，抽取 MROpenGLCompiler
+// 渲染 NV21
 
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x14ViewController : NSViewController
+@interface MR0x145ViewController : NSViewController
 
 @end
 
