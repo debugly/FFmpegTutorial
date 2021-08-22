@@ -194,6 +194,10 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         pixelFormatType = fullRange ? kCVPixelFormatType_422YpCbCr8BiPlanarFullRange : kCVPixelFormatType_422YpCbCr8BiPlanarVideoRange;
     } else if (format == AV_PIX_FMT_UYVY422) {
         pixelFormatType = fullRange ? kCVPixelFormatType_422YpCbCr8FullRange : kCVPixelFormatType_422YpCbCr8;
+    } else if (format == AV_PIX_FMT_YUV444P10) {
+        pixelFormatType = kCVPixelFormatType_444YpCbCr10;
+    } else if (format == AV_PIX_FMT_YUYV422) {
+        pixelFormatType = kCVPixelFormatType_422YpCbCr8_yuvs;
     }
 //    RGB555 可以创建出 CVPixelBuffer，但是显示时失败了。
 //    else if (format == AV_PIX_FMT_RGB555BE) {

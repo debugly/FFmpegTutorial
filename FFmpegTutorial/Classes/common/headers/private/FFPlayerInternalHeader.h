@@ -23,6 +23,7 @@
 /* polls for possible required screen refresh at least this often, should be less than 1/fps */
 #define REFRESH_RATE 0.01
 
+// https://www.ffmpeg.org/doxygen/trunk/avfoundation_8m_source.html#l01003
 
 av_unused static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
     switch (avpf) {
@@ -36,6 +37,10 @@ av_unused static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
             return MR_PIX_FMT_NV16;
         case AV_PIX_FMT_UYVY422:
             return MR_PIX_FMT_UYVY422;
+        case AV_PIX_FMT_YUV444P10:
+            return MR_PIX_FMT_YUV444P10;
+        case AV_PIX_FMT_YUYV422:
+            return MR_PIX_FMT_YUYV422;
         case AV_PIX_FMT_RGB24:
             return MR_PIX_FMT_RGB24;
         case AV_PIX_FMT_RGBA:
@@ -81,6 +86,10 @@ av_unused static enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
             return AV_PIX_FMT_NV16;
         case MR_PIX_FMT_UYVY422:
             return AV_PIX_FMT_UYVY422;
+        case MR_PIX_FMT_YUV444P10:
+            return AV_PIX_FMT_YUV444P10;
+        case MR_PIX_FMT_YUYV422:
+            return AV_PIX_FMT_YUYV422;
         case MR_PIX_FMT_RGB24:
             return AV_PIX_FMT_RGB24;
         case MR_PIX_FMT_0RGB:

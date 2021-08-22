@@ -25,6 +25,8 @@ typedef enum : NSUInteger {
     MR_PIX_FMT_NV21,        // like NV12, but U and V bytes are swapped
     MR_PIX_FMT_NV16,        // semi-planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples interleaved chroma)
     MR_PIX_FMT_UYVY422,     // packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
+    MR_PIX_FMT_YUV444P10,   // planar YUV 4:4:4, 30bpp, (1 Cr & Cb sample per 1x1 Y samples)
+    MR_PIX_FMT_YUYV422,     // packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
     MR_PIX_FMT_RGB24,       // packed RGB 8:8:8, 24bpp, RGBRGB...
     MR_PIX_FMT_0RGB,        // packed RGB 8:8:8, 32bpp, XRGBXRGB...   X=unused/undefined
     MR_PIX_FMT_RGB0,        // packed RGB 8:8:8, 32bpp, RGBXRGBX...   X=unused/undefined
@@ -50,6 +52,8 @@ typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_NV21    = 1 << MR_PIX_FMT_NV21,       // like NV12, but U and V bytes are swapped
     MR_PIX_FMT_MASK_NV16    = 1 << MR_PIX_FMT_NV16,       // semi-planar YUV 4:2:2, 16bpp, (1 Cr & Cb sample per 2x1 Y samples interleaved chroma)
     MR_PIX_FMT_MASK_UYVY422 = 1 << MR_PIX_FMT_UYVY422,    // packed YUV 4:2:2, 16bpp, Cb Y0 Cr Y1
+    MR_PIX_FMT_MASK_YUV444P10 = 1 << MR_PIX_FMT_YUV444P10,// planar YUV 4:4:4, 30bpp, (1 Cr & Cb sample per 1x1 Y samples)
+    MR_PIX_FMT_MASK_YUYV422 = 1 << MR_PIX_FMT_YUYV422,     // packed YUV 4:2:2, 16bpp, Y0 Cb Y1 Cr
     MR_PIX_FMT_MASK_RGB24   = 1 << MR_PIX_FMT_RGB24,      // packed RGB 8:8:8, 24bpp, RGBRGB...
     MR_PIX_FMT_MASK_0RGB    = 1 << MR_PIX_FMT_0RGB,       // packed RGB 8:8:8, 32bpp, XRGBXRGB...   X=unused/undefined
     MR_PIX_FMT_MASK_RGB0    = 1 << MR_PIX_FMT_RGB0,       // packed RGB 8:8:8, 32bpp, RGBXRGBX...   X=unused/undefined

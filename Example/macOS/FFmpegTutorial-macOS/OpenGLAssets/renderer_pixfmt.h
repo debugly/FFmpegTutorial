@@ -106,15 +106,16 @@ static struct vt_format vt_formats[] = {
         }
     },
     {
+        //https://people.freedesktop.org/~marcheu/extensions/APPLE/ycbcr_422.html
         .cvpixfmt = kCVPixelFormatType_422YpCbCr8_yuvs,
-        .planes = 2,
+        .planes = 1,
         .gl = {
-            { GL_LUMINANCE, GL_UNSIGNED_BYTE, GL_LUMINANCE },
-            { GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, GL_LUMINANCE_ALPHA }
+            { GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, GL_RGB }
         }
     },
 #if TARGET_OS_OSX
     {
+        //https://people.freedesktop.org/~marcheu/extensions/APPLE/ycbcr_422.html
         .cvpixfmt = kCVPixelFormatType_422YpCbCr8,
         .planes = 1,
         .gl = {

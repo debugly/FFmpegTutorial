@@ -130,6 +130,11 @@
             @"title":@"0x14-3",
             @"detail":@"使用 OpenGL 渲染 UYVY422 视频桢",
             @"class":@"MR0x143ViewController",
+        },
+        @{
+            @"title":@"0x14-4",
+            @"detail":@"使用 OpenGL 渲染 YUYV422 视频桢",
+            @"class":@"MR0x144ViewController",
         }
     ];
     

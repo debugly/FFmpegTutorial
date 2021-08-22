@@ -42,6 +42,8 @@
  POSSIBILITY OF SUCH DAMAGE.
  
  Copyright (C) 2013 Apple Inc. All Rights Reserved.
+
+ https://people.freedesktop.org/~marcheu/extensions/APPLE/ycbcr_422.html
  
  */
 
