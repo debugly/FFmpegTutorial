@@ -262,7 +262,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         if (!attributes) {
             return NULL;
         }
-        const int pixelFormatType = [attributes[(NSString*)kCVPixelBufferBytesPerRowAlignmentKey] intValue];
+        const int pixelFormatType = [attributes[(NSString*)kCVPixelBufferPixelFormatTypeKey] intValue];
         
         result = CVPixelBufferCreate(kCFAllocatorDefault,
                                      w,
@@ -273,7 +273,6 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     }
     
     if (kCVReturnSuccess == result) {
-        CVPixelBufferLockBaseAddress(pixelBuffer,0);
         
         int planes = 1;
         if (CVPixelBufferIsPlanar(pixelBuffer)) {
@@ -281,6 +280,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         }
         
         for (int p = 0; p < planes; p++) {
+            CVPixelBufferLockBaseAddress(pixelBuffer,p);
             uint8_t *src = frame->data[p];
             uint8_t *dst = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, p);
             int src_linesize = (int)frame->linesize[p];
@@ -288,42 +288,19 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
             int height = (int)CVPixelBufferGetHeightOfPlane(pixelBuffer, p);
             int bytewidth = MIN(src_linesize, dst_linesize);
             av_image_copy_plane(dst, dst_linesize, src, src_linesize, bytewidth, height);
-        }
-        
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-        return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
-        
-        /**
-         kCVReturnInvalidPixelFormat
-         AV_PIX_FMT_BGR24,
-         AV_PIX_FMT_ABGR,
-         AV_PIX_FMT_0BGR,
-         AV_PIX_FMT_RGBA,
-         AV_PIX_FMT_RGB0,
-         
-         // 可以创建 pixelbuffer，但是构建的 CIImage 是 nil ！
-         AV_PIX_FMT_RGB555BE,
-         AV_PIX_FMT_RGB555LE,
-         */
-        if (format == AV_PIX_FMT_BGRA || format == AV_PIX_FMT_BGR0 || format == AV_PIX_FMT_ARGB || format == AV_PIX_FMT_0RGB || format == AV_PIX_FMT_RGB24 || format == AV_PIX_FMT_RGB555BE || format == AV_PIX_FMT_RGB555LE) {
-           uint8_t *rgb_src  = frame->data[0];
-           uint8_t *rgb_dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-           size_t src_bytesPerRow  = frame->linesize[0];
-           size_t dest_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
-           for (int i = 0; i < h; i ++) {
-               bzero(rgb_dest, dest_bytesPerRow);
-               memcpy(rgb_dest, rgb_src, dest_bytesPerRow);
-               rgb_src  += src_bytesPerRow;
-               rgb_dest += dest_bytesPerRow;
-           }
-        } else if(format == AV_PIX_FMT_NV12 || format == AV_PIX_FMT_NV21 || format == AV_PIX_FMT_NV16) {
-            
-            // Here y_src is Y-Plane of YUV(NV12) data.
-            uint8_t *y_src  = frame->data[0];
-            uint8_t *y_dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 0);
-            size_t y_src_bytesPerRow  = frame->linesize[0];
-            size_t y_dest_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
-            /*
+            CVPixelBufferUnlockBaseAddress(pixelBuffer, p);
+            /**
+             kCVReturnInvalidPixelFormat
+             AV_PIX_FMT_BGR24,
+             AV_PIX_FMT_ABGR,
+             AV_PIX_FMT_0BGR,
+             AV_PIX_FMT_RGBA,
+             AV_PIX_FMT_RGB0,
+             
+             // 可以创建 pixelbuffer，但是构建的 CIImage 是 nil ！
+             AV_PIX_FMT_RGB555BE,
+             AV_PIX_FMT_RGB555LE,
+             
              将FFmpeg解码后的YUV数据塞到CVPixelBuffer中，这里必须注意不能使用以下三种形式，否则将可能导致画面错乱或者绿屏或程序崩溃！
              memcpy(y_dest, y_src, w * h);
              memcpy(y_dest, y_src, aFrame->linesize[0] * h);
@@ -334,68 +311,19 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
              以下代码的意思是：
                 按行遍历 CVPixelBuffer 的每一行；
                 先把该行全部填 0 ，然后最大限度的将 FFmpeg 解码数据（包括对齐字节）copy 到 CVPixelBuffer 中；
-                因为有上面分析的对齐不相等问题，所以只能一行一行的处理，不能直接使用 memcpy 简单处理！
+                因为存在上面分析的对齐不相等问题，所以只能一行一行的处理，不能直接使用 memcpy 简单处理！
              */
-            
-            
-            for (int i = 0; i < h; i ++) {
-                bzero(y_dest, y_dest_bytesPerRow);
-                memcpy(y_dest, y_src, MIN(y_src_bytesPerRow, y_dest_bytesPerRow));
-                y_src  += y_src_bytesPerRow;
-                y_dest += y_dest_bytesPerRow;
+            /*
+            for (; height > 0; height--) {
+                bzero(dest, dst_linesize);
+                memcpy(dest, src, MIN(src_linesize, dst_linesize));
+                src  += src_linesize;
+                dest += dst_linesize;
             }
             
-            // Here uv_src is UV-Plane of YUV(NV12) data.
-            uint8_t *uv_src = frame->data[1];
-            uint8_t *uv_dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
-            size_t uv_src_bytesPerRow  = frame->linesize[1];
-            size_t uv_dest_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 1);
-            
-            if (frame->format == AV_PIX_FMT_NV21) {
-                //need swap VU for NV21
-                
-                for (int i = 0; i < BYTE_ALIGN_2(h)/2; i ++) {
-                    bzero(uv_dest, uv_dest_bytesPerRow);
-                    //将VU交换成UV；
-                    for (int j = 0; j < MIN(uv_src_bytesPerRow,uv_dest_bytesPerRow); j+=2) {
-                        uint8_t v = *uv_src;
-                        *uv_dest = *(uv_src + 1);
-                        *(uv_dest + 1) = v;
-                        uv_dest += 2;
-                        uv_src += 2;
-                    }
-                }
-            } else {
-                //按行 memcpy 数据！
-                for (int i = 0; i < BYTE_ALIGN_2(h)/2; i ++) {
-                    bzero(uv_dest, uv_dest_bytesPerRow);
-                    memcpy(uv_dest, uv_src, MIN(uv_src_bytesPerRow,uv_dest_bytesPerRow));
-                    uv_src  += uv_src_bytesPerRow;
-                    uv_dest += uv_dest_bytesPerRow;
-                }
-            }
-        } else if (format == AV_PIX_FMT_YUV420P || format == AV_PIX_FMT_YUV422P) {
-            for (int p = 0; p < CVPixelBufferGetPlaneCount(pixelBuffer); p++) {
-                uint8_t *src  = frame->data[p];
-                uint8_t *dest = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, p);
-                size_t src_bytesPerRow  = frame->linesize[p];
-                size_t dest_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, p);
-                int height = CVPixelBufferGetHeightOfPlane(pixelBuffer, p);
-                for (; height > 0; height--) {
-                    bzero(dest, dest_bytesPerRow);
-                    memcpy(dest, src, MIN(src_bytesPerRow, dest_bytesPerRow));
-                    src  += src_bytesPerRow;
-                    dest += dest_bytesPerRow;
-                }
-            }
-        } else if (format == AV_PIX_FMT_UYVY422) {
-//            av_image_copy_to_buffer
-        } else {
-            CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
-            NSAssert(NO,@"unsupported pixel format!");
-            return NULL;
+            后来偶然间找到了 av_image_copy_plane 这个方法，其内部实现就是上面的按行 copy。
+            */
         }
-        CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
         return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
     } else {
         return NULL;
