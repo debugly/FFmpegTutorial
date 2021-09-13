@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -65,19 +65,25 @@
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="eH9-Jd-L9l" customClass="MRDragView">
+                    <rect key="frame" x="0.0" y="0.0" width="504" height="272"/>
+                    <connections>
+                        <outlet property="delegate" destination="-2" id="EM3-GR-I3V"/>
+                    </connections>
+                </customView>
                 <scrollView borderType="none" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" hasVerticalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSa-m3-pfP">
                     <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="LuP-6m-7b7">
                         <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Yzs-Jl-8Tf">
+                            <textView editable="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" id="Yzs-Jl-8Tf">
                                 <rect key="frame" x="0.0" y="0.0" width="464" height="192"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                                 <size key="minSize" width="464" height="192"/>
-                                <size key="maxSize" width="480" height="10000000"/>
+                                <size key="maxSize" width="504" height="10000000"/>
                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             </textView>
                         </subviews>
@@ -98,10 +104,14 @@
             </subviews>
             <constraints>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="776-j1-rIJ"/>
+                <constraint firstAttribute="bottom" secondItem="eH9-Jd-L9l" secondAttribute="bottom" id="BSE-XD-gVQ"/>
+                <constraint firstItem="eH9-Jd-L9l" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="HdF-rA-qKZ"/>
                 <constraint firstAttribute="bottom" secondItem="JSa-m3-pfP" secondAttribute="bottom" id="TJG-Kf-SDu"/>
                 <constraint firstItem="JSa-m3-pfP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="bxl-Bb-4J5"/>
                 <constraint firstItem="JSa-m3-pfP" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="fOB-5H-BUI"/>
+                <constraint firstAttribute="trailing" secondItem="eH9-Jd-L9l" secondAttribute="trailing" id="kYF-rT-FoR"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
+                <constraint firstItem="eH9-Jd-L9l" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nuz-a0-23s"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="rfw-6M-es0"/>
                 <constraint firstAttribute="trailing" secondItem="JSa-m3-pfP" secondAttribute="trailing" id="skd-MR-hbU"/>

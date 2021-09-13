@@ -8,13 +8,16 @@
 
 #import "MR0x02ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x02.h>
+#import "MRDragView.h"
+#import "MRUtil.h"
 
-@interface MR0x02ViewController ()
+@interface MR0x02ViewController ()<MRDragViewDelegate>
 
 @property (strong) FFPlayer0x02 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
+@property (strong) NSArray <NSURL *>* urlArr;
 
 @end
 
@@ -30,6 +33,7 @@
 
 - (IBAction)go:(NSButton *)sender
 {
+    [self fetchFirstURL];
     if (self.inputField.stringValue.length > 0) {
         [self parseURL:self.inputField.stringValue];
     } else {
@@ -66,6 +70,102 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
+}
+
+#pragma mark --拖拽的代理方法
+
+- (NSDragOperation)acceptDragOperation:(NSArray<NSURL *> *)list
+{
+    for (NSURL *url in list) {
+        if (url) {
+            //先判断是不是文件夹
+            BOOL isDirectory = NO;
+            BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDirectory];
+            if (isExist) {
+                if (isDirectory) {
+                   //扫描文件夹
+                   NSString *dir = [url path];
+                   NSArray *dicArr = [MRUtil scanFolderWithPath:dir filter:[MRUtil videoType]];
+                    if ([dicArr count] > 0) {
+                        return NSDragOperationCopy;
+                    }
+                } else {
+                    NSString *pathExtension = [[url pathExtension] lowercaseString];
+                    if ([[MRUtil videoType] containsObject:pathExtension]) {
+                        return NSDragOperationCopy;
+                    }
+                }
+            }
+        }
+    }
+    return NSDragOperationNone;
+}
+
+- (void)fetchFirstURL
+{
+    NSString *path = nil;
+    NSMutableArray *urlArr = [NSMutableArray arrayWithArray:self.urlArr];
+    NSURL *url = [urlArr firstObject];
+    if ([url isFileURL]) {
+        path = [url path];
+    } else {
+        path = [url absoluteString];
+    }
+    if ([urlArr count] > 0) {
+        [urlArr removeObjectAtIndex:0];
+    }
+    self.urlArr = [urlArr copy];
+    
+    if (path) {
+        self.inputField.stringValue = path;
+    }
+    
+    
+}
+
+- (void)handleDragFileList:(NSArray <NSURL *> *)fileUrls
+{
+    NSMutableArray *bookmarkArr = [NSMutableArray array];
+
+    for (NSURL *url in fileUrls) {
+        //先判断是不是文件夹
+        BOOL isDirectory = NO;
+        BOOL isExist = [[NSFileManager defaultManager] fileExistsAtPath:[url path] isDirectory:&isDirectory];
+        if (isExist) {
+            if (isDirectory) {
+                //扫描文件夹
+                NSString *dir = [url path];
+                NSArray *dicArr = [MRUtil scanFolderWithPath:dir filter:[MRUtil videoType]];
+                if ([dicArr count] > 0) {
+                    [bookmarkArr addObjectsFromArray:dicArr];
+                }
+            } else {
+                NSString *pathExtension = [[url pathExtension] lowercaseString];
+                if ([[MRUtil videoType] containsObject:pathExtension]) {
+                    //视频
+                    NSDictionary *dic = [MRUtil makeBookmarkWithURL:url];
+                    [bookmarkArr addObject:dic];
+                }
+            }
+        }
+    }
+    
+    NSMutableArray *urls = [NSMutableArray array];
+    
+    for (int i = 0; i < [bookmarkArr count]; i++) {
+        NSDictionary *info = bookmarkArr[i];
+        NSURL *url = info[@"url"];
+        //NSData *bookmark = info[@"bookmark"];
+        if (url) {
+            [urls addObject:url];
+        }
+    }
+    
+    NSMutableArray *urlArr = [NSMutableArray arrayWithArray:self.urlArr];
+    [urlArr addObjectsFromArray:urls];
+    self.urlArr = [urlArr copy];
+    
+    [self go:nil];
 }
 
 @end
