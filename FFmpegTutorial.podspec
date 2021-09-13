@@ -19,7 +19,7 @@ Pod::Spec.new do |s|
   s.author           = { 'MattReach' => 'qianlongxu@gmail.com' }
   s.source           = { :git => 'https://github.com/debugly/FFmpegTutorial.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.11'
   s.static_framework = true
   

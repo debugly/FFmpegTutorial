@@ -1103,7 +1103,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/FFmpegTutorial-iOS/FFmpegTutorial-iOS.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0;
 				MODULE_NAME = ExampleApp;
@@ -1127,7 +1126,6 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/FFmpegTutorial-iOS/FFmpegTutorial-iOS.plist";
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0;
 				MODULE_NAME = ExampleApp;
