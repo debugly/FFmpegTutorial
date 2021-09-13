@@ -1,11 +1,11 @@
 use_frameworks!
 
 platform :osx, '10.11'
-FF_VER='4.3'
-OpenSSL_VER='1.1.1h'
+FF_VER='4.4'
+OpenSSL_VER='1.1.1l'
 
 target 'FFmpegTutorial-macOS' do
   pod 'FFmpegTutorial',:path => '../../'
-  pod 'MROpenSSLPod',  :podspec => "https://ifoxdev.hd.sohu.com/ffpods/MROpenSSL#{OpenSSL_VER}.podspec"
-  pod 'MRFFmpegPod',   :podspec => "https://ifoxdev.hd.sohu.com/ffpods/20200707/MRFFmpeg#{FF_VER}.podspec"
+  pod 'MROpenSSLPod',  :podspec => "https://ifoxdev.hd.sohu.com/ffpods/20210913/MROpenSSLPod-macOS-#{OpenSSL_VER}.podspec"
+  pod 'MRFFmpegPod',   :podspec => "https://ifoxdev.hd.sohu.com/ffpods/20210913/MRFFmpegPod-macOS-#{FF_VER}-openssl.podspec"
 end
