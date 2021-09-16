@@ -60,13 +60,20 @@
 
 + (NSString *)formatedLibsVersion
 {
-    return [NSString stringWithFormat:@"libavutil\t%@\nlibavcodec\t%@\nlibavformat\t%@\nlibavdevice\t%@\nlibavfilter\t%@\nlibswscale\t%@\nlibswresample\t%@",
+    return [NSString stringWithFormat:@"%-20s%@\n%-20s%@\n%-20s%@\n%-20s%@\n%-20s%@\n%-20s%@\n%-20s%@",
+            "libavutil",
             [self libavutilVersion],
+            "libavcodec",
             [self libavcodecVersion],
+            "libavformat",
             [self libavformatVersion],
+            "libavdevice",
             [self libavdeviceVersion],
+            "libavfilter",
             [self libavfilterVersion],
+            "libswscale",
             [self libswscaleVersion],
+            "libswresample",
             [self libswresampleVersion]
             ];
 }
@@ -74,6 +81,13 @@
 + (NSString *)configuration
 {
     return [NSString stringWithCString:avcodec_configuration() encoding:NSUTF8StringEncoding];
+}
+
++ (NSString *)formatedConfiguration
+{
+    NSString *cfgStr = [self configuration];
+    cfgStr = [cfgStr stringByReplacingOccurrencesOfString:@" --" withString:@"\n--"];
+    return cfgStr;
 }
 
 + (NSString *)allVersionInfo
@@ -170,7 +184,7 @@
     
     {
         //编译配置信息
-        [txt appendFormat:@"\n【FFmpeg Build Info】\n%@",[FFVersionHelper configuration]];
+        [txt appendFormat:@"\n【FFmpeg Build Info】\n%@",[FFVersionHelper formatedConfiguration]];
     }
     
     [txt appendString:@"\n"];

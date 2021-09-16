@@ -36,6 +36,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSString *)formatedLibsVersion;
 //build-time configuration
 + (NSString *)configuration;
+//build-time configuration;a opt use a line
++ (NSString *)formatedConfiguration;
 //[configuration] + [formatedLibsVersion]
 + (NSString *)allVersionInfo;
 
