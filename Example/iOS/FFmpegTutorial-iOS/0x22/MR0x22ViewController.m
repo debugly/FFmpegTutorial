@@ -8,20 +8,20 @@
 //
 
 #import "MR0x22ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x22.h>
+#import <FFmpegTutorial/FFPlayer0x20.h>
 #import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import "MR0x22VideoRenderer.h"
 #import "MR0x22AudioRenderer.h"
 
-@interface MR0x22ViewController ()<UITextViewDelegate,FFPlayer0x22Delegate>
+@interface MR0x22ViewController ()<UITextViewDelegate,FFPlayer0x20Delegate>
 
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
 
-@property (nonatomic, strong) FFPlayer0x22 *player;
+@property (nonatomic, strong) FFPlayer0x20 *player;
 @property (weak, nonatomic) IBOutlet MR0x22VideoRenderer *renderView;
 @property (nonatomic, strong) MR0x22AudioRenderer *audioRender;
 
@@ -50,7 +50,7 @@
     self.textView.layoutManager.allowsNonContiguousLayout = NO;
     self.renderView.contentMode = UIViewContentModeScaleAspectFit;
     
-    FFPlayer0x22 *player = [[FFPlayer0x22 alloc] init];
+    FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
     player.contentPath = KTestVideoURL1;
     
     __weakSelf__

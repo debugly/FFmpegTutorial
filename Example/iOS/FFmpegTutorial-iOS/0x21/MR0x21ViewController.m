@@ -8,7 +8,7 @@
 //
 
 #import "MR0x21ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x21.h>
+#import <FFmpegTutorial/FFPlayer0x20.h>
 #import "MRRWeakProxy.h"
 #import <GLKit/GLKit.h>
 #import "MR0x21VideoRenderer.h"
@@ -21,7 +21,7 @@
 #define DEBUG_RECORD_PCM_TO_FILE 0
 
 
-@interface MR0x21ViewController ()<UITextViewDelegate,FFPlayer0x21Delegate>
+@interface MR0x21ViewController ()<UITextViewDelegate,FFPlayer0x20Delegate>
 {
     #if DEBUG_RECORD_PCM_TO_FILE
         FILE * file_pcm_l;
@@ -29,7 +29,7 @@
     AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
 }
 
-@property (nonatomic, strong) FFPlayer0x21 *player;
+@property (nonatomic, strong) FFPlayer0x20 *player;
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (weak, nonatomic) IBOutlet MR0x21VideoRenderer *renderView;
@@ -93,7 +93,7 @@
     }
 #endif
     
-    FFPlayer0x21 *player = [[FFPlayer0x21 alloc] init];
+    FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
     player.contentPath = KTestVideoURL1;
     
     __weakSelf__

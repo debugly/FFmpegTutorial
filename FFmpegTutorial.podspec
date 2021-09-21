@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.4.1'
+  s.version          = '0.4.2'
   s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
   为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
@@ -92,16 +92,6 @@ Pod::Spec.new do |s|
   s.subspec '0x20' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x20/*.{h,m}'
     ss.public_header_files = 'FFmpegTutorial/Classes/0x20/FFPlayer0x20.h'
-  end
-
-  s.subspec '0x21' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x21/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x21/FFPlayer0x21.h'
-  end
-
-  s.subspec '0x22' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x22/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x22/FFPlayer0x22.h'
   end
 
   s.subspec '0x30' do |ss|
