@@ -145,8 +145,12 @@
             @"title":@"0x20",
             @"detail":@"使用 AudioUnit 渲染音频桢",
             @"class":@"MR0x20ViewController",
+        },
+        @{
+            @"title":@"0x201",
+            @"detail":@"使用 AudioQueue 渲染音频桢",
+            @"class":@"MR0x201ViewController",
         }
-        
     ];
     
     [tableView reloadData];
