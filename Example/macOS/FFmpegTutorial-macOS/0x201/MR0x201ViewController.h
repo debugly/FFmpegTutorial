@@ -8,7 +8,7 @@
 // 使用 OpenGL 渲染视频桢
 // 封装 OpenGL 相关逻辑，抽取 MROpenGLCompiler
 // 渲染 NV21
-// 使用 AudioUnit 渲染音频桢
+// 使用 AudioQueue 渲染音频桢
 
 #import <Cocoa/Cocoa.h>
 
