@@ -351,6 +351,11 @@ static int decode_interrupt_cb(void *ctx)
         return nil;
     }
     
+    //未指定支持的比特率就使用目标音频的
+    if (self.supportedSampleRate == 0) {
+        self.supportedSampleRate = self.audioDecoder.sampleRate;
+    }
+    
     //当前视频的像素格式
     const enum AVSampleFormat format = self.audioDecoder.format;
     

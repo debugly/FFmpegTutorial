@@ -29,7 +29,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
 ///期望的音频采样深度
 @property (nonatomic, assign) MRSampleFormatMask supportedSampleFormats;
-///期望的音频采样率，比如 44100
+///期望的音频采样率，比如 44100;不指定时使用音频的采样率
 @property (nonatomic, assign) int supportedSampleRate;
 
 @property (nonatomic, weak) id <FFPlayer0x32Delegate> delegate;
