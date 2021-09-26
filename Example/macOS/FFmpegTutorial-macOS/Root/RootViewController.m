@@ -93,7 +93,7 @@
         },
         @{
             @"title":@"0x06",
-            @"detail":@"整理代码，封装解码器",
+            @"detail":@"抽取 Decoder 类，封装解码逻辑",
             @"class":@"MR0x06ViewController",
         },
         @{
@@ -118,7 +118,7 @@
         },
         @{
             @"title":@"0x14-1",
-            @"detail":@"代码重构 0x14 教程，封装 OpenGL Shader 相关逻辑",
+            @"detail":@"抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑",
             @"class":@"MR0x141ViewController",
         },
         @{
@@ -147,9 +147,14 @@
             @"class":@"MR0x20ViewController",
         },
         @{
-            @"title":@"0x201",
+            @"title":@"0x20-1",
             @"detail":@"使用 AudioQueue 渲染音频桢",
             @"class":@"MR0x201ViewController",
+        },
+        @{
+            @"title":@"0x20-2",
+            @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
+            @"class":@"MR0x202ViewController",
         }
     ];
     

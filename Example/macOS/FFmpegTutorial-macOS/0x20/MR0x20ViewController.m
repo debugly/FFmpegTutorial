@@ -387,7 +387,6 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV21;
     player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_AUTO;
-    player.supportedSampleRate = 44800;
     player.delegate = self;
     [player prepareToPlay];
     [player play];

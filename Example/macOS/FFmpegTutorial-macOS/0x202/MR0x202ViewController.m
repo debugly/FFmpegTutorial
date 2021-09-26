@@ -1,62 +1,40 @@
 //
-//  MR0x201ViewController.m
+//  MR0x202ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/21.
+//  Created by qianlongxu on 2021/9/26.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x201ViewController.h"
+#import "MR0x202ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x20.h>
 #import "MRRWeakProxy.h"
-#import "MR0x201VideoRenderer.h"
-#import <AudioUnit/AudioUnit.h>
-#import <AudioToolbox/AudioToolbox.h>
+#import "MR0x202VideoRenderer.h"
+#import "MR0x202AudioRenderer.h"
 
-//将音频裸流PCM写入到文件
-#define DEBUG_RECORD_PCM_TO_FILE 0
-
-#define QUEUE_BUFFER_SIZE 3
-#define MIN_SIZE_PER_FRAME 4096
-
-
-@interface MR0x201ViewController ()<FFPlayer0x20Delegate>
-
-{
-#if DEBUG_RECORD_PCM_TO_FILE
-    FILE * file_pcm_l;
-#endif
-    AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
-}
+@interface MR0x202ViewController ()<FFPlayer0x20Delegate>
 
 @property (strong) FFPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x201VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x202VideoRenderer *videoRenderer;
 
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
 @property (assign) BOOL scrolling;
 
-//声音大小
-@property (nonatomic,assign) float outputVolume;
-//最终音频格式（采样深度）
-@property (nonatomic,assign) MRSampleFormat finalSampleFmt;
-//音频渲染
-@property (nonatomic,assign) AudioQueueRef audioQueue;
-//音频信息结构体
-@property (nonatomic,assign) AudioStreamBasicDescription outputFormat;
+@property (strong) MR0x202AudioRenderer *audioRenderer;
 
 @end
 
-@implementation MR0x201ViewController
+@implementation MR0x202ViewController
 
 - (void)dealloc
 {
-    if(_audioQueue){
-        AudioQueueDispose(_audioQueue, YES);
-        _audioQueue = NULL;
+    if(_audioRenderer){
+        [_audioRenderer pause];
+        _audioRenderer = nil;
     }
     
 #if DEBUG_RECORD_PCM_TO_FILE
@@ -100,20 +78,7 @@
 
 - (void)playAudio
 {
-    BOOL full = YES;
-    for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
-        AudioQueueBufferRef ref = self->audioQueueBuffers[i];
-        UInt32 gotBytes = [self renderFramesToBuffer:ref queue:self.audioQueue];
-        if (gotBytes == 0) {
-            full = NO;
-            break;
-        }
-    }
-    
-    if (full) {
-        OSStatus status = AudioQueueStart(self.audioQueue, NULL);
-        NSAssert(noErr == status, @"AudioOutputUnitStart");
-    }
+    [self.audioRenderer play];
 }
 
 - (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
@@ -142,69 +107,33 @@
 
 - (void)setupAudioRender:(MRSampleFormat)fmt
 {
-    {
-        // ----- Audio Queue Setup -----
+    if (!self.audioRenderer) {
+        MR0x202AudioRenderer *audioRenderer = [[MR0x202AudioRenderer alloc] initWithFmt:fmt preferredAudioQueue:YES sampleRate:self.player.supportedSampleRate];
         
-        _outputFormat.mSampleRate = self.player.supportedSampleRate;
-        _outputFormat.mChannelsPerFrame = 2;
-        _outputFormat.mFormatID = kAudioFormatLinearPCM;
-        _outputFormat.mReserved = 0;
+        __weakSelf__
+        [audioRenderer onFetchPacketSample:^UInt32(uint8_t * _Nonnull buffer, UInt32 bufferSize) {
+            __strongSelf__
+            return [self fetchPacketSample:buffer wantBytes:bufferSize];
+        }];
         
-        bool isFloat  = MR_Sample_Fmt_Is_FloatX(fmt);
-        bool isS16    = MR_Sample_Fmt_Is_S16X(fmt);
-        bool isPacket = MR_Sample_Fmt_Is_Packet(fmt);
-        NSAssert(isPacket, @"Audio Queue Support packet fmt only!");
+        [audioRenderer onFetchPlanarSample:^UInt32(uint8_t * _Nonnull left, UInt32 leftSize, uint8_t * _Nonnull right, UInt32 rightSize) {
+            __strongSelf__
+            return [self fetchPlanarSample:left leftSize:leftSize right:right rightSize:rightSize];
+        }];
         
-        if (isS16){
-            _outputFormat.mFormatFlags |= kAudioFormatFlagIsSignedInteger;
-            _outputFormat.mFramesPerPacket = 1;
-            _outputFormat.mBitsPerChannel = sizeof(SInt16) * 8;
-        } else if (isFloat){
-            _outputFormat.mFormatFlags = kAudioFormatFlagIsFloat;
-            _outputFormat.mFramesPerPacket = 1;
-            _outputFormat.mBitsPerChannel = sizeof(float) * 8;
-        }
-        
-        //packed only!
-        _outputFormat.mFormatFlags |= kAudioFormatFlagIsPacked;
-        _outputFormat.mBytesPerFrame = (_outputFormat.mBitsPerChannel / 8) * _outputFormat.mChannelsPerFrame;
-        _outputFormat.mBytesPerPacket = _outputFormat.mBytesPerFrame * _outputFormat.mFramesPerPacket;
-        
-        OSStatus status = AudioQueueNewOutput(&self->_outputFormat, MRAudioQueueOutputCallback, (__bridge void *)self, CFRunLoopGetCurrent(), kCFRunLoopCommonModes, 0, &self->_audioQueue);
-        
-        NSAssert(noErr == status, @"AudioQueueNewOutput");
-        
-        //初始化音频缓冲区--audioQueueBuffers为结构体数组
-        for (int i = 0; i < QUEUE_BUFFER_SIZE; i++) {
-            int result = AudioQueueAllocateBuffer(self.audioQueue,MIN_SIZE_PER_FRAME, &self->audioQueueBuffers[i]);
-            NSAssert(noErr == result, @"AudioQueueAllocateBuffer");
-        }
-        
-        self.finalSampleFmt = fmt;
+        self.audioRenderer = audioRenderer;
     }
 }
 
 #pragma mark - 音频
 
-//音频渲染回调；
-static void MRAudioQueueOutputCallback(
-                                 void * __nullable       inUserData,
-                                 AudioQueueRef           inAQ,
-                                 AudioQueueBufferRef     inBuffer)
+- (UInt32)fetchPlanarSample:(uint8_t*)left
+                  leftSize:(UInt32)leftSize
+                     right:(uint8_t*)right
+                 rightSize:(UInt32)rightSize
 {
-    MR0x201ViewController *am = (__bridge MR0x201ViewController *)inUserData;
-    [am renderFramesToBuffer:inBuffer queue:inAQ];
-}
-
-- (UInt32)renderFramesToBuffer:(AudioQueueBufferRef) inBuffer queue:(AudioQueueRef)inAQ
-{
-    //1、填充数据
-    UInt32 gotBytes = [self fetchPacketSample:inBuffer->mAudioData wantBytes:inBuffer->mAudioDataBytesCapacity];
-    inBuffer->mAudioDataByteSize = gotBytes;
-    
-    // 2、通知 AudioQueue 有可以播放的 buffer 了
-    AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, NULL);
-    return gotBytes;
+    UInt32 filled = [self.player fetchPlanarSample:left leftSize:leftSize right:right rightSize:rightSize];
+    return filled;
 }
 
 - (UInt32)fetchPacketSample:(uint8_t*)buffer
@@ -264,6 +193,7 @@ static void MRAudioQueueOutputCallback(
     
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV21;
     player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16 | MR_SAMPLE_FMT_MASK_FLT;
+    
     player.delegate = self;
     [player prepareToPlay];
     [player play];
