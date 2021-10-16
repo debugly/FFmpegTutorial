@@ -44,7 +44,7 @@
                             <rect key="frame" x="440" y="3" width="61" height="32"/>
                             <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" size="13" name=".PingFangSC-Regular"/>
+                                <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
                                 <action selector="go:" target="-2" id="gpZ-YI-9b1"/>
@@ -66,62 +66,25 @@
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
-                <stackView distribution="fillEqually" orientation="horizontal" alignment="centerY" spacing="20" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qce-dG-gbW">
-                    <rect key="frame" x="0.0" y="192" width="504" height="40"/>
-                    <subviews>
-                        <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="FEr-03-e9w">
-                            <rect key="frame" x="3" y="3" width="246" height="32"/>
-                            <buttonCell key="cell" type="push" title="模拟解码线程消耗" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="w2e-f0-1Wi">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="onConsumePackets:" target="-2" id="axj-10-xf8"/>
-                            </connections>
-                        </button>
-                        <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="eER-VT-ORW">
-                            <rect key="frame" x="255" y="3" width="246" height="32"/>
-                            <buttonCell key="cell" type="push" title="模拟解码线程消耗（全部）" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="iWK-IR-HS1">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="onConsumeAllPackets:" target="-2" id="WI3-1K-XG1"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <edgeInsets key="edgeInsets" left="10" right="10" top="0.0" bottom="0.0"/>
-                    <constraints>
-                        <constraint firstAttribute="height" constant="40" id="Iuo-LF-bdZ"/>
-                    </constraints>
-                    <visibilityPriorities>
-                        <integer value="1000"/>
-                        <integer value="1000"/>
-                    </visibilityPriorities>
-                    <customSpacing>
-                        <real value="3.4028234663852886e+38"/>
-                        <real value="3.4028234663852886e+38"/>
-                    </customSpacing>
-                </stackView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jFD-xm-WN4" customClass="MR0x11VideoRenderer">
-                    <rect key="frame" x="0.0" y="0.0" width="504" height="192"/>
+                    <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="d6b-OK-mr3"/>
                     <connections>
                         <binding destination="-2" name="value" keyPath="self.videoRenderer" id="cBD-9k-IkA"/>
                     </connections>
                 </imageView>
                 <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSa-m3-pfP">
-                    <rect key="frame" x="0.0" y="0.0" width="504" height="192"/>
+                    <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                     <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="LuP-6m-7b7">
-                        <rect key="frame" x="0.0" y="0.0" width="504" height="192"/>
+                        <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <textView drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Yzs-Jl-8Tf">
-                                <rect key="frame" x="0.0" y="0.0" width="464" height="192"/>
+                                <rect key="frame" x="0.0" y="0.0" width="464" height="232"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="464" height="192"/>
+                                <size key="minSize" width="494" height="232"/>
                                 <size key="maxSize" width="504" height="10000000"/>
                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             </textView>
@@ -145,14 +108,11 @@
             <constraints>
                 <constraint firstItem="jFD-xm-WN4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="0Qs-Lp-Xgy"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="776-j1-rIJ"/>
-                <constraint firstItem="Qce-dG-gbW" firstAttribute="trailing" secondItem="NMB-98-nYq" secondAttribute="trailing" id="7qL-eR-d7d"/>
-                <constraint firstItem="jFD-xm-WN4" firstAttribute="top" secondItem="Qce-dG-gbW" secondAttribute="bottom" id="83F-1b-X28"/>
-                <constraint firstItem="Qce-dG-gbW" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="HMN-lc-AMX"/>
                 <constraint firstAttribute="bottom" secondItem="jFD-xm-WN4" secondAttribute="bottom" id="J7Q-2Z-sOJ"/>
                 <constraint firstAttribute="bottom" secondItem="JSa-m3-pfP" secondAttribute="bottom" id="TJG-Kf-SDu"/>
-                <constraint firstItem="Qce-dG-gbW" firstAttribute="leading" secondItem="NMB-98-nYq" secondAttribute="leading" id="bH4-2k-0fk"/>
+                <constraint firstItem="JSa-m3-pfP" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="XCa-tE-ZoZ"/>
                 <constraint firstItem="JSa-m3-pfP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="bxl-Bb-4J5"/>
-                <constraint firstItem="JSa-m3-pfP" firstAttribute="top" secondItem="Qce-dG-gbW" secondAttribute="bottom" id="fOB-5H-BUI"/>
+                <constraint firstItem="jFD-xm-WN4" firstAttribute="top" secondItem="JSa-m3-pfP" secondAttribute="top" id="ieT-qT-oIc"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="rfw-6M-es0"/>

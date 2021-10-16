@@ -159,24 +159,6 @@
     }
 }
 
-- (IBAction)onConsumePackets:(id)sender
-{
-    if (!self.player) {
-        [self appendMsg:@"请先点击查看！"];
-        return;
-    }
-    [self appendMsg:[self.player peekPacketBufferStatus]];
-}
-
-- (IBAction)onConsumeAllPackets:(id)sender
-{
-    if (!self.player) {
-        [self appendMsg:@"请先点击查看！"];
-        return;
-    }
-    [self appendMsg:[self.player peekPacketBufferStatus]];
-}
-
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
