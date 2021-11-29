@@ -26,7 +26,7 @@
 
 **pod install --project-directory=Example/macOS**
 
-成功安装后就可以打开 **Example/iOS/FFmpegTutorial-macOS.xcworkspace** 运行了。
+成功安装后就可以打开 **Example/macOS/FFmpegTutorial-macOS.xcworkspace** 运行了。
 
 [![](md/imgs/macos-snapshot-1.png)](macos-snapshot-1.png) 
 
