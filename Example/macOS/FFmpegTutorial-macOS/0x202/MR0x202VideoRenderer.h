@@ -15,6 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MR0x202VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
+- (NSImage *)snapshot;
 
 @end
 

@@ -70,6 +70,7 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
+    self.textView.string = @"拖拽视频文件，查看视频信息";
 }
 
 #pragma mark --拖拽的代理方法

@@ -15,7 +15,7 @@
 #import <GLKit/GLKit.h>
 #import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
-
+#import <FFmpegTutorial/MRConvertUtil.h>
 // Uniform index.
 enum
 {
@@ -59,6 +59,7 @@ static GLint textureDimension[2];
             NSOpenGLPFANoRecovery,
             NSOpenGLPFADoubleBuffer,
             NSOpenGLPFADepthSize, 24,
+            NSOpenGLPFAAllowOfflineRenderers, 1,
             0
         };
         NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
@@ -355,6 +356,14 @@ static GLint textureDimension[2];
 - (MRViewContentMode)contentMode
 {
     return _contentMode;
+}
+
+- (NSImage *)snapshot
+{
+    NSRect bounds = [self bounds];
+    CGFloat scale = self.layer.contentsScale;
+    CGSize size = CGSizeMake(bounds.size.width * scale, bounds.size.height * scale);
+    return [MRConvertUtil snapshot:[self openGLContext] size:size];
 }
 
 @end

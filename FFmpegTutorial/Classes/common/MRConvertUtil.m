@@ -9,6 +9,14 @@
 #import <libavutil/frame.h>
 #import <libavutil/imgutils.h>
 
+#if TARGET_OS_IOS
+#import <OpenGLES/ES1/glext.h>
+#import <UIKit/UIGraphics.h>
+#else
+#import <OpenGL/gl.h>
+#import <OpenGL/glext.h>
+#endif
+
 #define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
 
 @implementation MRConvertUtil
@@ -358,5 +366,146 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     }
     return NULL;
 }
+
+#if TARGET_OS_IOS
+//https://developer.apple.com/library/archive/qa/qa1704/_index.html
++ (UIImage *)snapshot:(GLint)renderbuffer sacle:(CGFloat)scale
+{
+    if (renderbuffer <= 0) {
+        return nil;
+    }
+    GLint backingWidth, backingHeight;
+     
+    // Bind the color renderbuffer used to render the OpenGL ES view
+    // If your application only creates a single color renderbuffer which is already bound at this point,
+    // this call is redundant, but it is needed if you're dealing with multiple renderbuffers.
+    // Note, replace "renderbuffer" with the actual name of the renderbuffer object defined in your class.
+    glBindRenderbufferOES(GL_RENDERBUFFER_OES, renderbuffer);
+ 
+    // Get the size of the backing CAEAGLLayer
+    glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &backingWidth);
+    glGetRenderbufferParameterivOES(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &backingHeight);
+ 
+    GLint x = 0, y = 0, width = backingWidth, height = backingHeight;
+    NSInteger dataLength = width * height * 4;
+    GLubyte *data = (GLubyte*)malloc(dataLength * sizeof(GLubyte));
+ 
+    // Read pixel data from the framebuffer
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    glReadPixels(x, y, width, height, GL_RGBA, GL_UNSIGNED_BYTE, data);
+ 
+    // Create a CGImage with the pixel data
+    // If your OpenGL ES content is opaque, use kCGImageAlphaNoneSkipLast to ignore the alpha channel
+    // otherwise, use kCGImageAlphaPremultipliedLast
+    CGDataProviderRef ref = CGDataProviderCreateWithData(NULL, data, dataLength, NULL);
+    CGColorSpaceRef colorspace = CGColorSpaceCreateDeviceRGB();
+    CGImageRef iref = CGImageCreate(width, height, 8, 32, width * 4, colorspace, kCGBitmapByteOrder32Big | kCGImageAlphaPremultipliedLast,
+                                    ref, NULL, true, kCGRenderingIntentDefault);
+ 
+    // OpenGL ES measures data in PIXELS
+    // Create a graphics context with the target size measured in POINTS
+    NSInteger widthInPoints, heightInPoints;
+    // On iOS 4 and later, use UIGraphicsBeginImageContextWithOptions to take the scale into consideration
+    // Set the scale parameter to your OpenGL ES view's contentScaleFactor
+    // so that you get a high-resolution snapshot when its value is greater than 1.0
+    widthInPoints = width / scale;
+    heightInPoints = height / scale;
+    UIGraphicsBeginImageContextWithOptions(CGSizeMake(widthInPoints, heightInPoints), NO, scale);
+ 
+    CGContextRef cgcontext = UIGraphicsGetCurrentContext();
+ 
+    // UIKit coordinate system is upside down to GL/Quartz coordinate system
+    // Flip the CGImage by rendering it to the flipped bitmap context
+    // The size of the destination area is measured in POINTS
+    CGContextSetBlendMode(cgcontext, kCGBlendModeCopy);
+    CGContextDrawImage(cgcontext, CGRectMake(0.0, 0.0, widthInPoints, heightInPoints), iref);
+ 
+    // Retrieve the UIImage from the current context
+    UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
+ 
+    UIGraphicsEndImageContext();
+ 
+    // Clean up
+    free(data);
+    CFRelease(ref);
+    CFRelease(colorspace);
+    CGImageRelease(iref);
+ 
+    return image;
+}
+#else
+//https://github.com/tubrokAlien/CocoaGLPaint/blob/master/AKCocoaGLPaint/Categories/NSOpenGLView%2BAKAdditions.m
+static void memxor(unsigned char *dst, unsigned char *src, unsigned int bytes)
+{
+    while (bytes--) *dst++ ^= *src++;
+}
+
+static void memswap(unsigned char *a, unsigned char *b, unsigned int bytes)
+{
+    memxor(a, b, bytes);
+    memxor(b, a, bytes);
+    memxor(a, b, bytes);
+}
+
++ (NSImage *)snapshot:(NSOpenGLContext *)openGLContext size:(CGSize)size
+{
+    if (!openGLContext) {
+        return nil;
+    }
+    
+    if (CGSizeEqualToSize(CGSizeZero, size)) {
+        return nil;
+    }
+    
+    int height = size.height;
+    int width = size.width;
+    
+    NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL
+                                                       pixelsWide: width
+                                                       pixelsHigh: height
+                                                    bitsPerSample: 8
+                                                  samplesPerPixel: 4
+                                                         hasAlpha: YES
+                                                         isPlanar: NO
+                                                   colorSpaceName: NSCalibratedRGBColorSpace
+                                                      bytesPerRow: 0                // indicates no empty bytes at row end
+                                                     bitsPerPixel: 0];
+    
+    [openGLContext makeCurrentContext];
+    
+    unsigned char *bitmapData = [imageRep bitmapData];
+    
+    //make xcode happy
+    int bytesPerRow = (int)[imageRep bytesPerRow];
+    
+    glPixelStorei(GL_PACK_ROW_LENGTH, 8*bytesPerRow/[imageRep bitsPerPixel]);
+    
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, bitmapData);
+    
+    // Flip the bitmap vertically to account for OpenGL coordinate system difference
+    // from NSImage coordinate system.
+    
+    for (int row = 0; row < height/2; row++)
+    {
+        unsigned char *a, *b;
+        
+        a = bitmapData + row * bytesPerRow;
+        b = bitmapData + (height - 1 - row) * bytesPerRow;
+        
+        memswap(a, b, bytesPerRow);
+    }
+    
+    // Create the NSImage from the bitmap
+    NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(width, height)];
+    [image addRepresentation:imageRep];
+    
+    // Previously we did not flip the bitmap, and instead did [image setFlipped:YES];
+    // This does not work properly (i.e., the image remained inverted) when pasting
+    // the image to AppleWorks or GraphicConvertor.
+    
+    return image;
+}
+
+#endif
 
 @end

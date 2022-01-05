@@ -15,4 +15,6 @@
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 
+- (UIImage *)saveSnapshort;
+
 @end

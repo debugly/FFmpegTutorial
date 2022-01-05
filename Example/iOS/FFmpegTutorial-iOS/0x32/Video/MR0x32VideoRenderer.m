@@ -13,6 +13,7 @@
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
+#import <FFmpegTutorial/MRConvertUtil.h>
 
 // Uniform index.
 enum
@@ -548,6 +549,13 @@ static const GLfloat kColorConversion601FullRange[] = {
 	}
 	
 	return YES;
+}
+
+- (UIImage *)saveSnapshort
+{
+    GLuint render = _colorBufferHandle;
+    UIImage *img = [MRConvertUtil snapshot:render sacle:self.contentScaleFactor];
+    return img;
 }
 
 @end

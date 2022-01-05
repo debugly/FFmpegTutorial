@@ -8,6 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreMedia/CMSampleBuffer.h>
+#import <CoreGraphics/CoreGraphics.h>
 
 typedef struct AVFrame AVFrame;
 
@@ -41,6 +42,18 @@ AVFrame to CVPixelBuffer，pixel fmt support [RGB24/ARGB/0RGB/BGRA/BGR0/NV12/NV2
 + (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame*)frame opt:(CVPixelBufferPoolRef _Nullable)poolRef;
 
 + (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;
+
+#if TARGET_OS_IOS
+/**
+ iOS OpenGL ES 截图
+ */
++ (UIImage *)snapshot:(GLint)renderbuffer sacle:(CGFloat)scale;
+#else
+/**
+ macos OpenGL 截图
+ */
++ (NSImage *)snapshot:(NSOpenGLContext *)openGLContext size:(CGSize)size;
+#endif
 
 @end
 
