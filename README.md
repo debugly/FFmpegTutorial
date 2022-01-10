@@ -94,7 +94,7 @@ open FFmpegTutorial-macOS.xcworkspace
 - 0x11：[使用 Core Animation 渲染视频帧](md/0x11.md)
 - 0x12：[使用 Core Image 渲染视频帧]
 - 0x13：[使用 Core Video 渲染视频帧]
-- 0x14：[使用 OpenGL ES 渲染视频帧]
+- 0x14：[使用 OpenGL 渲染视频帧]
 
 三、音频渲染
 
@@ -110,7 +110,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 五、趣味实验
 
-- 0x41：[黑白电视机雪花屏、灰色色阶图] 
+- 0x40：[黑白电视机雪花屏、灰色色阶图] 
 
 六、小工具
 
