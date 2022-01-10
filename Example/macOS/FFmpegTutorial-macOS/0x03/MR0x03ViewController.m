@@ -53,7 +53,7 @@
 
 - (void)prepareTickTimerIfNeed
 {
-    if ([self.timer isValid]) {
+    if (self.timer && ![self.timer isValid]) {
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
@@ -69,6 +69,7 @@
         return;
     }
     
+    [self.indicatorView stopAnimation:nil];
     NSString *msg = nil;
     if (mr_packet_size_equal_zero(pktSize)) {
         msg = @"Packet Buffer is Empty";
@@ -123,13 +124,14 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    [self prepareTickTimerIfNeed];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
-    [self prepareTickTimerIfNeed];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willStartScroll:) name:NSScrollViewWillStartLiveScrollNotification object:self.textView.enclosingScrollView];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndScroll:) name:NSScrollViewDidEndLiveScrollNotification object:self.textView.enclosingScrollView];
 }

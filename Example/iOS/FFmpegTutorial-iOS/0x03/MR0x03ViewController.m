@@ -38,7 +38,7 @@
 
 - (void)prepareTickTimerIfNeed
 {
-    if ([self.timer isValid]) {
+    if (self.timer && ![self.timer isValid]) {
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
@@ -82,8 +82,6 @@
     self.textView.delegate = self;
     self.textView.layoutManager.allowsNonContiguousLayout = NO;
     
-    [self prepareTickTimerIfNeed];
-    
     FFPlayer0x03 *player = [[FFPlayer0x03 alloc] init];
 #if DEBUG
     player.readPackDelay = 0.1;
@@ -102,6 +100,7 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    [self prepareTickTimerIfNeed];
 }
 
 - (IBAction)onConsumePackets:(id)sender

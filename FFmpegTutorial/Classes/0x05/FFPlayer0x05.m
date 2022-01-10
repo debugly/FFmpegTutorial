@@ -58,6 +58,8 @@
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 
@@ -494,6 +496,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n",frame->pts);
+            self.audioFrameCount++;
             if (0 != frame_queue_push(&_sampq, frame, 0.0)) {
                 break;
             }
@@ -546,7 +549,7 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             //正常解码
             av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
-            
+            self.videoFrameCount++;
             if (0 != frame_queue_push(&_pictq, frame, 0.0)) {
                 break;
             }
@@ -584,12 +587,14 @@ static int decode_interrupt_cb(void *ctx)
             av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
             //释放该节点存储的frame的内存
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
         }
         
         if (frame_queue_nb_remaining(&_pictq) > 0) {
             Frame *vp = frame_queue_peek(&_pictq);
             av_log(NULL, AV_LOG_VERBOSE, "render video frame %lld\n", vp->frame->pts);
             frame_queue_pop(&_pictq);
+            self.videoFrameCount--;
         }
         
         mr_msleep(arc4random() % 30 + 30);
@@ -630,9 +635,10 @@ static int decode_interrupt_cb(void *ctx)
     self.onPacketBufferEmptyBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
+
 
 @end

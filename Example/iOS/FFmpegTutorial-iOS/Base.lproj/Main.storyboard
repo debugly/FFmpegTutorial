@@ -719,21 +719,14 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="fpD-kh-Ha4" userLabel="消耗音视频">
-                                <rect key="frame" x="224.5" y="47" width="119" height="30"/>
+                                <rect key="frame" x="100" y="37" width="119" height="30"/>
                                 <state key="normal" title="消耗音视频buffer"/>
                                 <connections>
                                     <action selector="onConsumePackets:" destination="a4L-uM-WbY" eventType="touchUpInside" id="BDp-rK-PNW"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nhR-7T-7HR" userLabel="消耗全部音视频">
-                                <rect key="frame" x="224.5" y="87" width="119" height="30"/>
-                                <state key="normal" title="消耗音视频buffer"/>
-                                <connections>
-                                    <action selector="onConsumeAllPackets:" destination="a4L-uM-WbY" eventType="touchUpInside" id="Qh6-ZA-Gdj"/>
-                                </connections>
-                            </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6q-8K-DTZ">
-                                <rect key="frame" x="20" y="127" width="528" height="188"/>
+                                <rect key="frame" x="20" y="77" width="528" height="238"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -742,18 +735,26 @@
                             <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="whiteLarge" translatesAutoresizingMaskIntoConstraints="NO" id="elN-JA-ZPr">
                                 <rect key="frame" x="265.5" y="141.5" width="37" height="37"/>
                             </activityIndicatorView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nhR-7T-7HR" userLabel="消耗全部音视频">
+                                <rect key="frame" x="299" y="37" width="149" height="30"/>
+                                <state key="normal" title="消耗全部音视频buffer"/>
+                                <connections>
+                                    <action selector="onConsumeAllPackets:" destination="a4L-uM-WbY" eventType="touchUpInside" id="Qh6-ZA-Gdj"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
+                            <constraint firstItem="fpD-kh-Ha4" firstAttribute="leading" secondItem="yDi-9y-hX4" secondAttribute="leading" constant="100" id="07A-QC-YMN"/>
                             <constraint firstItem="O6q-8K-DTZ" firstAttribute="leading" secondItem="yDi-9y-hX4" secondAttribute="leadingMargin" id="2VO-xe-E19"/>
-                            <constraint firstItem="fpD-kh-Ha4" firstAttribute="centerX" secondItem="yDi-9y-hX4" secondAttribute="centerX" id="2VS-QI-IzZ"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="nhR-7T-7HR" secondAttribute="trailing" constant="100" id="Et2-GR-Tp9"/>
                             <constraint firstItem="O6q-8K-DTZ" firstAttribute="top" secondItem="nhR-7T-7HR" secondAttribute="bottom" constant="10" id="IaE-W9-yqp"/>
                             <constraint firstItem="elN-JA-ZPr" firstAttribute="centerY" secondItem="yDi-9y-hX4" secondAttribute="centerY" id="LLB-2R-gcz"/>
-                            <constraint firstItem="nhR-7T-7HR" firstAttribute="centerX" secondItem="fpD-kh-Ha4" secondAttribute="centerX" id="MTB-Ll-Q8U"/>
-                            <constraint firstItem="fpD-kh-Ha4" firstAttribute="top" secondItem="1wq-nv-80d" secondAttribute="bottom" constant="15" id="Run-tF-PUL"/>
+                            <constraint firstItem="fpD-kh-Ha4" firstAttribute="top" secondItem="1wq-nv-80d" secondAttribute="bottom" constant="5" id="Run-tF-PUL"/>
                             <constraint firstAttribute="bottom" secondItem="O6q-8K-DTZ" secondAttribute="bottom" constant="5" id="Uvs-Kd-Cei"/>
-                            <constraint firstItem="nhR-7T-7HR" firstAttribute="top" secondItem="fpD-kh-Ha4" secondAttribute="bottom" constant="10" id="YMi-OC-hPa"/>
                             <constraint firstItem="elN-JA-ZPr" firstAttribute="centerX" secondItem="yDi-9y-hX4" secondAttribute="centerX" id="bgM-Nw-aPI"/>
+                            <constraint firstItem="nhR-7T-7HR" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="fpD-kh-Ha4" secondAttribute="trailing" constant="8" symbolic="YES" id="kUg-iK-80H"/>
+                            <constraint firstItem="nhR-7T-7HR" firstAttribute="centerY" secondItem="fpD-kh-Ha4" secondAttribute="centerY" id="mt7-ep-Jon"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O6q-8K-DTZ" secondAttribute="trailing" id="xYj-1i-NeI"/>
                         </constraints>
                     </view>

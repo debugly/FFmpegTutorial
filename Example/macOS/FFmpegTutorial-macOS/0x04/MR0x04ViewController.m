@@ -53,7 +53,7 @@
 
 - (void)prepareTickTimerIfNeed
 {
-    if ([self.timer isValid]) {
+    if (self.timer && ![self.timer isValid]) {
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
@@ -68,6 +68,8 @@
     if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
         return;
     }
+    
+    [self.indicatorView stopAnimation:nil];
     
     NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
     
@@ -88,6 +90,7 @@
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
+        self.textView.string = @"";
     }
     
     FFPlayer0x04 *player = [[FFPlayer0x04 alloc] init];
@@ -104,24 +107,10 @@
         self.timer = nil;
     }];
     
-    [player onPacketBufferFull:^{
-        __strongSelf__
-        MR_sync_main_queue(^{
-            [self.indicatorView stopAnimation:nil];
-            [self prepareTickTimerIfNeed];
-        });
-    }];
-    
-    [player onPacketBufferEmpty:^{
-        __strongSelf__
-        MR_sync_main_queue(^{
-            [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-        });
-    }];
-    
     [player prepareToPlay];
     [player play];
     self.player = player;
+    [self prepareTickTimerIfNeed];
 }
 
 - (void)viewDidLoad
