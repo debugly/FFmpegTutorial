@@ -52,7 +52,7 @@
 
 - (void)prepareTickTimerIfNeed
 {
-    if ([self.timer isValid]) {
+    if (self.timer && ![self.timer isValid]) {
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
