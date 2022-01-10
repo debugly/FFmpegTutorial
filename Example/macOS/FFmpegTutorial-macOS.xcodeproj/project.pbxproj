@@ -255,7 +255,7 @@
 			path = 0x20;
 			sourceTree = "<group>";
 		};
-		DD6840D326FA2CBA00D8B16B /* 0x201 */ = {
+		DD6840D326FA2CBA00D8B16B /* 0x20-1 */ = {
 			isa = PBXGroup;
 			children = (
 				DD6840DC26FA2D2D00D8B16B /* MR0x201VideoRenderer.h */,
@@ -264,10 +264,10 @@
 				DD6840E026FA2D2D00D8B16B /* MR0x201ViewController.m */,
 				DD6840DD26FA2D2D00D8B16B /* MR0x201ViewController.xib */,
 			);
-			path = 0x201;
+			path = "0x20-1";
 			sourceTree = "<group>";
 		};
-		DD6840E42700BE5400D8B16B /* 0x202 */ = {
+		DD6840E42700BE5400D8B16B /* 0x20-2 */ = {
 			isa = PBXGroup;
 			children = (
 				DD6840F82700BFD600D8B16B /* AudioRenderImp */,
@@ -279,7 +279,7 @@
 				DD6840E52700BE5400D8B16B /* MR0x202ViewController.m */,
 				DD6840E72700BE5400D8B16B /* MR0x202ViewController.xib */,
 			);
-			path = 0x202;
+			path = "0x20-2";
 			sourceTree = "<group>";
 		};
 		DD6840F82700BFD600D8B16B /* AudioRenderImp */ = {
@@ -294,7 +294,7 @@
 			path = AudioRenderImp;
 			sourceTree = "<group>";
 		};
-		DD7D809426B8351500D968F3 /* 0x143 */ = {
+		DD7D809426B8351500D968F3 /* 0x14-3 */ = {
 			isa = PBXGroup;
 			children = (
 				DD7D809526B8351500D968F3 /* MR0x143VideoRenderer.h */,
@@ -303,10 +303,10 @@
 				DD7D809726B8351500D968F3 /* MR0x143ViewController.m */,
 				DD7D809B26B8351500D968F3 /* MR0x143ViewController.xib */,
 			);
-			path = 0x143;
+			path = "0x14-3";
 			sourceTree = "<group>";
 		};
-		DD7D80A826C1725B00D968F3 /* 0x144 */ = {
+		DD7D80A826C1725B00D968F3 /* 0x14-4 */ = {
 			isa = PBXGroup;
 			children = (
 				DD7D80A926C1725B00D968F3 /* MR0x144VideoRenderer.h */,
@@ -315,10 +315,10 @@
 				DD7D80AA26C1725B00D968F3 /* MR0x144ViewController.m */,
 				DD7D80AB26C1725B00D968F3 /* MR0x144ViewController.xib */,
 			);
-			path = 0x144;
+			path = "0x14-4";
 			sourceTree = "<group>";
 		};
-		DD7D80B326D29D0800D968F3 /* 0x145 */ = {
+		DD7D80B326D29D0800D968F3 /* 0x14-5 */ = {
 			isa = PBXGroup;
 			children = (
 				DD7D80B426D29D0800D968F3 /* MR0x145VideoRenderer.h */,
@@ -327,7 +327,7 @@
 				DD7D80B526D29D0800D968F3 /* MR0x145ViewController.m */,
 				DD7D80B626D29D0800D968F3 /* MR0x145ViewController.xib */,
 			);
-			path = 0x145;
+			path = "0x14-5";
 			sourceTree = "<group>";
 		};
 		DD91F13A268B6A9E00B96334 /* 0x04 */ = {
@@ -408,7 +408,7 @@
 			path = 0x14;
 			sourceTree = "<group>";
 		};
-		DD91F28026AC06C900B96334 /* 0x141 */ = {
+		DD91F28026AC06C900B96334 /* 0x14-1 */ = {
 			isa = PBXGroup;
 			children = (
 				DD91F28226AC06C900B96334 /* MR0x141VideoRenderer.h */,
@@ -417,7 +417,7 @@
 				DD91F28426AC06C900B96334 /* MR0x141ViewController.m */,
 				DD91F28326AC06C900B96334 /* MR0x141ViewController.xib */,
 			);
-			path = 0x141;
+			path = "0x14-1";
 			sourceTree = "<group>";
 		};
 		DD91F28B26AC081200B96334 /* OpenGLAssets */ = {
@@ -445,7 +445,7 @@
 			path = Shaders;
 			sourceTree = "<group>";
 		};
-		DD91F30F26B1A41E00B96334 /* 0x142 */ = {
+		DD91F30F26B1A41E00B96334 /* 0x14-2 */ = {
 			isa = PBXGroup;
 			children = (
 				DD91F31226B1A41E00B96334 /* MR0x142VideoRenderer.h */,
@@ -454,7 +454,7 @@
 				DD91F31126B1A41E00B96334 /* MR0x142ViewController.m */,
 				DD91F31626B1A41E00B96334 /* MR0x142ViewController.xib */,
 			);
-			path = 0x142;
+			path = "0x14-2";
 			sourceTree = "<group>";
 		};
 		DD97E83525720E3000B93F9F /* Root */ = {
@@ -566,40 +566,40 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
-				DD6840E42700BE5400D8B16B /* 0x202 */,
-				DD6840D326FA2CBA00D8B16B /* 0x201 */,
-				DD6840C926FA24CC00D8B16B /* 0x20 */,
-				DD7D80B326D29D0800D968F3 /* 0x145 */,
-				DD7D80A826C1725B00D968F3 /* 0x144 */,
-				DD7D809426B8351500D968F3 /* 0x143 */,
-				DD91F30F26B1A41E00B96334 /* 0x142 */,
-				DD91F28026AC06C900B96334 /* 0x141 */,
-				DD91F262269B381000B96334 /* 0x14 */,
-				DD91F259269B2CAF00B96334 /* 0x13 */,
-				DD91F1D92697437F00B96334 /* 0x11 */,
-				DD91F1D026960C3300B96334 /* 0x10 */,
-				DD91F1CA269361C800B96334 /* 0x06 */,
-				DD91F14A2692137900B96334 /* 0x05 */,
-				DD91F13A268B6A9E00B96334 /* 0x04 */,
-				DDB144CB26282D5100495754 /* 0x03 */,
-				DDB1444F262822E000495754 /* 0x02 */,
 				DDF6576426273C3700116F05 /* 0x01 */,
+				DDB1444F262822E000495754 /* 0x02 */,
+				DDB144CB26282D5100495754 /* 0x03 */,
+				DD91F13A268B6A9E00B96334 /* 0x04 */,
+				DD91F14A2692137900B96334 /* 0x05 */,
+				DD91F1CA269361C800B96334 /* 0x06 */,
+				DD91F1D026960C3300B96334 /* 0x10 */,
+				DD91F1D92697437F00B96334 /* 0x11 */,
+				DD91F259269B2CAF00B96334 /* 0x13 */,
+				DD91F262269B381000B96334 /* 0x14 */,
+				DD91F28026AC06C900B96334 /* 0x14-1 */,
+				DD91F30F26B1A41E00B96334 /* 0x14-2 */,
+				DD7D809426B8351500D968F3 /* 0x14-3 */,
+				DD7D80A826C1725B00D968F3 /* 0x14-4 */,
+				DD7D80B326D29D0800D968F3 /* 0x14-5 */,
+				DD6840C926FA24CC00D8B16B /* 0x20 */,
+				DD6840D326FA2CBA00D8B16B /* 0x20-1 */,
+				DD6840E42700BE5400D8B16B /* 0x20-2 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
-				DDB144D126282E4100495754 /* MRRWeakProxy.h */,
-				DDB144D226282E4100495754 /* MRRWeakProxy.m */,
-				DD91F28B26AC081200B96334 /* OpenGLAssets */,
-				DDE70E462584AC2900580A80 /* TextFieldCell */,
-				DDB73F642577DDD10060EB57 /* MRUtil */,
-				DDB73E912577DB9A0060EB57 /* DragView */,
-				DD97E8482572B05400B93F9F /* NSNavigationController */,
-				DD97E83525720E3000B93F9F /* Root */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
-				DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */,
+				DDB73E912577DB9A0060EB57 /* DragView */,
+				DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */,
 				DDFDF8AF2564CDCA00F1CAE2 /* Info.plist */,
 				DDFDF8B02564CDCA00F1CAE2 /* main.m */,
+				DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */,
+				DDB144D126282E4100495754 /* MRRWeakProxy.h */,
+				DDB144D226282E4100495754 /* MRRWeakProxy.m */,
+				DDB73F642577DDD10060EB57 /* MRUtil */,
+				DD97E8482572B05400B93F9F /* NSNavigationController */,
+				DD91F28B26AC081200B96334 /* OpenGLAssets */,
 				DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */,
-				DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */,
+				DD97E83525720E3000B93F9F /* Root */,
+				DDE70E462584AC2900580A80 /* TextFieldCell */,
 			);
 			path = "FFmpegTutorial-macOS";
 			sourceTree = "<group>";

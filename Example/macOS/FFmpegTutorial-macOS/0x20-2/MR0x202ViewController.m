@@ -237,7 +237,11 @@
 - (IBAction)go:(NSButton *)sender
 {
     if (self.inputField.stringValue.length > 0) {
-        [self parseURL:self.inputField.stringValue];
+        if ([self.player.contentPath isEqualToString:self.inputField.stringValue]) {
+            [self.videoRenderer snapshot];
+        } else {
+            [self parseURL:self.inputField.stringValue];
+        }
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
