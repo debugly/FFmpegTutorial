@@ -73,6 +73,9 @@
 		DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73E922577DB9A0060EB57 /* MRDragView.m */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
+		DDEC8443278BF6C0007C7DEA /* MR0x40VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEC843E278BF6C0007C7DEA /* MR0x40VideoRenderer.m */; };
+		DDEC8444278BF6C0007C7DEA /* MR0x40ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDEC843F278BF6C0007C7DEA /* MR0x40ViewController.m */; };
+		DDEC8445278BF6C0007C7DEA /* MR0x40ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDEC8440278BF6C0007C7DEA /* MR0x40ViewController.xib */; };
 		DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF6576626273C6E00116F05 /* MR0x01ViewController.m */; };
 		DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
@@ -208,6 +211,11 @@
 		DDB73F662577DDE60060EB57 /* MRUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRUtil.m; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
+		DDEC843E278BF6C0007C7DEA /* MR0x40VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x40VideoRenderer.m; sourceTree = "<group>"; };
+		DDEC843F278BF6C0007C7DEA /* MR0x40ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x40ViewController.m; sourceTree = "<group>"; };
+		DDEC8440278BF6C0007C7DEA /* MR0x40ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x40ViewController.xib; sourceTree = "<group>"; };
+		DDEC8441278BF6C0007C7DEA /* MR0x40ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x40ViewController.h; sourceTree = "<group>"; };
+		DDEC8442278BF6C0007C7DEA /* MR0x40VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x40VideoRenderer.h; sourceTree = "<group>"; };
 		DDF6576526273C6E00116F05 /* MR0x01ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDF6576626273C6E00116F05 /* MR0x01ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
@@ -535,6 +543,18 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DDEC843D278BF6C0007C7DEA /* 0x40 */ = {
+			isa = PBXGroup;
+			children = (
+				DDEC8442278BF6C0007C7DEA /* MR0x40VideoRenderer.h */,
+				DDEC843E278BF6C0007C7DEA /* MR0x40VideoRenderer.m */,
+				DDEC8441278BF6C0007C7DEA /* MR0x40ViewController.h */,
+				DDEC843F278BF6C0007C7DEA /* MR0x40ViewController.m */,
+				DDEC8440278BF6C0007C7DEA /* MR0x40ViewController.xib */,
+			);
+			path = 0x40;
+			sourceTree = "<group>";
+		};
 		DDF6576426273C3700116F05 /* 0x01 */ = {
 			isa = PBXGroup;
 			children = (
@@ -584,6 +604,7 @@
 				DD6840C926FA24CC00D8B16B /* 0x20 */,
 				DD6840D326FA2CBA00D8B16B /* 0x20-1 */,
 				DD6840E42700BE5400D8B16B /* 0x20-2 */,
+				DDEC843D278BF6C0007C7DEA /* 0x40 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -668,6 +689,7 @@
 				DD91F268269B381000B96334 /* MR0x14ViewController.xib in Resources */,
 				DD6840CF26FA24CC00D8B16B /* MR0x20ViewController.xib in Resources */,
 				DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */,
+				DDEC8445278BF6C0007C7DEA /* MR0x40ViewController.xib in Resources */,
 				DD6840EB2700BE5400D8B16B /* MR0x202ViewController.xib in Resources */,
 				DD91F31A26B1A41E00B96334 /* MR0x142ViewController.xib in Resources */,
 				DD91F29326AC082C00B96334 /* common.vsh in Resources */,
@@ -753,6 +775,7 @@
 				DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */,
 				DD6840D026FA24CC00D8B16B /* MR0x20VideoRenderer.m in Sources */,
 				DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */,
+				DDEC8443278BF6C0007C7DEA /* MR0x40VideoRenderer.m in Sources */,
 				DD6840EC2700BE5400D8B16B /* MR0x202VideoRenderer.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DD6840E226FA2D2E00D8B16B /* MR0x201VideoRenderer.m in Sources */,
@@ -767,6 +790,7 @@
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 				DD6840EA2700BE5400D8B16B /* MR0x202ViewController.m in Sources */,
 				DD6840E326FA2D2E00D8B16B /* MR0x201ViewController.m in Sources */,
+				DDEC8444278BF6C0007C7DEA /* MR0x40ViewController.m in Sources */,
 				DD7D809D26B8351500D968F3 /* MR0x143VideoRenderer.m in Sources */,
 				DD91F14E2692137900B96334 /* MR0x05ViewController.m in Sources */,
 			);

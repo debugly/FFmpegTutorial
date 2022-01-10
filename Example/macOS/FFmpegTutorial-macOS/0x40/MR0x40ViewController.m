@@ -1,10 +1,9 @@
 //
 //  MR0x40ViewController.m
-//  FFmpegTutorial-iOS
+//  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/10.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
-//
 //
 
 #import "MR0x40ViewController.h"
@@ -14,7 +13,7 @@
 @interface MR0x40ViewController ()<FFPlayer0x40Delegate>
 
 @property (strong) FFPlayer0x40 *player;
-@property (weak, nonatomic) IBOutlet MR0x40VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x40VideoRenderer *videoRenderer;
 
 @end
 
@@ -26,6 +25,15 @@
         [_player stop];
         _player = nil;
     }
+}
+
+- (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
+{
+    CFRetain(sampleBuffer);
+    dispatch_sync(dispatch_get_main_queue(), ^{
+        [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
+        CFRelease(sampleBuffer);
+    });
 }
 
 - (void)preparePlayer
@@ -50,38 +58,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.videoRenderer.contentMode = UIViewContentModeScaleAspectFit;
+    [self.view setWantsLayer:YES];
+    self.view.layer.backgroundColor = [[NSColor whiteColor] CGColor];
     [self preparePlayer];
 }
 
-- (void)viewWillAppear:(BOOL)animated
+- (void)viewWillAppear
 {
-    [super viewWillAppear:animated];
+    [super viewWillAppear];
     [self.player prapareWithSize:self.videoRenderer.bounds.size];
     [self.player play];
 }
 
-- (void)viewWillDisappear:(BOOL)animated
+- (void)viewWillDisappear
 {
-    [super viewWillDisappear:animated];
+    [super viewWillDisappear];
     if (self.player) {
         [self.player stop];
         self.player = nil;
     }
 }
 
-- (IBAction)onExchange:(UISegmentedControl *)sender
+- (IBAction)onExchange:(NSSegmentedControl *)sender
 {
-    self.player.videoType = sender.selectedSegmentIndex;
-}
-
-- (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
-{
-    CFRetain(sampleBuffer);
-    dispatch_sync(dispatch_get_main_queue(), ^{
-        [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
-        CFRelease(sampleBuffer);
-    });
+    self.player.videoType = sender.selectedSegment;
 }
 
 @end

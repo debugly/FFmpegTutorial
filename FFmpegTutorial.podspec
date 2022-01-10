@@ -109,6 +109,11 @@ Pod::Spec.new do |s|
     ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h'
   end
 
+  s.subspec '0x40' do |ss|
+    ss.source_files = 'FFmpegTutorial/Classes/0x40/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x40/FFPlayer0x40.h'
+  end
+
   s.dependency 'MRFFmpegPod'
   
 end

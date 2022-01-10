@@ -635,4 +635,5 @@ static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,in
     
     return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
 }
+
 @end

@@ -149,14 +149,13 @@ static CGFloat kNavigationBarHeight = 64;
 {
     NSViewController *fromViewController = [self.viewControllerArr lastObject];
     [self.viewControllerArr addObject:toVC];
-    [self.view addSubview:toVC.view];
-    toVC.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self addChildViewController:toVC];
     __weakSelf__
     [self transitionFromViewController:fromViewController toViewController:toVC options:animated?NSViewControllerTransitionSlideLeft:NSViewControllerTransitionNone completionHandler:^{
         __strongSelf__
         self.title = toVC.title;
     }];
+    toVC.view.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     [self.backView setHidden:NO];
 }
 

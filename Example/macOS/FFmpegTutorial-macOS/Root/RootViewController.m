@@ -155,6 +155,11 @@
             @"title":@"0x20-2",
             @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
             @"class":@"MR0x202ViewController",
+        },
+        @{
+            @"title":@"0x40",
+            @"detail":@"雪花屏，灰色色阶图",
+            @"class":@"MR0x40ViewController",
         }
     ];
     
