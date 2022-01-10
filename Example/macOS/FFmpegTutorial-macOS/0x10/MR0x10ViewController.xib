@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="18122" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="18122"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -100,25 +100,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="646" height="232"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <textView drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Yzs-Jl-8Tf">
-                                <rect key="frame" x="0.0" y="0.0" width="606" height="232"/>
+                            <textView editable="NO" selectable="NO" drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" allowsCharacterPickerTouchBarItem="NO" textCompletion="NO" id="Yzs-Jl-8Tf">
+                                <rect key="frame" x="0.0" y="0.0" width="606" height="227"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                 <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="636" height="232"/>
-                                <size key="maxSize" width="636" height="10000000"/>
+                                <size key="minSize" width="636" height="227"/>
+                                <size key="maxSize" width="646" height="10000000"/>
                                 <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
                             </textView>
                         </subviews>
+                        <color key="backgroundColor" red="0.78431372549019607" green="0.78431372549019607" blue="0.78431372549019607" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                     </clipView>
-                    <edgeInsets key="contentInsets" left="10" right="0.0" top="0.0" bottom="0.0"/>
+                    <edgeInsets key="contentInsets" left="10" right="0.0" top="0.0" bottom="5"/>
                     <edgeInsets key="scrollerInsets" left="10" right="0.0" top="0.0" bottom="0.0"/>
                     <scroller key="horizontalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="YES" id="Slb-ex-zfK">
                         <rect key="frame" x="-100" y="-100" width="464" height="15"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                     <scroller key="verticalScroller" hidden="YES" verticalHuggingPriority="750" horizontal="NO" id="eCE-aQ-AZB">
-                        <rect key="frame" x="469" y="20" width="15" height="152"/>
+                        <rect key="frame" x="631" y="0.0" width="15" height="227"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </scroller>
                 </scrollView>

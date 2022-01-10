@@ -22,6 +22,7 @@
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
 @property (assign) BOOL scrolling;
+@property (assign) MR_PACKET_SIZE pktSize;
 
 @end
 
@@ -59,7 +60,7 @@
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }
@@ -75,7 +76,23 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    [self appendMsg:[self.player peekPacketBufferStatus]];
+    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
+    if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
+        return;
+    }
+    
+    [self.indicatorView stopAnimation:nil];
+    
+    NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
+    
+    NSString *pktMsg = nil;
+    if (mr_packet_size_equal_zero(pktSize)) {
+        pktMsg = @"Packet Buffer is Empty";
+    } else {
+        pktMsg = [NSString stringWithFormat:@" [Packet] audio(%02d)，video(%02d)",pktSize.audio_pkt_size,pktSize.video_pkt_size];
+    }
+    self.pktSize = pktSize;
+    [self appendMsg:[frmMsg stringByAppendingString:pktMsg]];
 }
 
 - (void)parseURL:(NSString *)url
@@ -85,6 +102,7 @@
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
+        self.textView.string = @"";
     }
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
@@ -101,22 +119,6 @@
         self.timer = nil;
     }];
     
-    [player onPacketBufferFull:^{
-        __strongSelf__
-        MR_sync_main_queue(^{
-            [self.indicatorView stopAnimation:nil];
-            [self prepareTickTimerIfNeed];
-        });
-    }];
-    
-    [player onPacketBufferEmpty:^{
-        MR_sync_main_queue(^{
-            __strongSelf__
-            [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-            [self appendMsg:[self.player peekPacketBufferStatus]];
-        });
-    }];
-    
     player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
         // MR_PIX_FMT_MASK_ARGB;// MR_PIX_FMT_MASK_RGBA;
         //MR_PIX_FMT_MASK_0RGB; //MR_PIX_FMT_MASK_RGB24;
@@ -125,6 +127,7 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    [self prepareTickTimerIfNeed];
 }
 
 - (void)viewDidLoad

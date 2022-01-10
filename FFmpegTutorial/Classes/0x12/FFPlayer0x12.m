@@ -58,6 +58,8 @@
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 
@@ -439,6 +441,7 @@ static int decode_interrupt_cb(void *ctx)
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &_sampq;
         frame_queue_push(fq, frame, 0.0);
+        self.audioFrameCount++;
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &_pictq;
         
@@ -453,6 +456,7 @@ static int decode_interrupt_cb(void *ctx)
             outP = frame;
         }
         frame_queue_push(fq, outP, 0.0);
+        self.videoFrameCount++;
     }
 }
 
@@ -514,6 +518,7 @@ static int decode_interrupt_cb(void *ctx)
             av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
             //释放该节点存储的frame的内存
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
         }
         
         NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
@@ -522,6 +527,7 @@ static int decode_interrupt_cb(void *ctx)
             Frame *vp = frame_queue_peek(&_pictq);
             [self doDisplayVideoFrame:vp];
             frame_queue_pop(&_pictq);
+            self.videoFrameCount--;
         }
         
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
@@ -565,9 +571,9 @@ static int decode_interrupt_cb(void *ctx)
     self.onPacketBufferEmptyBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
 @end

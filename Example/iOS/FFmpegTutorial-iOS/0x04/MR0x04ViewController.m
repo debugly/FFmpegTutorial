@@ -59,9 +59,16 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
-    
+    [self prepareTickTimerIfNeed];
+}
+
+- (void)prepareTickTimerIfNeed
+{
+    if (self.timer && ![self.timer isValid]) {
+        return;
+    }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }

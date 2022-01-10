@@ -35,6 +35,8 @@
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 

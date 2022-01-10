@@ -70,6 +70,8 @@
 @property (atomic, assign) BOOL paused;
 @property (atomic, assign) BOOL audioFrameEmpty;
 @property (atomic, assign) BOOL videoFrameEmpty;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 
@@ -571,6 +573,7 @@ static int decode_interrupt_cb(void *ctx)
             af->pts = (frame->pts == AV_NOPTS_VALUE) ? NAN : frame->pts * av_q2d(tb);;
         });
         self.audioFrameEmpty = NO;
+        self.audioFrameCount++;
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &_pictq;
         
@@ -594,6 +597,7 @@ static int decode_interrupt_cb(void *ctx)
             af->pts = pts;
         });
         self.videoFrameEmpty = NO;
+        self.videoFrameCount++;
     }
 }
 
@@ -718,6 +722,7 @@ static int decode_interrupt_cb(void *ctx)
                 av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
                 frame_drops_late);
                 frame_queue_pop(&_pictq);
+                self.videoFrameCount--;
                 if (frame_queue_nb_remaining(&_pictq) == 0) {
                     self.videoFrameEmpty = YES;
                 }
@@ -729,6 +734,7 @@ static int decode_interrupt_cb(void *ctx)
         
         [self doDisplayVideoFrame:vp];
         frame_queue_pop(&_pictq);
+        self.videoFrameCount--;
         if (frame_queue_nb_remaining(&_pictq) > 1) {
             Frame *nextvp = frame_queue_peek(&_pictq);
             double duration = [self vp_durationWithP1:vp p2:nextvp];//vp显示时长
@@ -802,6 +808,7 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
             if (frame_queue_nb_remaining(&_sampq) == 0) {
                 self.audioFrameEmpty = YES;
             }
@@ -873,6 +880,7 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
             if (frame_queue_nb_remaining(&_sampq) == 0) {
                 self.audioFrameEmpty = YES;
             }
@@ -957,9 +965,9 @@ static int decode_interrupt_cb(void *ctx)
     self.onVideoEndsBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
 @end

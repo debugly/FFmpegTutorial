@@ -120,8 +120,6 @@
     if (path) {
         self.inputField.stringValue = path;
     }
-    
-    
 }
 
 - (void)handleDragFileList:(NSArray <NSURL *> *)fileUrls

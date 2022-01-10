@@ -57,6 +57,8 @@
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 
@@ -521,6 +523,7 @@ static int decode_interrupt_cb(void *ctx)
             outP = frame;
         }
         frame_queue_push(fq, outP, 0.0);
+        self.audioFrameCount++;
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &_pictq;
         
@@ -535,6 +538,7 @@ static int decode_interrupt_cb(void *ctx)
             outP = frame;
         }
         frame_queue_push(fq, outP, 0.0);
+        self.videoFrameCount++;
     }
 }
 
@@ -585,6 +589,7 @@ static int decode_interrupt_cb(void *ctx)
             Frame *vp = frame_queue_peek(&_pictq);
             [self doDisplayVideoFrame:vp];
             frame_queue_pop(&_pictq);
+            self.videoFrameCount--;
         }
         
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
@@ -632,6 +637,7 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
         }
     }
     return filled;
@@ -691,6 +697,7 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
         }
     }
     return filled;
@@ -730,9 +737,9 @@ static int decode_interrupt_cb(void *ctx)
     self.onPacketBufferEmptyBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
 @end

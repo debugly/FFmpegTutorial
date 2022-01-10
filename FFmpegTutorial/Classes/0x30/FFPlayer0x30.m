@@ -67,6 +67,8 @@
 //读包完毕
 @property (atomic, assign) BOOL eof;
 @property (atomic, assign) BOOL videoEnds;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 
@@ -564,6 +566,7 @@ static int decode_interrupt_cb(void *ctx)
             af->duration = duration;
             af->pts = (frame->pts == AV_NOPTS_VALUE) ? NAN : frame->pts * av_q2d(tb);;
         });
+        self.audioFrameCount++;
     } else if (decoder == self.videoDecoder) {
         FrameQueue *fq = &_pictq;
         
@@ -585,6 +588,7 @@ static int decode_interrupt_cb(void *ctx)
             af->duration = duration;
             af->pts = pts;
         });
+        self.videoFrameCount++;
     }
 }
 
@@ -695,12 +699,14 @@ static int decode_interrupt_cb(void *ctx)
                 av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
                 frame_drops_late);
                 frame_queue_pop(&_pictq);
+                self.videoFrameCount--;
                 //继续重试
                 [self video_refresh:remaining_time];
                 return;
             }
         }
         frame_queue_pop(&_pictq);
+        self.videoFrameCount--;
     } else if(self.eof && self.videoDecoder.eof){
         //no picture do display.
         self.videoClk.eof = YES;
@@ -767,6 +773,7 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
         }
     }
     
@@ -835,6 +842,7 @@ static int decode_interrupt_cb(void *ctx)
             //读取完毕，则清空；读取下一个包
             av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
+            self.audioFrameCount--;
         }
     }
     
@@ -904,9 +912,9 @@ static int decode_interrupt_cb(void *ctx)
     self.onVideoEndsBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
 @end

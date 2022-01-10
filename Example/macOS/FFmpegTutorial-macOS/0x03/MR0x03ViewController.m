@@ -106,21 +106,6 @@
         self.timer = nil;
     }];
     
-    [player onPacketBufferFull:^{
-        __strongSelf__
-        MR_sync_main_queue(^{
-            [self.indicatorView stopAnimation:nil];
-        });
-    }];
-    
-    [player onPacketBufferEmpty:^{
-        __strongSelf__
-        MR_sync_main_queue(^{
-            [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-            [self onTimer:nil];
-        });
-    }];
-    
     [player prepareToPlay];
     [player play];
     self.player = player;

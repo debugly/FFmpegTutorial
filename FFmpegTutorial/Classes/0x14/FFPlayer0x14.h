@@ -26,6 +26,11 @@ NS_ASSUME_NONNULL_BEGIN
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
 @property (nonatomic, weak) id <FFPlayer0x14Delegate> delegate;
+///记录解码后的视频桢总数
+@property (atomic, assign, readonly) int videoFrameCount;
+///记录解码后的音频桢总数
+@property (atomic, assign, readonly) int audioFrameCount;
+
 ///准备
 - (void)prepareToPlay;
 ///读包
@@ -38,8 +43,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onPacketBufferEmpty:(dispatch_block_t)block;
 - (void)onPacketBufferFull:(dispatch_block_t)block;
 
-///m/n 缓冲情况
-- (NSString *)peekPacketBufferStatus;
+///缓冲情况
+- (MR_PACKET_SIZE)peekPacketBufferStatus;
 
 @end
 

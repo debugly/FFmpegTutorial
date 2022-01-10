@@ -23,6 +23,7 @@
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
 @property (assign) BOOL scrolling;
+@property (assign) MR_PACKET_SIZE pktSize;
 
 @property (strong) MR0x202AudioRenderer *audioRenderer;
 
@@ -30,7 +31,7 @@
 
 @implementation MR0x202ViewController
 
-- (void)dealloc
+- (void)_stop
 {
     if(_audioRenderer){
         [_audioRenderer pause];
@@ -50,6 +51,11 @@
         [_player stop];
         _player = nil;
     }
+}
+
+- (void)dealloc
+{
+    [self _stop];
     
     _textView.delegate = nil;
     _textView = nil;
@@ -71,7 +77,7 @@
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }
@@ -149,17 +155,29 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    [self appendMsg:[self.player peekPacketBufferStatus]];
+    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
+    if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
+        return;
+    }
+    
+    [self.indicatorView stopAnimation:nil];
+    
+    NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
+    
+    NSString *pktMsg = nil;
+    if (mr_packet_size_equal_zero(pktSize)) {
+        pktMsg = @"Packet Buffer is Empty";
+    } else {
+        pktMsg = [NSString stringWithFormat:@" [Packet] audio(%02d)，video(%02d)",pktSize.audio_pkt_size,pktSize.video_pkt_size];
+    }
+    self.pktSize = pktSize;
+    [self appendMsg:[frmMsg stringByAppendingString:pktMsg]];
 }
 
 - (void)parseURL:(NSString *)url
 {
-    if (self.player) {
-        [self.player stop];
-        self.player = nil;
-        [self.timer invalidate];
-        self.timer = nil;
-    }
+    [self _stop];
+    self.textView.string = @"";
     
     FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
     player.contentPath = url;
@@ -174,23 +192,6 @@
         [self.timer invalidate];
         self.timer = nil;
     }];
-    
-    [player onPacketBufferFull:^{
-        __strongSelf__
-        MR_sync_main_queue(^{
-            [self.indicatorView stopAnimation:nil];
-            [self prepareTickTimerIfNeed];
-        });
-    }];
-    
-    [player onPacketBufferEmpty:^{
-        MR_sync_main_queue(^{
-            __strongSelf__
-            [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-            [self appendMsg:[self.player peekPacketBufferStatus]];
-        });
-    }];
-    
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV21;
     player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_S16 | MR_SAMPLE_FMT_MASK_FLT;
     
@@ -198,6 +199,7 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    [self prepareTickTimerIfNeed];
 }
 
 - (void)viewDidLoad
@@ -237,11 +239,7 @@
 - (IBAction)go:(NSButton *)sender
 {
     if (self.inputField.stringValue.length > 0) {
-        if ([self.player.contentPath isEqualToString:self.inputField.stringValue]) {
-            [self.videoRenderer snapshot];
-        } else {
-            [self parseURL:self.inputField.stringValue];
-        }
+        [self parseURL:self.inputField.stringValue];
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }

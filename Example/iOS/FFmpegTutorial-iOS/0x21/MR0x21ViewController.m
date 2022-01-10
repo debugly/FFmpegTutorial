@@ -36,6 +36,7 @@
 
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
+@property (assign) MR_PACKET_SIZE pktSize;
 
 //声音大小
 @property (nonatomic,assign) float outputVolume;
@@ -118,9 +119,16 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
-    
+    [self prepareTickTimerIfNeed];
+}
+
+- (void)prepareTickTimerIfNeed
+{
+    if (self.timer && ![self.timer isValid]) {
+        return;
+    }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }
@@ -248,10 +256,26 @@ static void MRAudioQueueOutputCallback(
 
 - (void)onTimer:(NSTimer *)sender
 {
+    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
+    if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
+        return;
+    }
+    
     if ([self.indicatorView isAnimating]) {
         [self.indicatorView stopAnimating];
     }
-    [self appendMsg:[self.player peekPacketBufferStatus]];
+    
+    NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
+    
+    NSString *pktMsg = nil;
+    if (mr_packet_size_equal_zero(pktSize)) {
+        pktMsg = @"Packet Buffer is Empty";
+    } else {
+        pktMsg = [NSString stringWithFormat:@" [Packet] audio(%02d)，video(%02d)",pktSize.audio_pkt_size,pktSize.video_pkt_size];
+    }
+    self.pktSize = pktSize;
+    [self appendMsg:[frmMsg stringByAppendingString:pktMsg]];
+    
     if (self.ignoreScrollBottom > 0) {
         self.ignoreScrollBottom --;
     } else {

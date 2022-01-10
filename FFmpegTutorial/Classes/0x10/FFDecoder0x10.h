@@ -38,6 +38,10 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, assign, readonly) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;
+///记录解码后的视频桢总数
+@property (atomic, assign, readonly) int videoFrameCount;
+///记录解码后的音频桢总数
+@property (atomic, assign, readonly) int audioFrameCount;
 
 /**
  打开解码器，创建解码线程;

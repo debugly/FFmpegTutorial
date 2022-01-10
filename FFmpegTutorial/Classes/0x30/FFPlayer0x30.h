@@ -32,6 +32,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, assign) int supportedSampleRate;
 
 @property (nonatomic, weak) id <FFPlayer0x30Delegate> delegate;
+///记录解码后的视频桢总数
+@property (atomic, assign, readonly) int videoFrameCount;
+///记录解码后的音频桢总数
+@property (atomic, assign, readonly) int audioFrameCount;
+
 ///准备
 - (void)prepareToPlay;
 ///读包
@@ -45,8 +50,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onPacketBufferFull:(dispatch_block_t)block;
 - (void)onVideoEnds:(dispatch_block_t)block;
 
-///m/n 缓冲情况
-- (NSString *)peekPacketBufferStatus;
+///缓冲情况
+- (MR_PACKET_SIZE)peekPacketBufferStatus;
 
 // 获取 packet 形式的音频数据，返回实际填充的字节数
 - (UInt32)fetchPacketSample:(uint8_t*)buffer

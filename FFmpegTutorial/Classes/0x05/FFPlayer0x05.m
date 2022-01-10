@@ -640,5 +640,4 @@ static int decode_interrupt_cb(void *ctx)
     return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
-
 @end
