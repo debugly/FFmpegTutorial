@@ -17,6 +17,7 @@
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
 @property (assign, nonatomic) NSInteger ignoreScrollBottom;
 @property (weak, nonatomic) NSTimer *timer;
+@property (assign, nonatomic) MR_PACKET_SIZE pktSize;
 
 @end
 
@@ -67,10 +68,26 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
+    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
+    if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
+        return;
+    }
+    
     if ([self.indicatorView isAnimating]) {
         [self.indicatorView stopAnimating];
     }
-    [self appendMsg:[self.player peekPacketBufferStatus]];
+    
+    NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
+    
+    NSString *pktMsg = nil;
+    if (mr_packet_size_equal_zero(pktSize)) {
+        pktMsg = @"Packet Buffer is Empty";
+    } else {
+        pktMsg = [NSString stringWithFormat:@" [Packet] audio(%02d)，video(%02d)",pktSize.audio_pkt_size,pktSize.video_pkt_size];
+    }
+    self.pktSize = pktSize;
+    
+    [self appendMsg:[frmMsg stringByAppendingString:pktMsg]];
     if (self.ignoreScrollBottom > 0) {
         self.ignoreScrollBottom --;
     } else {

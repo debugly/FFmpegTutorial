@@ -205,4 +205,23 @@ static inline void mr_sleep(long s) {
     }
 }
 
+typedef struct _MR_PACKET_SIZE
+{
+    int video_pkt_size;
+    int audio_pkt_size;
+    int other_pkt_size;
+}MR_PACKET_SIZE;
+
+static inline int mr_packet_size_equal(MR_PACKET_SIZE s1,MR_PACKET_SIZE s2) {
+    return s1.video_pkt_size - s2.video_pkt_size
+    + s1.audio_pkt_size - s2.audio_pkt_size
+    + s1.other_pkt_size - s2.other_pkt_size;
+}
+
+static inline int mr_packet_size_equal_zero(MR_PACKET_SIZE s1) {
+    return s1.video_pkt_size == 0
+    && s1.audio_pkt_size == 0
+    && s1.other_pkt_size == 0;
+}
+
 #endif /* FFPlayerHeader_h */

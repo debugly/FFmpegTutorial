@@ -16,6 +16,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *contentPath;
 ///code is FFPlayerErrorCode enum.
 @property (nonatomic, strong, nullable) NSError *error;
+///读包延迟，为了模拟网速慢的情况
+@property (assign) double readPackDelay;
 
 ///准备
 - (void)prepareToPlay;
@@ -29,13 +31,13 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)onPacketBufferEmpty:(dispatch_block_t)block;
 - (void)onPacketBufferFull:(dispatch_block_t)block;
 
-///m/n 缓冲情况
-- (NSString *)peekPacketBufferStatus;
+///缓冲情况
+- (MR_PACKET_SIZE)peekPacketBufferStatus;
 
 //模拟消耗
 
 ///消耗缓存队列里的音视频packet各一个
-- (void)consumePackets;
+- (BOOL)consumePackets;
 ///消耗掉缓存队列里的所有packet
 - (void)consumeAllPackets;
 

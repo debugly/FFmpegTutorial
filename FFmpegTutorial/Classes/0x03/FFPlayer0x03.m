@@ -121,6 +121,10 @@ static int decode_interrupt_cb(void *ctx)
         self.packetBufferIsFull = NO;
         //读包
         int ret = av_read_frame(formatCtx, pkt);
+        //延迟ms
+        if (self.readPackDelay > 0) {
+            mr_msleep(self.readPackDelay * 1000);
+        }
         //读包出错
         if (ret < 0) {
             //读到最后结束了
@@ -311,16 +315,12 @@ static int decode_interrupt_cb(void *ctx)
     self.onPacketBufferEmptyBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    if (_audioq.nb_packets == 0 && _videoq.nb_packets == 0) {
-        return @"Packet Buffer is Empty，audio(0)，video(0)";
-    } else {
-        return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
-    }
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
-- (void)consumePackets
+- (BOOL)consumePackets
 {
     AVPacket audio_pkt;
     int audio_not_empty = packet_queue_get(&_audioq, &audio_pkt, 0);
@@ -341,6 +341,7 @@ static int decode_interrupt_cb(void *ctx)
             self.packetBufferIsEmpty = YES;
         }
     }
+    return audio_not_empty || video_not_empty;
 }
 
 - (void)consumeAllPackets

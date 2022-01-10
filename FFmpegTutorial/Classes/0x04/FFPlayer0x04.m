@@ -9,7 +9,6 @@
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
-
 #include <libavutil/pixdesc.h>
 
 
@@ -49,6 +48,8 @@
 @property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
 @property (atomic, assign) BOOL packetBufferIsFull;
 @property (atomic, assign) BOOL packetBufferIsEmpty;
+@property (atomic, assign, readwrite) int videoFrameCount;
+@property (atomic, assign, readwrite) int audioFrameCount;
 
 @end
 
@@ -467,6 +468,7 @@ static int decode_interrupt_cb(void *ctx)
             break;
         } else {
             //正常解码
+            self.audioFrameCount++;
             av_log(NULL, AV_LOG_VERBOSE, "decode a audio frame:%lld\n", frame->pts);
             mr_msleep(arc4random() % 85 + 10);
         }
@@ -517,6 +519,7 @@ static int decode_interrupt_cb(void *ctx)
             break;
         } else {
             //正常解码
+            self.videoFrameCount++;
             av_log(NULL, AV_LOG_VERBOSE, "decode a video frame:%lld\n",frame->pts);
             mr_msleep(arc4random() % 85 + 15);
         }
@@ -568,9 +571,9 @@ static int decode_interrupt_cb(void *ctx)
     self.onPacketBufferEmptyBlock = block;
 }
 
-- (NSString *)peekPacketBufferStatus
+- (MR_PACKET_SIZE)peekPacketBufferStatus
 {
-    return [NSString stringWithFormat:@"Packet Buffer is%@Full，audio(%d)，video(%d)",self.packetBufferIsFull ? @" " : @" not ",_audioq.nb_packets,_videoq.nb_packets];
+    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
 
 @end

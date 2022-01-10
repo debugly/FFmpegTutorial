@@ -733,7 +733,7 @@
                                 </connections>
                             </button>
                             <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" editable="NO" text="loading..." textAlignment="natural" selectable="NO" translatesAutoresizingMaskIntoConstraints="NO" id="O6q-8K-DTZ">
-                                <rect key="frame" x="20" y="127" width="528" height="193"/>
+                                <rect key="frame" x="20" y="127" width="528" height="188"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <color key="textColor" systemColor="labelColor"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -751,7 +751,7 @@
                             <constraint firstItem="elN-JA-ZPr" firstAttribute="centerY" secondItem="yDi-9y-hX4" secondAttribute="centerY" id="LLB-2R-gcz"/>
                             <constraint firstItem="nhR-7T-7HR" firstAttribute="centerX" secondItem="fpD-kh-Ha4" secondAttribute="centerX" id="MTB-Ll-Q8U"/>
                             <constraint firstItem="fpD-kh-Ha4" firstAttribute="top" secondItem="1wq-nv-80d" secondAttribute="bottom" constant="15" id="Run-tF-PUL"/>
-                            <constraint firstItem="UNc-ft-ygC" firstAttribute="top" secondItem="O6q-8K-DTZ" secondAttribute="bottom" id="Uvs-Kd-Cei"/>
+                            <constraint firstAttribute="bottom" secondItem="O6q-8K-DTZ" secondAttribute="bottom" constant="5" id="Uvs-Kd-Cei"/>
                             <constraint firstItem="nhR-7T-7HR" firstAttribute="top" secondItem="fpD-kh-Ha4" secondAttribute="bottom" constant="10" id="YMi-OC-hPa"/>
                             <constraint firstItem="elN-JA-ZPr" firstAttribute="centerX" secondItem="yDi-9y-hX4" secondAttribute="centerX" id="bgM-Nw-aPI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="O6q-8K-DTZ" secondAttribute="trailing" id="xYj-1i-NeI"/>
