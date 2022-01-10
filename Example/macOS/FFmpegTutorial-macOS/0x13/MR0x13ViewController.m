@@ -67,7 +67,7 @@
 - (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
 {
     CFRetain(sampleBuffer);
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    MR_sync_main_queue(^{
         [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
         CFRelease(sampleBuffer);
     });

@@ -70,7 +70,7 @@
     size_t height = CGImageGetHeight(cgImage);
     
     NSImage *img = [[NSImage alloc] initWithCGImage:cgImage size:CGSizeMake(width, height)];
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    MR_sync_main_queue(^{
         self.videoRenderer.image = img;
     });
 }

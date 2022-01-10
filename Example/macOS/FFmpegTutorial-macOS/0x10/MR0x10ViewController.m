@@ -67,7 +67,7 @@
 - (void)reveiveFrameToRenderer:(CGImageRef)cgImage
 {
     CFRetain(cgImage);
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    MR_sync_main_queue(^{
         [self.videoRenderer dispalyCGImage:cgImage];
         CFRelease(cgImage);
     });

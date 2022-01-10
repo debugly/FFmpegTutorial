@@ -100,7 +100,7 @@
 - (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
 {
     CFRetain(img);
-    dispatch_sync(dispatch_get_main_queue(), ^{
+    MR_sync_main_queue(^{
         [self.videoRenderer displayPixelBuffer:img];
         CFRelease(img);
         
