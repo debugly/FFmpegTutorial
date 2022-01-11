@@ -85,24 +85,18 @@ do{ \
     
     // iOS 子线程需要显式创建 autoreleasepool 以释放 autorelease 对象
     @autoreleasepool {
-        
-        [[NSThread currentThread] setName:self.name];
-        
-        //嵌套的这个自动释放池也是必要的！！防止在 threadSelector 里完成任务后，将线程释放，但是却进入了死等的Runloop逻辑中，由于外层的 @autoreleasepool 不能回收相关内存，最终导致整个线程得不到释放。[可以将FFPlayer0x02 _stop 方法中的join注释掉观察]
-        @autoreleasepool {
-            if ([self.threadTarget respondsToSelector:self.threadSelector]) {
-                #pragma clang diagnostic push
-                #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
-                [self.threadTarget performSelector:self.threadSelector withObject:self.threadArgs];
-                #pragma clang diagnostic pop
-            }
-            
-            if (self.workBlock) {
-                self.workBlock();
-            }
-            PRINT_THREAD_DEBUG(@"signal.");
-            [self.condition signal];
+        if ([self.threadTarget respondsToSelector:self.threadSelector]) {
+            #pragma clang diagnostic push
+            #pragma clang diagnostic ignored "-Warc-performSelector-leaks"
+            [self.threadTarget performSelector:self.threadSelector withObject:self.threadArgs];
+            #pragma clang diagnostic pop
         }
+        
+        if (self.workBlock) {
+            self.workBlock();
+        }
+        PRINT_THREAD_DEBUG(@"signal.");
+        [self.condition signal];
     }
 }
 

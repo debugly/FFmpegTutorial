@@ -71,8 +71,6 @@ static int decode_interrupt_cb(void *ctx)
     return player.abort_request;
 }
 
-
-
 - (void)_stop
 {
     //避免重复stop做无用功
