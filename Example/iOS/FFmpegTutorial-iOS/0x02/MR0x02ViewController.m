@@ -22,7 +22,7 @@
 - (void)dealloc
 {
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
 }
@@ -43,6 +43,7 @@
         } else {
             self.textView.text = info;
         }
+        [self.player asyncStop];
         self.player = nil;
     }];
     

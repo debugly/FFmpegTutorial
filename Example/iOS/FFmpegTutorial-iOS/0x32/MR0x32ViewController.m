@@ -41,7 +41,7 @@
     }
     
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
 }
@@ -73,7 +73,7 @@
         self.textView.text = @"Video Ends.";
         //fix position not end.
         [self updatePlayedTime];
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;

@@ -31,7 +31,7 @@
     }
     
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
 }

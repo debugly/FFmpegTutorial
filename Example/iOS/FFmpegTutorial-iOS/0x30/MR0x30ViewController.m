@@ -38,7 +38,7 @@
     }
     
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
 }
@@ -67,7 +67,7 @@
     [player onVideoEnds:^{
         __strongSelf__
         self.textView.text = @"Video Ends.";
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
