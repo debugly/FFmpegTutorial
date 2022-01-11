@@ -25,6 +25,18 @@
 
 // https://www.ffmpeg.org/doxygen/trunk/avfoundation_8m_source.html#l01003
 
+#define PRINT_DEALLOC_ON 1
+#if PRINT_DEALLOC_ON
+#define PRINT_DEALLOC \
+do{ \
+NSLog(@"%@ dealloc",NSStringFromClass([self class])); \
+}while(0)
+#else
+#define PRINT_DEALLOC \
+do{ \
+}while(0)
+#endif
+
 av_unused static MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
     switch (avpf) {
         case AV_PIX_FMT_YUV420P:

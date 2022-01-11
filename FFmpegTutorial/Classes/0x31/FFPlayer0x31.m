@@ -87,46 +87,47 @@ static int decode_interrupt_cb(void *ctx)
 {
     //避免重复stop做无用功
     if (self.readThread) {
-        
         self.abort_request = 1;
         _audioq.abort_request = 1;
         _videoq.abort_request = 1;
         _sampq.abort_request = 1;
         _pictq.abort_request = 1;
         
+        [self.readThread cancel];
         [self.audioDecoder cancel];
         [self.videoDecoder cancel];
-        [self.readThread cancel];
         [self.rendererThread cancel];
         
-        [self.audioDecoder join];
-        self.audioDecoder = nil;
-        
-        [self.videoDecoder join];
-        self.videoDecoder = nil;
-        
         [self.readThread join];
-        self.readThread = nil;
-        
+        [self.audioDecoder join];
+        [self.videoDecoder join];
         [self.rendererThread join];
-        self.rendererThread = nil;
-        
-        packet_queue_destroy(&_audioq);
-        packet_queue_destroy(&_videoq);
-        
-        frame_queue_destory(&_pictq);
-        frame_queue_destory(&_sampq);
     }
+    [self performSelectorOnMainThread:@selector(didStop:) withObject:self waitUntilDone:YES];
+}
+
+- (void)didStop:(id)sender
+{
+    self.readThread = nil;
+    self.audioDecoder = nil;
+    self.videoDecoder = nil;
+    self.rendererThread = nil;
     
     if (self.pixelBufferPool){
         CVPixelBufferPoolRelease(self.pixelBufferPool);
         self.pixelBufferPool = NULL;
     }
+    
+    packet_queue_destroy(&_audioq);
+    packet_queue_destroy(&_videoq);
+    
+    frame_queue_destory(&_pictq);
+    frame_queue_destory(&_sampq);
 }
 
 - (void)dealloc
 {
-    [self _stop];
+    PRINT_DEALLOC;
 }
 
 //准备
@@ -149,7 +150,7 @@ static int decode_interrupt_cb(void *ctx)
     frame_queue_init(&_sampq, SAMPLE_QUEUE_SIZE, "sampq", 1);
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
-    self.readThread.name = @"readPackets";
+    self.readThread.name = @"mr-read";
     [self.readThread start];
 }
 
@@ -486,7 +487,7 @@ static int decode_interrupt_cb(void *ctx)
         
         if(self.audioDecoder){
             self.audioDecoder.delegate = self;
-            self.audioDecoder.name = @"audioDecoder";
+            self.audioDecoder.name = @"mr-audio-dec";
             self.audioResample = [self createAudioResampleIfNeed];
         } else {
             av_log(NULL, AV_LOG_ERROR, "can't open audio stream.\n");
@@ -511,7 +512,7 @@ static int decode_interrupt_cb(void *ctx)
         self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
         if(self.videoDecoder){
             self.videoDecoder.delegate = self;
-            self.videoDecoder.name = @"videoDecoder";
+            self.videoDecoder.name = @"mr-video-dec";
             self.videoScale = [self createVideoScaleIfNeed];
         } else {
             av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
@@ -606,7 +607,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)prepareRendererThread
 {
     self.rendererThread = [[MRThread alloc] initWithTarget:self selector:@selector(rendererThreadFunc) object:nil];
-    self.rendererThread.name = @"renderer";
+    self.rendererThread.name = @"mr-renderer";
 }
 
 - (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
@@ -940,9 +941,9 @@ static int decode_interrupt_cb(void *ctx)
     self.paused = self.audioClk.paused = self.videoClk.paused = !self.paused;
 }
 
-- (void)stop
+- (void)asyncStop
 {
-    [self _stop];
+    [self performSelectorInBackground:@selector(_stop) withObject:self];
 }
 
 - (void)onError:(dispatch_block_t)block

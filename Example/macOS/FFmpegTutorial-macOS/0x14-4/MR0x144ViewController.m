@@ -36,7 +36,7 @@
     }
     
     if (_player) {
-        [_player stop];
+        [_player asyncStop];
         _player = nil;
     }
     
@@ -98,7 +98,7 @@
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;

@@ -65,7 +65,6 @@ static int decode_interrupt_cb(void *ctx)
 {
     //避免重复stop做无用功
     if (self.readThread) {
-        
         self.abort_request = 1;
         _audioq.abort_request = 1;
         _videoq.abort_request = 1;
@@ -75,22 +74,25 @@ static int decode_interrupt_cb(void *ctx)
         [self.videoDecodeThread cancel];
         
         [self.readThread join];
-        self.readThread = nil;
-        
         [self.audioDecodeThread join];
-        self.audioDecodeThread = nil;
-           
         [self.videoDecodeThread join];
-        self.videoDecodeThread = nil;
-        
-        packet_queue_destroy(&_audioq);
-        packet_queue_destroy(&_videoq);
     }
+    [self performSelectorOnMainThread:@selector(didStop:) withObject:self waitUntilDone:YES];
+}
+
+- (void)didStop:(id)sender
+{
+    self.videoDecodeThread = nil;
+    self.audioDecodeThread = nil;
+    self.readThread = nil;
+    
+    packet_queue_destroy(&_audioq);
+    packet_queue_destroy(&_videoq);
 }
 
 - (void)dealloc
 {
-    [self _stop];
+    PRINT_DEALLOC;
 }
 
 //准备
@@ -108,7 +110,7 @@ static int decode_interrupt_cb(void *ctx)
     init_ffmpeg_once();
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
-    self.readThread.name = @"readPackets";
+    self.readThread.name = @"mr-read";
 }
 
 #pragma mark - 打开解码器创建解码线程
@@ -440,7 +442,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)prepareAudioDecodeThread
 {
     self.audioDecodeThread = [[MRThread alloc] initWithTarget:self selector:@selector(audioDecodeFunc) object:nil];
-    self.audioDecodeThread.name = @"audioDecode";
+    self.audioDecodeThread.name = @"mr-audio-dec";
 }
 
 #pragma mark - 音频解码线程
@@ -491,7 +493,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)prepareVideoDecodeThread
 {
     self.videoDecodeThread = [[MRThread alloc] initWithTarget:self selector:@selector(videoDecodeFunc) object:nil];
-    self.videoDecodeThread.name = @"videoDecode";
+    self.videoDecodeThread.name = @"mr-video-dec";;
 }
 
 #pragma mark - 视频解码线程
@@ -551,9 +553,9 @@ static int decode_interrupt_cb(void *ctx)
     [self.readThread start];
 }
 
-- (void)stop
+- (void)asyncStop
 {
-    [self _stop];
+    [self performSelectorInBackground:@selector(_stop) withObject:self];
 }
 
 - (void)onError:(dispatch_block_t)block

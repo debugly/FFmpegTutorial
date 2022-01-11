@@ -4,8 +4,29 @@
 //
 //  Created by Matt Reach on 2020/6/2.
 //
+//
+// [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES]; -> _pthread_cond_wait ; cause dead lock！
+
+
 
 #import "MRThread.h"
+
+#define PRINT_THREAD_LOG_ON 1
+
+#if PRINT_THREAD_LOG_ON
+
+#define PRINT_THREAD_DEBUG(_msg_) \
+do{ \
+NSLog(@"[t] [%@] %@",self.name,_msg_); \
+}while(0)
+
+#else
+
+#define PRINT_THREAD_DEBUG(_msg_) \
+do{ \
+}while(0)
+
+#endif
 
 @interface MRThread ()
 
@@ -14,8 +35,7 @@
 @property (nonatomic, assign) SEL threadSelector;//实际调度任务
 @property (nonatomic, strong) id threadArgs;
 @property (nonatomic, copy) void(^workBlock)(void);
-@property (nonatomic, strong) NSRunLoop *currentRunloop;
-@property (nonatomic, strong) NSPort *runloopPort;
+@property (nonatomic, strong) NSCondition *condition;
 
 @end
 
@@ -23,14 +43,14 @@
 
 - (void)dealloc
 {
-    //NSLog(@"%@ thread dealloc",self.name);
+    PRINT_THREAD_DEBUG(@"dealloc");
 }
 
 - (instancetype)init
 {
     self = [super init];
     if (self) {
-        self.runloopPort = [NSPort port];
+        self.condition = [NSCondition new];
         self.thread = [[NSThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
     }
     return self;
@@ -80,28 +100,10 @@
             if (self.workBlock) {
                 self.workBlock();
             }
-        }
-        
-        //线程即使已经取消仍旧使用runloop等待join；除非明确不需要等待
-        while (self.runloopPort) {
-            //NSLog(@"%@ will runUntilDate!",[[NSThread currentThread] name]);
-            if (!self.currentRunloop) {
-                self.currentRunloop = [NSRunLoop currentRunLoop];
-                //增加一个 port，让 RunLoop run 起来
-                [self.currentRunloop addPort:self.runloopPort forMode:NSDefaultRunLoopMode];
-            }
-           
-            [self.currentRunloop runUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.1]];
-            
-            //NSLog(@"%@ after runUntilDate!",[[NSThread currentThread] name]);
+            PRINT_THREAD_DEBUG(@"signal.");
+            [self.condition signal];
         }
     }
-}
-
-- (void)bye
-{
-    //NSLog(@"bye:%@",self.name);
-    [self notJoin];
 }
 
 - (void)start
@@ -109,26 +111,17 @@
     [self.thread start];
 }
 
-- (BOOL)join
+- (void)join
 {
-    if ([self.thread isExecuting] && ![self.thread isFinished]) {
-        if ([NSThread currentThread] == self.thread) {
-            [self notJoin];
-            return YES;
-        } else {
-            [self performSelector:@selector(bye) onThread:self.thread withObject:nil waitUntilDone:YES];
-            return YES;
+    while (![self.thread isFinished] && [self.thread isExecuting]) {
+        PRINT_THREAD_DEBUG(@"wait.");
+        BOOL ok = [self.condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+        if (ok) {
+            PRINT_THREAD_DEBUG(@"break wait.");
+            break;
         }
     }
-    return NO;
-}
-
-- (void)notJoin
-{
-    if (self.runloopPort) {
-        [self.runloopPort removeFromRunLoop:self.currentRunloop forMode:NSDefaultRunLoopMode];
-        self.runloopPort = nil;
-    }
+    PRINT_THREAD_DEBUG(@"joined.");
 }
 
 - (void)cancel

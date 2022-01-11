@@ -48,7 +48,7 @@
     }
     
     if (_player) {
-        [_player stop];
+        [_player asyncStop];
         _player = nil;
     }
 }

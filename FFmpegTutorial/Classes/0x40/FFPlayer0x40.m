@@ -31,9 +31,13 @@
     if (self.rendererThread) {
         [self.rendererThread cancel];
         [self.rendererThread join];
-        self.rendererThread = nil;
     }
-    
+    [self performSelectorOnMainThread:@selector(didStop:) withObject:self waitUntilDone:YES];
+}
+
+- (void)didStop:(id)sender
+{
+    self.rendererThread = nil;
     if (self.pixelBufferPool){
         CVPixelBufferPoolRelease(self.pixelBufferPool);
         self.pixelBufferPool = NULL;
@@ -42,13 +46,13 @@
 
 - (void)dealloc
 {
-    [self _stop];
+    PRINT_DEALLOC;
 }
 
 - (void)prepareRendererThread
 {
     self.rendererThread = [[MRThread alloc] initWithTarget:self selector:@selector(rendererThreadFunc) object:nil];
-    self.rendererThread.name = @"renderer";
+    self.rendererThread.name = @"mr-renderer";
 }
 
 - (void)rendererThreadFunc
@@ -113,9 +117,9 @@
     [self.rendererThread start];
 }
 
-- (void)stop
+- (void)asyncStop
 {
-    [self _stop];
+    [self performSelectorInBackground:@selector(_stop) withObject:self];
 }
 
 - (void)onError:(dispatch_block_t)block

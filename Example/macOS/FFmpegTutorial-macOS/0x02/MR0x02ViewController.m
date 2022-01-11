@@ -26,7 +26,7 @@
 - (void)dealloc
 {
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
 }
@@ -45,7 +45,7 @@
 {
     [self.indicatorView startAnimation:nil];
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
     }
     
     FFPlayer0x02 *player = [[FFPlayer0x02 alloc] init];
@@ -60,6 +60,7 @@
         } else {
             self.textView.string = info;
         }
+        [self.player asyncStop];
         self.player = nil;
     }];
     

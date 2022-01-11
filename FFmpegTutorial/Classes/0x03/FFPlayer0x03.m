@@ -57,17 +57,21 @@ static int decode_interrupt_cb(void *ctx)
         //if ([self.readThread isExecuting]) {}
         [self.readThread cancel];
         [self.readThread join];
-        self.readThread = nil;
-        
-        _video_stream = _audio_stream = -1;
-        packet_queue_destroy(&_audioq);
-        packet_queue_destroy(&_videoq);
     }
+    [self performSelectorOnMainThread:@selector(didStop:) withObject:self waitUntilDone:YES];
+}
+
+- (void)didStop:(id)sender
+{
+    self.readThread = nil;
+    _video_stream = _audio_stream = -1;
+    packet_queue_destroy(&_audioq);
+    packet_queue_destroy(&_videoq);
 }
 
 - (void)dealloc
 {
-    [self _stop];
+    PRINT_DEALLOC;
 }
 
 //准备
@@ -85,7 +89,7 @@ static int decode_interrupt_cb(void *ctx)
     init_ffmpeg_once();
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
-    self.readThread.name = @"readPackets";
+    self.readThread.name = @"mr-read";
 }
 
 #pragma -mark 读包线程
@@ -297,9 +301,9 @@ static int decode_interrupt_cb(void *ctx)
     [self.readThread start];
 }
 
-- (void)stop
+- (void)asyncStop
 {
-    [self _stop];
+    [self performSelectorInBackground:@selector(_stop) withObject:self];
 }
 
 - (void)onError:(dispatch_block_t)block

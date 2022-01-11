@@ -105,6 +105,11 @@
     }
     
     self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
+    if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
+        self.workThread.name = @"mr-audio-dec";
+    } else if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
+        self.workThread.name = @"mr-video-dec";
+    }
     
     return 0;
 }
@@ -200,7 +205,9 @@
 - (void)start
 {
     if (self.workThread) {
-        self.workThread.name = self.name;
+        if (self.name.length > 0) {
+            self.workThread.name = self.name;
+        }
         [self.workThread start];
     }
 }

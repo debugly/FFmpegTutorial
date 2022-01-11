@@ -24,7 +24,7 @@ NS_ASSUME_NONNULL_BEGIN
 ///读包
 - (void)play;
 ///停止读包
-- (void)stop;
+- (void)asyncStop;
 ///发生错误，具体错误为 self.error
 - (void)onError:(dispatch_block_t)block;
 

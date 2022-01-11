@@ -26,13 +26,18 @@
     if (self.readThread) {
         [self.readThread cancel];
         [self.readThread join];
-        self.readThread = nil;
     }
+    [self performSelectorOnMainThread:@selector(didStop:) withObject:self waitUntilDone:YES];
+}
+
+- (void)didStop:(id)sender
+{
+    self.readThread = nil;
 }
 
 - (void)dealloc
 {
-    [self _stop];
+    PRINT_DEALLOC;
 }
 
 - (void)prepareToPlay
@@ -44,8 +49,6 @@
     //初始化ffmpeg相关函数
     init_ffmpeg_once();
     
-    //不允许重复准备
-    //self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(openStreamFunc) object:nil];
     __weak __typeof(self)weakSelf = self;
     self.readThread = [[MRThread alloc] initWithBlock:^{
         [weakSelf openStreamFunc];
@@ -77,7 +80,6 @@
         self.error = _make_nserror_desc(FFPlayerErrorCode_OpenFileFailed, @"文件打开失败！");
         [self performResultOnMainThread:nil];
     } else {
-     
         /* 刚才只是打开了文件，检测了下文件头而已，并不知道流信息；因此开始读包以获取流信息
          设置读包探测大小和最大时长，避免读太多的包！
          */
@@ -190,12 +192,13 @@
                     }
                         break;
                 }
-                
                 avcodec_free_context(&codecCtx);
             }
             //关闭流
             avformat_close_input(&formatCtx);
-            [self performResultOnMainThread:text];
+            if (![[self readThread] isCanceled]) {
+                [self performResultOnMainThread:text];
+            }
         }
     }
 }
@@ -215,9 +218,9 @@
     [self.readThread start];
 }
 
-- (void)stop
+- (void)asyncStop
 {
-    [self _stop];
+    [self performSelectorInBackground:@selector(_stop) withObject:self];
 }
 
 @end

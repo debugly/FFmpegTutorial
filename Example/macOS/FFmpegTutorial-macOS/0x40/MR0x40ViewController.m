@@ -22,7 +22,7 @@
 - (void)dealloc
 {
     if (_player) {
-        [_player stop];
+        [_player asyncStop];
         _player = nil;
     }
 }
@@ -39,7 +39,7 @@
 - (void)preparePlayer
 {
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
     
@@ -74,7 +74,7 @@
 {
     [super viewWillDisappear];
     if (self.player) {
-        [self.player stop];
+        [self.player asyncStop];
         self.player = nil;
     }
 }
