@@ -22,9 +22,16 @@
     [super viewDidLoad];
     // Do view setup here.
     
-    NSString *info = [FFVersionHelper ffmpegAllInfo];
-    info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:YES]];
-    info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:NO]];
+    __block NSString *info = [FFVersionHelper ffmpegAllInfo];
+    
+    [OpenGLVersionHelper prepareOpenGLContext:^{
+        info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:YES]];
+    } forLegacy:NO];
+    
+    [OpenGLVersionHelper prepareOpenGLContext:^{
+        info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:YES]];
+    } forLegacy:YES];
+    
     self.textView.string = info;
 }
 

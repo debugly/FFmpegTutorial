@@ -6,8 +6,9 @@
 //
 
 #import "OpenGLVersionHelper.h"
-#import <OpenGL/gl3.h>
 #import <OpenGL/gl3ext.h>
+#import <AppKit/NSOpenGL.h>
+#import <OpenGL/OpenGL.h>
 
 //https://stackoverflow.com/questions/46322280/how-to-check-opengl-and-glsl-version-without-creating-a-window
 
@@ -16,7 +17,9 @@
 + (NSString *)glString:(const char *)name enu:(GLenum)s
 {
     const char *v = (const char *) glGetString(s);
-    printf("[GLES2] %s = %s\n", name, v);
+#if DEBUG
+    printf("[GL] %s = %s\n", name, v);
+#endif
     const GLubyte *str = glGetString(s);
     return [NSString stringWithFormat:@"[%s]=%s",name,str];
 }
@@ -109,12 +112,23 @@
     return nil;
 }
 
-+ (NSString *)openglAllInfo:(BOOL)legacy
++ (void)prepareOpenGLContext:(void(^)(void))completion forLegacy:(BOOL)legacy
 {
+    if (!completion) {
+        return;
+    }
+    
     NSOpenGLContext *glContext = [self glContext:legacy];
     [glContext makeCurrentContext];
     CGLLockContext([glContext CGLContextObj]);
     
+    completion();
+    
+    CGLUnlockContext([glContext CGLContextObj]);
+}
+
++ (NSString *)openglAllInfo:(BOOL)legacy
+{
     NSMutableString *txt = [NSMutableString string];
     
     {
@@ -146,7 +160,6 @@
         //扩展
         [txt appendFormat:@"\nExtensions=%@\n",[self supportedExtensions:legacy]];
     }
-    CGLUnlockContext([glContext CGLContextObj]);
     
     return [txt copy];
 }
