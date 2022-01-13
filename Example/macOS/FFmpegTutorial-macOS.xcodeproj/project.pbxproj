@@ -65,6 +65,7 @@
 		DD97E82F256EAE3000B93F9F /* RootCellView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82E256EAE3000B93F9F /* RootCellView.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
 		DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E83A25720F2A00B93F9F /* NSNavigationController.m */; };
+		DD9AB3EA278E7EDE00F92F61 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD9AB3E8278E7DCD00F92F61 /* OpenGL.framework */; };
 		DDB14453262822FC00495754 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB14451262822FC00495754 /* MR0x02ViewController.m */; };
 		DDB14454262822FC00495754 /* MR0x02ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDB14452262822FC00495754 /* MR0x02ViewController.xib */; };
 		DDB144CF26282D8900495754 /* MR0x03ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB144CC26282D8900495754 /* MR0x03ViewController.m */; };
@@ -197,6 +198,7 @@
 		DD97E8322571458600B93F9F /* RootTableRowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootTableRowView.m; sourceTree = "<group>"; };
 		DD97E83925720F2A00B93F9F /* NSNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NSNavigationController.h; sourceTree = "<group>"; };
 		DD97E83A25720F2A00B93F9F /* NSNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NSNavigationController.m; sourceTree = "<group>"; };
+		DD9AB3E8278E7DCD00F92F61 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
 		DDB14450262822FC00495754 /* MR0x02ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x02ViewController.h; sourceTree = "<group>"; };
 		DDB14451262822FC00495754 /* MR0x02ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x02ViewController.m; sourceTree = "<group>"; };
 		DDB14452262822FC00495754 /* MR0x02ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x02ViewController.xib; sourceTree = "<group>"; };
@@ -234,6 +236,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DD9AB3EA278E7EDE00F92F61 /* OpenGL.framework in Frameworks */,
 				DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */,
 				9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */,
 			);
@@ -245,6 +248,7 @@
 		7242AB7453C4217BF5311C6C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				DD9AB3E8278E7DCD00F92F61 /* OpenGL.framework */,
 				DD91F143268CC78A00B96334 /* AVFoundation.framework */,
 				D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */,
 			);

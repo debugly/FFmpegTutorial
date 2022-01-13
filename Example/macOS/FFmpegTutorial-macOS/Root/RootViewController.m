@@ -68,7 +68,7 @@
     self.dataArr = @[
         @{
             @"title":@"0x01",
-            @"detail":@"编译配置和版本信息",
+            @"detail":@"FFmpeg编译配置和版本信息;OpengGL信息",
             @"class":@"MR0x01ViewController",
         },
         @{

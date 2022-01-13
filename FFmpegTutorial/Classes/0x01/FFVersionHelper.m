@@ -184,21 +184,21 @@
     
     {
         //编译配置信息
-        [txt appendFormat:@"\n【FFmpeg Build Info】\n%@",[FFVersionHelper formatedConfiguration]];
+        [txt appendFormat:@"\n【FFmpeg Build Info】\n%@",[self formatedConfiguration]];
     }
     
     [txt appendString:@"\n"];
     
     {
         //各个lib库的版本信息
-        [txt appendFormat:@"\n\n【FFmpeg Libs Version】\n%@",[FFVersionHelper formatedLibsVersion]];
+        [txt appendFormat:@"\n\n【FFmpeg Libs Version】\n%@",[self formatedLibsVersion]];
     }
     
     [txt appendString:@"\n"];
     
     {
         //支持的输入流协议
-        NSString *inputProtocol = [[FFVersionHelper supportedInputProtocols] componentsJoinedByString:@","];
+        NSString *inputProtocol = [[self supportedInputProtocols] componentsJoinedByString:@","];
         [txt appendFormat:@"\n\n【Input protocols】 \n%@",inputProtocol];
     }
     
@@ -206,7 +206,7 @@
     
     {
         //支持的输出流协议
-        NSString *outputProtocol = [[FFVersionHelper supportedOutputProtocols] componentsJoinedByString:@","];
+        NSString *outputProtocol = [[self supportedOutputProtocols] componentsJoinedByString:@","];
         
         [txt appendFormat:@"\n\n【Output protocols】 \n%@",outputProtocol];
     }
@@ -215,7 +215,7 @@
     
     {
         //支持的输出流协议
-        NSDictionary *codecDic = [FFVersionHelper supportedCodecs];
+        NSDictionary *codecDic = [self supportedCodecs];
         NSData *data = [NSJSONSerialization dataWithJSONObject:codecDic options:NSJSONWritingPrettyPrinted error:nil];
         NSString *codecStr = [[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding];;
         [txt appendFormat:@"\n\n【Codecs】 \n%@",codecStr];

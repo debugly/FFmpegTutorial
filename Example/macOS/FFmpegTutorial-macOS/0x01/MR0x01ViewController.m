@@ -8,6 +8,7 @@
 
 #import "MR0x01ViewController.h"
 #import <FFmpegTutorial/FFVersionHelper.h>
+#import <FFmpegTutorial/OpenGLVersionHelper.h>
 
 @interface MR0x01ViewController ()
 
@@ -20,7 +21,11 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do view setup here.
-    self.textView.string = [FFVersionHelper ffmpegAllInfo];
+    
+    NSString *info = [FFVersionHelper ffmpegAllInfo];
+    info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:YES]];
+    info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:NO]];
+    self.textView.string = info;
 }
 
 @end
