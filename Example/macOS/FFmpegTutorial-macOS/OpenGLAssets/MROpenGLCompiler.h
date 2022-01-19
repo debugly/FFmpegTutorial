@@ -10,6 +10,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
+void MR_checkGLError(const char* op);
+
 @interface MROpenGLCompiler : NSObject
 
 @property (copy) NSString *vshName;

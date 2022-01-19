@@ -8,6 +8,11 @@
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
+		C958F9592796A6390058D64A /* MR0x152ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C958F9542796A6390058D64A /* MR0x152ViewController.xib */; };
+		C958F95A2796A6390058D64A /* MR0x152ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C958F9552796A6390058D64A /* MR0x152ViewController.m */; };
+		C958F95B2796A6390058D64A /* MR0x152VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C958F9582796A6390058D64A /* MR0x152VideoRenderer.m */; };
+		C958F95E2796A7520058D64A /* 3_sampler2D_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95C2796A7520058D64A /* 3_sampler2D_v3.fsh */; };
+		C958F95F2796A7520058D64A /* common_v3.vsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95D2796A7520058D64A /* common_v3.vsh */; };
 		DD6840CF26FA24CC00D8B16B /* MR0x20ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD6840CB26FA24CC00D8B16B /* MR0x20ViewController.xib */; };
 		DD6840D026FA24CC00D8B16B /* MR0x20VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6840CC26FA24CC00D8B16B /* MR0x20VideoRenderer.m */; };
 		DD6840D126FA24CC00D8B16B /* MR0x20ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD6840CD26FA24CC00D8B16B /* MR0x20ViewController.m */; };
@@ -101,6 +106,13 @@
 /* Begin PBXFileReference section */
 		6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C958F9542796A6390058D64A /* MR0x152ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x152ViewController.xib; sourceTree = "<group>"; };
+		C958F9552796A6390058D64A /* MR0x152ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x152ViewController.m; sourceTree = "<group>"; };
+		C958F9562796A6390058D64A /* MR0x152VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x152VideoRenderer.h; sourceTree = "<group>"; };
+		C958F9572796A6390058D64A /* MR0x152ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x152ViewController.h; sourceTree = "<group>"; };
+		C958F9582796A6390058D64A /* MR0x152VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x152VideoRenderer.m; sourceTree = "<group>"; };
+		C958F95C2796A7520058D64A /* 3_sampler2D_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_v3.fsh; sourceTree = "<group>"; };
+		C958F95D2796A7520058D64A /* common_v3.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_v3.vsh; sourceTree = "<group>"; };
 		D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		DD6840CA26FA24CC00D8B16B /* MR0x20ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x20ViewController.h; sourceTree = "<group>"; };
@@ -253,6 +265,18 @@
 				D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C958F9532796A6390058D64A /* 0x15-2 */ = {
+			isa = PBXGroup;
+			children = (
+				C958F9562796A6390058D64A /* MR0x152VideoRenderer.h */,
+				C958F9582796A6390058D64A /* MR0x152VideoRenderer.m */,
+				C958F9572796A6390058D64A /* MR0x152ViewController.h */,
+				C958F9552796A6390058D64A /* MR0x152ViewController.m */,
+				C958F9542796A6390058D64A /* MR0x152ViewController.xib */,
+			);
+			path = "0x15-2";
 			sourceTree = "<group>";
 		};
 		DD6840C926FA24CC00D8B16B /* 0x20 */ = {
@@ -447,12 +471,14 @@
 		DD91F28C26AC082C00B96334 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				DD7D80BC26D29DF900D968F3 /* NV21.fsh */,
 				DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */,
 				DD91F28D26AC082C00B96334 /* 2_sampler2DRect.fsh */,
+				C958F95C2796A7520058D64A /* 3_sampler2D_v3.fsh */,
 				DD91F31B26B6E99800B96334 /* 3_sampler2DRect.fsh */,
-				DD91F28E26AC082C00B96334 /* README.md */,
+				C958F95D2796A7520058D64A /* common_v3.vsh */,
 				DD91F28F26AC082C00B96334 /* common.vsh */,
+				DD7D80BC26D29DF900D968F3 /* NV21.fsh */,
+				DD91F28E26AC082C00B96334 /* README.md */,
 			);
 			path = Shaders;
 			sourceTree = "<group>";
@@ -605,6 +631,7 @@
 				DD7D809426B8351500D968F3 /* 0x14-3 */,
 				DD7D80A826C1725B00D968F3 /* 0x14-4 */,
 				DD7D80B326D29D0800D968F3 /* 0x14-5 */,
+				C958F9532796A6390058D64A /* 0x15-2 */,
 				DD6840C926FA24CC00D8B16B /* 0x20 */,
 				DD6840D326FA2CBA00D8B16B /* 0x20-1 */,
 				DD6840E42700BE5400D8B16B /* 0x20-2 */,
@@ -705,6 +732,8 @@
 				DD91F31C26B6E99800B96334 /* 3_sampler2DRect.fsh in Resources */,
 				DDB144D026282D8900495754 /* MR0x03ViewController.xib in Resources */,
 				DD91F29126AC082C00B96334 /* 2_sampler2DRect.fsh in Resources */,
+				C958F9592796A6390058D64A /* MR0x152ViewController.xib in Resources */,
+				C958F95F2796A7520058D64A /* common_v3.vsh in Resources */,
 				DD91F1DF2697437F00B96334 /* MR0x11ViewController.xib in Resources */,
 				DD91F28626AC06C900B96334 /* MR0x141ViewController.xib in Resources */,
 				DDB14454262822FC00495754 /* MR0x02ViewController.xib in Resources */,
@@ -716,6 +745,7 @@
 				DD91F29226AC082C00B96334 /* README.md in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
 				DD91F14F2692137900B96334 /* MR0x05ViewController.xib in Resources */,
+				C958F95E2796A7520058D64A /* 3_sampler2D_v3.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -765,6 +795,7 @@
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
 				DDB14453262822FC00495754 /* MR0x02ViewController.m in Sources */,
 				DD6840D126FA24CC00D8B16B /* MR0x20ViewController.m in Sources */,
+				C958F95B2796A6390058D64A /* MR0x152VideoRenderer.m in Sources */,
 				DD7D80B926D29D0800D968F3 /* MR0x145ViewController.m in Sources */,
 				DD6841012700BFD600D8B16B /* MR0x202AudioUnitRenderer.m in Sources */,
 				DD91F28726AC06C900B96334 /* MR0x141ViewController.m in Sources */,
@@ -772,6 +803,7 @@
 				DD91F1E02697437F00B96334 /* MR0x11ViewController.m in Sources */,
 				DD91F26A269B381000B96334 /* MR0x14ViewController.m in Sources */,
 				DD7D809C26B8351500D968F3 /* MR0x143ViewController.m in Sources */,
+				C958F95A2796A6390058D64A /* MR0x152ViewController.m in Sources */,
 				DD6841002700BFD600D8B16B /* MR0x202AudioQueueRenderer.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DD7D80AE26C1725B00D968F3 /* MR0x144ViewController.m in Sources */,

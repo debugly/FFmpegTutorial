@@ -10,6 +10,14 @@
 #import <OpenGL/gl.h>
 #import "renderer_pixfmt.h"
 
+
+void MR_checkGLError(const char* op) {
+    for (GLint error = glGetError(); error; error = glGetError()) {
+        printf("[GL] after %s() glError (0x%x)\n", op, error);
+    }
+}
+
+
 @interface MROpenGLCompiler ()
 
 @property uint32_t program;
@@ -58,7 +66,11 @@
     NSAssert(self.program > 0, @"you must compile opengl program firstly!");
     NSAssert(strlen(name) > 0, @"what's your uniform name?");
     
-    return glGetUniformLocation(self.program, name);
+    int r = glGetUniformLocation(self.program, name);
+    char buffer[100] = "getUniformLocation:";
+    strcat(buffer, name);
+    MR_checkGLError(buffer);
+    return r;
 }
 
 - (int)getAttribLocation:(const char *)name
@@ -66,21 +78,27 @@
     NSAssert(self.program > 0, @"you must compile opengl program firstly!");
     NSAssert(strlen(name) > 0, @"what's your uniform name?");
     
-    return glGetAttribLocation(self.program, name);
+    int r = glGetAttribLocation(self.program, name);
+    char buffer[100] = "glGetAttribLocation:";
+    strcat(buffer, name);
+    MR_checkGLError(buffer);
+    return r;
 }
 
 - (GLuint)compileProgram
 {
+    MR_checkGLError("QQ");
     debug_opengl_string("Version", GL_VERSION);
     debug_opengl_string("Vendor", GL_VENDOR);
     debug_opengl_string("Renderer", GL_RENDERER);
-    debug_opengl_string("Extensions", GL_EXTENSIONS);
+    //debug_opengl_string("Extensions", GL_EXTENSIONS);
     
     // Create and compile the vertex shader.
     GLuint vertShader = [self compileShader:self.vshName type:GL_VERTEX_SHADER];
-    
+    MR_checkGLError("compile vertex shader");
     // Create and compile fragment shader.
     GLuint fragShader = [self compileShader:self.fshName type:GL_FRAGMENT_SHADER];
+    MR_checkGLError("compile fragment shader");
     
     GLuint program = glCreateProgram();
     

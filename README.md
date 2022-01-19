@@ -95,6 +95,13 @@ open FFmpegTutorial-macOS.xcworkspace
 - 0x12：[使用 Core Image 渲染视频帧]
 - 0x13：[使用 Core Video 渲染视频帧]
 - 0x14：[使用 OpenGL 渲染视频帧]
+    - 0x14-1：[渲染 NV12]（Mac Only）
+    - 0x14-2：[渲染 YUV420P]（Mac Only）
+    - 0x14-3：[渲染 UYVY422]（Mac Only）
+    - 0x14-4：[渲染 YUYV422]（Mac Only）
+    - 0x14-5：[渲染 NV21]（Mac Only）
+- 0x15：[使用 OpenGL 3.3 渲染视频帧]
+    - 0x15-2：[渲染 YUV420P]（Mac Only）
 
 三、音频渲染
 
@@ -118,10 +125,10 @@ open FFmpegTutorial-macOS.xcworkspace
 
 #### TODO
 
-- 0x15：[使用 Metal 渲染视频帧]
-- 0x33：[支持 seek]
-- 0x34：[支持从指定位置开始播放]
-- 0x35：[封装 MRMoviePlayer 播放器]
+- 1、[使用 Metal 渲染视频帧]
+- 2、[支持 seek]
+- 3、[支持从指定位置开始播放]
+- 4、[封装 MRMoviePlayer 播放器]
 
 
 ## Cross-platform
