@@ -1,12 +1,12 @@
 //
-//  MR0x152VideoRenderer.m
+//  MR0x151VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/18.
+//  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x152VideoRenderer.h"
+#import "MR0x151VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -22,11 +22,9 @@
 enum
 {
     UNIFORM_Y,
-    UNIFORM_U,
-    UNIFORM_V,
+    UNIFORM_UV,
     DIMENSION_Y,
-    DIMENSION_U,
-    DIMENSION_V,
+    DIMENSION_UV,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -42,9 +40,9 @@ enum
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 
-@interface MR0x152VideoRenderer ()
+@interface MR0x151VideoRenderer ()
 {
-    GLuint plane_textures[6];
+    GLuint plane_textures[4];
     MRViewContentMode _contentMode;
     /// 顶点对象
     GLuint _VBO;
@@ -56,7 +54,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @end
 
-@implementation MR0x152VideoRenderer
+@implementation MR0x151VideoRenderer
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
@@ -101,18 +99,15 @@ static GLint attributers[NUM_ATTRIBUTES];
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"3_sampler2DRect_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2DRect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
-            uniforms[UNIFORM_U] = [self.openglCompiler getUniformLocation:"SamplerU"];
-            uniforms[UNIFORM_V] = [self.openglCompiler getUniformLocation:"SamplerV"];
+            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
             
             uniforms[DIMENSION_Y] = [self.openglCompiler getUniformLocation:"textureDimensionY"];
-            uniforms[DIMENSION_U] = [self.openglCompiler getUniformLocation:"textureDimensionU"];
-            uniforms[DIMENSION_V] = [self.openglCompiler getUniformLocation:"textureDimensionV"];
-            
+            uniforms[DIMENSION_UV] = [self.openglCompiler getUniformLocation:"textureDimensionUV"];
             
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
@@ -255,9 +250,9 @@ static GLint attributers[NUM_ATTRIBUTES];
         //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
         if (useIOSurface) {
             //设置纹理和采样器的对应关系
-            glUniform1i(uniforms[UNIFORM_Y + i], 3 + i);
-            glActiveTexture(GL_TEXTURE0 + 3 + i);
-            glBindTexture(gl_target, plane_textures[i] + 3);
+            glUniform1i(uniforms[UNIFORM_Y + i], 2 + i);
+            glActiveTexture(GL_TEXTURE0 + 2 + i);
+            glBindTexture(gl_target, plane_textures[i] + 2);
         } else {
             glUniform1i(uniforms[UNIFORM_Y + i], 0 + i);
             glActiveTexture(GL_TEXTURE0 + i);
@@ -290,7 +285,6 @@ static GLint attributers[NUM_ATTRIBUTES];
     }
 }
 
-
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
     [[self openGLContext] makeCurrentContext];
@@ -311,7 +305,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         glDisable(GL_DEPTH_TEST);
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         //glEnable(GL_TEXTURE_2D);
-        //MR_checkGLError("glEnable GL_TEXTURE_2D");
+        MR_checkGLError("glEnable GL_TEXTURE_2D");
         glClearColor(0.0,0.0,0.0,0.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
@@ -319,7 +313,7 @@ static GLint attributers[NUM_ATTRIBUTES];
     {
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
          
-        NSAssert(kCVPixelFormatType_420YpCbCr8Planar == type || kCVPixelFormatType_420YpCbCr8PlanarFullRange == type,@"not supported pixel format:%d", type);
+        NSAssert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type,@"not supported pixel format:%d", type);
         
         CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         
@@ -337,11 +331,6 @@ static GLint attributers[NUM_ATTRIBUTES];
             preferredConversion = kColorConversion709;
         }
         glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
-        
-        //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_Y], 0);
-        glUniform1i(uniforms[UNIFORM_U], 1);
-        glUniform1i(uniforms[UNIFORM_V], 2);
         
         [self uploadTexture:pixelBuffer];
         

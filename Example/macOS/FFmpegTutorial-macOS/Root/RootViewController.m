@@ -142,6 +142,11 @@
             @"class":@"MR0x145ViewController",
         },
         @{
+            @"title":@"0x15-1",
+            @"detail":@"使用 OpenGL 3.3 渲染 NV12 视频桢",
+            @"class":@"MR0x151ViewController",
+        },
+        @{
             @"title":@"0x15-2",
             @"detail":@"使用 OpenGL 3.3 渲染 YUV420P 视频桢",
             @"class":@"MR0x152ViewController",

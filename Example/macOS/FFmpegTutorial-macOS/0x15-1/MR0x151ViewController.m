@@ -1,23 +1,23 @@
 //
-//  MR0x152ViewController.m
+//  MR0x151ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/18.
+//  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x152ViewController.h"
+#import "MR0x151ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x14.h>
 #import "MRRWeakProxy.h"
-#import "MR0x152VideoRenderer.h"
+#import "MR0x151VideoRenderer.h"
 
-@interface MR0x152ViewController ()<FFPlayer0x14Delegate>
+@interface MR0x151ViewController ()<FFPlayer0x14Delegate>
 
 @property (strong) FFPlayer0x14 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x152VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x151VideoRenderer *videoRenderer;
 
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
@@ -26,7 +26,7 @@
 
 @end
 
-@implementation MR0x152ViewController
+@implementation MR0x151ViewController
 
 - (void)dealloc
 {
@@ -119,7 +119,7 @@
         self.timer = nil;
     }];
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     player.delegate = self;
     [player prepareToPlay];
     [player play];
@@ -167,7 +167,6 @@
     [self.videoRenderer exchangeUploadTextureMethod];
     self.textView.string = @"";
 }
-
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
 {

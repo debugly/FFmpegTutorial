@@ -1,8 +1,8 @@
 //
-//  MR0x152VideoRenderer.h
+//  MR0x151VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/18.
+//  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x152VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x151VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 - (void)exchangeUploadTextureMethod;
