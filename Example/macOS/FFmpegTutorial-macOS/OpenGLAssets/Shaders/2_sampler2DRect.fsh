@@ -65,10 +65,8 @@ void main()
     vec2 recTexCoordY = texCoordVarying * textureDimensionY;
     vec2 recTexCoordUV = texCoordVarying * textureDimensionUV;
     
-    //使用 r,g,b 都可以，a不行！
     yuv.x = texture2DRect(SamplerY, recTexCoordY).r;
-    //使用 ra,ga,ba 都可以！
-    yuv.yz = texture2DRect(SamplerUV, recTexCoordUV).ra - vec2(0.5, 0.5);
+    yuv.yz = texture2DRect(SamplerUV, recTexCoordUV).rg - vec2(0.5, 0.5);
     rgb = colorConversionMatrix * yuv;
     
     gl_FragColor = vec4(rgb, 1);
