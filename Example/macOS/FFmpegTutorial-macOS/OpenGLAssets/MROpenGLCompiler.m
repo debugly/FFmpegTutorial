@@ -26,6 +26,11 @@ void MR_checkGLError(const char* op) {
 
 @implementation MROpenGLCompiler
 
+- (void)dealloc
+{
+    glDeleteProgram(_program);
+}
+
 - (instancetype)initWithvshName:(NSString *)vshName
                         fshName:(NSString *)fshName
 {

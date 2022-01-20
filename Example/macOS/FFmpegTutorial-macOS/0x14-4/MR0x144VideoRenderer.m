@@ -48,6 +48,11 @@ static GLint textureDimension[3];
 
 @implementation MR0x144VideoRenderer
 
+- (void)dealloc
+{
+    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];

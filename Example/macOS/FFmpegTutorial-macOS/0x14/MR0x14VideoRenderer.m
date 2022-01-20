@@ -46,6 +46,11 @@ enum
 
 @implementation MR0x14VideoRenderer
 
+- (void)dealloc
+{
+    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];

@@ -56,6 +56,13 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @implementation MR0x151VideoRenderer
 
+- (void)dealloc
+{
+    glDeleteBuffers(1, &_VBO);
+    glDeleteVertexArrays(1, &_VAO);
+    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -275,7 +282,6 @@ static GLint attributers[NUM_ATTRIBUTES];
         if (err != kCGLNoError) {
             NSLog(@"error creating IOSurface texture for plane %d: %s\n",
                    0, CGLErrorString(err));
-            
         } else {
             glTexParameteri(gl_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

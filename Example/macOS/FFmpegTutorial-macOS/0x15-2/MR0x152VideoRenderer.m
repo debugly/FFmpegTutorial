@@ -58,6 +58,13 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @implementation MR0x152VideoRenderer
 
+- (void)dealloc
+{
+    glDeleteBuffers(1, &_VBO);
+    glDeleteVertexArrays(1, &_VAO);
+    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
@@ -280,7 +287,6 @@ static GLint attributers[NUM_ATTRIBUTES];
         if (err != kCGLNoError) {
             NSLog(@"error creating IOSurface texture for plane %d: %s\n",
                    0, CGLErrorString(err));
-            
         } else {
             glTexParameteri(gl_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
             glTexParameteri(gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -337,11 +343,6 @@ static GLint attributers[NUM_ATTRIBUTES];
             preferredConversion = kColorConversion709;
         }
         glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
-        
-        //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_Y], 0);
-        glUniform1i(uniforms[UNIFORM_U], 1);
-        glUniform1i(uniforms[UNIFORM_V], 2);
         
         [self uploadTexture:pixelBuffer];
         
