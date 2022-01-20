@@ -17,7 +17,7 @@
 #import <CoreVideo/CVPixelBuffer.h>
 #import <AVFoundation/AVCaptureVideoDataOutput.h>
 #include <OpenGL/gl.h>
-
+#include <OpenGL/gl3ext.h>
 // Color Conversion Constants (YUV to RGB) including adjustment from 16-235/16-240 (video range)
 
 // BT.601, which is the standard for SDTV.
@@ -113,11 +113,15 @@ static struct vt_format vt_formats[] = {
     },
 #if TARGET_OS_OSX
     {
+        //UYVY422
         //https://people.freedesktop.org/~marcheu/extensions/APPLE/ycbcr_422.html
+        //https://www.khronos.org/registry/OpenGL/extensions/APPLE/APPLE_rgb_422.txt
         .cvpixfmt = kCVPixelFormatType_422YpCbCr8,
         .planes = 1,
         .gl = {
-            { GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, GL_RGB }
+            { GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, GL_RGB },
+            //330
+            { GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, GL_RGB },
         }
     },
 #endif

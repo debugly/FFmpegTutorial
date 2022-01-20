@@ -25,7 +25,7 @@
     __block NSString *info = [FFVersionHelper ffmpegAllInfo];
     
     [OpenGLVersionHelper prepareOpenGLContext:^{
-        info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:YES]];
+        info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:NO]];
     } forLegacy:NO];
     
     [OpenGLVersionHelper prepareOpenGLContext:^{

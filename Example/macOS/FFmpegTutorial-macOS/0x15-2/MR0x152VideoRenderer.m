@@ -262,9 +262,9 @@ static GLint attributers[NUM_ATTRIBUTES];
         //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
         if (useIOSurface) {
             //设置纹理和采样器的对应关系
-            glUniform1i(uniforms[UNIFORM_Y + i], 3 + i);
-            glActiveTexture(GL_TEXTURE0 + 3 + i);
-            glBindTexture(gl_target, plane_textures[i] + 3);
+            glUniform1i(uniforms[UNIFORM_Y + i], f->planes + i);
+            glActiveTexture(GL_TEXTURE0 + f->planes + i);
+            glBindTexture(gl_target, plane_textures[i] + f->planes);
         } else {
             glUniform1i(uniforms[UNIFORM_Y + i], 0 + i);
             glActiveTexture(GL_TEXTURE0 + i);

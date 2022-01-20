@@ -101,7 +101,9 @@ open FFmpegTutorial-macOS.xcworkspace
     - 0x14-4：[渲染 YUYV422]（Mac Only）
     - 0x14-5：[渲染 NV21]（Mac Only）
 - 0x15：[使用 OpenGL 3.3 渲染视频帧]
+    - 0x15-1：[渲染 NV12]（Mac Only）
     - 0x15-2：[渲染 YUV420P]（Mac Only）
+    - 0x15-3：[渲染 UYVY422]（Mac Only）
 
 三、音频渲染
 

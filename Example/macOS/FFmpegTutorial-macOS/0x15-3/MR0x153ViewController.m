@@ -1,23 +1,24 @@
 //
-//  MR0x152ViewController.m
+//  MR0x153ViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/18.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x152ViewController.h"
+#import "MR0x153ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x14.h>
 #import "MRRWeakProxy.h"
-#import "MR0x152VideoRenderer.h"
+#import "MR0x153VideoRenderer.h"
+#import <FFmpegTutorial/OpenGLVersionHelper.h>
 
-@interface MR0x152ViewController ()<FFPlayer0x14Delegate>
+@interface MR0x153ViewController ()<FFPlayer0x14Delegate>
 
 @property (strong) FFPlayer0x14 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x152VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x153VideoRenderer *videoRenderer;
 
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
@@ -26,7 +27,7 @@
 
 @end
 
-@implementation MR0x152ViewController
+@implementation MR0x153ViewController
 
 - (void)dealloc
 {
@@ -42,6 +43,7 @@
     
     _textView.delegate = nil;
     _textView = nil;
+    
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
@@ -119,7 +121,7 @@
         self.timer = nil;
     }];
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_UYVY422;
     player.delegate = self;
     [player prepareToPlay];
     [player play];
@@ -136,6 +138,11 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndScroll:) name:NSScrollViewDidEndLiveScrollNotification object:self.textView.enclosingScrollView];
     [self.videoRenderer setWantsLayer:YES];
     self.videoRenderer.layer.backgroundColor = [[NSColor redColor]CGColor];
+    
+    [OpenGLVersionHelper prepareOpenGLContext:^{
+       NSString *version = [OpenGLVersionHelper openglAllInfo:NO];
+        [self appendMsg:version];
+    } forLegacy:NO];
 }
 
 - (void)willStartScroll:(NSScrollView *)sender
