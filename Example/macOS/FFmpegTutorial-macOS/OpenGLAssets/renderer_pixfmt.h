@@ -108,7 +108,9 @@ static struct vt_format vt_formats[] = {
         .cvpixfmt = kCVPixelFormatType_422YpCbCr8_yuvs,
         .planes = 1,
         .gl = {
-            { GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, GL_RGB }
+            { GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, GL_RGB },
+            //330
+            { GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, GL_RGB },
         }
     },
 #if TARGET_OS_OSX

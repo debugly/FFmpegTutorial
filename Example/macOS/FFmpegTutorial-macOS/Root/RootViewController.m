@@ -157,6 +157,11 @@
             @"class":@"MR0x153ViewController",
         },
         @{
+            @"title":@"0x15-4",
+            @"detail":@"使用 OpenGL 3.3 渲染 YUYV422 视频桢",
+            @"class":@"MR0x154ViewController",
+        },
+        @{
             @"title":@"0x20",
             @"detail":@"使用 AudioUnit 渲染音频桢",
             @"class":@"MR0x20ViewController",
