@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
+		C9580223279ABFAB0058D64A /* MR0x156ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C958021E279ABFAB0058D64A /* MR0x156ViewController.xib */; };
+		C9580224279ABFAB0058D64A /* MR0x156VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580221279ABFAB0058D64A /* MR0x156VideoRenderer.m */; };
+		C9580225279ABFAB0058D64A /* MR0x156ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580222279ABFAB0058D64A /* MR0x156ViewController.m */; };
 		C958F9592796A6390058D64A /* MR0x152ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C958F9542796A6390058D64A /* MR0x152ViewController.xib */; };
 		C958F95A2796A6390058D64A /* MR0x152ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C958F9552796A6390058D64A /* MR0x152ViewController.m */; };
 		C958F95B2796A6390058D64A /* MR0x152VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C958F9582796A6390058D64A /* MR0x152VideoRenderer.m */; };
@@ -121,6 +124,11 @@
 /* Begin PBXFileReference section */
 		6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C958021E279ABFAB0058D64A /* MR0x156ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x156ViewController.xib; sourceTree = "<group>"; };
+		C958021F279ABFAB0058D64A /* MR0x156VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x156VideoRenderer.h; sourceTree = "<group>"; };
+		C9580220279ABFAB0058D64A /* MR0x156ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x156ViewController.h; sourceTree = "<group>"; };
+		C9580221279ABFAB0058D64A /* MR0x156VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156VideoRenderer.m; sourceTree = "<group>"; };
+		C9580222279ABFAB0058D64A /* MR0x156ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156ViewController.m; sourceTree = "<group>"; };
 		C958F9542796A6390058D64A /* MR0x152ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x152ViewController.xib; sourceTree = "<group>"; };
 		C958F9552796A6390058D64A /* MR0x152ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x152ViewController.m; sourceTree = "<group>"; };
 		C958F9562796A6390058D64A /* MR0x152VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x152VideoRenderer.h; sourceTree = "<group>"; };
@@ -303,6 +311,18 @@
 				D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C958021D279ABFAB0058D64A /* 0x15-6 */ = {
+			isa = PBXGroup;
+			children = (
+				C958021F279ABFAB0058D64A /* MR0x156VideoRenderer.h */,
+				C9580221279ABFAB0058D64A /* MR0x156VideoRenderer.m */,
+				C9580220279ABFAB0058D64A /* MR0x156ViewController.h */,
+				C9580222279ABFAB0058D64A /* MR0x156ViewController.m */,
+				C958021E279ABFAB0058D64A /* MR0x156ViewController.xib */,
+			);
+			path = "0x15-6";
 			sourceTree = "<group>";
 		};
 		C958F9532796A6390058D64A /* 0x15-2 */ = {
@@ -725,6 +745,7 @@
 				C958FAAE279823A00058D64A /* 0x15-3 */,
 				C958FAB9279A5C0F0058D64A /* 0x15-4 */,
 				C958FAC2279A5EB40058D64A /* 0x15-5 */,
+				C958021D279ABFAB0058D64A /* 0x15-6 */,
 				DD6840C926FA24CC00D8B16B /* 0x20 */,
 				DD6840D326FA2CBA00D8B16B /* 0x20-1 */,
 				DD6840E42700BE5400D8B16B /* 0x20-2 */,
@@ -809,6 +830,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9580223279ABFAB0058D64A /* MR0x156ViewController.xib in Resources */,
 				DD6840E126FA2D2E00D8B16B /* MR0x201ViewController.xib in Resources */,
 				DD91F268269B381000B96334 /* MR0x14ViewController.xib in Resources */,
 				C958FACD279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh in Resources */,
@@ -921,6 +943,7 @@
 				DD6840EC2700BE5400D8B16B /* MR0x202VideoRenderer.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DD6840E226FA2D2E00D8B16B /* MR0x201VideoRenderer.m in Sources */,
+				C9580224279ABFAB0058D64A /* MR0x156VideoRenderer.m in Sources */,
 				C958FABF279A5C0F0058D64A /* MR0x154ViewController.m in Sources */,
 				DD91F31726B1A41E00B96334 /* MR0x142ViewController.m in Sources */,
 				DD91F141268B6B4100B96334 /* MR0x04ViewController.m in Sources */,
@@ -930,6 +953,7 @@
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
 				DD91F260269B2CAF00B96334 /* MR0x13VideoRenderer.m in Sources */,
 				DD91F1CE269361C800B96334 /* MR0x06ViewController.m in Sources */,
+				C9580225279ABFAB0058D64A /* MR0x156ViewController.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 				DD6840EA2700BE5400D8B16B /* MR0x202ViewController.m in Sources */,
 				DD6840E326FA2D2E00D8B16B /* MR0x201ViewController.m in Sources */,
