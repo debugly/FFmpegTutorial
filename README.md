@@ -3,7 +3,7 @@
 
 > 了解底层音视频技术是很有必要的，为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个使用 FFMpeg 封装播放器系列教程，非常适合零基础的 iOS/macOS 开发者学习。 
 > 
-> 喜欢的老铁给个 Star 吧。
+> 喜欢的老铁给个 Star 吧（先别着急 fork，现阶段会经常更新）。
 
 ## Usage
 
@@ -95,15 +95,17 @@ open FFmpegTutorial-macOS.xcworkspace
 - 0x12：[使用 Core Image 渲染视频帧]
 - 0x13：[使用 Core Video 渲染视频帧]
 - 0x14：[使用 OpenGL 渲染视频帧]
-    - 0x14-1：[渲染 NV12]（Mac Only）
+    - 0x14-1：[渲染 NV12]
     - 0x14-2：[渲染 YUV420P]（Mac Only）
     - 0x14-3：[渲染 UYVY422]（Mac Only）
     - 0x14-4：[渲染 YUYV422]（Mac Only）
     - 0x14-5：[渲染 NV21]（Mac Only）
-- 0x15：[使用 OpenGL 3.3 渲染视频帧]
-    - 0x15-1：[渲染 NV12]（Mac Only）
+- 0x15：[使用 OpenGL 3.3 渲染视频帧，两种上传纹理方式随时切换]
+    - 0x15-1：[渲染 NV12]
     - 0x15-2：[渲染 YUV420P]（Mac Only）
     - 0x15-3：[渲染 UYVY422]（Mac Only）
+    - 0x15-4：[渲染 YUYV422]（Mac Only）
+    - 0x15-5：[渲染 NV21]（Mac Only）
 
 三、音频渲染
 
@@ -131,7 +133,6 @@ open FFmpegTutorial-macOS.xcworkspace
 - 2、[支持 seek]
 - 3、[支持从指定位置开始播放]
 - 4、[封装 MRMoviePlayer 播放器]
-
 
 ## Cross-platform
 
