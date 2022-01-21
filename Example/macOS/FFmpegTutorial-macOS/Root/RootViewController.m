@@ -162,6 +162,11 @@
             @"class":@"MR0x154ViewController",
         },
         @{
+            @"title":@"0x15-5",
+            @"detail":@"使用 OpenGL 3.3 渲染 NV21 视频桢",
+            @"class":@"MR0x155ViewController",
+        },
+        @{
             @"title":@"0x20",
             @"detail":@"使用 AudioUnit 渲染音频桢",
             @"class":@"MR0x20ViewController",

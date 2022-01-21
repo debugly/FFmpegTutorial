@@ -68,7 +68,7 @@ void main()
     //使用 r,g,b 都可以，a不行！
     yuv.x = texture2DRect(SamplerY, recTexCoordY).r;
     //这里翻转 UV ！！
-    yuv.zy = texture2DRect(SamplerUV, recTexCoordUV).ra - vec2(0.5, 0.5);
+    yuv.zy = texture2DRect(SamplerUV, recTexCoordUV).rg - vec2(0.5, 0.5);
     rgb = colorConversionMatrix * yuv;
     
     gl_FragColor = vec4(rgb, 1);

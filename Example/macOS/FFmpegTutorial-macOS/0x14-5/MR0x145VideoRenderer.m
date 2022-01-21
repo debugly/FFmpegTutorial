@@ -96,7 +96,7 @@ static GLint textureDimension[2];
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"NV21.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sample2DRect_NV21.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
