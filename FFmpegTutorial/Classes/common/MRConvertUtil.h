@@ -44,15 +44,13 @@ AVFrame to CVPixelBuffer，pixel fmt support [RGB24/ARGB/0RGB/BGRA/BGR0/NV12/NV2
 + (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;
 
 #if TARGET_OS_IOS
-/**
- iOS OpenGL ES 截图
- */
-+ (UIImage *)snapshot:(GLint)renderbuffer sacle:(CGFloat)scale;
+///截取原视频画面
++ (UIImage *)snapshot:(GLint)renderbuffer scale:(CGFloat)scale;
 #else
-/**
- macos OpenGL 截图
- */
+///截取当前屏幕显示的画面
 + (NSImage *)snapshot:(NSOpenGLContext *)openGLContext size:(CGSize)size;
+///截取原视频画面
++ (NSImage *)snapshotFBO:(GLint)renderbuffer size:(CGSize)size;
 #endif
 
 //黑白电视机雪花屏

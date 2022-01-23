@@ -168,6 +168,12 @@
     self.textView.string = @"";
 }
 
+- (IBAction)onSaveSnapshot:(NSButton *)sender
+{
+    NSImage *img = [self.videoRenderer snapshot];
+    NSLog(@"img:%@",NSStringFromSize(img.size));
+}
+
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];

@@ -16,6 +16,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 - (void)exchangeUploadTextureMethod;
+- (NSImage *)snapshot;
 
 @end
 

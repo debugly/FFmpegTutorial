@@ -17,6 +17,7 @@
 #import <GLKit/GLKit.h>
 #import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
+#import <FFmpegTutorial/MRConvertUtil.h>
 
 // Uniform index.
 enum
@@ -48,8 +49,12 @@ static GLint attributers[NUM_ATTRIBUTES];
     GLuint _VBO;
     GLuint _VAO;
     
-    GLuint _frameBufferHandle;
-    GLuint _colorBufferHandle;
+    CGSize _FBOTextureSize;
+    GLuint _FBO;
+    GLuint _ColorTexture;
+    
+    //hold the last pixelbuffer for snapshot.
+    CVPixelBufferRef _lastPixelBuffer;
 }
 
 @property MROpenGLCompiler * openglCompiler;
@@ -63,10 +68,9 @@ static GLint attributers[NUM_ATTRIBUTES];
 {
     glDeleteBuffers(1, &_VBO);
     glDeleteVertexArrays(1, &_VAO);
-    
-    glDeleteFramebuffers(1, &_frameBufferHandle);
-    glDeleteFramebuffers(1, &_colorBufferHandle);
     glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    [self destroyFBO];
+    [self destroyLastPixelBuffer];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -116,10 +120,10 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
+            uniforms[UNIFORM_Y]  = [self.openglCompiler getUniformLocation:"SamplerY"];
             uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
             
-            uniforms[DIMENSION_Y] = [self.openglCompiler getUniformLocation:"textureDimensionY"];
+            uniforms[DIMENSION_Y]  = [self.openglCompiler getUniformLocation:"textureDimensionY"];
             uniforms[DIMENSION_UV] = [self.openglCompiler getUniformLocation:"textureDimensionUV"];
             
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
@@ -134,17 +138,6 @@ static GLint attributers[NUM_ATTRIBUTES];
             /// 绑定顶点缓存对象到当前的顶点位置,之后对GL_ARRAY_BUFFER的操作即是对_VBO的操作
             /// 同时也指定了_VBO的对象类型是一个顶点数据对象
             glBindBuffer(GL_ARRAY_BUFFER, _VBO);
-            
-            glGenFramebuffers(1, &_frameBufferHandle);
-            glBindFramebuffer(GL_FRAMEBUFFER, _frameBufferHandle);
-            
-            glGenRenderbuffers(1, &_colorBufferHandle);
-            glBindRenderbuffer(GL_RENDERBUFFER, _colorBufferHandle);
-            
-            glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_RENDERBUFFER, _colorBufferHandle);
-            if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE) {
-                NSLog(@"Failed to make complete framebuffer object %x", glCheckFramebufferStatus(GL_FRAMEBUFFER));
-            }
         }
     }
 }
@@ -307,10 +300,8 @@ static GLint attributers[NUM_ATTRIBUTES];
     }
 }
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
+- (void)drawPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext([[self openGLContext] CGLContextObj]);
     //active opengl program
     {
         [self setupOpenGLProgram];
@@ -325,9 +316,6 @@ static GLint attributers[NUM_ATTRIBUTES];
     
     {
         glDisable(GL_DEPTH_TEST);
-        glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-        //glEnable(GL_TEXTURE_2D);
-        MR_checkGLError("glEnable GL_TEXTURE_2D");
         glClearColor(0.0,0.0,0.0,0.0);
         glClear(GL_COLOR_BUFFER_BIT);
     }
@@ -353,14 +341,18 @@ static GLint attributers[NUM_ATTRIBUTES];
             preferredConversion = kColorConversion709;
         }
         glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
-        
+    }
+    
+    {
         [self uploadTexture:pixelBuffer];
-        
+    }
+    
+    {
         // Compute normalized quad coordinates to draw the frame into.
         CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
 
         if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
-            const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
+            const size_t pictureWidth  = CVPixelBufferGetWidth(pixelBuffer);
             const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
             // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
             CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
@@ -430,11 +422,112 @@ static GLint attributers[NUM_ATTRIBUTES];
         glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
         
         glBindVertexArray(_VAO);
-        glBindRenderbuffer(GL_RENDERBUFFER, _colorBufferHandle);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
+}
+
+- (void)destroyLastPixelBuffer {
+    if (_lastPixelBuffer) {
+        CVPixelBufferRelease(_lastPixelBuffer);
+        _lastPixelBuffer = NULL;
+    }
+}
+
+- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
+{
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+    // Bind the default FBO to render to the screen.
+    glBindFramebuffer(GL_FRAMEBUFFER, 0);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
+    NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
+    glViewport(0, 0, pixelSize.width, pixelSize.height);
+
+    [self drawPixelBuffer:pixelBuffer];
+    [self destroyLastPixelBuffer];
+    _lastPixelBuffer = CVPixelBufferRetain(pixelBuffer);
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
+}
+
+- (void)destroyFBO
+{
+    glDeleteFramebuffers(1, &_FBO);
+    glDeleteFramebuffers(1, &_ColorTexture);
+    _FBOTextureSize = CGSizeZero;
+}
+
+// Create texture and framebuffer objects to render and snapshot.
+- (BOOL)prepareFBOIfNeed:(CGSize)size
+{
+    if (CGSizeEqualToSize(_FBOTextureSize, size)) {
+        return YES;
+    } else {
+        [self destroyFBO];
+    }
+    
+    // Create a texture object that you apply to the model.
+    glGenTextures(1, &_ColorTexture);
+    glBindTexture(GL_TEXTURE_2D, _ColorTexture);
+
+    // Set up filter and wrap modes for the texture object.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Mipmap generation is not accelerated on iOS, so you can't enable trilinear filtering.
+#if TARGET_IOS
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+#else
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+#endif
+
+    // Allocate a texture image to which you can render to. Pass `NULL` for the data parameter
+    // becuase you don't need to load image data. You generate the image by rendering to the texture.
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                 size.width, size.height, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+    glGenFramebuffers(1, &_FBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _ColorTexture, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+        _FBOTextureSize = size;
+        return YES;
+    } else {
+    #if DEBUG
+        NSAssert(NO, @"Failed to make complete framebuffer object %x.",  glCheckFramebufferStatus(GL_FRAMEBUFFER));
+    #endif
+        return NO;
+    }
+}
+
+- (NSImage *)snapshot
+{
+    if (_lastPixelBuffer) {
+#warning TODO get pic origin size.
+        CGSize picSize = CGSizeMake(640, 480);
+        if ([self prepareFBOIfNeed:picSize]) {
+            [[self openGLContext] makeCurrentContext];
+            CGLLockContext([[self openGLContext] CGLContextObj]);
+            
+            // Bind the snapshot FBO and render the scene.
+            glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
+            glViewport(0, 0, picSize.width, picSize.height);
+            // Bind the texture that you previously render to (i.e. the snapshot texture).
+            glBindTexture(GL_TEXTURE_2D, _ColorTexture);
+            
+            [self drawPixelBuffer:_lastPixelBuffer];
+            
+            CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+            CGLUnlockContext([[self openGLContext] CGLContextObj]);
+
+            return [MRConvertUtil snapshotFBO:_ColorTexture size:picSize];
+        }
+    }
+    return nil;
 }
 
 - (void)setContentMode:(MRViewContentMode)contentMode

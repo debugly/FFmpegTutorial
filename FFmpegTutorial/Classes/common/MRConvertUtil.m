@@ -369,7 +369,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 
 #if TARGET_OS_IOS
 //https://developer.apple.com/library/archive/qa/qa1704/_index.html
-+ (UIImage *)snapshot:(GLint)renderbuffer sacle:(CGFloat)scale
++ (UIImage *)snapshot:(GLint)renderbuffer scale:(CGFloat)scale
 {
     if (renderbuffer <= 0) {
         return nil;
@@ -478,7 +478,126 @@ static void memswap(unsigned char *a, unsigned char *b, unsigned int bytes)
     //make xcode happy
     int bytesPerRow = (int)[imageRep bytesPerRow];
     
-    glPixelStorei(GL_PACK_ROW_LENGTH, 8*bytesPerRow/[imageRep bitsPerPixel]);
+    glPixelStorei(GL_PACK_ROW_LENGTH, 8 * bytesPerRow / [imageRep bitsPerPixel]);
+    
+    glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, bitmapData);
+    
+    // Flip the bitmap vertically to account for OpenGL coordinate system difference
+    // from NSImage coordinate system.
+    
+    for (int row = 0; row < height/2; row++)
+    {
+        unsigned char *a, *b;
+        
+        a = bitmapData + row * bytesPerRow;
+        b = bitmapData + (height - 1 - row) * bytesPerRow;
+        
+        memswap(a, b, bytesPerRow);
+    }
+    
+    // Create the NSImage from the bitmap
+    NSImage *image = [[NSImage alloc] initWithSize:NSMakeSize(width, height)];
+    [image addRepresentation:imageRep];
+    
+    // Previously we did not flip the bitmap, and instead did [image setFlipped:YES];
+    // This does not work properly (i.e., the image remained inverted) when pasting
+    // the image to AppleWorks or GraphicConvertor.
+    
+    return image;
+}
+
+static inline const char * GetGLErrorString(GLenum error)
+{
+    const char *str;
+    switch( error )
+    {
+        case GL_NO_ERROR:
+            str = "GL_NO_ERROR";
+            break;
+        case GL_INVALID_ENUM:
+            str = "GL_INVALID_ENUM";
+            break;
+        case GL_INVALID_VALUE:
+            str = "GL_INVALID_VALUE";
+            break;
+        case GL_INVALID_OPERATION:
+            str = "GL_INVALID_OPERATION";
+            break;
+        case GL_OUT_OF_MEMORY:
+            str = "GL_OUT_OF_MEMORY";
+            break;
+        case GL_INVALID_FRAMEBUFFER_OPERATION:
+            str = "GL_INVALID_FRAMEBUFFER_OPERATION";
+            break;
+#if defined __gl_h_
+        case GL_STACK_OVERFLOW:
+            str = "GL_STACK_OVERFLOW";
+            break;
+        case GL_STACK_UNDERFLOW:
+            str = "GL_STACK_UNDERFLOW";
+            break;
+        case GL_TABLE_TOO_LARGE:
+            str = "GL_TABLE_TOO_LARGE";
+            break;
+#endif
+        default:
+            str = "(ERROR: Unknown Error Enum)";
+            break;
+    }
+    return str;
+}
+
+
+#define GetGLError()                                  \
+{                                                     \
+    GLenum err = glGetError();                        \
+    while (err != GL_NO_ERROR)                        \
+    {                                                 \
+        NSLog(@"GLError %s set in File:%s Line:%d\n", \
+        GetGLErrorString(err), __FILE__, __LINE__);   \
+        err = glGetError();                           \
+    }                                                 \
+}
+
+
++ (NSImage *)snapshotFBO:(GLint)renderbuffer size:(CGSize)size
+{
+    if (renderbuffer <= 0) {
+        return nil;
+    }
+    // Bind the color renderbuffer used to render the OpenGL ES view
+    // If your application only creates a single color renderbuffer which is already bound at this point,
+    // this call is redundant, but it is needed if you're dealing with multiple renderbuffers.
+    // Note, replace "renderbuffer" with the actual name of the renderbuffer object defined in your class.
+    GetGLError();
+//    glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+    GLint width = 0, height = 0;
+//    GetGLError();
+//    // Get the size
+//    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_WIDTH, &width);
+//    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &height);
+//    GetGLError();
+    
+    width = size.width;
+    height = size.height;
+    NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL
+                                                       pixelsWide: width
+                                                       pixelsHigh: height
+                                                    bitsPerSample: 8
+                                                  samplesPerPixel: 4
+                                                         hasAlpha: YES
+                                                         isPlanar: NO
+                                                   colorSpaceName: NSCalibratedRGBColorSpace
+                                                      bytesPerRow: 0                // indicates no empty bytes at row end
+                                                     bitsPerPixel: 0];
+    
+    unsigned char *bitmapData = [imageRep bitmapData];
+    
+    //make xcode happy
+    int bytesPerRow = (int)[imageRep bytesPerRow];
+    // Read pixel data from the framebuffer
+    glPixelStorei(GL_PACK_ALIGNMENT, 4);
+    glPixelStorei(GL_PACK_ROW_LENGTH, 8 * bytesPerRow / [imageRep bitsPerPixel]);
     
     glReadPixels(0, 0, width, height, GL_RGBA, GL_UNSIGNED_BYTE, bitmapData);
     
