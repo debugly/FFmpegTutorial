@@ -11,6 +11,7 @@
 		C9580223279ABFAB0058D64A /* MR0x156ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C958021E279ABFAB0058D64A /* MR0x156ViewController.xib */; };
 		C9580224279ABFAB0058D64A /* MR0x156VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580221279ABFAB0058D64A /* MR0x156VideoRenderer.m */; };
 		C9580225279ABFAB0058D64A /* MR0x156ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580222279ABFAB0058D64A /* MR0x156ViewController.m */; };
+		C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */; };
 		C958F9592796A6390058D64A /* MR0x152ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C958F9542796A6390058D64A /* MR0x152ViewController.xib */; };
 		C958F95A2796A6390058D64A /* MR0x152ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C958F9552796A6390058D64A /* MR0x152ViewController.m */; };
 		C958F95B2796A6390058D64A /* MR0x152VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C958F9582796A6390058D64A /* MR0x152VideoRenderer.m */; };
@@ -129,6 +130,8 @@
 		C9580220279ABFAB0058D64A /* MR0x156ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x156ViewController.h; sourceTree = "<group>"; };
 		C9580221279ABFAB0058D64A /* MR0x156VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156VideoRenderer.m; sourceTree = "<group>"; };
 		C9580222279ABFAB0058D64A /* MR0x156ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156ViewController.m; sourceTree = "<group>"; };
+		C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
+		C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
 		C958F9542796A6390058D64A /* MR0x152ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x152ViewController.xib; sourceTree = "<group>"; };
 		C958F9552796A6390058D64A /* MR0x152ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x152ViewController.m; sourceTree = "<group>"; };
 		C958F9562796A6390058D64A /* MR0x152VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x152VideoRenderer.h; sourceTree = "<group>"; };
@@ -658,6 +661,8 @@
 		DDB73F642577DDD10060EB57 /* MRUtil */ = {
 			isa = PBXGroup;
 			children = (
+				C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */,
+				C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */,
 				DDB73F652577DDE60060EB57 /* MRUtil.h */,
 				DDB73F662577DDE60060EB57 /* MRUtil.m */,
 			);
@@ -954,6 +959,7 @@
 				DD91F260269B2CAF00B96334 /* MR0x13VideoRenderer.m in Sources */,
 				DD91F1CE269361C800B96334 /* MR0x06ViewController.m in Sources */,
 				C9580225279ABFAB0058D64A /* MR0x156ViewController.m in Sources */,
+				C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 				DD6840EA2700BE5400D8B16B /* MR0x202ViewController.m in Sources */,
 				DD6840E326FA2D2E00D8B16B /* MR0x201ViewController.m in Sources */,

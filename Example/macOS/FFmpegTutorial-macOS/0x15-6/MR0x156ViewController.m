@@ -10,6 +10,8 @@
 #import <FFmpegTutorial/FFPlayer0x15.h>
 #import "MRRWeakProxy.h"
 #import "MR0x156VideoRenderer.h"
+#import "NSFileManager+Sandbox.h"
+#import "MRUtil.h"
 
 @interface MR0x156ViewController ()<FFPlayer0x15Delegate>
 
@@ -184,7 +186,15 @@
 - (IBAction)onSaveSnapshot:(NSButton *)sender
 {
     NSImage *img = [self.videoRenderer snapshot];
-    NSLog(@"img:%@",NSStringFromSize(img.size));
+    NSString *videoName = [[NSURL URLWithString:self.player.contentPath] lastPathComponent];
+    if ([videoName isEqualToString:@"/"]) {
+        videoName = @"未知";
+    }
+    NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
+    long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
+    NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
+    [MRUtil saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
+    NSLog(@"img:%@",filePath);
 }
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender

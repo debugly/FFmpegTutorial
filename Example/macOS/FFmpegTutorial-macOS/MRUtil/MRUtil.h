@@ -6,6 +6,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CGImage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -14,6 +15,8 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSArray <NSString *>*)videoType;
 + (NSDictionary *)makeBookmarkWithURL:(NSURL *)url;
 + (NSArray <NSDictionary *>*)scanFolderWithPath:(NSString *)dir filter:(NSArray<NSString *>*)types;
++ (CGImageRef)nsImage2cg:(NSImage *)src;
++ (BOOL)saveImageToFile:(CGImageRef)img path:(NSString *)imgPath;
 
 @end
 

@@ -578,7 +578,7 @@ static inline const char * GetGLErrorString(GLenum error)
 //    glGetRenderbufferParameteriv(GL_RENDERBUFFER, GL_RENDERBUFFER_HEIGHT, &height);
 //    GetGLError();
     
-    width = size.width;
+    width  = size.width;
     height = size.height;
     NSBitmapImageRep *imageRep = [[NSBitmapImageRep alloc] initWithBitmapDataPlanes: NULL
                                                        pixelsWide: width
