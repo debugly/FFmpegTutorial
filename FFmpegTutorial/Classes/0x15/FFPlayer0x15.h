@@ -7,13 +7,13 @@
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
-#import <CoreMedia/CMSampleBuffer.h>
+#import <CoreVideo/CVPixelBuffer.h>
 
 NS_ASSUME_NONNULL_BEGIN
 @protocol FFPlayer0x15Delegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(CMSampleBufferRef)img;
+- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img;
 
 @end
 

@@ -7,14 +7,14 @@
 //
 
 #import "MR0x153ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x14.h>
+#import <FFmpegTutorial/FFPlayer0x15.h>
 #import "MRRWeakProxy.h"
 #import "MR0x153VideoRenderer.h"
 #import <FFmpegTutorial/OpenGLVersionHelper.h>
 
-@interface MR0x153ViewController ()<FFPlayer0x14Delegate>
+@interface MR0x153ViewController ()<FFPlayer0x15Delegate>
 
-@property (strong) FFPlayer0x14 *player;
+@property (strong) FFPlayer0x15 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
@@ -107,7 +107,7 @@
         self.textView.string = @"";
     }
     
-    FFPlayer0x14 *player = [[FFPlayer0x14 alloc] init];
+    FFPlayer0x15 *player = [[FFPlayer0x15 alloc] init];
     player.contentPath = url;
     
     [self.indicatorView startAnimation:nil];

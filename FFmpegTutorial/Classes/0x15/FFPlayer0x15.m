@@ -464,7 +464,7 @@ static int decode_interrupt_cb(void *ctx)
     self.rendererThread.name = @"mr-renderer";
 }
 
-- (CMSampleBufferRef _Nullable)sampleBufferFromAVFrame:(AVFrame *)frame
+- (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
 {
 #if USE_PIXEL_BUFFER_POOL
     if (!self.pixelBufferPool){
@@ -477,16 +477,16 @@ static int decode_interrupt_cb(void *ctx)
 #endif
     
     CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
-    return  [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
+    return pixelBuffer;
 }
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
     if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
         @autoreleasepool {
-            CMSampleBufferRef sample = [self sampleBufferFromAVFrame:vp->frame];
-            if (sample) {
-                [self.delegate reveiveFrameToRenderer:sample];
+            CVPixelBufferRef pixelBuffer = [self pixelBufferFromAVFrame:vp->frame];
+            if (pixelBuffer) {
+                [self.delegate reveiveFrameToRenderer:pixelBuffer];
             }
         }
     }
@@ -560,5 +560,4 @@ static int decode_interrupt_cb(void *ctx)
 {
     return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
 }
-
 @end
