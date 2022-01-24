@@ -106,6 +106,7 @@ open FFmpegTutorial-macOS.xcworkspace
     - 0x15-3：[渲染 UYVY422]（Mac Only）
     - 0x15-4：[渲染 YUYV422]（Mac Only）
     - 0x15-5：[渲染 NV21]（Mac Only）
+- 0x16：[使用 FBO 离屏渲染截图]（Mac Only）
 
 三、音频渲染
 

@@ -1,8 +1,8 @@
 //
-//  MR0x156VideoRenderer.h
+//  MR0x16VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/21.
+//  Created by qianlongxu on 2022/1/24.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x156VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x16VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 //画面原始尺寸；
 @property (assign) CGSize videoSize;
 

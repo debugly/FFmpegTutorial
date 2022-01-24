@@ -1,25 +1,25 @@
 //
-//  MR0x156ViewController.m
+//  MR0x16ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/21.
+//  Created by qianlongxu on 2022/1/24.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x156ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x15.h>
+#import "MR0x16ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x16.h>
 #import "MRRWeakProxy.h"
-#import "MR0x156VideoRenderer.h"
+#import "MR0x16VideoRenderer.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 
-@interface MR0x156ViewController ()<FFPlayer0x15Delegate>
+@interface MR0x16ViewController ()<FFPlayer0x16Delegate>
 
-@property (strong) FFPlayer0x15 *player;
+@property (strong) FFPlayer0x16 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x156VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x16VideoRenderer *videoRenderer;
 
 @property (assign) NSInteger ignoreScrollBottom;
 @property (weak) NSTimer *timer;
@@ -28,7 +28,7 @@
 
 @end
 
-@implementation MR0x156ViewController
+@implementation MR0x16ViewController
 
 - (void)dealloc
 {
@@ -78,10 +78,10 @@
     });
 }
 
-- (void)player:(FFPlayer0x15 *)player videoDidOpen:(NSDictionary *)info
+- (void)player:(FFPlayer0x16 *)player videoDidOpen:(NSDictionary *)info
 {
-    int width  = [info[kFFPlayer0x15Width] intValue];
-    int height = [info[kFFPlayer0x15Height] intValue];
+    int width  = [info[kFFPlayer0x16Width] intValue];
+    int height = [info[kFFPlayer0x16Height] intValue];
     self.videoRenderer.videoSize = CGSizeMake(width, height);
     
     NSLog(@"---VideoInfo-------------------");
@@ -120,7 +120,7 @@
         self.textView.string = @"";
     }
     
-    FFPlayer0x15 *player = [[FFPlayer0x15 alloc] init];
+    FFPlayer0x16 *player = [[FFPlayer0x16 alloc] init];
     player.contentPath = url;
     
     [self.indicatorView startAnimation:nil];

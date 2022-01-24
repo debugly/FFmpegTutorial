@@ -1,24 +1,39 @@
 //
-//  FFPlayer0x15.m
+//  FFPlayer0x16.m
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2020/6/25.
 //
 
-#import "FFPlayer0x15.h"
+#import "FFPlayer0x16.h"
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
-#import "FFDecoder0x15.h"
+#import "FFDecoder0x16.h"
 #import "FFVideoScale.h"
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
+//视频时长；单位s
+kFFPlayer0x16InfoKey kFFPlayer0x16Duration = @"kFFPlayer0x16Duration";
+//视频格式
+kFFPlayer0x16InfoKey kFFPlayer0x16ContainerFmt = @"kFFPlayer0x16ContainerFmt";
+//视频宽；单位像素
+kFFPlayer0x16InfoKey kFFPlayer0x16Width = @"kFFPlayer0x16Width";
+//视频高；单位像素
+kFFPlayer0x16InfoKey kFFPlayer0x16Height = @"kFFPlayer0x16Height";
+//视频编码格式
+kFFPlayer0x16InfoKey kFFPlayer0x16VideoFmt = @"kFFPlayer0x16VideoFmt";
+//音频编码格式
+kFFPlayer0x16InfoKey kFFPlayer0x16AudioFmt = @"kFFPlayer0x16AudioFmt";
+//视频旋转角度
+kFFPlayer0x16InfoKey kFFPlayer0x16Rotate = @"kFFPlayer0x16Rotate";
+
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
 
-@interface FFPlayer0x15 ()<FFDecoderDelegate0x15>
+@interface FFPlayer0x16 ()<FFDecoderDelegate0x16>
 {
     //解码前的音频包缓存队列
     PacketQueue _audioq;
@@ -40,9 +55,9 @@
 @property (nonatomic, strong) MRThread *rendererThread;
 
 //音频解码器
-@property (nonatomic, strong) FFDecoder0x15 *audioDecoder;
+@property (nonatomic, strong) FFDecoder0x16 *audioDecoder;
 //视频解码器
-@property (nonatomic, strong) FFDecoder0x15 *videoDecoder;
+@property (nonatomic, strong) FFDecoder0x16 *videoDecoder;
 //图像格式转换/缩放器
 @property (nonatomic, strong) FFVideoScale *videoScale;
 //PixelBuffer池可提升效率
@@ -58,11 +73,11 @@
 
 @end
 
-@implementation  FFPlayer0x15
+@implementation  FFPlayer0x16
 
 static int decode_interrupt_cb(void *ctx)
 {
-    FFPlayer0x15 *player = (__bridge FFPlayer0x15 *)ctx;
+    FFPlayer0x16 *player = (__bridge FFPlayer0x16 *)ctx;
     return player.abort_request;
 }
 
@@ -138,9 +153,9 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 打开解码器创建解码线程
 
-- (FFDecoder0x15 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (FFDecoder0x16 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
-    FFDecoder0x15 *decoder = [FFDecoder0x15 new];
+    FFDecoder0x16 *decoder = [FFDecoder0x16 new];
     decoder.ic = ic;
     decoder.streamIdx = idx;
     if ([decoder open] == 0) {
@@ -371,14 +386,29 @@ static int decode_interrupt_cb(void *ctx)
     memset(st_index, -1, sizeof(st_index));
     [self findBestStreams:formatCtx result:&st_index];
     
+    NSMutableDictionary *dumpDic = [NSMutableDictionary dictionary];
+    const char *name = formatCtx->iformat->name;
+    if (NULL != name) {
+        NSString *format = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
+        if (format) {
+            [dumpDic setObject:format forKey:kFFPlayer0x16ContainerFmt];
+        }
+    }
+    long duration = (int)(formatCtx->duration / 1000000);
+    [dumpDic setObject:@(duration) forKey:kFFPlayer0x16Duration];
+    
     //打开音频解码器，创建解码线程
     if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
         
-        self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
+        FFDecoder0x16 *audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
         
-        if(self.audioDecoder){
-            self.audioDecoder.delegate = self;
-            self.audioDecoder.name = @"mr-audio-dec";
+        if(audioDecoder){
+            audioDecoder.delegate = self;
+            audioDecoder.name = @"mr-audio-dec";
+            if (audioDecoder.codecName) {
+                [dumpDic setObject:audioDecoder.codecName forKey:kFFPlayer0x16AudioFmt];
+            }
+            self.audioDecoder = audioDecoder;
         } else {
             av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
             self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
@@ -390,11 +420,19 @@ static int decode_interrupt_cb(void *ctx)
     }
 
     //打开视频解码器，创建解码线程
-    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
-        self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
-        if(self.videoDecoder){
-            self.videoDecoder.delegate = self;
-            self.videoDecoder.name = @"mr-video-dec";
+    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0) {
+        FFDecoder0x16 *videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+        if (videoDecoder) {
+            videoDecoder.delegate = self;
+            videoDecoder.name = @"mr-video-dec";
+            [dumpDic setObject:@(videoDecoder.picWidth) forKey:kFFPlayer0x16Width];
+            [dumpDic setObject:@(videoDecoder.picHeight) forKey:kFFPlayer0x16Height];
+            
+            if (videoDecoder.codecName) {
+                [dumpDic setObject:videoDecoder.codecName forKey:kFFPlayer0x16VideoFmt];
+            }
+            
+            self.videoDecoder = videoDecoder;
             self.videoScale = [self createVideoScaleIfNeed];
         } else {
             av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
@@ -405,6 +443,12 @@ static int decode_interrupt_cb(void *ctx)
             return;
         }
     }
+    
+    MR_sync_main_queue(^{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(player:videoDidOpen:)]) {
+            [self.delegate player:self videoDidOpen:dumpDic];
+        }
+    });
     
     //音视频解码线程开始工作
     [self.audioDecoder start];
@@ -419,9 +463,9 @@ static int decode_interrupt_cb(void *ctx)
     avformat_close_input(&formatCtx);
 }
 
-#pragma mark - FFDecoderDelegate0x15
+#pragma mark - FFDecoderDelegate0x16
 
-- (int)decoder:(FFDecoder0x15 *)decoder wantAPacket:(AVPacket *)pkt
+- (int)decoder:(FFDecoder0x16 *)decoder wantAPacket:(AVPacket *)pkt
 {
     if (decoder == self.audioDecoder) {
         return packet_queue_get(&_audioq, pkt, 1);
@@ -432,7 +476,7 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoder:(FFDecoder0x15 *)decoder reveivedAFrame:(AVFrame *)frame
+- (void)decoder:(FFDecoder0x16 *)decoder reveivedAFrame:(AVFrame *)frame
 {
     if (decoder == self.audioDecoder) {
         FrameQueue *fq = &_sampq;

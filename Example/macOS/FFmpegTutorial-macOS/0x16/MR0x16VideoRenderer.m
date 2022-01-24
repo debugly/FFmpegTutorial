@@ -1,12 +1,12 @@
 //
-//  MR0x156VideoRenderer.m
+//  MR0x16VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/21.
+//  Created by qianlongxu on 2022/1/24.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x156VideoRenderer.h"
+#import "MR0x16VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -41,7 +41,7 @@ enum
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 
-@interface MR0x156VideoRenderer ()
+@interface MR0x16VideoRenderer ()
 {
     GLuint plane_textures[4];
     MRViewContentMode _contentMode;
@@ -62,7 +62,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @end
 
-@implementation MR0x156VideoRenderer
+@implementation MR0x16VideoRenderer
 
 - (void)dealloc
 {
@@ -426,7 +426,8 @@ static GLint attributers[NUM_ATTRIBUTES];
     }
 }
 
-- (void)destroyLastPixelBuffer {
+- (void)destroyLastPixelBuffer
+{
     if (_lastPixelBuffer) {
         CVPixelBufferRelease(_lastPixelBuffer);
         _lastPixelBuffer = NULL;
