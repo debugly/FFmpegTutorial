@@ -17,7 +17,6 @@ typedef enum : NSUInteger {
     FFPlayerErrorCode_ResampleFrameFailed,  //音频帧格式重采样失败
 } FFPlayerErrorCode;
 
-
 typedef enum : NSUInteger {
     MR_PIX_FMT_NONE = 0,
     MR_PIX_FMT_YUV420P,     // planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
@@ -138,7 +137,6 @@ static inline void MR_async_main_queue(dispatch_block_t block){
     // async to main queue.
     dispatch_async(dispatch_get_main_queue(), block);
 }
-
 
 typedef enum MRColorRange {
     MRCOL_RANGE_UNSPECIFIED = 0,

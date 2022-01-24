@@ -10,10 +10,30 @@
 #import <CoreVideo/CVPixelBuffer.h>
 
 NS_ASSUME_NONNULL_BEGIN
+
+//videoOpened info's key
+typedef NSString * const kFFPlayer0x15InfoKey;
+//视频时长；单位s
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15Duration;
+//视频封装格式；可能有多个，使用 ”,“ 分割
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15ContainerFmt;
+//视频宽；单位像素
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15Width;
+//视频高；单位像素
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15Height;
+//视频编码格式
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15VideoFmt;
+//音频编码格式
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15AudioFmt;
+//视频旋转角度
+FOUNDATION_EXPORT kFFPlayer0x15InfoKey kFFPlayer0x15Rotate;
+
+@class FFPlayer0x15;
 @protocol FFPlayer0x15Delegate <NSObject>
 
 @optional
 - (void)reveiveFrameToRenderer:(CVPixelBufferRef)img;
+- (void)player:(FFPlayer0x15*)player videoDidOpen:(NSDictionary *)info;
 
 @end
 

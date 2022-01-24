@@ -65,6 +65,8 @@
     self.timer = timer;
 }
 
+#pragma mark - FFPlayer Delegate Methods
+
 - (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
 {
     CFRetain(img);
@@ -72,6 +74,17 @@
         [self.videoRenderer displayPixelBuffer:img];
         CFRelease(img);
     });
+}
+
+- (void)player:(FFPlayer0x15 *)player videoDidOpen:(NSDictionary *)info
+{
+    int width  = [info[kFFPlayer0x15Width] intValue];
+    int height = [info[kFFPlayer0x15Height] intValue];
+    self.videoRenderer.videoSize = CGSizeMake(width, height);
+    
+    NSLog(@"---VideoInfo-------------------");
+    NSLog(@"%@",info);
+    NSLog(@"----------------------");
 }
 
 - (void)onTimer:(NSTimer *)sender

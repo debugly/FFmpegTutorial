@@ -141,7 +141,7 @@
 
 - (void)onInitAudioRender:(MRSampleFormat)fmt
 {
-    dispatch_async(dispatch_get_main_queue(), ^{
+    MR_async_main_queue(^{
         [self setupAudioRender:fmt];
     });
 }

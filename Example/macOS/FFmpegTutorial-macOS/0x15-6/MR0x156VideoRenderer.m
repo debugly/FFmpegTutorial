@@ -461,6 +461,10 @@ static GLint attributers[NUM_ATTRIBUTES];
 // Create texture and framebuffer objects to render and snapshot.
 - (BOOL)prepareFBOIfNeed:(CGSize)size
 {
+    if (CGSizeEqualToSize(CGSizeZero, size)) {
+        return NO;
+    }
+    
     if (CGSizeEqualToSize(_FBOTextureSize, size)) {
         return YES;
     } else {
@@ -507,8 +511,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 - (NSImage *)snapshot
 {
     if (_lastPixelBuffer) {
-#warning TODO get pic origin size.
-        CGSize picSize = CGSizeMake(640, 480);
+        CGSize picSize = self.videoSize;
         if ([self prepareFBOIfNeed:picSize]) {
             [[self openGLContext] makeCurrentContext];
             CGLLockContext([[self openGLContext] CGLContextObj]);

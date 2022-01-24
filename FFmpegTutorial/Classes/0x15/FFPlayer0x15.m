@@ -15,6 +15,21 @@
 #import "MRConvertUtil.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
+//视频时长；单位s
+kFFPlayer0x15InfoKey kFFPlayer0x15Duration = @"kFFPlayer0x15Duration";
+//视频格式
+kFFPlayer0x15InfoKey kFFPlayer0x15ContainerFmt = @"kFFPlayer0x15ContainerFmt";
+//视频宽；单位像素
+kFFPlayer0x15InfoKey kFFPlayer0x15Width = @"kFFPlayer0x15Width";
+//视频高；单位像素
+kFFPlayer0x15InfoKey kFFPlayer0x15Height = @"kFFPlayer0x15Height";
+//视频编码格式
+kFFPlayer0x15InfoKey kFFPlayer0x15VideoFmt = @"kFFPlayer0x15VideoFmt";
+//音频编码格式
+kFFPlayer0x15InfoKey kFFPlayer0x15AudioFmt = @"kFFPlayer0x15AudioFmt";
+//视频旋转角度
+kFFPlayer0x15InfoKey kFFPlayer0x15Rotate = @"kFFPlayer0x15Rotate";
+
 //是否使用POOL
 #define USE_PIXEL_BUFFER_POOL 1
 
@@ -371,14 +386,29 @@ static int decode_interrupt_cb(void *ctx)
     memset(st_index, -1, sizeof(st_index));
     [self findBestStreams:formatCtx result:&st_index];
     
+    NSMutableDictionary *dumpDic = [NSMutableDictionary dictionary];
+    const char *name = formatCtx->iformat->name;
+    if (NULL != name) {
+        NSString *format = [NSString stringWithCString:name encoding:NSUTF8StringEncoding];
+        if (format) {
+            [dumpDic setObject:format forKey:kFFPlayer0x15ContainerFmt];
+        }
+    }
+    long duration = (int)(formatCtx->duration / 1000000);
+    [dumpDic setObject:@(duration) forKey:kFFPlayer0x15Duration];
+    
     //打开音频解码器，创建解码线程
     if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
         
-        self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
+        FFDecoder0x15 *audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
         
-        if(self.audioDecoder){
-            self.audioDecoder.delegate = self;
-            self.audioDecoder.name = @"mr-audio-dec";
+        if(audioDecoder){
+            audioDecoder.delegate = self;
+            audioDecoder.name = @"mr-audio-dec";
+            if (audioDecoder.codecName) {
+                [dumpDic setObject:audioDecoder.codecName forKey:kFFPlayer0x15AudioFmt];
+            }
+            self.audioDecoder = audioDecoder;
         } else {
             av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
             self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
@@ -390,11 +420,19 @@ static int decode_interrupt_cb(void *ctx)
     }
 
     //打开视频解码器，创建解码线程
-    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
-        self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
-        if(self.videoDecoder){
-            self.videoDecoder.delegate = self;
-            self.videoDecoder.name = @"mr-video-dec";
+    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0) {
+        FFDecoder0x15 *videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+        if (videoDecoder) {
+            videoDecoder.delegate = self;
+            videoDecoder.name = @"mr-video-dec";
+            [dumpDic setObject:@(videoDecoder.picWidth) forKey:kFFPlayer0x15Width];
+            [dumpDic setObject:@(videoDecoder.picHeight) forKey:kFFPlayer0x15Height];
+            
+            if (videoDecoder.codecName) {
+                [dumpDic setObject:videoDecoder.codecName forKey:kFFPlayer0x15VideoFmt];
+            }
+            
+            self.videoDecoder = videoDecoder;
             self.videoScale = [self createVideoScaleIfNeed];
         } else {
             av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
@@ -405,6 +443,12 @@ static int decode_interrupt_cb(void *ctx)
             return;
         }
     }
+    
+    MR_sync_main_queue(^{
+        if (self.delegate && [self.delegate respondsToSelector:@selector(player:videoDidOpen:)]) {
+            [self.delegate player:self videoDidOpen:dumpDic];
+        }
+    });
     
     //音视频解码线程开始工作
     [self.audioDecoder start];

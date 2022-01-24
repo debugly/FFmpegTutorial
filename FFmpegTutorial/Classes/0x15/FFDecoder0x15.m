@@ -21,6 +21,7 @@
 @property (nonatomic, assign, readwrite) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
+@property (copy, readwrite) NSString * codecName;
 
 @end
 
@@ -91,6 +92,9 @@
     self.pix_fmt = avctx->pix_fmt;
     self.picWidth = avctx->width;
     self.picHeight = avctx->height;
+    //根据解码器id找到对应名称
+    const char *codecName = avcodec_get_name(avctx->codec_id);
+    self.codecName = [[NSString alloc] initWithUTF8String:codecName];
     
     self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
     if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {

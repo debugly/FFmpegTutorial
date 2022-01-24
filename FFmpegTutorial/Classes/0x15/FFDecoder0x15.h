@@ -38,6 +38,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, assign, readonly) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;
+@property (copy, readonly) NSString * codecName;
 
 /**
  打开解码器，创建解码线程;
