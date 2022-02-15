@@ -54,18 +54,24 @@
     column.width = CGRectGetWidth(self.view.bounds);
     column.resizingMask = NSTableColumnAutoresizingMask;
 //    column.hidden = YES;
-//    tableView.gridStyleMask = NSTableViewSolidVerticalGridLineMask;
+    
+    //开启后，不能覆盖drawBackgroundInRect否则无效
     tableView.usesAlternatingRowBackgroundColors = NO;
     //隐藏掉列Header
     tableView.headerView = nil;
     //横实线
     //tableView.gridStyleMask = NSTableViewSolidHorizontalGridLineMask;
+    //tableView.gridStyleMask = NSTableViewSolidVerticalGridLineMask;
     [tableView addTableColumn:column];
     tableView.delegate = self;
     tableView.dataSource = self;
     tableView.rowHeight = 40;
     scrollView.contentView.documentView = tableView;
     self.dataArr = @[
+        @{
+            @"title":@"一、音视频基础",
+            @"isSection":@(YES)
+        },
         @{
             @"title":@"0x01",
             @"detail":@"FFmpeg编译配置和版本信息;OpengGL信息",
@@ -95,6 +101,10 @@
             @"title":@"0x06",
             @"detail":@"抽取 Decoder 类，封装解码逻辑",
             @"class":@"MR0x06ViewController",
+        },
+        @{
+            @"title":@"二、视频渲染",
+            @"isSection":@(YES)
         },
         @{
             @"title":@"0x10",
@@ -172,6 +182,10 @@
             @"class":@"MR0x16ViewController",
         },
         @{
+            @"title":@"三、音频渲染",
+            @"isSection":@(YES)
+        },
+        @{
             @"title":@"0x20",
             @"detail":@"使用 AudioUnit 渲染音频桢",
             @"class":@"MR0x20ViewController",
@@ -185,6 +199,10 @@
             @"title":@"0x20-2",
             @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
             @"class":@"MR0x202ViewController",
+        },
+        @{
+            @"title":@"四、封装播放器",
+            @"isSection":@(YES)
         },
         @{
             @"title":@"0x40",
@@ -211,14 +229,19 @@
     NSDictionary *dic = self.dataArr[row];
     [view updateTitle:dic[@"title"]];
     [view updateDetail:dic[@"detail"]];
+    [view updateArrow:[self tableView:tableView isGroupRow:row]];
     return view;
 }
 
 - (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row
 {
-    RootTableRowView *rowView = [[RootTableRowView alloc] init];
-    rowView.backgroundColor = [NSColor blueColor];
-    return rowView;
+    return [[RootTableRowView alloc] init];
+}
+
+- (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row
+{
+    NSDictionary *dic = self.dataArr[row];
+    return [dic[@"isSection"] boolValue];
 }
 
 //- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
@@ -229,6 +252,9 @@
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
 {
     NSDictionary *dic = self.dataArr[row];
+    if ([dic[@"isSection"] boolValue]) {
+        return NO;
+    }
     Class clazz = NSClassFromString(dic[@"class"]);
     if (clazz) {
         NSViewController *vc = [[clazz alloc] init];

@@ -13,7 +13,8 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)updateTitle:(NSString *)title;
 - (void)updateDetail:(NSString *)title;
-    
+- (void)updateArrow:(BOOL)hide;
+
 @end
 
 NS_ASSUME_NONNULL_END

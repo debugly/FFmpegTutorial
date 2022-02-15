@@ -71,17 +71,22 @@
     self.detailLb.stringValue = title;
 }
 
+- (void)updateArrow:(BOOL)hide
+{
+    self.arrowView.hidden = hide;
+}
+
 - (void)layout
 {
     CGRect frameRect = self.bounds;
-    CGFloat padding = 15;
+    CGFloat padding = 5;
     
     CGFloat minX = padding;
     CGFloat maxX = CGRectGetWidth(frameRect);
     CGFloat height = CGRectGetHeight(frameRect);
     
     {
-        CGFloat aPadding = 6;
+        CGFloat aPadding = 2;
         CGFloat h = height / 2.0;
         CGFloat w = h;
         CGFloat y = (height - h)/2.0;
