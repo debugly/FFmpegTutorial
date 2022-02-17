@@ -6,7 +6,6 @@
 //
 
 #import "RootViewController.h"
-#import "RootCellView.h"
 #import "RootTableRowView.h"
 #import "NSNavigationController.h"
 
@@ -48,25 +47,27 @@
 //    }
     //设置选中行背景样式，设置成None时drawSelectionInRect就不走了;
     tableView.selectionHighlightStyle = NSTableViewSelectionHighlightStyleRegular;
-    NSTableColumn *column = [[NSTableColumn alloc] init];
-    column.title = @"我的FFmpeg学习教程";
-    column.editable = NO;
-    column.width = CGRectGetWidth(self.view.bounds);
-    column.resizingMask = NSTableColumnAutoresizingMask;
-//    column.hidden = YES;
-    
-    //开启后，不能覆盖drawBackgroundInRect否则无效
-    tableView.usesAlternatingRowBackgroundColors = NO;
+//    NSTableColumn *column = [[NSTableColumn alloc] init];
+//    column.title = @"我的FFmpeg学习教程";
+//    column.editable = NO;
+//    column.width = CGRectGetWidth(self.view.bounds);
+//    column.resizingMask = NSTableColumnAutoresizingMask;
+//    [tableView addTableColumn:column];
     //隐藏掉列Header
     tableView.headerView = nil;
+    //开启后，不能覆盖drawBackgroundInRect否则无效
+    tableView.usesAlternatingRowBackgroundColors = NO;
     //横实线
     //tableView.gridStyleMask = NSTableViewSolidHorizontalGridLineMask;
     //tableView.gridStyleMask = NSTableViewSolidVerticalGridLineMask;
-    [tableView addTableColumn:column];
+
     tableView.delegate = self;
     tableView.dataSource = self;
-    tableView.rowHeight = 40;
+    tableView.rowSizeStyle = NSTableViewRowSizeStyleCustom;
     scrollView.contentView.documentView = tableView;
+    scrollView.contentInsets = NSEdgeInsetsZero;
+    scrollView.scrollerInsets = NSEdgeInsetsZero;
+    
     self.dataArr = @[
         @{
             @"title":@"一、音视频基础",
@@ -221,9 +222,14 @@
 
 - (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row
 {
-    RootCellView *view = [tableView makeViewWithIdentifier:@"cell" owner:self];
+    return nil;
+}
+
+- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row
+{
+    RootTableRowView *view = [tableView makeViewWithIdentifier:@"cell" owner:self];
     if (view == nil) {
-        view = [[RootCellView alloc]init];
+        view = [[RootTableRowView alloc]init];
         view.identifier = @"cell";
     }
     NSDictionary *dic = self.dataArr[row];
@@ -233,21 +239,16 @@
     return view;
 }
 
-- (NSTableRowView *)tableView:(NSTableView *)tableView rowViewForRow:(NSInteger)row
-{
-    return [[RootTableRowView alloc] init];
-}
-
 - (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row
 {
     NSDictionary *dic = self.dataArr[row];
     return [dic[@"isSection"] boolValue];
 }
 
-//- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
-//{
-//    return 35;
-//}
+- (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
+{
+    return [self tableView:tableView isGroupRow:row] ? 30 : 35;
+}
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
 {

@@ -9,7 +9,11 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface RootTableRowView : NSTableRowView
+@interface RootTableRowView : NSTableRowView <NSUserInterfaceItemIdentification>
+
+- (void)updateTitle:(NSString *)title;
+- (void)updateDetail:(NSString *)title;
+- (void)updateArrow:(BOOL)hide;
 
 @end
 
