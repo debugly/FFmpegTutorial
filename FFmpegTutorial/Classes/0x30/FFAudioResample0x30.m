@@ -2,7 +2,7 @@
 //  FFAudioResample0x30.m
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/7/17.
+//  Created by Matt Reach on 2022/2/17.
 //
 
 #import "FFAudioResample0x30.h"

@@ -124,7 +124,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - 0x40：[黑白电视机雪花屏、灰色色阶图] 
 
-六、小工具
+六、实用工具
 
 - 高效视频抽帧器：[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)
 

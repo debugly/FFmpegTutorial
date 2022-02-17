@@ -10,6 +10,8 @@
 #import <FFmpegTutorial/FFPlayer0x20.h>
 #import "MRRWeakProxy.h"
 #import "MR0x20VideoRenderer.h"
+#import "NSFileManager+Sandbox.h"
+#import "MRUtil.h"
 #import <AudioUnit/AudioUnit.h>
 #import <AudioToolbox/AudioToolbox.h>
 
@@ -386,7 +388,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
         [self.timer invalidate];
         self.timer = nil;
     }];
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV21;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     player.supportedSampleFormats = MR_SAMPLE_FMT_MASK_AUTO;
     player.delegate = self;
     [player prepareToPlay];
@@ -441,6 +443,26 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
+}
+
+- (IBAction)onExchangeUploadTextureMethod:(NSButton *)sender
+{
+    [self.videoRenderer exchangeUploadTextureMethod];
+    self.textView.string = @"";
+}
+
+- (IBAction)onSaveSnapshot:(NSButton *)sender
+{
+    NSImage *img = [self.videoRenderer snapshot];
+    NSString *videoName = [[NSURL URLWithString:self.player.contentPath] lastPathComponent];
+    if ([videoName isEqualToString:@"/"]) {
+        videoName = @"未知";
+    }
+    NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
+    long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
+    NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
+    [MRUtil saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
+    NSLog(@"img:%@",filePath);
 }
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender

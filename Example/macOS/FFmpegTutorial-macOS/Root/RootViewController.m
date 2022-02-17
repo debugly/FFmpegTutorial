@@ -206,9 +206,27 @@
             @"isSection":@(YES)
         },
         @{
+            @"title":@"0x30",
+            @"detail":@"音视频同步",
+            @"class":@"MR0x30ViewController",
+        },
+        @{
+            @"title":@"五、趣味实验",
+            @"isSection":@(YES)
+        },
+        @{
             @"title":@"0x40",
             @"detail":@"雪花屏，灰色色阶图",
             @"class":@"MR0x40ViewController",
+        },
+        @{
+            @"title":@"六、实用工具",
+            @"isSection":@(YES)
+        },
+        @{
+            @"title":@"VTP",
+            @"detail":@"高效视频抽帧器",
+            @"url":@"https://github.com/debugly/MRVideoToPicture",
         }
     ];
     
@@ -261,6 +279,11 @@
         NSViewController *vc = [[clazz alloc] init];
         vc.title = dic[@"detail"];
         [self.navigationController pushViewController:vc animated:YES];
+    } else {
+        NSString * url = dic[@"url"];
+        if (url) {
+            [[NSWorkspace sharedWorkspace] openURL:[NSURL URLWithString:url]];
+        }
     }
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.3 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [tableView deselectRow:row];

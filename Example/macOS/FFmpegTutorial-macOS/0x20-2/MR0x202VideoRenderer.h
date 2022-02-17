@@ -13,8 +13,11 @@
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x202VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+//画面原始尺寸；
+@property (assign) CGSize videoSize;
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
+- (void)exchangeUploadTextureMethod;
 - (NSImage *)snapshot;
 
 @end

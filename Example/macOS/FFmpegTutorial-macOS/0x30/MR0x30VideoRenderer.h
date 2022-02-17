@@ -1,9 +1,9 @@
 //
-//  MR0x20VideoRenderer.h
+//  MR0x30VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/9/21.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x20VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x30VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 //画面原始尺寸；
 @property (assign) CGSize videoSize;
 
