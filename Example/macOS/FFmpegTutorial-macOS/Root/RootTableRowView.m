@@ -34,8 +34,7 @@
     self = [super initWithFrame:frameRect];
     if (self) {
         
-//        [self setWantsLayer:YES];
-//        self.layer.backgroundColor = [[NSColor redColor] CGColor];
+        [self setWantsLayer:YES];
         
         NSTextField *titleLb = [self createLabel];
         NSTextField *detailLB = [self createLabel];
@@ -76,8 +75,7 @@
     self.arrowView.hidden = hide;
 }
 
-- (void)layout
-{
+- (void)layoutNormalCell {
     CGRect frameRect = self.bounds;
     CGFloat padding = 15;
     
@@ -119,6 +117,34 @@
     }
 }
 
+- (void)layoutSectionCell {
+    
+    CGFloat height = CGRectGetHeight(self.bounds);
+    {
+        NSRect rect = self.bounds;
+        CGSize labelSize = [self.titleLb sizeThatFits:rect.size];
+        rect.origin.x = 5;
+        rect.origin.y = (height - labelSize.height)/2.0;
+        rect.size = labelSize;
+        self.titleLb.frame = rect;
+    }
+}
+
+- (void)layout
+{
+    if (self.isGroupRowStyle) {
+        self.arrowView.hidden = YES;
+        self.detailLb.hidden = YES;
+        [self layoutSectionCell];
+        self.layer.backgroundColor = [[NSColor colorWithWhite:230.0/255.0 alpha:1.0] CGColor];
+    } else {
+        self.arrowView.hidden = NO;
+        self.detailLb.hidden = NO;
+        [self layoutNormalCell];
+        self.layer.backgroundColor = [[NSColor whiteColor] CGColor];
+    }
+}
+
 - (void)drawSelectionInRect:(NSRect)dirtyRect
 {
 //    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
@@ -139,26 +165,33 @@
 - (void)drawBackgroundInRect:(NSRect)dirtyRect
 {
     if (self.isGroupRowStyle) {
-        [super drawBackgroundInRect:dirtyRect];
-    } else {
-        CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-        CGContextSetStrokeColorWithColor(context, (__bridge CGColorRef)[NSColor colorWithWhite:0.1 alpha:0.1]);
-        CGContextSetLineWidth(context, 1);
-        //    CGFloat dashArray[] = {3,1};
-        //    CGContextSetLineDash(context, 1, dashArray, 1);//跳过3个再画虚线，所以刚开始有6-（3-2）=5个虚点
-        CGFloat y = CGRectGetHeight(dirtyRect);
-        CGContextMoveToPoint(context, 15, y);
-        CGContextAddLineToPoint(context, CGRectGetWidth(dirtyRect), y);
-        CGContextStrokePath(context);
+        return;
     }
-}
-
-- (void)drawRect:(NSRect)dirtyRect
-{
-    [super drawRect:dirtyRect];
-    if (self.isGroupRowStyle) {
-        [[NSColor colorWithWhite:230.0/255.0 alpha:1.0] set];
-        NSRectFill(dirtyRect);
+    switch (self.sepStyle) {
+        case KSeparactorStyleFull:
+        case KSeparactorStyleHeadPadding:
+        {
+            CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
+            CGContextSetStrokeColorWithColor(context, (__bridge CGColorRef)[NSColor colorWithWhite:0.1 alpha:0.1]);
+            CGContextSetLineWidth(context, 1);
+            //    CGFloat dashArray[] = {3,1};
+            //    CGContextSetLineDash(context, 1, dashArray, 1);//跳过3个再画虚线，所以刚开始有6-（3-2）=5个虚点
+            CGFloat y = CGRectGetHeight(dirtyRect);
+            if (self.sepStyle == KSeparactorStyleFull) {
+                CGContextMoveToPoint(context, 0, y);
+            } else {
+                CGContextMoveToPoint(context, 15, y);
+            }
+            
+            CGContextAddLineToPoint(context, CGRectGetWidth(dirtyRect), y);
+            CGContextStrokePath(context);
+        }
+            break;
+        case KSeparactorStyleNone:
+        {
+            
+        }
+            break;
     }
 }
 

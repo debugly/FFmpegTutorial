@@ -40,6 +40,8 @@
     NSTableView *tableView = [[NSTableView alloc] initWithFrame:self.view.bounds];
     tableView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
     tableView.intercellSpacing = NSMakeSize(0, 0);
+    tableView.backgroundColor = [NSColor colorWithWhite:230.0/255.0 alpha:1.0];
+   
 //    if (@available(macOS 11.0, *)) {
 //        tableView.style = NSTableViewStylePlain;
 //    } else {
@@ -65,10 +67,12 @@
     tableView.dataSource = self;
     tableView.rowSizeStyle = NSTableViewRowSizeStyleCustom;
     scrollView.contentView.documentView = tableView;
-    scrollView.contentInsets = NSEdgeInsetsZero;
-    scrollView.scrollerInsets = NSEdgeInsetsZero;
     
     self.dataArr = @[
+        @{
+            @"isSeparactor":@(YES),
+            @"height":@(0.1)
+        },
         @{
             @"title":@"一、音视频基础",
             @"isSection":@(YES)
@@ -253,19 +257,53 @@
     NSDictionary *dic = self.dataArr[row];
     [view updateTitle:dic[@"title"]];
     [view updateDetail:dic[@"detail"]];
-    [view updateArrow:[self tableView:tableView isGroupRow:row]];
+    BOOL isSection = [dic[@"isSection"] boolValue];
+    [view updateArrow:isSection];
+    
+    BOOL isSeparactor = [dic[@"isSeparactor"] boolValue];
+    if (isSeparactor) {
+        view.sepStyle = KSeparactorStyleNone;
+    } else {
+        if (isSection) {
+            view.sepStyle = KSeparactorStyleFull;
+        } else {
+            if (row + 1 <= [self.dataArr count] - 1) {
+                if ([self tableView:tableView isGroupRow:row + 1]) {
+                    view.sepStyle = KSeparactorStyleFull;
+                } else {
+                    view.sepStyle = KSeparactorStyleHeadPadding;
+                }
+            } else {
+                view.sepStyle = KSeparactorStyleFull;
+            }
+        }
+    }
     return view;
 }
 
 - (BOOL)tableView:(NSTableView *)tableView isGroupRow:(NSInteger)row
 {
-    NSDictionary *dic = self.dataArr[row];
-    return [dic[@"isSection"] boolValue];
+    if (row < [self.dataArr count]) {
+        NSDictionary *dic = self.dataArr[row];
+        return [dic[@"isSection"] boolValue];
+    }
+    return NO;
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row
 {
-    return [self tableView:tableView isGroupRow:row] ? 30 : 35;
+    if (row < [self.dataArr count]) {
+        NSDictionary *dic = self.dataArr[row];
+        BOOL isSeparactor = [dic[@"isSeparactor"] boolValue];
+        if (isSeparactor) {
+            return [dic[@"height"] floatValue];
+        } else {
+            BOOL isSection = [dic[@"isSection"] boolValue];
+            return isSection ? 30 : 35;
+        }
+    } else {
+        return 0.0;
+    }
 }
 
 - (BOOL)tableView:(NSTableView *)tableView shouldSelectRow:(NSInteger)row
