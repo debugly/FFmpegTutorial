@@ -5,6 +5,9 @@
 > 
 > 喜欢的老铁给个 Star 吧（先别着急 fork，现阶段会经常更新）。
 
+感谢大家对这个项目的支持：
+[![Stargazers repo roster for @debugly/FFmpegTutorial](https://github.com/debugly/FFmpegTutorial)](https://github.com/debugly/FFmpegTutorial/stargazers)
+
 ## Usage
 
 #### 1、运行 iOS 示例工程:
