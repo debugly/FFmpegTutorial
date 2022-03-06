@@ -700,11 +700,11 @@
 		DDD786A127BE85310036BD8D /* AudioRenderImp */ = {
 			isa = PBXGroup;
 			children = (
-				DDD786A227BE85310036BD8D /* MR0x30AudioQueueRenderer.m */,
-				DDD786A327BE85310036BD8D /* MR0x30AudioUnitRenderer.m */,
-				DDD786A427BE85310036BD8D /* MR0x30AudioRendererImpProtocol.h */,
 				DDD786A527BE85310036BD8D /* MR0x30AudioQueueRenderer.h */,
+				DDD786A227BE85310036BD8D /* MR0x30AudioQueueRenderer.m */,
+				DDD786A427BE85310036BD8D /* MR0x30AudioRendererImpProtocol.h */,
 				DDD786A627BE85310036BD8D /* MR0x30AudioUnitRenderer.h */,
+				DDD786A327BE85310036BD8D /* MR0x30AudioUnitRenderer.m */,
 			);
 			path = AudioRenderImp;
 			sourceTree = "<group>";

@@ -206,7 +206,7 @@
 //                }
             }
             //正常解码
-            av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
+            //av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
             if ([self.delegate respondsToSelector:@selector(decoder:reveivedAFrame:)]) {
                 [self.delegate decoder:self reveivedAFrame:frame];
             }

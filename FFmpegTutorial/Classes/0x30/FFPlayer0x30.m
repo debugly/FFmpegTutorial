@@ -32,6 +32,8 @@
     FrameQueue _sampq;
     //解码后的视频帧缓存队列
     FrameQueue _pictq;
+    
+    BOOL _buffing;
 }
 
 //读包线程
@@ -148,6 +150,8 @@ static int decode_interrupt_cb(void *ctx)
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
+    
+    _buffing = YES;
 }
 
 #pragma mark - clock
@@ -492,11 +496,11 @@ static int decode_interrupt_cb(void *ctx)
             return;
         }
         
-        if ([self.delegate respondsToSelector:@selector(onInitAudioRender:)]) {
+        if ([self.delegate respondsToSelector:@selector(player:onInitAudioRender:)]) {
             if (self.audioResample) {
-                [self.delegate onInitAudioRender:AVSampleFormat2MR(self.audioResample.out_sample_fmt)];
+                [self.delegate player:self onInitAudioRender:AVSampleFormat2MR(self.audioResample.out_sample_fmt)];
             } else {
-                [self.delegate onInitAudioRender:AVSampleFormat2MR(self.audioDecoder.format)];
+                [self.delegate player:self onInitAudioRender:AVSampleFormat2MR(self.audioDecoder.format)];
             }
         }
     }
@@ -619,17 +623,21 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)doDisplayVideoFrame:(Frame *)vp
 {
-    if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
+    if ([self.delegate respondsToSelector:@selector(player:reveiveFrameToRenderer:)]) {
         @autoreleasepool {
             CVPixelBufferRef pixelBuffer = [self pixelBufferFromAVFrame:vp->frame];
             if (pixelBuffer) {
-                [self.delegate reveiveFrameToRenderer:pixelBuffer];
+                [self.delegate player:self reveiveFrameToRenderer:pixelBuffer];
             }
         }
     }
 }
 
-- (double)vp_durationWithP1:(Frame *)p1 p2:(Frame *)p2 {
+- (double)vp_durationWithP1:(Frame *)p1 p2:(Frame *)p2
+{
+    if (p1 == p2) {
+        return 0.0;
+    }
     double duration = p2->pts - p1->pts;
     if (isnan(duration) || duration <= 0 || duration > self.max_frame_duration){
         return p1->duration;
@@ -659,8 +667,14 @@ static int decode_interrupt_cb(void *ctx)
         else if (diff >= sync_threshold)
             delay = 2 * delay;
     }
-    av_log(NULL, AV_LOG_INFO, "video: delay=%0.3f A-V=%f\n",
-            delay, -diff);
+    
+    int vfr = frame_queue_nb_remaining(&_pictq);
+    int afr = frame_queue_nb_remaining(&_sampq);
+    int apc = _audioq.nb_packets;
+    int vpc = _videoq.nb_packets;
+    
+    av_log(NULL, AV_LOG_INFO, "video: delay=%0.3f A-V=%f; af:%02d,vf:%02d; ap:%02d,vp:%02d;\n",
+            delay, -diff, afr, vfr, apc, vpc);
     return delay;
 }
 
@@ -673,8 +687,8 @@ static int decode_interrupt_cb(void *ctx)
         //计算上一帧的持续时长
         double last_duration = [self vp_durationWithP1:lastvp p2:vp];
         //参考audio clock计算上一帧真正的持续时长
-        double delay = [self compute_target_delay:last_duration ];
-        double time = av_gettime_relative()/1000000.0;
+        double delay = [self compute_target_delay:last_duration];
+        double time = av_gettime_relative() / 1000000.0;
         //时间还没到上一帧结束点
         if (time < self.videoClk.frame_timer + delay) {
             *remaining_time = FFMIN(self.videoClk.frame_timer + delay - time, *remaining_time);
@@ -699,11 +713,8 @@ static int decode_interrupt_cb(void *ctx)
                 frame_drops_late++;
                 av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
                 frame_drops_late);
-                frame_queue_pop(&_pictq);
-                self.videoFrameCount--;
                 //继续重试
-                [self video_refresh:remaining_time];
-                return;
+                *remaining_time = 0.0;
             }
         }
         frame_queue_pop(&_pictq);
@@ -713,6 +724,29 @@ static int decode_interrupt_cb(void *ctx)
         self.videoClk.eof = YES;
         av_log(NULL, AV_LOG_INFO, "video frame is eof\n");
         [self maybeReachEnds];
+    } else {
+        //begin buffing
+        [self beginBuffer];
+    }
+}
+
+- (void)beginBuffer
+{
+    if (!_buffing) {
+        _buffing = YES;
+        if ([self.delegate respondsToSelector:@selector(onBufferEmpty:)]) {
+            [self.delegate onBufferEmpty:self];
+        }
+    }
+}
+
+- (void)endBuffer
+{
+    if (_buffing) {
+        _buffing = NO;
+        if ([self.delegate respondsToSelector:@selector(onBufferFull:)]) {
+            [self.delegate onBufferFull:self];
+        }
     }
 }
 
@@ -720,20 +754,33 @@ static int decode_interrupt_cb(void *ctx)
 {
     double remaining_time = 0.0;
     //调用了stop方法，则不再渲染
-    while (!self.abort_request) {
+    while (!self.abort_request && !self.videoClk.eof) {
         if (remaining_time > 0.0){
             mr_sleep(remaining_time);
         }
         remaining_time = REFRESH_RATE;
-        [self video_refresh:&remaining_time];
+        
+        if (_buffing) {
+            if (frame_queue_is_full(&_pictq)) {
+                [self endBuffer];
+                [self video_refresh:&remaining_time];
+            } else {
+                if (self.videoDecoder.eof) {
+                    [self endBuffer];
+                    [self video_refresh:&remaining_time];
+                }
+            }
+        } else {
+            [self video_refresh:&remaining_time];
+        }
     }
 }
 
-- (void)updateAudioClock:(Frame *)ap filled:(UInt32)filled
+- (void)updateAudioClock:(Frame *)ap percent:(float)p
 {
-    double audio_pts = ap->pts + 1.0 * ap->frame->nb_samples / ap->frame->sample_rate;
-    double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
-    double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
+    double audio_clock = ap->pts + p * ap->frame->nb_samples / ap->frame->sample_rate;
+    //double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
+    //double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
     [self.audioClk setClock:audio_clock];
 }
 
@@ -756,7 +803,8 @@ static int decode_interrupt_cb(void *ctx)
         const int fmt = ap->frame->format;
         assert(0 == av_sample_fmt_is_planar(fmt));
         
-        int data_size = av_samples_get_buffer_size(ap->frame->linesize, 2, ap->frame->nb_samples, fmt, 1);
+        const int data_size = av_samples_get_buffer_size(ap->frame->linesize, 2, ap->frame->nb_samples, fmt, 1);
+        NSAssert(data_size != 0, @"fuck");
         int l_src_size = data_size;//ap->frame->linesize[0];
         const int offset = ap->offset;
         const void *from = src + offset;
@@ -770,19 +818,19 @@ static int decode_interrupt_cb(void *ctx)
         bufferSize -= leftBytesToCopy;
         ap->offset += leftBytesToCopy;
         filled += leftBytesToCopy;
+        
+        [self updateAudioClock:ap percent:1.0 * ap->offset / data_size];
+        
         if (leftBytesToCopy >= left){
             //读取完毕，则清空；读取下一个包
-            av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
+            //av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
             self.audioFrameCount--;
         }
     }
     
-    if (NULL !=ap && filled > 0) {
-        [self updateAudioClock:ap filled:filled];
-    }
     //没有取出采样桢，读包eof，解码也eof时标记为音频渲染完毕
-    else if(self.eof && self.audioDecoder.eof){
+    if(!ap && self.eof && self.audioDecoder.eof){
         self.audioClk.eof = YES;
         av_log(NULL, AV_LOG_INFO, "audio frame is eof\n");
         [self maybeReachEnds];
@@ -811,7 +859,7 @@ static int decode_interrupt_cb(void *ctx)
         const int fmt  = ap->frame->format;
         assert(av_sample_fmt_is_planar(fmt));
         
-        int data_size = av_samples_get_buffer_size(ap->frame->linesize, 1, ap->frame->nb_samples, fmt, 1);
+        const int data_size = av_samples_get_buffer_size(ap->frame->linesize, 1, ap->frame->nb_samples, fmt, 1);
         
         int l_src_size = data_size;//af->frame->linesize[0];
         const int offset = ap->offset;
@@ -839,19 +887,18 @@ static int decode_interrupt_cb(void *ctx)
             r_size -= rightBytesToCopy;
         }
         
+        [self updateAudioClock:ap percent:1.0 * ap->offset / data_size];
+        
         if (leftBytesToCopy >= leftBytesLeft){
             //读取完毕，则清空；读取下一个包
-            av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
+            //av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
             frame_queue_pop(&_sampq);
             self.audioFrameCount--;
         }
     }
-    
-    if (NULL !=ap && filled > 0) {
-        [self updateAudioClock:ap filled:filled];
-    }
+
     //没有取出采样桢，读包eof，解码也eof时标记为音频渲染完毕
-    else if(self.eof && self.audioDecoder.eof){
+    if(!ap && self.eof && self.audioDecoder.eof){
         self.audioClk.eof = YES;
         av_log(NULL, AV_LOG_INFO, "audio frame is eof\n");
         [self maybeReachEnds];

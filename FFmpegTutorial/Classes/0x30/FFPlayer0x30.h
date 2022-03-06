@@ -10,11 +10,14 @@
 #import <CoreVideo/CVPixelBuffer.h>
 
 NS_ASSUME_NONNULL_BEGIN
+@class FFPlayer0x30;
 @protocol FFPlayer0x30Delegate <NSObject>
 
 @optional
-- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img;
-- (void)onInitAudioRender:(MRSampleFormat)fmt;
+- (void)player:(FFPlayer0x30*)player reveiveFrameToRenderer:(CVPixelBufferRef)img;
+- (void)player:(FFPlayer0x30*)player onInitAudioRender:(MRSampleFormat)fmt;
+- (void)onBufferEmpty:(FFPlayer0x30*)player;
+- (void)onBufferFull:(FFPlayer0x30*)player;
 
 @end
 

@@ -84,33 +84,30 @@
     self.timer = timer;
 }
 
-- (void)playAudio
-{
-    [self.audioRenderer play];
-}
-
-- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
+- (void)player:(FFPlayer0x30 *)player reveiveFrameToRenderer:(CVPixelBufferRef)img
 {
     CFRetain(img);
     MR_sync_main_queue(^{
         [self.videoRenderer displayPixelBuffer:img];
         CFRelease(img);
-        
-        //显示画面的时候，开始播放音频
-        static bool started = false;
-        if (!started) {
-            [self playAudio];
-            started = true;
-        }
-        
     });
 }
 
-- (void)onInitAudioRender:(MRSampleFormat)fmt
+- (void)player:(FFPlayer0x30 *)player onInitAudioRender:(MRSampleFormat)fmt
 {
     MR_async_main_queue(^{
         [self setupAudioRender:fmt];
     });
+}
+
+- (void)onBufferFull:(FFPlayer0x30 *)player
+{
+    [self.audioRenderer play];
+}
+
+- (void)onBufferEmpty:(FFPlayer0x30 *)player
+{
+    [self.audioRenderer pause];
 }
 
 - (void)setupAudioRender:(MRSampleFormat)fmt
@@ -190,6 +187,16 @@
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
         self.textView.string = [self.player.error localizedDescription];
+        self.player.delegate = nil;
+        self.player = nil;
+        [self.timer invalidate];
+        self.timer = nil;
+    }];
+    
+    [player onVideoEnds:^{
+        __strongSelf__
+        [self.player asyncStop];
+        self.player.delegate = nil;
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;

@@ -11,7 +11,7 @@
 
 #import <libavutil/frame.h>
 
-#define VIDEO_PICTURE_QUEUE_SIZE 3
+#define VIDEO_PICTURE_QUEUE_SIZE 5
 #define SAMPLE_QUEUE_SIZE 9
 #define FRAME_QUEUE_SIZE FFMAX(SAMPLE_QUEUE_SIZE, VIDEO_PICTURE_QUEUE_SIZE)
 
@@ -19,8 +19,8 @@
 typedef struct Frame {
     AVFrame *frame;
     double pts;           /* presentation timestamp for the frame */
-    int offset;      //audio frame display offset
-    double duration; //video frame duration
+    int offset;           //audio frame display offset
+    double duration;      //video frame duration
 } Frame;
 
 //定义队列
@@ -129,10 +129,19 @@ static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame,double dura
     }
     //队列已存储数量加1
     f->size ++;
-    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
+    //av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
     //解锁
     dispatch_semaphore_signal(f->mutex);
     return 0;
+}
+
+static __inline__ bool frame_queue_is_full(FrameQueue *f)
+{
+    //加锁
+    dispatch_semaphore_wait(f->mutex, DISPATCH_TIME_FOREVER);
+    bool full = f->size >= f->max_size;
+    dispatch_semaphore_signal(f->mutex);
+    return full;
 }
 
 static __inline__ int frame_queue_push_v2(FrameQueue *f, AVFrame *frame,void(^maker)(Frame* const af))
@@ -183,7 +192,7 @@ static __inline__ int frame_queue_push_v2(FrameQueue *f, AVFrame *frame,void(^ma
     }
     //队列已存储数量加1
     f->size ++;
-    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
+    //av_log(NULL, AV_LOG_VERBOSE, "frame_queue_push %s (%d/%d)\n", f->name, f->windex, f->size);
     //解锁
     dispatch_semaphore_signal(f->mutex);
     return 0;
@@ -236,7 +245,7 @@ static __inline__ void frame_queue_pop(FrameQueue *f)
     }
     //缓存大小减1
     f->size--;
-    av_log(NULL, AV_LOG_VERBOSE, "frame_queue_pop %s (%d/%d)\n", f->name, f->windex, f->size);
+    //av_log(NULL, AV_LOG_VERBOSE, "frame_queue_pop %s (%d/%d)\n", f->name, f->windex, f->size);
     dispatch_semaphore_signal(f->mutex);
 }
 
