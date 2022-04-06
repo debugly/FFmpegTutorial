@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
+        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -9,7 +10,6 @@
             <connections>
                 <outlet property="indicatorView" destination="A8v-NC-bh6" id="vrp-86-BMn"/>
                 <outlet property="inputField" destination="X45-WW-lE6" id="vzy-yO-Yvh"/>
-                <outlet property="textView" destination="Yzs-Jl-8Tf" id="2EO-zL-AVR"/>
                 <outlet property="videoRenderer" destination="xd5-Jb-nAf" id="6qt-Ci-VVA"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
@@ -119,34 +119,6 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x202VideoRenderer">
                     <rect key="frame" x="0.0" y="0.0" width="655" height="232"/>
                 </customView>
-                <scrollView borderType="none" autohidesScrollers="YES" horizontalLineScroll="10" horizontalPageScroll="10" verticalLineScroll="10" verticalPageScroll="10" hasHorizontalScroller="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JSa-m3-pfP">
-                    <rect key="frame" x="0.0" y="0.0" width="655" height="232"/>
-                    <clipView key="contentView" drawsBackground="NO" copiesOnScroll="NO" id="LuP-6m-7b7">
-                        <rect key="frame" x="0.0" y="0.0" width="655" height="232"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                        <subviews>
-                            <textView drawsBackground="NO" importsGraphics="NO" richText="NO" verticallyResizable="YES" smartInsertDelete="YES" id="Yzs-Jl-8Tf">
-                                <rect key="frame" x="0.0" y="0.0" width="615" height="232"/>
-                                <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                                <color key="textColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                <size key="minSize" width="645" height="232"/>
-                                <size key="maxSize" width="740" height="10000000"/>
-                                <color key="insertionPointColor" name="textColor" catalog="System" colorSpace="catalog"/>
-                            </textView>
-                        </subviews>
-                    </clipView>
-                    <edgeInsets key="contentInsets" left="10" right="0.0" top="0.0" bottom="0.0"/>
-                    <edgeInsets key="scrollerInsets" left="10" right="0.0" top="0.0" bottom="0.0"/>
-                    <scroller key="horizontalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="YES" id="Slb-ex-zfK">
-                        <rect key="frame" x="-100" y="-100" width="464" height="15"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                    <scroller key="verticalScroller" hidden="YES" wantsLayer="YES" verticalHuggingPriority="750" horizontal="NO" id="eCE-aQ-AZB">
-                        <rect key="frame" x="469" y="20" width="15" height="152"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </scroller>
-                </scrollView>
                 <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="A8v-NC-bh6">
                     <rect key="frame" x="312" y="120" width="32" height="32"/>
                 </progressIndicator>
@@ -155,15 +127,11 @@
                 <constraint firstAttribute="trailing" secondItem="xd5-Jb-nAf" secondAttribute="trailing" id="45u-vN-MBV"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="776-j1-rIJ"/>
                 <constraint firstAttribute="bottom" secondItem="xd5-Jb-nAf" secondAttribute="bottom" id="EHJ-7A-BDf"/>
-                <constraint firstItem="JSa-m3-pfP" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="N33-Wb-KQL"/>
-                <constraint firstAttribute="bottom" secondItem="JSa-m3-pfP" secondAttribute="bottom" id="TJG-Kf-SDu"/>
-                <constraint firstItem="JSa-m3-pfP" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="bxl-Bb-4J5"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
                 <constraint firstItem="xd5-Jb-nAf" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="mn5-G9-TL9"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="rfw-6M-es0"/>
                 <constraint firstItem="xd5-Jb-nAf" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="sUT-e9-anu"/>
-                <constraint firstAttribute="trailing" secondItem="JSa-m3-pfP" secondAttribute="trailing" id="skd-MR-hbU"/>
                 <constraint firstAttribute="trailing" secondItem="NMB-98-nYq" secondAttribute="trailing" id="yDU-gp-9m5"/>
             </constraints>
             <point key="canvasLocation" x="-139.5" y="120"/>

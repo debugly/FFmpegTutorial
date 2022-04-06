@@ -25,7 +25,11 @@ Pod::Spec.new do |s|
   
   s.subspec 'common' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/common/**/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/common/headers/public/*.h' 'FFmpegTutorial/Classes/common/*.h'
+    ss.public_header_files = [
+      'FFmpegTutorial/Classes/common/*.h',
+      'FFmpegTutorial/Classes/common/hud/*.h',
+      'FFmpegTutorial/Classes/common/headers/public/*.h'
+    ]
     ss.private_header_files = 'FFmpegTutorial/Classes/common/headers/private/*.h'
   end
 

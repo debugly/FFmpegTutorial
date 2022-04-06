@@ -13,20 +13,16 @@
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 #import "MR0x202AudioRenderer.h"
+#import <FFmpegTutorial/MRHudControl.h>
 
 @interface MR0x202ViewController ()<FFPlayer0x20Delegate>
 
 @property (strong) FFPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
-@property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x202VideoRenderer *videoRenderer;
-
-@property (assign) NSInteger ignoreScrollBottom;
+@property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
-@property (assign) BOOL scrolling;
-@property (assign) MR_PACKET_SIZE pktSize;
-
 @property (strong) MR0x202AudioRenderer *audioRenderer;
 
 @end
@@ -53,24 +49,14 @@
         [_player asyncStop];
         _player = nil;
     }
+    
+    [self.hud destroyContentView];
+    self.hud = nil;
 }
 
 - (void)dealloc
 {
     [self _stop];
-    
-    _textView.delegate = nil;
-    _textView = nil;
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)appendMsg:(NSString *)txt
-{
-    self.textView.string = [self.textView.string stringByAppendingFormat:@"\n%@",txt];
-    if (self.scrolling) {
-        return;
-    }
-    [self.textView scrollToEndOfDocument:nil];
 }
 
 - (void)prepareTickTimerIfNeed
@@ -79,7 +65,7 @@
         return;
     }
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }
@@ -157,29 +143,51 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
-    if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
-        return;
-    }
-    
     [self.indicatorView stopAnimation:nil];
     
-    NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
     
-    NSString *pktMsg = nil;
-    if (mr_packet_size_equal_zero(pktSize)) {
-        pktMsg = @"Packet Buffer is Empty";
-    } else {
-        pktMsg = [NSString stringWithFormat:@" [Packet] audio(%02d)，video(%02d)",pktSize.audio_pkt_size,pktSize.video_pkt_size];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
+    
+    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",pktSize.audio_pkt_size] forKey:@"a-pack"];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",pktSize.video_pkt_size] forKey:@"v-pack"];
+}
+
+- (void)alert:(NSString *)msg
+{
+    NSAlert *alert = [[NSAlert alloc] init];
+    [alert addButtonWithTitle:@"知道了"];
+    [alert setMessageText:@"错误提示"];
+    [alert setInformativeText:msg];
+    [alert setAlertStyle:NSInformationalAlertStyle];
+    NSModalResponse returnCode = [alert runModal];
+    
+    if (returnCode == NSAlertFirstButtonReturn)
+    {
+        //nothing todo
     }
-    self.pktSize = pktSize;
-    [self appendMsg:[frmMsg stringByAppendingString:pktMsg]];
+    else if (returnCode == NSAlertSecondButtonReturn)
+    {
+        
+    }
 }
 
 - (void)parseURL:(NSString *)url
 {
     [self _stop];
-    self.textView.string = @"";
+    
+    self.hud = [[MRHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.videoRenderer addSubview:hudView];
+    CGRect rect = self.videoRenderer.bounds;
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
     
     FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
     player.contentPath = url;
@@ -189,7 +197,7 @@
     [player onError:^{
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
-        self.textView.string = [self.player.error localizedDescription];
+        [self alert:[self.player.error localizedDescription]];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
@@ -209,8 +217,6 @@
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(willStartScroll:) name:NSScrollViewWillStartLiveScrollNotification object:self.textView.enclosingScrollView];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didEndScroll:) name:NSScrollViewDidEndLiveScrollNotification object:self.textView.enclosingScrollView];
     [self.videoRenderer setWantsLayer:YES];
     self.videoRenderer.layer.backgroundColor = [[NSColor redColor]CGColor];
     
@@ -221,19 +227,6 @@
         file_pcm_l = fopen(l, "wb+");
     }
 #endif
-}
-
-- (void)willStartScroll:(NSScrollView *)sender
-{
-    self.scrolling = YES;
-}
-
-- (void)didEndScroll:(NSScrollView *)sender
-{
-    if ([self.timer isValid]) {
-        [self.timer setFireDate:[NSDate dateWithTimeIntervalSinceNow:1]];
-    }
-    self.scrolling = NO;
 }
 
 #pragma - mark actions
@@ -250,7 +243,6 @@
 - (IBAction)onExchangeUploadTextureMethod:(NSButton *)sender
 {
     [self.videoRenderer exchangeUploadTextureMethod];
-    self.textView.string = @"";
 }
 
 - (IBAction)onSaveSnapshot:(NSButton *)sender
