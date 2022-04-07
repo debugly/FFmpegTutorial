@@ -37,15 +37,13 @@
 
 - (void)drawRect:(CGRect)rect
 {
+    [[NSColor blackColor] setFill];
+    NSRectFill(rect);
     if (_img) {
         CGContextRef currentContext = [[NSGraphicsContext currentContext] graphicsPort];
-        [[NSColor blackColor] setFill];
-        NSRectFill(rect);
         CGContextRef context = currentContext;
 //        CGContextTranslateCTM(context, 0.0f, self.bounds.size.height);
 //        CGContextScaleCTM(context, 1.0f, -1.0f);
-        
-        
             
         CGFloat viewWidth  = CGRectGetWidth(self.bounds);
         CGFloat viewHeight = CGRectGetHeight(self.bounds);

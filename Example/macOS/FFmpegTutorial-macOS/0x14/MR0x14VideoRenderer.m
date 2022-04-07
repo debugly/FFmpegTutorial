@@ -87,8 +87,20 @@ enum
         // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
     #endif // SUPPORT_RETINA_RESOLUTION
+        
+        [self drawInitBackgroundColor];
     }
     return self;
+}
+
+- (void)drawInitBackgroundColor
+{
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+    CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
 
 - (void)resetViewPort
@@ -179,6 +191,10 @@ enum
 {
     [[self openGLContext] makeCurrentContext];
     CGLLockContext([[self openGLContext] CGLContextObj]);
+    
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
     {
         if (self.program == 0) {
             
@@ -208,8 +224,6 @@ enum
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         glEnable(GL_TEXTURE_RECTANGLE);
         glUseProgram(self.program);
-        glClearColor(0.0,0.0,0.0,0.0);
-        glClear(GL_COLOR_BUFFER_BIT);
         
         if (0 == plane_textures[0])
             glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);

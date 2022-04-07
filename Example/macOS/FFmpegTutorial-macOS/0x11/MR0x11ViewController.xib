@@ -66,7 +66,7 @@
                     </customSpacing>
                 </stackView>
                 <imageView horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="jFD-xm-WN4" customClass="MR0x11VideoRenderer">
-                    <rect key="frame" x="0.0" y="0.0" width="504" height="0.0"/>
+                    <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                     <imageCell key="cell" refusesFirstResponder="YES" alignment="left" imageScaling="proportionallyDown" id="d6b-OK-mr3"/>
                     <connections>
                         <binding destination="-2" name="value" keyPath="self.videoRenderer" id="cBD-9k-IkA"/>
@@ -80,6 +80,7 @@
                 <constraint firstItem="jFD-xm-WN4" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="0Qs-Lp-Xgy"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="776-j1-rIJ"/>
                 <constraint firstAttribute="bottom" secondItem="jFD-xm-WN4" secondAttribute="bottom" id="J7Q-2Z-sOJ"/>
+                <constraint firstItem="jFD-xm-WN4" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="U7U-9f-Wgn"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="rfw-6M-es0"/>

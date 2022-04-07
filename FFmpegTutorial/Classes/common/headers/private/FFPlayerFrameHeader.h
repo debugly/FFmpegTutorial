@@ -101,7 +101,7 @@ static __inline__ int frame_queue_push(FrameQueue *f, AVFrame *frame,double dura
         
         if (!is_loged) {
             is_loged = 1;
-            av_log(NULL, AV_LOG_VERBOSE, "%s frame queue is full(%d)\n",f->name,f->size);
+            av_log(NULL, AV_LOG_DEBUG, "%s frame queue is full(%d)\n",f->name,f->size);
         }
         //等待10ms
         dispatch_semaphore_signal(f->mutex);
@@ -161,7 +161,7 @@ static __inline__ int frame_queue_push_v2(FrameQueue *f, AVFrame *frame,void(^ma
         
         if (!is_loged) {
             is_loged = 1;
-            av_log(NULL, AV_LOG_VERBOSE, "%s frame queue is full(%d)\n",f->name,f->size);
+            av_log(NULL, AV_LOG_DEBUG, "%s frame queue is full(%d)\n",f->name,f->size);
         }
         //等待10ms
         dispatch_semaphore_signal(f->mutex);

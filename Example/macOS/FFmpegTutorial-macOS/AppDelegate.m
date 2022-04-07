@@ -22,7 +22,7 @@
 {
     // Insert code here to initialize your application
     NSWindow *window = [[NSWindow alloc] initWithContentRect:CGRectZero styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable backing:NSBackingStoreBuffered defer:YES];
-    window.title = @"FFmpeg学习教程";
+
     window.titleVisibility = NSWindowTitleHidden;
     window.titlebarAppearsTransparent = YES;
     window.styleMask |= NSWindowStyleMaskFullSizeContentView;
@@ -34,6 +34,7 @@
     
     NSNavigationController *navController = [[NSNavigationController alloc] initWithRootViewController:rootViewController];
     window.contentViewController = navController;
+    window.movableByWindowBackground = YES;
     [window center];
     [window makeKeyWindow];
     [rootWinController showWindow:nil];

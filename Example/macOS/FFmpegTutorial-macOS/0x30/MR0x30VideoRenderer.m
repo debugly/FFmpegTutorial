@@ -109,8 +109,20 @@ static GLint attributers[NUM_ATTRIBUTES];
         // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
     #endif // SUPPORT_RETINA_RESOLUTION
+        
+        [self drawInitBackgroundColor];
     }
     return self;
+}
+
+- (void)drawInitBackgroundColor
+{
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+    CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
 
 - (void)setupOpenGLProgram
@@ -316,8 +328,6 @@ static GLint attributers[NUM_ATTRIBUTES];
     
     {
         glDisable(GL_DEPTH_TEST);
-        glClearColor(0.0,0.0,0.0,0.0);
-        glClear(GL_COLOR_BUFFER_BIT);
     }
     
     {
@@ -444,7 +454,10 @@ static GLint attributers[NUM_ATTRIBUTES];
     
     NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
     glViewport(0, 0, pixelSize.width, pixelSize.height);
-
+    
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
     [self drawPixelBuffer:pixelBuffer];
     [self destroyLastPixelBuffer];
     _lastPixelBuffer = CVPixelBufferRetain(pixelBuffer);

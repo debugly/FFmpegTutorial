@@ -13,7 +13,9 @@
 
 - (CALayer *)makeBackingLayer
 {
-    return [[AVSampleBufferDisplayLayer alloc] init];
+    AVSampleBufferDisplayLayer *layer = [[AVSampleBufferDisplayLayer alloc] init];
+    layer.backgroundColor = [[NSColor blackColor] CGColor];
+    return layer;
 }
 
 - (void)setContentMode:(MRViewContentMode)contentMode

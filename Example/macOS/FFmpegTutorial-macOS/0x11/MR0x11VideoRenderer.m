@@ -10,4 +10,11 @@
 
 @implementation MR0x11VideoRenderer
 
+- (void)awakeFromNib
+{
+    [super awakeFromNib];
+    [self setWantsLayer:YES];
+    self.layer.backgroundColor = [[NSColor blackColor] CGColor];
+}
+
 @end

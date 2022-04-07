@@ -97,8 +97,20 @@ static GLint attributers[NUM_ATTRIBUTES];
         // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
     #endif // SUPPORT_RETINA_RESOLUTION
+        
+        [self drawInitBackgroundColor];
     }
     return self;
+}
+
+- (void)drawInitBackgroundColor
+{
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+    CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
 
 - (void)setupOpenGLProgram
@@ -291,6 +303,10 @@ static GLint attributers[NUM_ATTRIBUTES];
 {
     [[self openGLContext] makeCurrentContext];
     CGLLockContext([[self openGLContext] CGLContextObj]);
+    
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    
     //active opengl program
     {
         [self setupOpenGLProgram];
@@ -308,8 +324,6 @@ static GLint attributers[NUM_ATTRIBUTES];
         glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
         //glEnable(GL_TEXTURE_2D);
         //MR_checkGLError("glEnable GL_TEXTURE_2D");
-        glClearColor(0.0,0.0,0.0,0.0);
-        glClear(GL_COLOR_BUFFER_BIT);
     }
     
     {
