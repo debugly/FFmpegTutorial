@@ -220,7 +220,7 @@
         },
         @{
             @"title":@"0x40",
-            @"detail":@"雪花屏，灰色色阶图",
+            @"detail":@"雪花屏，灰色色阶图，三个小球",
             @"class":@"MR0x40ViewController",
         },
         @{

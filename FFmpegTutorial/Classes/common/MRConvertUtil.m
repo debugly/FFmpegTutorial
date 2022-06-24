@@ -19,6 +19,76 @@
 
 #define BYTE_ALIGN_2(_s_) (( _s_ + 1)/2 * 2)
 
+typedef struct {
+    double r;       // a fraction between 0 and 1
+    double g;       // a fraction between 0 and 1
+    double b;       // a fraction between 0 and 1
+} rgb;
+
+typedef struct {
+    double h;       // a fraction between 0 and 1
+    double s;       // a fraction between 0 and 1
+    double v;       // a fraction between 0 and 1
+} hsv;
+
+rgb hsv2rgb(hsv in)
+{
+    double      hh, p, q, t, ff;
+    long        i;
+    rgb         out;
+
+    if(in.s <= 0.0) {       // < is bogus, just shuts up warnings
+        out.r = in.v;
+        out.g = in.v;
+        out.b = in.v;
+        return out;
+    }
+    hh = in.h * 360;
+    if(hh >= 360.0) hh = 0.0;
+    hh /= 60.0;
+    i = (long)hh;
+    ff = hh - i;
+    p = in.v * (1.0 - in.s);
+    q = in.v * (1.0 - (in.s * ff));
+    t = in.v * (1.0 - (in.s * (1.0 - ff)));
+
+    switch(i) {
+    case 0:
+        out.r = in.v;
+        out.g = t;
+        out.b = p;
+        break;
+    case 1:
+        out.r = q;
+        out.g = in.v;
+        out.b = p;
+        break;
+    case 2:
+        out.r = p;
+        out.g = in.v;
+        out.b = t;
+        break;
+
+    case 3:
+        out.r = p;
+        out.g = q;
+        out.b = in.v;
+        break;
+    case 4:
+        out.r = t;
+        out.g = p;
+        out.b = in.v;
+        break;
+    case 5:
+    default:
+        out.r = in.v;
+        out.g = p;
+        out.b = q;
+        break;
+    }
+    return out;
+}
+
 @implementation MRConvertUtil
 
 CGImageRef _CreateCGImageFromBitMap(void *pixels, size_t w, size_t h, size_t bpc, size_t bpp, size_t bpr, int bmi)
@@ -223,7 +293,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
     [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
     [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
-    [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
+    [attributes setObject:@(1088) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
     [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
     return attributes;
 }
@@ -696,9 +766,8 @@ static inline const char * GetGLErrorString(GLenum error)
 /// @param uv chroma 分量内存指针
 /// @param w 渲染视图宽度
 /// @param h 渲染视图高度
-static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,int w,int h)
+static void fillGrayBar(int barnum,size_t bytesPerRow,unsigned char *y,unsigned char *uv,int w,int h)
 {
-    int barnum = 6;
     int color_b = 0;
     int color_w = 255;
     int deltaC = (color_w - color_b)/barnum;
@@ -723,7 +792,7 @@ static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,in
     memset(uv, 128, BYTE_ALIGN_2(h)/2 * bytesPerRow);
 }
 
-+ (CVPixelBufferRef)grayColorBarPixelBuffer:(int)w h:(int)h opt:(CVPixelBufferPoolRef)poolRef
++ (CVPixelBufferRef)grayColorBarPixelBuffer:(int)w h:(int)h barNum:(int)barNum opt:(CVPixelBufferPoolRef)poolRef
 {
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result = kCVReturnError;
@@ -747,9 +816,91 @@ static void fillGrayBar(size_t bytesPerRow,unsigned char *y,unsigned char *uv,in
         unsigned char *uvDestPlane = CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, 1);
         size_t y_bytesPerRow = CVPixelBufferGetBytesPerRowOfPlane(pixelBuffer, 0);
         
-        fillGrayBar(y_bytesPerRow,yDestPlane,uvDestPlane,w,h);
+        fillGrayBar(barNum,y_bytesPerRow,yDestPlane,uvDestPlane,w,h);
         
         CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
+    }
+    
+    return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
+}
+
++ (void)fill3Ball:(CVPixelBufferRef)pxbuffer
+{
+    int width  = (int)CVPixelBufferGetWidth(pxbuffer);;
+    int height = (int)CVPixelBufferGetHeight(pxbuffer);
+
+    CVPixelBufferLockBaseAddress(pxbuffer, 0);
+    void *pxdata = CVPixelBufferGetBaseAddress(pxbuffer);
+    NSParameterAssert(pxdata != NULL);
+
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGContextRef context = CGBitmapContextCreate(pxdata, width, height, 8, CVPixelBufferGetBytesPerRow(pxbuffer), rgbColorSpace, kCGImageAlphaPremultipliedFirst);
+    NSParameterAssert(context);
+
+    CGColorRef backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    CGContextSetFillColorWithColor(context, backgroundColor);
+    CGContextFillRect(context, CGRectMake(0, 0, width, height));
+    CGColorRelease(backgroundColor);
+    /*
+     mach_absolute_time() / NSEC_PER_SEC 的单位是：秒
+     delta 越大旋转的越慢；
+     假如上层每隔1s调用一次，delta为 1时，旋转角度大约是 360 度，会保持不动；
+     当上层两次调用间隔 小于 两次调用 time 差值时，每次移动的角度就是: (time2 - time1) * 360 / delta
+     假如 delta 为 50 时, 上层 40ms 调用一次，那么每次改变的角度就是 0.4 * 360 / 50 = 2.88度
+     */
+    
+    int delta = 50;
+    double time = 1.0 * mach_absolute_time() / NSEC_PER_SEC / delta;
+    
+    double period = 4.0;
+    double fraction = sin(2 * M_PI * time / period) / 2 + 0.5;
+    hsv rawBoxColorHSV;
+    rawBoxColorHSV.h = fraction;
+    rawBoxColorHSV.s = 0.5;
+    rawBoxColorHSV.v = 1.0;
+    rgb rawBoxColorRGB = hsv2rgb(rawBoxColorHSV);
+    CGColorRef boxColor = CGColorCreateGenericRGB(rawBoxColorRGB.r, rawBoxColorRGB.g, rawBoxColorRGB.b, 1);
+    CGContextSetFillColorWithColor(context, boxColor);
+    for (int i = 0; i < 3; i++) {
+        CGContextSaveGState(context);
+        double rotation_fraction = (time + i) / 3.0;
+        CGContextTranslateCTM(context, width / 2, height / 2);
+        CGContextRotateCTM(context, 2 * M_PI * rotation_fraction);
+        double x_center = width * 0.1;
+        double y_center = 0.0;
+        CGContextFillEllipseInRect(context, CGRectMake(x_center - 50, y_center - 50, 100, 100));
+        CGContextRestoreGState(context);
+    }
+
+    CGColorRelease(boxColor);
+
+    CVPixelBufferUnlockBaseAddress(pxbuffer, 0);
+}
+
++ (CVPixelBufferRef)ball3PixelBuffer:(int)w h:(int)h opt:(CVPixelBufferPoolRef)poolRef
+{
+    CVPixelBufferRef pixelBuffer = NULL;
+    CVReturn result = kCVReturnError;
+    
+    if (poolRef) {
+        result = CVPixelBufferPoolCreatePixelBuffer(NULL, poolRef, &pixelBuffer);
+    } else {
+        NSDictionary *pixelAttributes = [NSDictionary dictionaryWithObjectsAndKeys:
+                                     [NSNumber numberWithBool:YES], kCVPixelBufferCGImageCompatibilityKey,
+                                     [NSNumber numberWithBool:YES], kCVPixelBufferCGBitmapContextCompatibilityKey,
+                                         @{},kCVPixelBufferIOSurfacePropertiesKey,
+                                         nil];
+
+        result = CVPixelBufferCreate(kCFAllocatorDefault,
+                                     w,
+                                     h,
+                                     kCVPixelFormatType_32ARGB,//kCVPixelFormatType_420YpCbCr8BiPlanarFullRange
+                                     (__bridge CFDictionaryRef)(pixelAttributes),
+                                     &pixelBuffer);
+    }
+    
+    if (kCVReturnSuccess == result) {
+        [self fill3Ball:pixelBuffer];
     }
     
     return (CVPixelBufferRef)CFAutorelease(pixelBuffer);

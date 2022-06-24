@@ -44,7 +44,7 @@
     }
     
     FFPlayer0x40 *player = [[FFPlayer0x40 alloc] init];
-    
+    player.videoType = FFPlayer0x40Video3ballType;
     __weakSelf__
     [player onError:^{
         __strongSelf__
