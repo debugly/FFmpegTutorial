@@ -2,11 +2,10 @@
 //  MR0x04ViewController.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/5.
+//  Created by qianlongxu on 2021/4/15.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-// 使用子线程持续读包，读到之后放入一个缓存区中；
-// 解码线程消耗；
+// 创建读包线程，读取音视频包
 
 #import <Cocoa/Cocoa.h>
 

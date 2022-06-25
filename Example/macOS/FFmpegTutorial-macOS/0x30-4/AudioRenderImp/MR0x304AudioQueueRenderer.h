@@ -1,5 +1,5 @@
 //
-//  MR0x30AudioQueueRenderer.h
+//  MR0x304AudioQueueRenderer.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
@@ -9,11 +9,11 @@
 //Audio Queue Support packet fmt only!
 
 #import <Foundation/Foundation.h>
-#import "MR0x30AudioRendererImpProtocol.h"
+#import "MR0x304AudioRendererImpProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x30AudioQueueRenderer : NSObject <MR0x30AudioRendererImpProtocol>
+@interface MR0x304AudioQueueRenderer : NSObject <MR0x304AudioRendererImpProtocol>
 
 - (void)onFetchPacketSample:(MRFetchPacketSample)block;
 - (void)setup:(int)sampleRate isFloatFmt:(BOOL)isFloat;

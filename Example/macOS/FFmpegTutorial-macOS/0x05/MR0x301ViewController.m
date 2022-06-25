@@ -1,18 +1,18 @@
 //
-//  MR0x05ViewController.m
+//  MR0x301ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/6.
+//  Created by qianlongxu on 2021/7/5.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x05ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x05.h>
+#import "MR0x301ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x301.h>
 #import "MRRWeakProxy.h"
 
-@interface MR0x05ViewController ()
+@interface MR0x301ViewController ()
 
-@property (strong) FFPlayer0x05 *player;
+@property (strong) FFPlayer0x301 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation MR0x05ViewController
+@implementation MR0x301ViewController
 
 - (void)dealloc
 {
@@ -93,7 +93,7 @@
         self.textView.string = @"";
     }
     
-    FFPlayer0x05 *player = [[FFPlayer0x05 alloc] init];
+    FFPlayer0x301 *player = [[FFPlayer0x301 alloc] init];
     player.contentPath = url;
     
     [self.indicatorView startAnimation:nil];

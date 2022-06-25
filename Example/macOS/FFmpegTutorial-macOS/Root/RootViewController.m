@@ -84,27 +84,28 @@
         },
         @{
             @"title":@"0x02",
-            @"detail":@"查看视频流信息",
+            @"detail":@"封装NSThread，方便后续调用",
             @"class":@"MR0x02ViewController",
         },
         @{
             @"title":@"0x03",
-            @"detail":@"读包线程与 AVPacket 缓存队列",
+            @"detail":@"查看音视频流信息",
             @"class":@"MR0x03ViewController",
         },
         @{
             @"title":@"0x04",
-            @"detail":@"多线程解码",
+            @"detail":@"读取音视频包",
+            @"class":@"MR0x04ViewController",
+        }
+        ,
+        @{
+            @"title":@"0x05",
+            @"detail":@"音视频解码",
             @"class":@"MR0x04ViewController",
         },
         @{
-            @"title":@"0x05",
-            @"detail":@"渲染线程与 AVFrame 缓存队列",
-            @"class":@"MR0x05ViewController",
-        },
-        @{
             @"title":@"0x06",
-            @"detail":@"抽取 Decoder 类，封装解码逻辑",
+            @"detail":@"抽取解码类，封装解码逻辑",
             @"class":@"MR0x06ViewController",
         },
         @{
@@ -187,6 +188,11 @@
             @"class":@"MR0x16ViewController",
         },
         @{
+            @"title":@"0x17",
+            @"detail":@"TODO:使用 Metal 渲染视频桢",
+            @"class":@"",
+        },
+        @{
             @"title":@"三、音频渲染",
             @"isSection":@(YES)
         },
@@ -211,8 +217,43 @@
         },
         @{
             @"title":@"0x30",
-            @"detail":@"音视频同步",
-            @"class":@"MR0x30ViewController",
+            @"detail":@"读包和解码之间增加 AVPacket 缓存队列",
+            @"class":@"MR0x03ViewController",
+        },
+        @{
+            @"title":@"0x31",
+            @"detail":@"解码和渲染之间增加 AVFrame 缓存队列",
+            @"class":@"MR0x05ViewController",
+        },
+        @{
+            @"title":@"0x32",
+            @"detail":@"TODO:音视频同步",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x33",
+            @"detail":@"TODO:显示播放进度和时长",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x34",
+            @"detail":@"TODO:支持暂停和播放",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x35",
+            @"detail":@"TODO:支持Seek",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x36",
+            @"detail":@"TODO:支持指定播放开始位置",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x37",
+            @"detail":@"TODO:使用硬件加速解码",
+            @"class":@"",
         },
         @{
             @"title":@"五、趣味实验",

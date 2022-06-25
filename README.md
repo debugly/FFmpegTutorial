@@ -82,22 +82,22 @@ open FFmpegTutorial-macOS.xcworkspace
 
 一、音视频基础
 
-- 0x00：[FFmpeg简介及编译方法](md/0x00.md) 
-- 0x01：[查看编译时配置信息、支持的协议、版本号](md/0x01.md)
-- 0x02：[查看音视频码流基础信息](md/0x02.md)
-- 0x03：[读包线程与 AVPacket 缓存队列](md/0x03.md)
-- 0x04：[多线程解码](md/0x04.md)
-- 0x05：[渲染线程与 AVFrame 缓存队列](md/0x05.md)
-- 0x06：[整理代码，封装解码器](md/0x06.md)
+- 0x00：[FFmpeg简介及编译方法]
+- 0x01：[查看编译时配置信息、支持的协议、版本号;OpengGL信息]
+- 0x02：[封装NSThread，方便后续调用]
+- 0x03：[查看音视频流信息]
+- 0x04：[读取音视频包]
+- 0x05：[音视频解码]
+- 0x06：[抽取解码类，封装解码逻辑]
 
 二、视频渲染
 
-- 0x10：[使用 Core Graphics 渲染视频帧](md/0x10.md)
-- 0x11：[使用 Core Animation 渲染视频帧](md/0x11.md)
+- 0x10：[使用 Core Graphics 渲染视频帧]
+- 0x11：[使用 Core Animation 渲染视频帧]
 - 0x12：[使用 Core Image 渲染视频帧]
-- 0x13：[使用 Core Video 渲染视频帧]
-- 0x14：[使用 OpenGL 渲染视频帧]
-    - 0x14-1：[渲染 NV12]
+- 0x13：[使用 Core Media 渲染视频帧]
+- 0x14：[使用 OpenGL 渲染 NV12 视频帧]
+    - 0x14-1：[抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑]
     - 0x14-2：[渲染 YUV420P]（Mac Only）
     - 0x14-3：[渲染 UYVY422]（Mac Only）
     - 0x14-4：[渲染 YUYV422]（Mac Only）
@@ -109,6 +109,7 @@ open FFmpegTutorial-macOS.xcworkspace
     - 0x15-4：[渲染 YUYV422]（Mac Only）
     - 0x15-5：[渲染 NV21]（Mac Only）
 - 0x16：[使用 FBO 离屏渲染截图]（Mac Only）
+- 0x17：[TODO:使用 Metal 渲染视频桢]
 
 三、音频渲染
 
@@ -118,9 +119,14 @@ open FFmpegTutorial-macOS.xcworkspace
 
 四、封装播放器
 
-- 0x30：[音视频同步]
-- 0x31：[支持播放和暂停]
-- 0x32：[显示播放进度和时长]
+- 0x30：[TODO:读包和解码之间增加 AVPacket 缓存队列]
+- 0x31：[TODO:解码和渲染之间增加 AVFrame 缓存队列]
+- 0x32：[TODO:音视频同步]
+- 0x33：[TODO:显示播放进度和时长]
+- 0x34：[TODO:支持暂停和播放]
+- 0x35：[TODO:支持Seek]
+- 0x36：[TODO:支持指定播放开始位置]
+- 0x37：[TODO:使用硬件加速解码]
 
 五、趣味实验
 
@@ -130,12 +136,6 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - 高效视频抽帧器：[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)
 
-#### TODO
-
-- 1、[使用 Metal 渲染视频帧]
-- 2、[支持 seek]
-- 3、[支持从指定位置开始播放]
-- 4、[封装 MRMoviePlayer 播放器]
 
 ## Cross-platform
 

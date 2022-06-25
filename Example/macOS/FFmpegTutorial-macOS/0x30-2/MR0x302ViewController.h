@@ -1,5 +1,5 @@
 //
-//  MR0x05ViewController.h
+//  MR0x302ViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/6.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x05ViewController : NSViewController
+@interface MR0x302ViewController : NSViewController
 
 @end
 

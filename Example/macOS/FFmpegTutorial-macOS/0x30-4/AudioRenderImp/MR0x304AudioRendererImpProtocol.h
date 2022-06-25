@@ -1,5 +1,5 @@
 //
-//  MR0x30AudioRendererImpProtocol.h
+//  MR0x304AudioRendererImpProtocol.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef UInt32(^MRFetchPacketSample)(uint8_t*buffer,UInt32 bufferSize);
 typedef UInt32(^MRFetchPlanarSample)(uint8_t*left,UInt32 leftSize,uint8_t*right,UInt32 rightSize);
 
-@protocol MR0x30AudioRendererImpProtocol <NSObject>
+@protocol MR0x304AudioRendererImpProtocol <NSObject>
 
 @required;
 - (void)play;

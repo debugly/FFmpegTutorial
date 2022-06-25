@@ -1,5 +1,5 @@
 //
-//  MR0x30VideoRenderer.h
+//  MR0x304VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/9/21.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x30VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x304VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 //画面原始尺寸；
 @property (assign) CGSize videoSize;
 

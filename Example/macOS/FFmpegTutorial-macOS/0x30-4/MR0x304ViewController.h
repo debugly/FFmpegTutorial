@@ -1,5 +1,5 @@
 //
-//  MR0x30ViewController.h
+//  MR0x304ViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
@@ -14,7 +14,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x30ViewController : NSViewController
+@interface MR0x304ViewController : NSViewController
 
 @end
 

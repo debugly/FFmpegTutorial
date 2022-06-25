@@ -1,20 +1,20 @@
 //
-//  MR0x30AudioRenderer.m
+//  MR0x304AudioRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x30AudioRenderer.h"
+#import "MR0x304AudioRenderer.h"
 #import <AVFoundation/AVFoundation.h>
-#import "MR0x30AudioQueueRenderer.h"
-#import "MR0x30AudioUnitRenderer.h"
+#import "MR0x304AudioQueueRenderer.h"
+#import "MR0x304AudioUnitRenderer.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
 
-@interface MR0x30AudioRenderer ()
+@interface MR0x304AudioRenderer ()
 {
     float _outputVolume;
 #if DEBUG_RECORD_PCM_TO_FILE
@@ -25,11 +25,11 @@
 
 @property (nonatomic, assign, readwrite) MRSampleFormat sampleFmt;
 @property (nonatomic, assign, readwrite) BOOL preferredAudioQueue;
-@property (nonatomic, strong) id<MR0x30AudioRendererImpProtocol> audioRendererImp;
+@property (nonatomic, strong) id<MR0x304AudioRendererImpProtocol> audioRendererImp;
 
 @end
 
-@implementation MR0x30AudioRenderer
+@implementation MR0x304AudioRenderer
 
 @synthesize outputVolume = _outputVolume;
 
@@ -61,7 +61,7 @@
         //优先使用audiounit，只有明确选择 audio queue 并且格式支持时才用 audio queue！
         if (self.preferredAudioQueue) {
             if (MR_Sample_Fmt_Is_Packet(fmt)) {
-                self.audioRendererImp = [[MR0x30AudioQueueRenderer alloc] init];
+                self.audioRendererImp = [[MR0x304AudioQueueRenderer alloc] init];
                 [self.audioRendererImp setup:sampleRate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt)];
             } else {
                 NSLog(@"audio queue not support planar fmt, will use audio unit!");
@@ -69,7 +69,7 @@
         }
         
         if (!self.audioRendererImp) {
-            self.audioRendererImp = [[MR0x30AudioUnitRenderer alloc] init];
+            self.audioRendererImp = [[MR0x304AudioUnitRenderer alloc] init];
             [self.audioRendererImp setup:sampleRate isFloatFmt:MR_Sample_Fmt_Is_FloatX(fmt) isPacket:MR_Sample_Fmt_Is_Packet(fmt)];
         }
         

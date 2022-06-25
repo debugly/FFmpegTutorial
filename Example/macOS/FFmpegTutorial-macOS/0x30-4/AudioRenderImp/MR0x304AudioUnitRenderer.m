@@ -1,15 +1,15 @@
 //
-//  MR0x30AudioUnitRenderer.m
+//  MR0x304AudioUnitRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x30AudioUnitRenderer.h"
+#import "MR0x304AudioUnitRenderer.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface MR0x30AudioUnitRenderer ()
+@interface MR0x304AudioUnitRenderer ()
 
 @property (nonatomic, copy) MRFetchPacketSample fetchPacketBlock;
 @property (nonatomic, copy) MRFetchPlanarSample fetchPlanarBlock;
@@ -20,7 +20,7 @@
 
 @end
 
-@implementation MR0x30AudioUnitRenderer
+@implementation MR0x304AudioUnitRenderer
 
 - (void)dealloc
 {
@@ -139,7 +139,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
                                         UInt32                        inNumberFrames,
                                         AudioBufferList                * ioData)
 {
-    MR0x30AudioUnitRenderer *am = (__bridge MR0x30AudioUnitRenderer *)inRefCon;
+    MR0x304AudioUnitRenderer *am = (__bridge MR0x304AudioUnitRenderer *)inRefCon;
     return [am renderFrames:inNumberFrames ioData:ioData];
 }
 

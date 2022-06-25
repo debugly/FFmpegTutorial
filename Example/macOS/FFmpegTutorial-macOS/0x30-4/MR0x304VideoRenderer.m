@@ -1,12 +1,12 @@
 //
-//  MR0x30VideoRenderer.m
+//  MR0x304VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/9/21.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x30VideoRenderer.h"
+#import "MR0x304VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -41,7 +41,7 @@ enum
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 
-@interface MR0x30VideoRenderer ()
+@interface MR0x304VideoRenderer ()
 {
     GLuint plane_textures[4];
     MRViewContentMode _contentMode;
@@ -62,7 +62,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @end
 
-@implementation MR0x30VideoRenderer
+@implementation MR0x304VideoRenderer
 
 - (void)dealloc
 {

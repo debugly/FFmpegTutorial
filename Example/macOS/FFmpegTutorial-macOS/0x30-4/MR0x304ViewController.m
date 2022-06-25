@@ -1,33 +1,33 @@
 //
-//  MR0x30ViewController.m
+//  MR0x304ViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x30ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x30.h>
+#import "MR0x304ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x304.h>
 #import "MRRWeakProxy.h"
-#import "MR0x30VideoRenderer.h"
+#import "MR0x304VideoRenderer.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
-#import "MR0x30AudioRenderer.h"
+#import "MR0x304AudioRenderer.h"
 #import <FFmpegTutorial/MRHudControl.h>
 
-@interface MR0x30ViewController ()<FFPlayer0x30Delegate>
+@interface MR0x304ViewController ()<FFPlayer0x304Delegate>
 
-@property (strong) FFPlayer0x30 *player;
+@property (strong) FFPlayer0x304 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x30VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x304VideoRenderer *videoRenderer;
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
-@property (strong) MR0x30AudioRenderer *audioRenderer;
+@property (strong) MR0x304AudioRenderer *audioRenderer;
 
 @end
 
-@implementation MR0x30ViewController
+@implementation MR0x304ViewController
 
 - (void)_stop
 {
@@ -67,7 +67,7 @@
     self.timer = timer;
 }
 
-- (void)player:(FFPlayer0x30 *)player reveiveFrameToRenderer:(CVPixelBufferRef)img
+- (void)player:(FFPlayer0x304 *)player reveiveFrameToRenderer:(CVPixelBufferRef)img
 {
     CFRetain(img);
     MR_sync_main_queue(^{
@@ -76,19 +76,19 @@
     });
 }
 
-- (void)player:(FFPlayer0x30 *)player onInitAudioRender:(MRSampleFormat)fmt
+- (void)player:(FFPlayer0x304 *)player onInitAudioRender:(MRSampleFormat)fmt
 {
     MR_async_main_queue(^{
         [self setupAudioRender:fmt];
     });
 }
 
-- (void)onBufferFull:(FFPlayer0x30 *)player
+- (void)onBufferFull:(FFPlayer0x304 *)player
 {
     [self.audioRenderer play];
 }
 
-- (void)onBufferEmpty:(FFPlayer0x30 *)player
+- (void)onBufferEmpty:(FFPlayer0x304 *)player
 {
     [self.audioRenderer pause];
 }
@@ -96,7 +96,7 @@
 - (void)setupAudioRender:(MRSampleFormat)fmt
 {
     if (!self.audioRenderer) {
-        MR0x30AudioRenderer *audioRenderer = [[MR0x30AudioRenderer alloc] initWithFmt:fmt preferredAudioQueue:YES sampleRate:self.player.supportedSampleRate];
+        MR0x304AudioRenderer *audioRenderer = [[MR0x304AudioRenderer alloc] initWithFmt:fmt preferredAudioQueue:YES sampleRate:self.player.supportedSampleRate];
         
         __weakSelf__
         [audioRenderer onFetchPacketSample:^UInt32(uint8_t * _Nonnull buffer, UInt32 bufferSize) {
@@ -184,7 +184,7 @@
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
     
-    FFPlayer0x30 *player = [[FFPlayer0x30 alloc] init];
+    FFPlayer0x304 *player = [[FFPlayer0x304 alloc] init];
     player.contentPath = url;
     
     [self.indicatorView startAnimation:nil];

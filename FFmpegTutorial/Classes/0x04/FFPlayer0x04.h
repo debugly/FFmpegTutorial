@@ -4,6 +4,7 @@
 //
 //  Created by qianlongxu on 2020/5/10.
 //
+// 创建读包线程，读取音视频包
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
@@ -16,11 +17,11 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *contentPath;
 ///code is FFPlayerErrorCode enum.
 @property (nonatomic, strong, nullable) NSError *error;
-///记录解码后的视频桢总数
-@property (atomic, assign, readonly) int videoFrameCount;
-///记录解码后的音频桢总数
-@property (atomic, assign, readonly) int audioFrameCount;
-
+///记录读到的视频包总数
+@property (atomic, assign, readonly) int videoPktCount;
+///记录读到的音频包总数
+@property (atomic, assign, readonly) int audioPktCount;
+@property (nonatomic, copy) void(^onReadPkt)(int a,int v);
 ///准备
 - (void)prepareToPlay;
 ///读包
@@ -29,12 +30,6 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)asyncStop;
 ///发生错误，具体错误为 self.error
 - (void)onError:(dispatch_block_t)block;
-
-- (void)onPacketBufferEmpty:(dispatch_block_t)block;
-- (void)onPacketBufferFull:(dispatch_block_t)block;
-
-///缓冲情况
-- (MR_PACKET_SIZE)peekPacketBufferStatus;
 
 @end
 

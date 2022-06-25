@@ -1,5 +1,5 @@
 //
-//  MR0x30AudioUnitRenderer.h
+//  MR0x304AudioUnitRenderer.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/2/17.
@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MR0x30AudioRendererImpProtocol.h"
+#import "MR0x304AudioRendererImpProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x30AudioUnitRenderer : NSObject <MR0x30AudioRendererImpProtocol>
+@interface MR0x304AudioUnitRenderer : NSObject <MR0x304AudioRendererImpProtocol>
 
 @end
 

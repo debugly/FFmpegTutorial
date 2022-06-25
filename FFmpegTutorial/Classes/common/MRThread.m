@@ -76,6 +76,16 @@ do{ \
     return self;
 }
 
+- (void)setName:(NSString *)name
+{
+    [self.thread setName:name];
+}
+
+- (NSString *)name
+{
+    return self.thread.name;
+}
+
 - (void)workFunc
 {
     //取消了就直接返回，不再处理
@@ -109,7 +119,7 @@ do{ \
 {
     while (![self.thread isFinished] && [self.thread isExecuting]) {
         PRINT_THREAD_DEBUG(@"wait.");
-        BOOL ok = [self.condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.05]];
+        BOOL ok = [self.condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
         if (ok) {
             PRINT_THREAD_DEBUG(@"break wait.");
             break;
