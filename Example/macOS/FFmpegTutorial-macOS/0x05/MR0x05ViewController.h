@@ -1,18 +1,19 @@
 //
-//  MR0x301ViewController.h
+//  MR0x05ViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/5.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-// 使用子线程持续读包，读到之后放入一个缓存区中；
-// 解码线程消耗；
+// 0x03:查看音视频流信息
+// 0x04:创建读包线程，读取音视频包
+// 0x05:音视频解码
 
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x301ViewController : NSViewController
+@interface MR0x05ViewController : NSViewController
 
 @end
 

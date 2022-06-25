@@ -101,7 +101,7 @@
         @{
             @"title":@"0x05",
             @"detail":@"音视频解码",
-            @"class":@"MR0x04ViewController",
+            @"class":@"MR0x05ViewController",
         },
         @{
             @"title":@"0x06",
