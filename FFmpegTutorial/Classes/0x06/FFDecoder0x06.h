@@ -20,8 +20,6 @@ typedef struct AVFrame AVFrame;
 @protocol FFDecoderDelegate0x06 <NSObject>
 
 @required
-///解码器向 delegater 要一个 AVPacket
-- (int)decoder:(FFDecoder0x06 *)decoder wantAPacket:(AVPacket *)packet;
 ///将解码后的 AVFrame 给 delegater
 - (void)decoder:(FFDecoder0x06 *)decoder reveivedAFrame:(AVFrame *)frame;
 
@@ -34,17 +32,13 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) NSString * name;
 @property (nonatomic, weak) id <FFDecoderDelegate0x06> delegate;
 @property (nonatomic, assign, readonly) AVStream * stream;
+
 /**
  打开解码器，创建解码线程;
  return 0;（没有错误）
  */
 - (int)open;
-//开始解码
-- (void)start;
-//取消解码
-- (void)cancel;
-//内部线程join
-- (void)join;
+- (int)sendPacket:(AVPacket *)pkt;
 
 @end
 

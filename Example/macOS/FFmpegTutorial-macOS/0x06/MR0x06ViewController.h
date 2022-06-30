@@ -2,10 +2,13 @@
 //  MR0x06ViewController.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/7.
+//  Created by qianlongxu on 2021/7/5.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-// 整理代码，封装解码器
+// 0x03:查看音视频流信息
+// 0x04:创建读包线程，读取音视频包
+// 0x05:音视频解码
+// 0x06:创建解码器类
 
 #import <Cocoa/Cocoa.h>
 

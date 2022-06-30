@@ -19,6 +19,8 @@
 		DD56CAFC28670F460046C28A /* MR0x04ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CAFA28670F460046C28A /* MR0x04ViewController.xib */; };
 		DD56CB0128674FA00046C28A /* MR0x05ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CAFE28674FA00046C28A /* MR0x05ViewController.xib */; };
 		DD56CB0228674FA00046C28A /* MR0x05ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56CB0028674FA00046C28A /* MR0x05ViewController.m */; };
+		DD56CB072867FBBD0046C28A /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56CB042867FBBD0046C28A /* MR0x06ViewController.m */; };
+		DD56CB082867FBBD0046C28A /* MR0x06ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CB052867FBBD0046C28A /* MR0x06ViewController.xib */; };
 		DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */; };
 		DD7D80A726C1687F00D968F3 /* 1_sampler2DRect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */; };
 		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
@@ -78,6 +80,9 @@
 		DD56CAFE28674FA00046C28A /* MR0x05ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x05ViewController.xib; sourceTree = "<group>"; };
 		DD56CAFF28674FA00046C28A /* MR0x05ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x05ViewController.h; sourceTree = "<group>"; };
 		DD56CB0028674FA00046C28A /* MR0x05ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x05ViewController.m; sourceTree = "<group>"; };
+		DD56CB042867FBBD0046C28A /* MR0x06ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x06ViewController.m; sourceTree = "<group>"; };
+		DD56CB052867FBBD0046C28A /* MR0x06ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x06ViewController.xib; sourceTree = "<group>"; };
+		DD56CB062867FBBD0046C28A /* MR0x06ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x06ViewController.h; sourceTree = "<group>"; };
 		DD7D80A226BAED3300D968F3 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
 		DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
 		DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2DRect.fsh; sourceTree = "<group>"; };
@@ -164,6 +169,16 @@
 				DD56CAFE28674FA00046C28A /* MR0x05ViewController.xib */,
 			);
 			path = 0x05;
+			sourceTree = "<group>";
+		};
+		DD56CB032867FBBD0046C28A /* 0x06 */ = {
+			isa = PBXGroup;
+			children = (
+				DD56CB062867FBBD0046C28A /* MR0x06ViewController.h */,
+				DD56CB042867FBBD0046C28A /* MR0x06ViewController.m */,
+				DD56CB052867FBBD0046C28A /* MR0x06ViewController.xib */,
+			);
+			path = 0x06;
 			sourceTree = "<group>";
 		};
 		DD91F28B26AC081200B96334 /* OpenGLAssets */ = {
@@ -310,6 +325,7 @@
 				DDAD7FE627FF3EBE00E947BB /* 0x03 */,
 				DD56CAF728670F450046C28A /* 0x04 */,
 				DD56CAFD28674FA00046C28A /* 0x05 */,
+				DD56CB032867FBBD0046C28A /* 0x06 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -401,6 +417,7 @@
 				DD56CB0128674FA00046C28A /* MR0x05ViewController.xib in Resources */,
 				DD91F29126AC082C00B96334 /* 2_sampler2DRect.fsh in Resources */,
 				C958FACE279A60740058D64A /* 2_sample2DRect_NV21.fsh in Resources */,
+				DD56CB082867FBBD0046C28A /* MR0x06ViewController.xib in Resources */,
 				C958F95F2796A7520058D64A /* common_v3.vsh in Resources */,
 				DDAD7FEC27FF3EBE00E947BB /* MR0x03ViewController.xib in Resources */,
 				DDAD7FEA27FF3EBE00E947BB /* MR0x02ViewController.xib in Resources */,
@@ -453,6 +470,7 @@
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */,
 				DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */,
+				DD56CB072867FBBD0046C28A /* MR0x06ViewController.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
 				DD56CB0228674FA00046C28A /* MR0x05ViewController.m in Sources */,

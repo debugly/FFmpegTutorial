@@ -9,12 +9,14 @@
 #define FFPlayerHeader_h
 
 typedef enum : NSUInteger {
-    FFPlayerErrorCode_AllocFmtCtxFailed,    //创建 avformat context 失败
-    FFPlayerErrorCode_OpenFileFailed,       //文件打开失败
-    FFPlayerErrorCode_StreamNotFound,       //找不到音视频流
-    FFPlayerErrorCode_StreamOpenFailed,     //音视频流打开失败
-    FFPlayerErrorCode_RescaleFrameFailed,   //视频帧重转失败
-    FFPlayerErrorCode_ResampleFrameFailed,  //音频帧格式重采样失败
+    FFPlayerErrorCode_AllocFmtCtxFailed,        //创建 avformat context 失败
+    FFPlayerErrorCode_OpenFileFailed,           //文件打开失败
+    FFPlayerErrorCode_StreamNotFound,           //找不到音视频流
+    FFPlayerErrorCode_StreamOpenFailed,         //音视频流打开失败
+    FFPlayerErrorCode_AudioDecoderOpenFailed,   //音频解码器打开失败
+    FFPlayerErrorCode_VideoDecoderOpenFailed,   //视频解码器打开失败
+    FFPlayerErrorCode_RescaleFrameFailed,       //视频帧重转失败
+    FFPlayerErrorCode_ResampleFrameFailed,      //音频帧格式重采样失败
 } FFPlayerErrorCode;
 
 typedef enum : NSUInteger {
