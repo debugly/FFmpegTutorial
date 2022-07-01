@@ -28,10 +28,6 @@
 
 - (void)dealloc
 {
-    if (_player) {
-        [_player asyncStop];
-        _player = nil;
-    }
 }
 
 - (void)parseURL:(NSString *)url
@@ -49,7 +45,10 @@
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12 | MR_PIX_FMT_MASK_BGRA;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;// |
+//    MR_PIX_FMT_MASK_NV12 |
+//    MR_PIX_FMT_MASK_BGRA;
+    ;
     __weakSelf__
     player.onError = ^(NSError *err){
         NSLog(@"%@",err);
@@ -87,6 +86,15 @@
     self.inputField.stringValue = KTestVideoURL1;
     self.audioPktCount = 0;
     self.videoPktCount = 0;
+}
+
+- (void)viewWillDisappear
+{
+    [super viewWillDisappear];
+    if (_player) {
+        [_player asyncStop];
+        _player = nil;
+    }
 }
 
 #pragma - mark actions

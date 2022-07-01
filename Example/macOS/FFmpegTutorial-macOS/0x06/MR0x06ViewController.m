@@ -25,10 +25,6 @@
 
 - (void)dealloc
 {
-    if (_player) {
-        [_player asyncStop];
-        _player = nil;
-    }
 }
 
 - (void)parseURL:(NSString *)url
@@ -78,6 +74,14 @@
     self.videoPktCount = 0;
 }
 
+- (void)viewWillDisappear
+{
+    [super viewWillDisappear];
+    if (_player) {
+        [_player asyncStop];
+        _player = nil;
+    }
+}
 #pragma - mark actions
 
 - (IBAction)go:(NSButton *)sender

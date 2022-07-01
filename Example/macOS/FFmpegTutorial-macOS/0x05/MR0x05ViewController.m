@@ -24,14 +24,6 @@
 
 @implementation MR0x05ViewController
 
-- (void)dealloc
-{
-    if (_player) {
-        [_player asyncStop];
-        _player = nil;
-    }
-}
-
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {
@@ -76,6 +68,15 @@
     self.inputField.stringValue = KTestVideoURL1;
     self.audioPktCount = 0;
     self.videoPktCount = 0;
+}
+
+- (void)viewWillDisappear
+{
+    [super viewWillDisappear];
+    if (_player) {
+        [_player asyncStop];
+        _player = nil;
+    }
 }
 
 #pragma - mark actions

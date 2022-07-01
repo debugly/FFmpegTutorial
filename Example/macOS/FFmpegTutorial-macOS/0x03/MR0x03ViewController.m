@@ -25,10 +25,6 @@
 
 - (void)dealloc
 {
-    if (self.player) {
-        [self.player asyncStop];
-        self.player = nil;
-    }
 }
 
 - (IBAction)go:(NSButton *)sender
@@ -72,6 +68,15 @@
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
     self.textView.string = @"拖拽视频文件，查看视频信息";
+}
+
+- (void)viewWillDisappear
+{
+    [super viewWillDisappear];
+    if (_player) {
+        [_player asyncStop];
+        _player = nil;
+    }
 }
 
 #pragma mark --拖拽的代理方法
