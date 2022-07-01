@@ -96,8 +96,7 @@
             @"title":@"0x04",
             @"detail":@"读取音视频包",
             @"class":@"MR0x04ViewController",
-        }
-        ,
+        },
         @{
             @"title":@"0x05",
             @"detail":@"音视频解码",
@@ -114,13 +113,18 @@
         },
         @{
             @"title":@"0x10",
-            @"detail":@"使用 Core Graphics 渲染视频桢",
+            @"detail":@"封装视频缩放类，方便转出指定的像素格式",
             @"class":@"MR0x10ViewController",
         },
         @{
             @"title":@"0x11",
-            @"detail":@"使用 Core Animation 渲染视频桢",
+            @"detail":@"使用 Core Graphics 渲染视频桢",
             @"class":@"MR0x11ViewController",
+        },
+        @{
+            @"title":@"0x12",
+            @"detail":@"使用 Core Animation 渲染视频桢",
+            @"class":@"MR0x12ViewController",
         },
         @{
             @"title":@"0x13",
