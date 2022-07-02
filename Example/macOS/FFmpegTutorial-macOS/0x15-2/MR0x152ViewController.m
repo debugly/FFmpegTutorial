@@ -7,14 +7,15 @@
 //
 
 #import "MR0x152ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x15.h>
+#import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import "MRRWeakProxy.h"
+#import <FFmpegTutorial/MRConvertUtil.h>
 #import "MR0x152VideoRenderer.h"
+#import "MRRWeakProxy.h"
 
-@interface MR0x152ViewController ()<FFPlayer0x15Delegate>
+@interface MR0x152ViewController ()
 
-@property (strong) FFPlayer0x15 *player;
+@property (strong) FFPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x152VideoRenderer *videoRenderer;
@@ -50,15 +51,6 @@
     self.timer = timer;
 }
 
-- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
-{
-    CFRetain(img);
-    MR_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
-}
-
 - (void)onTimer:(NSTimer *)sender
 {
     [self.indicatorView stopAnimation:nil];
@@ -67,11 +59,9 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
     
-    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
-    
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",pktSize.audio_pkt_size] forKey:@"a-pack"];
-    
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",pktSize.video_pkt_size] forKey:@"v-pack"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
+
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
 }
 
 - (void)alert:(NSString *)msg
@@ -93,6 +83,16 @@
     }
 }
 
+- (void)displayVideoFrame:(AVFrame *)frame
+{
+    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+    CFRetain(img);
+    MR_sync_main_queue(^{
+        [self.videoRenderer displayPixelBuffer:img];
+        CFRelease(img);
+    });
+}
+
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {
@@ -104,7 +104,6 @@
         self.hud = nil;
     }
     
-    FFPlayer0x15 *player = [[FFPlayer0x15 alloc] init];
     self.hud = [[MRHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
     [self.videoRenderer addSubview:hudView];
@@ -115,21 +114,35 @@
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
     
-    player.contentPath = url;
-    
     [self.indicatorView startAnimation:nil];
+    
+    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    player.contentPath = url;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
+    
     __weakSelf__
-    [player onError:^{
+    player.onError = ^(NSError * _Nonnull e) {
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
-    }];
+    };
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
-    player.delegate = self;
+    player.onDecoderFrame = ^(int type, int serial, AVFrame * _Nonnull frame) {
+        __strongSelf__
+        //video
+        if (type == 1) {
+            mr_msleep(40);
+            @autoreleasepool {
+                [self displayVideoFrame:frame];
+            }
+        }
+        //audio
+        else if (type == 2) {
+        }
+    };
     [player prepareToPlay];
     [player play];
     self.player = player;
