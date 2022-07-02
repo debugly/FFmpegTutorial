@@ -8,7 +8,7 @@
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MR0x11ViewController">
             <connections>
-                <outlet property="infoLabel" destination="SUc-Fc-Lbb" id="VwQ-4U-mBs"/>
+                <outlet property="indicatorView" destination="Eiy-Rd-aGU" id="eZ9-P1-erp"/>
                 <outlet property="inputField" destination="X45-WW-lE6" id="vzy-yO-Yvh"/>
                 <outlet property="videoRenderer" destination="QjN-V5-1VD" id="r2v-OO-H69"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -68,185 +68,20 @@
                 <customView translatesAutoresizingMaskIntoConstraints="NO" id="QjN-V5-1VD" customClass="MR0x11VideoRenderer">
                     <rect key="frame" x="0.0" y="0.0" width="504" height="232"/>
                 </customView>
-                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="qOl-2E-JxV" userLabel="Packet">
-                    <rect key="frame" x="0.0" y="170" width="101" height="42"/>
-                    <subviews>
-                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LM7-e8-rA8">
-                            <rect key="frame" x="10" y="26" width="81" height="16"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9N7-rQ-vfd">
-                                    <rect key="frame" x="-2" y="0.0" width="54" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="音频包：" id="Bht-tI-UWK">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="rSE-kO-hgs">
-                                    <rect key="frame" x="56" y="0.0" width="27" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="100" id="D73-40-gu0">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="-2" name="value" keyPath="audioPktCount" id="AlZ-Te-F5p"/>
-                                    </connections>
-                                </textField>
-                            </subviews>
-                            <visibilityPriorities>
-                                <integer value="1000"/>
-                                <integer value="1000"/>
-                            </visibilityPriorities>
-                            <customSpacing>
-                                <real value="3.4028234663852886e+38"/>
-                                <real value="3.4028234663852886e+38"/>
-                            </customSpacing>
-                        </stackView>
-                        <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aom-KZ-RZE">
-                            <rect key="frame" x="10" y="0.0" width="81" height="16"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="U0d-UT-AsW">
-                                    <rect key="frame" x="-2" y="0.0" width="54" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="视频包：" id="dyY-VV-Fvt">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="5gG-LL-9sb">
-                                    <rect key="frame" x="56" y="0.0" width="27" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="100" id="X2P-M7-Xqf">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="-2" name="value" keyPath="videoPktCount" id="hED-7M-s4e"/>
-                                    </connections>
-                                </textField>
-                            </subviews>
-                            <visibilityPriorities>
-                                <integer value="1000"/>
-                                <integer value="1000"/>
-                            </visibilityPriorities>
-                            <customSpacing>
-                                <real value="3.4028234663852886e+38"/>
-                                <real value="3.4028234663852886e+38"/>
-                            </customSpacing>
-                        </stackView>
-                    </subviews>
-                    <edgeInsets key="edgeInsets" left="10" right="10" top="0.0" bottom="0.0"/>
-                    <visibilityPriorities>
-                        <integer value="1000"/>
-                        <integer value="1000"/>
-                    </visibilityPriorities>
-                    <customSpacing>
-                        <real value="3.4028234663852886e+38"/>
-                        <real value="3.4028234663852886e+38"/>
-                    </customSpacing>
-                </stackView>
-                <stackView distribution="fill" orientation="vertical" alignment="leading" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Awm-gU-w79" userLabel="Frame">
-                    <rect key="frame" x="0.0" y="108" width="101" height="42"/>
-                    <subviews>
-                        <stackView distribution="fill" orientation="horizontal" alignment="centerY" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fgh-YN-zdh">
-                            <rect key="frame" x="10" y="26" width="81" height="16"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="BCV-VV-rIe">
-                                    <rect key="frame" x="-2" y="0.0" width="54" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="音频桢：" id="tml-Jx-vVq">
-                                        <font key="font" usesAppearanceFont="YES"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="AuD-a5-4pf">
-                                    <rect key="frame" x="56" y="0.0" width="27" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="100" id="Wdu-ve-8rc">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="-2" name="value" keyPath="audioFrameCount" id="bRg-EV-WMn"/>
-                                    </connections>
-                                </textField>
-                            </subviews>
-                            <visibilityPriorities>
-                                <integer value="1000"/>
-                                <integer value="1000"/>
-                            </visibilityPriorities>
-                            <customSpacing>
-                                <real value="3.4028234663852886e+38"/>
-                                <real value="3.4028234663852886e+38"/>
-                            </customSpacing>
-                        </stackView>
-                        <stackView distribution="fill" orientation="horizontal" alignment="top" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cIw-PY-D55">
-                            <rect key="frame" x="10" y="0.0" width="81" height="16"/>
-                            <subviews>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="9xW-Ds-bkO">
-                                    <rect key="frame" x="-2" y="0.0" width="54" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="视频桢：" id="Big-7G-X1l">
-                                        <font key="font" usesAppearanceFont="YES"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                </textField>
-                                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nVA-3o-P4H">
-                                    <rect key="frame" x="56" y="0.0" width="27" height="16"/>
-                                    <textFieldCell key="cell" lineBreakMode="clipping" title="100" id="pzb-LO-xDi">
-                                        <font key="font" metaFont="system"/>
-                                        <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
-                                    </textFieldCell>
-                                    <connections>
-                                        <binding destination="-2" name="value" keyPath="videoFrameCount" id="bqV-9G-5ft"/>
-                                    </connections>
-                                </textField>
-                            </subviews>
-                            <visibilityPriorities>
-                                <integer value="1000"/>
-                                <integer value="1000"/>
-                            </visibilityPriorities>
-                            <customSpacing>
-                                <real value="3.4028234663852886e+38"/>
-                                <real value="3.4028234663852886e+38"/>
-                            </customSpacing>
-                        </stackView>
-                    </subviews>
-                    <edgeInsets key="edgeInsets" left="10" right="10" top="0.0" bottom="0.0"/>
-                    <visibilityPriorities>
-                        <integer value="1000"/>
-                        <integer value="1000"/>
-                    </visibilityPriorities>
-                    <customSpacing>
-                        <real value="3.4028234663852886e+38"/>
-                        <real value="3.4028234663852886e+38"/>
-                    </customSpacing>
-                </stackView>
-                <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="SUc-Fc-Lbb">
-                    <rect key="frame" x="15" y="15" width="4" height="16"/>
-                    <textFieldCell key="cell" lineBreakMode="clipping" drawsBackground="YES" id="NSd-gJ-aza">
-                        <font key="font" usesAppearanceFont="YES"/>
-                        <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                        <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
-                    </textFieldCell>
-                </textField>
+                <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="Eiy-Rd-aGU">
+                    <rect key="frame" x="236" y="120" width="32" height="32"/>
+                </progressIndicator>
             </subviews>
             <constraints>
                 <constraint firstAttribute="bottom" secondItem="QjN-V5-1VD" secondAttribute="bottom" id="3pL-px-Jmb"/>
-                <constraint firstItem="qOl-2E-JxV" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" constant="20" id="5dY-xx-sAO"/>
                 <constraint firstAttribute="trailing" secondItem="QjN-V5-1VD" secondAttribute="trailing" id="GpH-Zy-swV"/>
-                <constraint firstAttribute="bottom" secondItem="SUc-Fc-Lbb" secondAttribute="bottom" constant="15" id="HjS-rm-yku"/>
-                <constraint firstItem="qOl-2E-JxV" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="PV3-H3-Nxl"/>
-                <constraint firstItem="SUc-Fc-Lbb" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" constant="15" id="XgK-qW-om5"/>
+                <constraint firstItem="Eiy-Rd-aGU" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="Jdz-Zq-09J"/>
+                <constraint firstItem="Eiy-Rd-aGU" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="RSU-i3-MeZ"/>
                 <constraint firstItem="QjN-V5-1VD" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="aKA-1x-LRW"/>
                 <constraint firstItem="QjN-V5-1VD" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="eTt-of-csa"/>
-                <constraint firstItem="Awm-gU-w79" firstAttribute="top" secondItem="qOl-2E-JxV" secondAttribute="bottom" constant="20" id="iYG-Tq-4zz"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
                 <constraint firstAttribute="trailing" secondItem="NMB-98-nYq" secondAttribute="trailing" id="yDU-gp-9m5"/>
-                <constraint firstItem="Awm-gU-w79" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="ymS-z6-Xdq"/>
             </constraints>
             <point key="canvasLocation" x="-131" y="120"/>
         </customView>

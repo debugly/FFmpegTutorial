@@ -1,8 +1,8 @@
 //
-//  MR0x14ViewController.h
+//  MR0x12ViewController.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/11.
+//  Created by qianlongxu on 2021/7/9.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 0x03:查看音视频流信息
@@ -12,14 +12,12 @@
 // 0x10:创建视频缩放类
 // 0x11:使用 Core Graphics 渲染视频桢
 // 0x12:使用 Core Animation 渲染视频桢
-// 0x13:使用 Core Media 渲染视频桢
-// 0x14:使用 OpenGL 渲染 NV12 视频桢
 
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x14ViewController : NSViewController
+@interface MR0x12ViewController : NSViewController
 
 @end
 

@@ -1,32 +1,31 @@
 //
-//  MR0x13ViewController.m
+//  MR0x12ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/7/11.
+//  Created by qianlongxu on 2021/7/9.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x13ViewController.h"
+#import "MR0x12ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
-#import "MR0x13VideoRenderer.h"
+#import "MR0x12VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x13ViewController ()
+@interface MR0x12ViewController ()
 
 @property (strong) FFPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
-@property (assign) IBOutlet NSTextView *textView;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x13VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x12VideoRenderer *videoRenderer;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
 
 @end
 
-@implementation MR0x13ViewController
+@implementation MR0x12ViewController
 
 - (void)dealloc
 {
@@ -86,13 +85,13 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CVPixelBufferRef pixelBuff = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    CMSampleBufferRef sampleBuffer = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuff];
+    CGImageRef cgImage = [MRConvertUtil cgImageFromRGBFrame:frame];
+    size_t width = CGImageGetWidth(cgImage);
+    size_t height = CGImageGetHeight(cgImage);
     
-    CFRetain(sampleBuffer);
+    NSImage *img = [[NSImage alloc] initWithCGImage:cgImage size:CGSizeMake(width, height)];
     MR_sync_main_queue(^{
-        [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
-        CFRelease(sampleBuffer);
+        self.videoRenderer.image = img;
     });
 }
 
@@ -121,8 +120,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12 | MR_PIX_FMT_MASK_BGR0 | MR_PIX_FMT_MASK_BGRA | MR_PIX_FMT_MASK_0RGB | MR_PIX_FMT_MASK_ARGB;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
     
     __weakSelf__
     player.onError = ^(NSError * _Nonnull e) {
@@ -168,19 +166,6 @@
         [self parseURL:self.inputField.stringValue];
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
-    }
-}
-
-- (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
-{
-    NSMenuItem *item = [sender selectedItem];
-        
-    if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill];
-    } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill];
-    } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit];
     }
 }
 
