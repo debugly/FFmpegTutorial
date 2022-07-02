@@ -2,7 +2,7 @@
 //  FFDecoder0x16.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/6/25.
+//  Created by Matt Reach on 2022/7/5.
 //
 // 自定义解码器类
 // 通过代理衔接输入输出
@@ -20,8 +20,6 @@ typedef struct AVFrame AVFrame;
 @protocol FFDecoderDelegate0x16 <NSObject>
 
 @required
-///解码器向 delegater 要一个 AVPacket
-- (int)decoder:(FFDecoder0x16 *)decoder wantAPacket:(AVPacket *)packet;
 ///将解码后的 AVFrame 给 delegater
 - (void)decoder:(FFDecoder0x16 *)decoder reveivedAFrame:(AVFrame *)frame;
 
@@ -38,19 +36,13 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, assign, readonly) enum AVPixelFormat pix_fmt;
 @property (nonatomic, assign, readonly) int picWidth;
 @property (nonatomic, assign, readonly) int picHeight;
-@property (copy, readonly) NSString * codecName;
 
 /**
  打开解码器，创建解码线程;
  return 0;（没有错误）
  */
 - (int)open;
-//开始解码
-- (void)start;
-//取消解码
-- (void)cancel;
-//内部线程join
-- (void)join;
+- (int)sendPacket:(AVPacket *)pkt;
 
 @end
 

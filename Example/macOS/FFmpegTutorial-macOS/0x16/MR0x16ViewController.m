@@ -9,12 +9,13 @@
 #import "MR0x16ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x16.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import "MRRWeakProxy.h"
-#import "MR0x16VideoRenderer.h"
+#import <FFmpegTutorial/MRConvertUtil.h>
 #import "NSFileManager+Sandbox.h"
+#import "MR0x16VideoRenderer.h"
+#import "MRRWeakProxy.h"
 #import "MRUtil.h"
 
-@interface MR0x16ViewController ()<FFPlayer0x16Delegate>
+@interface MR0x16ViewController ()
 
 @property (strong) FFPlayer0x16 *player;
 @property (weak) IBOutlet NSTextField *inputField;
@@ -52,28 +53,6 @@
     self.timer = timer;
 }
 
-#pragma mark - FFPlayer Delegate Methods
-
-- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img
-{
-    CFRetain(img);
-    MR_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
-}
-
-- (void)player:(FFPlayer0x16 *)player videoDidOpen:(NSDictionary *)info
-{
-    int width  = [info[kFFPlayer0x16Width] intValue];
-    int height = [info[kFFPlayer0x16Height] intValue];
-    self.videoRenderer.videoSize = CGSizeMake(width, height);
-    
-    NSLog(@"---VideoInfo-------------------");
-    NSLog(@"%@",info);
-    NSLog(@"----------------------");
-}
-
 - (void)onTimer:(NSTimer *)sender
 {
     [self.indicatorView stopAnimation:nil];
@@ -82,11 +61,9 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
     
-    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
-    
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",pktSize.audio_pkt_size] forKey:@"a-pack"];
-    
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",pktSize.video_pkt_size] forKey:@"v-pack"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
+
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
 }
 
 - (void)alert:(NSString *)msg
@@ -108,6 +85,16 @@
     }
 }
 
+- (void)displayVideoFrame:(AVFrame *)frame
+{
+    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+    CFRetain(img);
+    MR_sync_main_queue(^{
+        [self.videoRenderer displayPixelBuffer:img];
+        CFRelease(img);
+    });
+}
+
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {
@@ -119,7 +106,6 @@
         self.hud = nil;
     }
     
-    FFPlayer0x16 *player = [[FFPlayer0x16 alloc] init];
     self.hud = [[MRHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
     [self.videoRenderer addSubview:hudView];
@@ -130,27 +116,51 @@
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
     
-    player.contentPath = url;
-    
     [self.indicatorView startAnimation:nil];
+    
+    FFPlayer0x16 *player = [[FFPlayer0x16 alloc] init];
+    player.contentPath = url;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
+    
     __weakSelf__
-    [player onError:^{
+    player.onVideoOpened = ^(NSDictionary * _Nonnull info) {
+        __strongSelf__
+        int width  = [info[kFFPlayer0x16Width] intValue];
+        int height = [info[kFFPlayer0x16Height] intValue];
+        self.videoRenderer.videoSize = CGSizeMake(width, height);
+        
+        NSLog(@"---VideoInfo-------------------");
+        NSLog(@"%@",info);
+        NSLog(@"----------------------");
+    };
+    
+    player.onError = ^(NSError * _Nonnull e) {
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
-    }];
+    };
     
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
-    player.delegate = self;
+    player.onDecoderFrame = ^(int type, int serial, AVFrame * _Nonnull frame) {
+        __strongSelf__
+        //video
+        if (type == 1) {
+            mr_msleep(40);
+            @autoreleasepool {
+                [self displayVideoFrame:frame];
+            }
+        }
+        //audio
+        else if (type == 2) {
+        }
+    };
     [player prepareToPlay];
     [player play];
     self.player = player;
     [self prepareTickTimerIfNeed];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];

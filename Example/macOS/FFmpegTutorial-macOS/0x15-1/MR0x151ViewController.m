@@ -50,6 +50,7 @@
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }
+
 - (void)onTimer:(NSTimer *)sender
 {
     [self.indicatorView stopAnimation:nil];
