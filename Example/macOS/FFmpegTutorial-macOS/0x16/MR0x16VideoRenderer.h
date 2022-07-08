@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign) CGSize videoSize;
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
-- (void)exchangeUploadTextureMethod;
+- (BOOL)exchangeUploadTextureMethod;
 - (NSImage *)snapshot;
 
 @end

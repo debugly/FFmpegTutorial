@@ -115,6 +115,7 @@
     rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+    [self.hud setHudValue:@"0" forKey:@"ioSurface"];
     
     [self.indicatorView startAnimation:nil];
     
@@ -161,6 +162,7 @@
     self.player = player;
     [self prepareTickTimerIfNeed];
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -180,7 +182,13 @@
 
 - (IBAction)onExchangeUploadTextureMethod:(NSButton *)sender
 {
-    [self.videoRenderer exchangeUploadTextureMethod];
+    BOOL used = [self.videoRenderer exchangeUploadTextureMethod];
+    if (used) {
+        [sender setTitle:@"UseGeneral"];
+    } else {
+        [sender setTitle:@"UseIOSurface"];
+    }
+    [self.hud setHudValue:[NSString stringWithFormat:@"%d",used] forKey:@"ioSurface"];
 }
 
 - (IBAction)onSaveSnapshot:(NSButton *)sender

@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 @interface MR0x151VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
-- (void)exchangeUploadTextureMethod;
+- (BOOL)exchangeUploadTextureMethod;
 
 @end
 

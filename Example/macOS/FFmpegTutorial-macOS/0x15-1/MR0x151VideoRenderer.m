@@ -241,9 +241,10 @@ static GLint attributers[NUM_ATTRIBUTES];
     return err;
 }
 
-- (void)exchangeUploadTextureMethod
+- (BOOL)exchangeUploadTextureMethod
 {
     self.useIOSurface = !self.useIOSurface;
+    return self.useIOSurface;
 }
 
 - (void)uploadTexture:(CVPixelBufferRef _Nonnull)pixelBuffer
