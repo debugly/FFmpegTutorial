@@ -10,6 +10,7 @@
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x13VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
@@ -90,7 +91,7 @@
     CMSampleBufferRef sampleBuffer = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuff];
     
     CFRetain(sampleBuffer);
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
         CFRelease(sampleBuffer);
     });

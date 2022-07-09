@@ -10,6 +10,7 @@
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x12VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
@@ -90,7 +91,7 @@
     size_t height = CGImageGetHeight(cgImage);
     
     NSImage *img = [[NSImage alloc] initWithCGImage:cgImage size:CGSizeMake(width, height)];
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         self.videoRenderer.image = img;
     });
 }

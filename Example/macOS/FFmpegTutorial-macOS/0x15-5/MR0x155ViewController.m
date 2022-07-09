@@ -10,6 +10,7 @@
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x155VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
@@ -86,7 +87,7 @@
 {
     CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
     CFRetain(img);
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         [self.videoRenderer displayPixelBuffer:img];
         CFRelease(img);
     });

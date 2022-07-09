@@ -8,6 +8,7 @@
 #import "FFPlayer0x04.h"
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
+#import "MRDispatch.h"
 
 @interface FFPlayer0x04 ()
 
@@ -193,7 +194,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)performErrorResultOnMainThread
 {
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.onErrorBlock) {
             self.onErrorBlock();
         }

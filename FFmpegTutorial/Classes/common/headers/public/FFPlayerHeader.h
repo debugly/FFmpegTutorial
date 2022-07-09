@@ -8,7 +8,10 @@
 #ifndef FFPlayerHeader_h
 #define FFPlayerHeader_h
 
-typedef enum : NSUInteger {
+#include <stdbool.h>
+#include <unistd.h>
+
+typedef enum FFPlayerErrorCode{
     FFPlayerErrorCode_AllocFmtCtxFailed,        //创建 avformat context 失败
     FFPlayerErrorCode_OpenFileFailed,           //文件打开失败
     FFPlayerErrorCode_StreamNotFound,           //找不到音视频流
@@ -19,7 +22,7 @@ typedef enum : NSUInteger {
     FFPlayerErrorCode_ResampleFrameFailed,      //音频帧格式重采样失败
 } FFPlayerErrorCode;
 
-typedef enum : NSUInteger {
+typedef enum MRPixelFormat{
     MR_PIX_FMT_NONE = 0,
     MR_PIX_FMT_YUV420P,     // planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
     MR_PIX_FMT_NV12,        // semi-planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components, which are in leaved (first byte U and the following byte V)
@@ -46,7 +49,7 @@ typedef enum : NSUInteger {
 static int MR_PIX_FMT_BEGIN = MR_PIX_FMT_NONE + 1;
 static int MR_PIX_FMT_END   = MR_PIX_FMT_EOF  - 1;
 
-typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
+typedef enum MRPixelFormatMask{
     MR_PIX_FMT_MASK_NONE    = MR_PIX_FMT_NONE,
     MR_PIX_FMT_MASK_YUV420P = 1 << MR_PIX_FMT_YUV420P,    // planar YUV 4:2:0, 12bpp, (1 Cr & Cb sample per 2x2 Y samples)
     MR_PIX_FMT_MASK_NV12    = 1 << MR_PIX_FMT_NV12,       // planar YUV 4:2:0, 12bpp, 1 plane for Y and 1 plane for the UV components, which are in leaved (first byte U and the following byte V)
@@ -67,7 +70,7 @@ typedef NS_OPTIONS(NSUInteger, MRPixelFormatMask) {
     MR_PIX_FMT_MASK_ABGR    = 1 << MR_PIX_FMT_ABGR,       // packed ABGR 8:8:8:8, 32bpp, ABGRABGR...
     MR_PIX_FMT_MASK_0BGR    = 1 << MR_PIX_FMT_0BGR,       // packed BGR 8:8:8, 32bpp, XBGRXBGR...   X=unused/undefined
     MR_PIX_FMT_MASK_BGR24   = 1 << MR_PIX_FMT_BGR24,      // packed RGB 8:8:8, 24bpp, BGRBGR...
-};
+}MRPixelFormatMask;
 
 typedef enum MRSampleFormat{
     MR_SAMPLE_FMT_NONE ,
@@ -81,15 +84,14 @@ typedef enum MRSampleFormat{
 static int MR_SAMPLE_FMT_BEGIN = MR_SAMPLE_FMT_NONE + 1;
 static int MR_SAMPLE_FMT_END   = MR_SAMPLE_FMT_EOF  - 1;
 
-typedef NS_OPTIONS(NSUInteger, MRSampleFormatMask) {
+typedef enum MRSampleFormatMask{
     MR_SAMPLE_FMT_MASK_NONE = 1 << MR_SAMPLE_FMT_NONE,
     MR_SAMPLE_FMT_MASK_S16  = 1 << MR_SAMPLE_FMT_S16,    // signed 16 bits
     MR_SAMPLE_FMT_MASK_FLT  = 1 << MR_SAMPLE_FMT_FLT,    // float
     MR_SAMPLE_FMT_MASK_S16P = 1 << MR_SAMPLE_FMT_S16P,   // signed 16 bits, planar
     MR_SAMPLE_FMT_MASK_FLTP = 1 << MR_SAMPLE_FMT_FLTP,   // float, planar
     MR_SAMPLE_FMT_MASK_AUTO = MR_SAMPLE_FMT_MASK_S16 + MR_SAMPLE_FMT_MASK_FLT + MR_SAMPLE_FMT_MASK_S16P + MR_SAMPLE_FMT_MASK_FLTP// auto select best match fmt
-};
-
+}MRSampleFormatMask;
 
 static inline bool MR_Sample_Fmt_Is_Packet(MRSampleFormat fmt){
     if (fmt == MR_SAMPLE_FMT_S16 || fmt == MR_SAMPLE_FMT_FLT) {
@@ -121,23 +123,6 @@ static inline bool MR_Sample_Fmt_Is_S16X(MRSampleFormat fmt){
     } else {
         return false;
     }
-}
-
-static inline void MR_sync_main_queue(dispatch_block_t block){
-    assert(block);
-    if (strcmp(dispatch_queue_get_label(DISPATCH_CURRENT_QUEUE_LABEL), dispatch_queue_get_label(dispatch_get_main_queue())) == 0) {
-        // already in main thread.
-        block();
-    } else {
-        // sync to main queue.
-        dispatch_sync(dispatch_get_main_queue(), block);
-    }
-}
-
-static inline void MR_async_main_queue(dispatch_block_t block){
-    assert(block);
-    // async to main queue.
-    dispatch_async(dispatch_get_main_queue(), block);
 }
 
 typedef enum MRColorRange {
@@ -223,5 +208,7 @@ static inline int mr_packet_size_equal_zero(MR_PACKET_SIZE s1) {
     && s1.audio_pkt_size == 0
     && s1.other_pkt_size == 0;
 }
+
+char * av_pixel_fmt_to_string(int fmt);
 
 #endif /* FFPlayerHeader_h */

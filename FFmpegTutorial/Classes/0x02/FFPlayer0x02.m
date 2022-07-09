@@ -8,7 +8,7 @@
 #import "FFPlayer0x02.h"
 #import "MRThread.h"
 #import "FFPlayerInternalHeader.h"
-
+#import "MRDispatch.h"
 #include <libavformat/avformat.h>
 #include <libavutil/pixdesc.h>
 
@@ -205,7 +205,7 @@
 
 - (void)performResultOnMainThread:(NSString *)info
 {
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.completionBlock) {
             self.completionBlock(self.error, info);
         }

@@ -10,6 +10,7 @@
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
+#import "MRDispatch.h"
 #include <libavutil/pixdesc.h>
 #import "FFDecoder0x16.h"
 #import "FFVideoScale.h"
@@ -309,7 +310,7 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.onVideoOpened) {
             self.onVideoOpened(dumpDic);
         }
@@ -403,7 +404,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)performErrorResultOnMainThread
 {
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.onError) {
             self.onError(self.error);
         }

@@ -11,6 +11,7 @@
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
 #include <libavutil/pixdesc.h>
+#import "MRDispatch.h"
 
 @interface  FFPlayer0x05 ()
 {
@@ -470,7 +471,7 @@ end:
 
 - (void)performErrorResultOnMainThread
 {
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.onErrorBlock) {
             self.onErrorBlock();
         }

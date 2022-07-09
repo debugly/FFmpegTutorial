@@ -12,6 +12,7 @@
 #import "FFPlayerFrameHeader.h"
 #include <libavutil/pixdesc.h>
 #import "FFDecoder0x06.h"
+#import "MRDispatch.h"
 
 @interface  FFPlayer0x06 ()<FFDecoderDelegate0x06>
 {
@@ -317,7 +318,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)performErrorResultOnMainThread
 {
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.onError) {
             self.onError(self.error);
         }
