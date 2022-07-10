@@ -317,8 +317,8 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     mr_sync_main_queue(^{
-        if (self.onVideoOpened) {
-            self.onVideoOpened(dumpDic);
+        if (self.onStreamOpened) {
+            self.onStreamOpened(dumpDic);
         }
     });
     
@@ -333,7 +333,7 @@ static int decode_interrupt_cb(void *ctx)
 - (FFVideoScale *)createVideoScaleIfNeed
 {
     //未指定期望像素格式
-    if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
+    if (self.supportedPixelFormat == MR_PIX_FMT_NONE) {
         NSAssert(NO, @"supportedPixelFormats can't be none!");
         return nil;
     }
@@ -345,8 +345,7 @@ static int decode_interrupt_cb(void *ctx)
     MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
     for (int i = MR_PIX_FMT_BEGIN; i <= MR_PIX_FMT_END; i ++) {
         const MRPixelFormat fmt = i;
-        const MRPixelFormatMask mask = 1 << fmt;
-        if (self.supportedPixelFormats & mask) {
+        if (self.supportedPixelFormat == fmt) {
             if (firstSupportedFmt == MR_PIX_FMT_NONE) {
                 firstSupportedFmt = fmt;
             }
@@ -384,7 +383,7 @@ static int decode_interrupt_cb(void *ctx)
 - (FFAudioResample *)createAudioResampleIfNeed
 {
     //未指定期望音频格式
-    if (self.supportedSampleFormats == MR_SAMPLE_FMT_MASK_NONE) {
+    if (self.supportedSampleFormat == MR_SAMPLE_FMT_NONE) {
         NSAssert(NO, @"supportedSampleFormats can't be none!");
         return nil;
     }
@@ -401,8 +400,7 @@ static int decode_interrupt_cb(void *ctx)
     MRSampleFormat firstSupportedFmt = MR_SAMPLE_FMT_NONE;
     for (int i = MR_SAMPLE_FMT_BEGIN; i <= MR_SAMPLE_FMT_END; i ++) {
         const MRSampleFormat fmt = i;
-        const MRSampleFormatMask mask = 1 << fmt;
-        if (self.supportedSampleFormats & mask) {
+        if (self.supportedSampleFormat == fmt) {
             if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
                 firstSupportedFmt = fmt;
             }

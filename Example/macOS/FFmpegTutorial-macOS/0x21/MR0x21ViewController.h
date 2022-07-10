@@ -1,5 +1,5 @@
 //
-//  MR0x20ViewController.h
+//  MR0x21ViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/7/10.
@@ -26,12 +26,13 @@
 // 0x155:使用 OpenGL 3 渲染 NV21 视频桢
 // 0x16:使用 OpenGL 3 FBO 截图
 // 0x20:封装音频重采样类，方便转出指定的采样格式
+// 0x21:使用 AudioUnit 渲染音频桢，解码速度慢，渲染速度快，因此声音断断续续的
 
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x20ViewController : NSViewController
+@interface MR0x21ViewController : NSViewController
 
 @end
 

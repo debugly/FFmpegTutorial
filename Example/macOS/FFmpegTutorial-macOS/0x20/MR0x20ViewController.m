@@ -179,12 +179,12 @@
     
     FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats  = _videoFmt;
-    player.supportedSampleRate    = _sampleRate;
-    player.supportedSampleFormats = _audioFmt;
+    player.supportedPixelFormat  = _videoFmt;
+    player.supportedSampleRate   = _sampleRate;
+    player.supportedSampleFormat = _audioFmt;
     
     __weakSelf__
-    player.onVideoOpened = ^(NSDictionary * _Nonnull info) {
+    player.onStreamOpened = ^(NSDictionary * _Nonnull info) {
         __strongSelf__
         int width  = [info[kFFPlayer0x20Width] intValue];
         int height = [info[kFFPlayer0x20Height] intValue];
@@ -224,14 +224,6 @@
     [self prepareTickTimerIfNeed];
 }
 
-- (void)setSampleRate:(int)sampleRate
-{
-    if (_sampleRate != sampleRate) {
-        _sampleRate = sampleRate;
-        [self.hud setHudValue:[NSString stringWithFormat:@"%d",_sampleRate] forKey:@"sampleRate"];
-    }
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -251,8 +243,8 @@
     hudView.autoresizingMask = NSViewMinXMargin | NSViewMaxYMargin;
     
     _sampleRate = 44100;
-    _videoFmt = MR_PIX_FMT_MASK_NV12;
-    _audioFmt = MR_SAMPLE_FMT_MASK_S16;
+    _videoFmt = MR_PIX_FMT_NV12;
+    _audioFmt = MR_SAMPLE_FMT_S16;
     
     [self.hud setHudValue:@"0" forKey:@"ioSurface"];
 }
@@ -311,13 +303,13 @@
     NSMenuItem *item = [sender selectedItem];
     int targetFmt = 0;
     if (item.tag == 1) {
-        targetFmt = MR_SAMPLE_FMT_MASK_S16;
+        targetFmt = MR_SAMPLE_FMT_S16;
     } else if (item.tag == 2) {
-        targetFmt = MR_SAMPLE_FMT_MASK_S16P;
+        targetFmt = MR_SAMPLE_FMT_S16P;
     } else if (item.tag == 3) {
-        targetFmt = MR_SAMPLE_FMT_MASK_FLT;
+        targetFmt = MR_SAMPLE_FMT_FLT;
     } else if (item.tag == 4) {
-        targetFmt = MR_SAMPLE_FMT_MASK_FLTP;
+        targetFmt = MR_SAMPLE_FMT_FLTP;
     }
     if (_audioFmt == targetFmt) {
         return;
@@ -360,19 +352,19 @@
     int targetFmt = 0;
     if (item.tag == 1) {
         //nv12
-        targetFmt = MR_PIX_FMT_MASK_NV12;
+        targetFmt = MR_PIX_FMT_NV12;
     } else if (item.tag == 2) {
         //nv21
-        targetFmt = MR_PIX_FMT_MASK_NV21;
+        targetFmt = MR_PIX_FMT_NV21;
     } else if (item.tag == 3) {
         //yuv420p
-        targetFmt = MR_PIX_FMT_MASK_YUV420P;
+        targetFmt = MR_PIX_FMT_YUV420P;
     } else if (item.tag == 4) {
         //uyvy422
-        targetFmt = MR_PIX_FMT_MASK_UYVY422;
+        targetFmt = MR_PIX_FMT_UYVY422;
     } else if (item.tag == 5) {
         //yuyv422
-        targetFmt = MR_PIX_FMT_MASK_YUYV422;
+        targetFmt = MR_PIX_FMT_YUYV422;
     }
     if (_videoFmt == targetFmt) {
         return;

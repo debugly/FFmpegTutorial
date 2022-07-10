@@ -33,14 +33,14 @@ typedef struct AVFrame AVFrame;
 @property (atomic, assign, readonly) int videoFrameCount;
 ///记录解码后的音频桢总数
 @property (atomic, assign, readonly) int audioFrameCount;
-///期望的像素格式
-@property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
-///期望的音频采样深度
-@property (nonatomic, assign) MRSampleFormatMask supportedSampleFormats;
+///指定输出的视频像素格式
+@property (nonatomic, assign) MRPixelFormat supportedPixelFormat;
+///指定输出的音频采样格式
+@property (nonatomic, assign) MRSampleFormat supportedSampleFormat;
 ///期望的音频采样率，比如 44100;不指定时使用音频的采样率
 @property (nonatomic, assign) int supportedSampleRate;
 
-@property (nonatomic, copy) void(^onVideoOpened)(NSDictionary *info);
+@property (nonatomic, copy) void(^onStreamOpened)(NSDictionary *info);
 @property (nonatomic, copy) void(^onReadPkt)(int a,int v);
 //type: 1->video;2->audio;
 @property (nonatomic, copy) void(^onDecoderFrame)(int type,int serial,AVFrame *frame);
