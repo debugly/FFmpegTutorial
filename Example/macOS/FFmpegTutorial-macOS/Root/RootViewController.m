@@ -207,18 +207,23 @@
         },
         @{
             @"title":@"0x21",
-            @"detail":@"使用 AudioUnit 渲染音频桢",
+            @"detail":@"使用 AudioUnit 渲染音频桢，断断续续的",
             @"class":@"MR0x21ViewController",
         },
         @{
             @"title":@"0x22",
-            @"detail":@"使用 AudioQueue 渲染音频桢",
+            @"detail":@"增加Frame缓存队列，解决断断续续问题",
             @"class":@"MR0x22ViewController",
         },
         @{
             @"title":@"0x23",
-            @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
+            @"detail":@"使用 AudioQueue 渲染音频桢",
             @"class":@"MR0x23ViewController",
+        },
+        @{
+            @"title":@"0x24",
+            @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
+            @"class":@"MR0x24ViewController",
         },
         @{
             @"title":@"四、封装播放器",
