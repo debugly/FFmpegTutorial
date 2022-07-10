@@ -2,8 +2,8 @@
 //  MR0x20VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/21.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/7/10.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (assign) CGSize videoSize;
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
-- (void)exchangeUploadTextureMethod;
+- (BOOL)exchangeUploadTextureMethod;
 - (NSImage *)snapshot;
 
 @end

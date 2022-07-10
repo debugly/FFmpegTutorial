@@ -1,16 +1,16 @@
 //
-//  FFAudioResample0x20.m
+//  FFAudioResample.m
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/7/10.
+//  Created by Matt Reach on 2022/7/10.
 //
 
-#import "FFAudioResample0x20.h"
+#import "FFAudioResample.h"
 #import "FFPlayerInternalHeader.h"
 #include <libswresample/swresample.h>
 #include <libavutil/samplefmt.h>
 
-@interface FFAudioResample0x20()
+@interface FFAudioResample()
 
 @property (nonatomic, assign, readwrite) int out_sample_fmt;
 @property (nonatomic, assign, readwrite) int out_sample_rate;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation FFAudioResample0x20
+@implementation FFAudioResample
 
 - (void)dealloc
 {
@@ -85,7 +85,16 @@
         av_log(NULL, AV_LOG_ERROR, "fail resample audio");
         return NO;
     }
-    
+    //samplefmt.h All data planes must be the same size.
+    if (av_sample_fmt_is_planar(out_frame->format)) {
+        for(int i = 1; i < AV_NUM_DATA_POINTERS; i++) {
+            if (NULL != out_frame->data[i]) {
+                out_frame->linesize[i] = out_frame->linesize[0];
+            } else {
+                break;
+            }
+        }
+    }
     *outP = out_frame;
     return YES;
 }

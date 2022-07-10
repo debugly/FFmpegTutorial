@@ -1,8 +1,8 @@
 //
-//  FFAudioResample0x20.h
+//  FFAudioResample.h
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/7/10.
+//  Created by Matt Reach on 2022/7/10.
 //
 // 音频格式转换类
 
@@ -13,7 +13,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef struct AVFrame AVFrame;
 
-@interface FFAudioResample0x20 : NSObject
+@interface FFAudioResample : NSObject
 
 @property (nonatomic, assign, readonly) int out_sample_fmt;
 @property (nonatomic, assign, readonly) int out_sample_rate;
@@ -28,8 +28,8 @@ typedef struct AVFrame AVFrame;
                         dstSampleFmt:(int)dstFmt
                           srcChannel:(int)srcChannel
                           dstChannel:(int)dstChannel
-                          srcRate:(int)srcRate
-                          dstRate:(int)dstRate;
+                             srcRate:(int)srcRate
+                             dstRate:(int)dstRate;
 
 /// @param inF 需要转换的帧
 /// @param outP 转换的结果[不要free相关内存，通过ref/unref的方式使用]

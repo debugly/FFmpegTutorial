@@ -209,6 +209,7 @@ static inline int mr_packet_size_equal_zero(MR_PACKET_SIZE s1) {
     && s1.other_pkt_size == 0;
 }
 
-char * av_pixel_fmt_to_string(int fmt);
+const char * av_pixel_fmt_to_string(int fmt);
+const char * av_sample_fmt_to_string(int format);
 
 #endif /* FFPlayerHeader_h */

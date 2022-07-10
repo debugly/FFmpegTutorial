@@ -87,6 +87,9 @@
 		DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73E922577DB9A0060EB57 /* MRDragView.m */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
+		DDE855342871CA490006B140 /* MR0x20ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDE855302871CA490006B140 /* MR0x20ViewController.xib */; };
+		DDE855352871CA490006B140 /* MR0x20VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE855312871CA490006B140 /* MR0x20VideoRenderer.m */; };
+		DDE855362871CA490006B140 /* MR0x20ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE855322871CA490006B140 /* MR0x20ViewController.m */; };
 		DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF6576626273C6E00116F05 /* MR0x01ViewController.m */; };
 		DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
@@ -239,6 +242,11 @@
 		DDB73F662577DDE60060EB57 /* MRUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRUtil.m; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
+		DDE8552F2871CA490006B140 /* MR0x20ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x20ViewController.h; sourceTree = "<group>"; };
+		DDE855302871CA490006B140 /* MR0x20ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x20ViewController.xib; sourceTree = "<group>"; };
+		DDE855312871CA490006B140 /* MR0x20VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x20VideoRenderer.m; sourceTree = "<group>"; };
+		DDE855322871CA490006B140 /* MR0x20ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x20ViewController.m; sourceTree = "<group>"; };
+		DDE855332871CA490006B140 /* MR0x20VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x20VideoRenderer.h; sourceTree = "<group>"; };
 		DDF6576526273C6E00116F05 /* MR0x01ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDF6576626273C6E00116F05 /* MR0x01ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
@@ -595,6 +603,18 @@
 			path = TextFieldCell;
 			sourceTree = "<group>";
 		};
+		DDE8552E2871CA490006B140 /* 0x20 */ = {
+			isa = PBXGroup;
+			children = (
+				DDE855332871CA490006B140 /* MR0x20VideoRenderer.h */,
+				DDE855312871CA490006B140 /* MR0x20VideoRenderer.m */,
+				DDE8552F2871CA490006B140 /* MR0x20ViewController.h */,
+				DDE855322871CA490006B140 /* MR0x20ViewController.m */,
+				DDE855302871CA490006B140 /* MR0x20ViewController.xib */,
+			);
+			path = 0x20;
+			sourceTree = "<group>";
+		};
 		DDEC031CF725852BB0A5A612 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
@@ -657,6 +677,7 @@
 				DD5FDCD528709EEC00F93BE9 /* 0x15-4 */,
 				DD5FDCE728709EEC00F93BE9 /* 0x15-5 */,
 				DD5FDCFC2870A22900F93BE9 /* 0x16 */,
+				DDE8552E2871CA490006B140 /* 0x20 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -750,6 +771,7 @@
 				DD5FDCF328709EEC00F93BE9 /* MR0x153ViewController.xib in Resources */,
 				DD5FDCC728709B6700F93BE9 /* MR0x145ViewController.xib in Resources */,
 				DD91F31C26B6E99800B96334 /* 3_sampler2DRect.fsh in Resources */,
+				DDE855342871CA490006B140 /* MR0x20ViewController.xib in Resources */,
 				DD5FDCCB28709B6700F93BE9 /* MR0x142ViewController.xib in Resources */,
 				DD5FDD032870A22900F93BE9 /* MR0x16ViewController.xib in Resources */,
 				DD56CB18286F530F0046C28A /* MR0x11ViewController.xib in Resources */,
@@ -817,8 +839,10 @@
 				DD5FDCFB28709EEC00F93BE9 /* MR0x155VideoRenderer.m in Sources */,
 				DD5FDCF828709EEC00F93BE9 /* MR0x151ViewController.m in Sources */,
 				DD5FDCF528709EEC00F93BE9 /* MR0x153VideoRenderer.m in Sources */,
+				DDE855352871CA490006B140 /* MR0x20VideoRenderer.m in Sources */,
 				DD5FDC9428708F3000F93BE9 /* MR0x12ViewController.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
+				DDE855362871CA490006B140 /* MR0x20ViewController.m in Sources */,
 				DD5FDCCC28709B6700F93BE9 /* MR0x144ViewController.m in Sources */,
 				DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */,
 				DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */,

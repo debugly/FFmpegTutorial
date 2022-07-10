@@ -9,7 +9,7 @@
 #import <libavutil/frame.h>
 #import <libavutil/imgutils.h>
 
-char * av_pixel_fmt_to_string(int fmt)
+const char * av_pixel_fmt_to_string(int fmt)
 {
     enum AVPixelFormat avpf = fmt;
     switch (avpf) {
@@ -54,5 +54,20 @@ char * av_pixel_fmt_to_string(int fmt)
             return "unknow";
         }
             break;
+    }
+}
+
+const char * av_sample_fmt_to_string(int format)
+{
+    if (AV_SAMPLE_FMT_S16 == format) {
+        return "s16";
+    } else if (AV_SAMPLE_FMT_S16P == format) {
+        return "s16p";
+    } else if (AV_SAMPLE_FMT_FLT == format) {
+        return "float";
+    } else if (AV_SAMPLE_FMT_FLTP == format) {
+        return "floatp";
+    } else {
+        return "unknow";
     }
 }
