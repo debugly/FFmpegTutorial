@@ -150,7 +150,9 @@
 #endif
 }
 
-- (void)close_all_file {
+- (void)close_all_file
+{
+#if DEBUG_RECORD_PCM_TO_FILE
     if (file_pcm_l) {
         fflush(file_pcm_l);
         fclose(file_pcm_l);
@@ -161,8 +163,8 @@
         fclose(file_pcm_r);
         file_pcm_r = NULL;
     }
+#endif
 }
-
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {
