@@ -146,7 +146,8 @@
     }
     [self.timer invalidate];
     self.timer = nil;
-
+    [self stopAudio];
+    
     [self close_all_file];
     [self.indicatorView startAnimation:nil];
     
@@ -186,7 +187,7 @@
         __strongSelf__
         //video
         if (type == 1) {
-            mr_msleep(30);
+            mr_msleep(20);
             @autoreleasepool {
                 [self displayVideoFrame:frame];
             }
@@ -365,13 +366,13 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
                                         UInt32                        inNumberFrames,
                                         AudioBufferList                * ioData)
 {
-    void * buffer[2] = { 0 };
+    uint8_t * buffer[2] = { 0 };
     UInt32 bufferSize = 0;
     // 1. 将buffer数组全部置为0；
     for (int i = 0; i < ioData->mNumberBuffers; i++) {
         AudioBuffer audioBuffer = ioData->mBuffers[i];
         bzero(audioBuffer.mData, audioBuffer.mDataByteSize);
-        buffer[i] = audioBuffer.mData;
+        buffer[i] = (uint8_t *)audioBuffer.mData;
         bufferSize = audioBuffer.mDataByteSize;
     }
     
@@ -380,18 +381,23 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     return noErr;
 }
 
-- (void)fillBuffers:(void *[2])buffer
+- (void)fillBuffers:(uint8_t *[2])buffer
                size:(UInt32)bufferSize
 {
-    for(int i = 0; i < 2; i++) {
-        void *dst = buffer[i];
-        if (NULL != dst) {
-            int leave = self.audioFrame->linesize[i] - self.audioFrameRead;
-            if (leave > 0) {
-                int size = MIN(bufferSize,leave);
-                self.audioFrameRead += size;
-                void *src = self.audioFrame->data[i] + self.audioFrameRead;
-                [self fillBuffer:dst src:src size:size];
+    int fmt = self.audioFrame->format;
+    int chanels = av_sample_fmt_is_planar(fmt) ? 1 : 2;
+    //self.frame->linesize[i] 比 data_size 要大，所以有杂音
+    int data_size = av_samples_get_buffer_size(self.audioFrame->linesize, chanels, self.audioFrame->nb_samples, fmt, 1);
+    int leave = data_size - self.audioFrameRead;
+    int cpSize = MIN(bufferSize,leave);
+    
+    if (leave > 0) {
+        for(int i = 0; i < 2; i++) {
+            uint8_t *dst = buffer[i];
+            if (NULL != dst) {
+                uint8_t *src = (uint8_t *)self.audioFrame->data[i] + self.audioFrameRead;
+                [self fillBuffer:dst src:src size:cpSize];
+                
 #if DEBUG_RECORD_PCM_TO_FILE
                 const char *fmt_str = av_sample_fmt_to_string(_audioFrame->format);
                 if (i == 0) {
@@ -401,7 +407,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
                         NSLog(@"create file:%s",l);
                         file_pcm_l = fopen(l, "wb+");
                     }
-                    [self writePCM:file_pcm_l src:src size:size];
+                    [self writePCM:file_pcm_l src:src size:cpSize];
                 } else if (i == 1) {
                     if (file_pcm_r == NULL) {
                         NSString *fileName = [NSString stringWithFormat:@"R-%s-%d.pcm",fmt_str,_audioFrame->sample_rate];
@@ -409,21 +415,23 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
                         NSLog(@"create file:%s",r);
                         file_pcm_r = fopen(r, "wb+");
                     }
-                    [self writePCM:file_pcm_r src:src size:size];
+                    [self writePCM:file_pcm_r src:src size:cpSize];
                 }
 #endif
             } else {
-                av_frame_unref(self.audioFrame);
-                self.audioFrameRead = 0;
-                NSLog(@"xxxxxxxxxxxxxxxxxxxxxxxxx");
+                break;
             }
-        } else {
-            break;
         }
+    }
+    
+    self.audioFrameRead += cpSize;
+    if (leave - cpSize <= 0) {
+        av_frame_unref(self.audioFrame);
+        self.audioFrameRead = 0;
     }
 }
 
-- (void)fillBuffer:(void *)dst src:(void *)src size:(int)size
+- (void)fillBuffer:(uint8_t *)dst src:(uint8_t *)src size:(int)size
 {
     memcpy(dst, src, size);
 }
