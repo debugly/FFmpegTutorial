@@ -83,20 +83,20 @@ Pod::Spec.new do |s|
     ss.public_header_files = 'FFmpegTutorial/Classes/0x30/FFPlayer0x30.h'
   end
 
-  s.subspec '0x31' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x31/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x31/FFPlayer0x31.h'
-  end
+  # s.subspec '0x31' do |ss|
+  #   ss.source_files = 'FFmpegTutorial/Classes/0x31/*.{h,m}'
+  #   ss.public_header_files = 'FFmpegTutorial/Classes/0x31/FFPlayer0x31.h'
+  # end
 
-  s.subspec '0x32' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x32/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h'
-  end
+  # s.subspec '0x32' do |ss|
+  #   ss.source_files = 'FFmpegTutorial/Classes/0x32/*.{h,m}'
+  #   ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h'
+  # end
 
-  s.subspec '0x40' do |ss|
-    ss.source_files = 'FFmpegTutorial/Classes/0x40/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x40/FFPlayer0x40.h'
-  end
+  # s.subspec '0x40' do |ss|
+  #   ss.source_files = 'FFmpegTutorial/Classes/0x40/*.{h,m}'
+  #   ss.public_header_files = 'FFmpegTutorial/Classes/0x40/FFPlayer0x40.h'
+  # end
 
   s.dependency 'MRFFmpegPod'
   s.osx.framework = 'OpenGL'

@@ -1,12 +1,12 @@
 //
-//  MR0x201VideoRenderer.m
+//  MR0x23VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/21.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/7/13.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x201VideoRenderer.h"
+#import "MR0x23VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -18,6 +18,7 @@
 #import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
 #import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/MRDispatch.h>
 
 // Uniform index.
 enum
@@ -41,7 +42,7 @@ enum
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 
-@interface MR0x201VideoRenderer ()
+@interface MR0x23VideoRenderer ()
 {
     GLuint plane_textures[4];
     MRViewContentMode _contentMode;
@@ -62,7 +63,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @end
 
-@implementation MR0x201VideoRenderer
+@implementation MR0x23VideoRenderer
 
 - (void)dealloc
 {
@@ -250,11 +251,11 @@ static GLint attributers[NUM_ATTRIBUTES];
     return err;
 }
 
-- (void)exchangeUploadTextureMethod
+- (BOOL)exchangeUploadTextureMethod
 {
     self.useIOSurface = !self.useIOSurface;
+    return self.useIOSurface;
 }
-
 - (void)uploadTexture:(CVPixelBufferRef _Nonnull)pixelBuffer
 {
     uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
@@ -332,8 +333,6 @@ static GLint attributers[NUM_ATTRIBUTES];
     
     {
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
-         
-        NSAssert(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange == type || kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type,@"not supported pixel format:%d", type);
         
         CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         
@@ -446,6 +445,13 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
+    int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
+     
+    if(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange != type && kCVPixelFormatType_420YpCbCr8BiPlanarFullRange != type) {
+        NSLog(@"not supported pixel format:%d",type);
+        return;
+    }
+    
     [[self openGLContext] makeCurrentContext];
     CGLLockContext([[self openGLContext] CGLContextObj]);
     // Bind the default FBO to render to the screen.
