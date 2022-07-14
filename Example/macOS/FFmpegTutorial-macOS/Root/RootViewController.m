@@ -231,42 +231,57 @@
         },
         @{
             @"title":@"0x30",
-            @"detail":@"读包和解码之间增加 AVPacket 缓存队列",
+            @"detail":@"创建视频渲染线程，增加 VideoFrame 缓存队列",
             @"class":@"MR0x03ViewController",
         },
         @{
             @"title":@"0x31",
-            @"detail":@"解码和渲染之间增加 AVFrame 缓存队列",
+            @"detail":@"创建读包线程，增加 AVPacket 缓存队列",
             @"class":@"MR0x05ViewController",
         },
         @{
             @"title":@"0x32",
-            @"detail":@"TODO:音视频同步",
+            @"detail":@"音视频同步",
             @"class":@"",
         },
         @{
             @"title":@"0x33",
-            @"detail":@"TODO:显示播放进度和时长",
+            @"detail":@"显示播放进度和时长",
             @"class":@"",
         },
         @{
             @"title":@"0x34",
-            @"detail":@"TODO:支持暂停和播放",
+            @"detail":@"支持暂停和播放",
             @"class":@"",
         },
         @{
             @"title":@"0x35",
-            @"detail":@"TODO:支持Seek",
+            @"detail":@"支持Seek",
             @"class":@"",
         },
         @{
             @"title":@"0x36",
-            @"detail":@"TODO:支持指定播放开始位置",
+            @"detail":@"支持指定播放开始位置",
             @"class":@"",
         },
         @{
             @"title":@"0x37",
-            @"detail":@"TODO:使用硬件加速解码",
+            @"detail":@"使用硬件加速解码",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x38",
+            @"detail":@"统一软硬解解码数据结构",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x39",
+            @"detail":@"统一软硬解渲染逻辑",
+            @"class":@"",
+        },
+        @{
+            @"title":@"0x40",
+            @"detail":@"iOS和Mac公用一套渲染逻辑",
             @"class":@"",
         },
         @{
