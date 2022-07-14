@@ -177,7 +177,7 @@
         [self prepareTickTimerIfNeed];
         self.audioFrameQueue = [[MR0x23FrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
-        
+#warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self playAudio];
         });
@@ -280,7 +280,7 @@
 #endif
 }
 
-- (void)setupAudioRender:(MRSampleFormat)fmt sampleRate:(MRSampleFormat)sampleRate
+- (void)setupAudioRender:(MRSampleFormat)fmt sampleRate:(Float64)sampleRate
 {
     {
         AudioStreamBasicDescription outputFormat;

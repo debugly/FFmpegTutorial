@@ -1,12 +1,12 @@
 //
-//  MR0x22ViewController.m
+//  MR0x24ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/7/10.
+//  Created by qianlongxu on 2022/7/14.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x22ViewController.h"
+#import "MR0x24ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x20.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
@@ -14,17 +14,20 @@
 #import <FFmpegTutorial/FFPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
-#import "MR0x22VideoRenderer.h"
+#import "MR0x24VideoRenderer.h"
+#import "MR0x24AudioRenderer.h"
+#import "MR0x24FrameQueue.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
-#import <AudioUnit/AudioUnit.h>
-#import <AudioToolbox/AudioToolbox.h>
-#import "MR0x22FrameQueue.h"
+
+#define QUEUE_BUFFER_SIZE 3
+#define MIN_SIZE_PER_FRAME 4096
+
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
 
-@interface MR0x22ViewController ()
+@interface MR0x24ViewController ()
 {
 #if DEBUG_RECORD_PCM_TO_FILE
     FILE * file_pcm_l;
@@ -35,7 +38,7 @@
 @property (strong) FFPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x22VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x24VideoRenderer *videoRenderer;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -46,12 +49,12 @@
 @property (nonatomic,assign) MRSampleFormat audioFmt;
 
 //音频渲染
-@property (nonatomic,assign) AudioUnit audioUnit;
-@property (atomic,strong) MR0x22FrameQueue *audioFrameQueue;
+@property (nonatomic,strong) MR0x24AudioRenderer * audioRender;
+@property (atomic,strong) MR0x24FrameQueue *audioFrameQueue;
 
 @end
 
-@implementation MR0x22ViewController
+@implementation MR0x24ViewController
 
 - (void)_stop
 {
@@ -134,6 +137,8 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSamplelInfo] forKey:@"a-sample"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.audioFrameQueue size]] forKey:@"a-frame-q"];
+    
+    [self.hud setHudValue:self.audioRender.name forKey:@"a-renderer"];
 }
 
 - (void)parseURL:(NSString *)url
@@ -170,9 +175,12 @@
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
         [self prepareTickTimerIfNeed];
-        self.audioFrameQueue = [[MR0x22FrameQueue alloc] init];
+        self.audioFrameQueue = [[MR0x24FrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
-        [self playAudio];
+#warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self playAudio];
+        });
     };
     
     player.onError = ^(NSError * _Nonnull e) {
@@ -225,27 +233,17 @@
 
 - (void)playAudio
 {
-    if (self.audioUnit) {
-        OSStatus status = AudioOutputUnitStart(self.audioUnit);
-        NSAssert(noErr == status, @"AudioOutputUnitStart");
-    }
+    [self.audioRender play];
 }
 
 - (void)pauseAudio
 {
-    if (self.audioUnit) {
-        OSStatus status = AudioOutputUnitStop(self.audioUnit);
-        NSAssert(noErr == status, @"AudioOutputUnitStart");
-    }
+    [self.audioRender pause];
 }
 
 - (void)stopAudio
 {
-    if (_audioUnit) {
-        OSStatus status = AudioOutputUnitStop(_audioUnit);
-        NSAssert(noErr == status, @"AudioOutputUnitStart");
-        _audioUnit = NULL;
-    }
+    [self.audioRender stop];
 }
 
 - (void)close_all_file
@@ -266,126 +264,20 @@
 
 - (void)setupAudioRender:(MRSampleFormat)fmt sampleRate:(Float64)sampleRate
 {
-    {
-        // ----- Audio Unit Setup -----
-#define kOutputBus 0 //Bus 0 is used for the output side
-#define kInputBus  1 //Bus 0 is used for the output side
-        
-        // Describe the output unit.
-        
-        AudioComponentDescription desc = {0};
-        desc.componentType = kAudioUnitType_Output;
-    #if TARGET_OS_IOS
-        desc.componentSubType = kAudioUnitSubType_RemoteIO;
-    #else
-        desc.componentSubType = kAudioUnitSubType_DefaultOutput;
-    #endif
-        desc.componentManufacturer = kAudioUnitManufacturer_Apple;
-        
-        // Get component
-        AudioComponent component = AudioComponentFindNext(NULL, &desc);
-        OSStatus status = AudioComponentInstanceNew(component, &_audioUnit);
-        NSAssert(noErr == status, @"AudioComponentInstanceNew");
-        
-        AudioStreamBasicDescription outputFormat;
-        
-        UInt32 size = sizeof(outputFormat);
-        // 获取默认的输入信息
-        AudioUnitGetProperty(_audioUnit, kAudioUnitProperty_StreamFormat, kAudioUnitScope_Input, kOutputBus, &outputFormat, &size);
-        //设置采样率
-        outputFormat.mSampleRate = sampleRate;
-        /**不使用视频的原声道数_audioCodecCtx->channels;
-         mChannelsPerFrame 这个值决定了后续AudioUnit索要数据时 ioData->mNumberBuffers 的值！
-         如果写成1会影响Planar类型，就不会开两个buffer了！！因此这里写死为2！
-         */
-        outputFormat.mChannelsPerFrame = 2;
-        outputFormat.mFormatID = kAudioFormatLinearPCM;
-        outputFormat.mReserved = 0;
-        
-        bool isFloat  = MR_Sample_Fmt_Is_FloatX(fmt);
-        bool isS16    = MR_Sample_Fmt_Is_S16X(fmt);
-        bool isPlanar = MR_Sample_Fmt_Is_Planar(fmt);
-        
-        if (isS16){
-            outputFormat.mFormatFlags = kAudioFormatFlagIsSignedInteger;
-            outputFormat.mFramesPerPacket = 1;
-            outputFormat.mBitsPerChannel = sizeof(SInt16) * 8;
-        } else if (isFloat){
-            outputFormat.mFormatFlags = kAudioFormatFlagIsFloat;
-            outputFormat.mFramesPerPacket = 1;
-            outputFormat.mBitsPerChannel = sizeof(float) * 8;
-        } else {
-            NSAssert(NO, @"不支持的音频采样格式%d",fmt);
-        }
-        
-        if (isPlanar) {
-            outputFormat.mFormatFlags |= kAudioFormatFlagIsNonInterleaved;
-            outputFormat.mBytesPerFrame = outputFormat.mBitsPerChannel / 8;
-            outputFormat.mBytesPerPacket = outputFormat.mBytesPerFrame * outputFormat.mFramesPerPacket;
-        } else {
-            outputFormat.mFormatFlags |= kAudioFormatFlagIsPacked;
-            outputFormat.mBytesPerFrame = (outputFormat.mBitsPerChannel / 8) * outputFormat.mChannelsPerFrame;
-            outputFormat.mBytesPerPacket = outputFormat.mBytesPerFrame * outputFormat.mFramesPerPacket;
-        }
-        
-        status = AudioUnitSetProperty(_audioUnit,
-                             kAudioUnitProperty_StreamFormat,
-                             kAudioUnitScope_Input,
-                             kOutputBus,
-                             &outputFormat, size);
-        NSAssert(noErr == status, @"AudioUnitSetProperty");
-        //get之后刷新这个值；
-        //_targetSampleRate  = (int)outputFormat.mSampleRate;
-        
-        UInt32 flag = 0;
-        AudioUnitSetProperty(_audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Input, kInputBus, &flag, sizeof(flag));
-        AudioUnitSetProperty(_audioUnit, kAudioOutputUnitProperty_EnableIO, kAudioUnitScope_Output, kInputBus, &flag, sizeof(flag));
-        // Slap a render callback on the unit
-        AURenderCallbackStruct callbackStruct;
-        callbackStruct.inputProc = MRRenderCallback;
-        callbackStruct.inputProcRefCon = (__bridge void *)(self);
-        
-        status = AudioUnitSetProperty(_audioUnit,
-                             kAudioUnitProperty_SetRenderCallback,
-                             kAudioUnitScope_Input,
-                             kOutputBus,
-                             &callbackStruct,
-                             sizeof(callbackStruct));
-        NSAssert(noErr == status, @"AudioUnitSetProperty");
-        status = AudioUnitInitialize(_audioUnit);
-        NSAssert(noErr == status, @"AudioUnitInitialize");
-#undef kOutputBus
-#undef kInputBus
-    }
+    //这里指定了优先使用AudioQueue，当遇到不支持的格式时，自动使用AudioUnit
+    MR0x24AudioRenderer *audioRender = [[MR0x24AudioRenderer alloc] initWithFmt:fmt preferredAudioQueue:YES sampleRate:sampleRate];
+    __weakSelf__
+    [audioRender onFetchSamples:^UInt32(uint8_t * _Nonnull *buffer, UInt32 bufferSize) {
+        __strongSelf__
+        return [self fillBuffers:buffer byteSize:bufferSize];
+    }];
+    self.audioRender = audioRender;
 }
 
-//音频渲染回调；
-static inline OSStatus MRRenderCallback(void *inRefCon,
-                                        AudioUnitRenderActionFlags    * ioActionFlags,
-                                        const AudioTimeStamp          * inTimeStamp,
-                                        UInt32                        inOutputBusNumber,
-                                        UInt32                        inNumberFrames,
-                                        AudioBufferList                * ioData)
+- (UInt32)fillBuffers:(uint8_t *[2])buffer
+             byteSize:(UInt32)bufferSize
 {
-    uint8_t * buffer[2] = { 0 };
-    UInt32 bufferSize = 0;
-    // 1. 将buffer数组全部置为0；
-    for (int i = 0; i < ioData->mNumberBuffers; i++) {
-        AudioBuffer audioBuffer = ioData->mBuffers[i];
-        bzero(audioBuffer.mData, audioBuffer.mDataByteSize);
-        buffer[i] = (uint8_t *)audioBuffer.mData;
-        bufferSize = audioBuffer.mDataByteSize;
-    }
-    
-    MR0x22ViewController *am = (__bridge MR0x22ViewController *)inRefCon;
-    [am fillBuffers:buffer byteSize:bufferSize];
-    return noErr;
-}
-
-- (void)fillBuffers:(uint8_t *[2])buffer
-           byteSize:(UInt32)bufferSize
-{
-    [self.audioFrameQueue fillBuffers:buffer byteSize:bufferSize];
+    int filled = [self.audioFrameQueue fillBuffers:buffer byteSize:bufferSize];
 #if DEBUG_RECORD_PCM_TO_FILE
     for(int i = 0; i < 2; i++) {
         uint8_t *src = buffer[i];
@@ -410,6 +302,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
         }
     }
 #endif
+    return filled;
 }
 
 - (void)displayAudioFrame:(AVFrame *)frame
