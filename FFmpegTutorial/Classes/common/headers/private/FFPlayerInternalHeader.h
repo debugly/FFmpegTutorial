@@ -12,6 +12,22 @@
 #include <libavutil/pixdesc.h>
 #import "MRAbstractLogger.h"
 
+#ifndef __MRWS__
+#define __MRWS__
+
+#ifndef __weakSelf__
+#define __weakSelf__  __weak    typeof(self)weakSelf = self;
+#endif
+
+#ifndef __strongSelf__
+#define __strongSelf__ __strong typeof(weakSelf)self = weakSelf;
+#endif
+
+#define __weakObj(obj)   __weak   typeof(obj)weak##obj = obj;
+#define __strongObj(obj) __strong typeof(weak##obj)obj = weak##obj;
+
+#endif
+
 /* no AV sync correction is done if below the minimum AV sync threshold */
 #define AV_SYNC_THRESHOLD_MIN 0.04
 /* AV sync correction is done if above the maximum AV sync threshold */

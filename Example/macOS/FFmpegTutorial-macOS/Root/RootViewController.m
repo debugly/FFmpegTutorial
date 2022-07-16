@@ -236,7 +236,7 @@
         },
         @{
             @"title":@"0x31",
-            @"detail":@"创建读包线程，增加 AVPacket 缓存队列",
+            @"detail":@"增加 AVPacket 缓存队列，创建解码线程",
             @"class":@"MR0x31ViewController",
         },
         @{

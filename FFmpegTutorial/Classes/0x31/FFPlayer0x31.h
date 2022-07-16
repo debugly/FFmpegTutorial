@@ -2,21 +2,22 @@
 //  FFPlayer0x31.h
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/7/30.
+//  Created by qianlongxu on 2022/7/16.
 //
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
-#import <CoreVideo/CVPixelBuffer.h>
+
+//videoOpened info's key
+typedef NSString * const kFFPlayer0x31InfoKey;
+
+//视频宽；单位像素
+FOUNDATION_EXPORT kFFPlayer0x31InfoKey kFFPlayer0x31Width;
+//视频高；单位像素
+FOUNDATION_EXPORT kFFPlayer0x31InfoKey kFFPlayer0x31Height;
 
 NS_ASSUME_NONNULL_BEGIN
-@protocol FFPlayer0x31Delegate <NSObject>
-
-@optional
-- (void)reveiveFrameToRenderer:(CVPixelBufferRef)img;
-- (void)onInitAudioRender:(MRSampleFormat)fmt;
-
-@end
+typedef struct AVFrame AVFrame;
 
 @interface FFPlayer0x31 : NSObject
 
@@ -24,44 +25,33 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *contentPath;
 ///code is FFPlayerErrorCode enum.
 @property (nonatomic, strong, nullable) NSError *error;
-///期望的像素格式
-@property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
-///期望的音频采样深度
-@property (nonatomic, assign) MRSampleFormatMask supportedSampleFormats;
-///期望的音频采样率，比如 44100;不指定时使用音频的采样率
-@property (nonatomic, assign) int supportedSampleRate;
-
-@property (nonatomic, weak) id <FFPlayer0x31Delegate> delegate;
+///记录读到的视频包总数
+@property (atomic, assign, readonly) int videoPktCount;
+///记录读到的音频包总数
+@property (atomic, assign, readonly) int audioPktCount;
 ///记录解码后的视频桢总数
 @property (atomic, assign, readonly) int videoFrameCount;
 ///记录解码后的音频桢总数
 @property (atomic, assign, readonly) int audioFrameCount;
+///指定输出的视频像素格式
+@property (nonatomic, assign) MRPixelFormat supportedPixelFormat;
+///指定输出的音频采样格式
+@property (nonatomic, assign) MRSampleFormat supportedSampleFormat;
+///期望的音频采样率，比如 44100;不指定时使用音频的采样率
+@property (nonatomic, assign) int supportedSampleRate;
+
+@property (nonatomic, copy) void(^onStreamOpened)(NSDictionary *info);
+@property (nonatomic, copy) void(^onReadPkt)(int a,int v);
+//type: 1->video;2->audio;
+@property (nonatomic, copy) void(^onDecoderFrame)(int type,int serial,AVFrame *frame);
+@property (nonatomic, copy) void(^onError)(NSError *);
 
 ///准备
 - (void)prepareToPlay;
-- (void)pause;
+///读包
 - (void)play;
 ///停止读包
 - (void)asyncStop;
-///发生错误，具体错误为 self.error
-- (void)onError:(dispatch_block_t)block;
-
-- (void)onPacketBufferEmpty:(dispatch_block_t)block;
-- (void)onPacketBufferFull:(dispatch_block_t)block;
-- (void)onVideoEnds:(dispatch_block_t)block;
-
-///缓冲情况
-- (MR_PACKET_SIZE)peekPacketBufferStatus;
-
-// 获取 packet 形式的音频数据，返回实际填充的字节数
-- (UInt32)fetchPacketSample:(uint8_t*)buffer
-                  wantBytes:(UInt32)bufferSize;
-
-// 获取 planar 形式的音频数据，返回实际填充的字节数
-- (UInt32)fetchPlanarSample:(uint8_t*)left
-                   leftSize:(UInt32)leftSize
-                      right:(uint8_t*)right
-                  rightSize:(UInt32)rightSize;
 
 @end
 
