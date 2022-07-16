@@ -1,15 +1,15 @@
 //
-//  MR0x24FrameQueue.h
+//  MR0x23AudioFrameQueue.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/7/14.
+//  Created by qianlongxu on 2022/7/13.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 typedef struct AVFrame AVFrame;
-@interface MR0x24FrameQueue : NSObject
+@interface MR0x23AudioFrameQueue : NSObject
 
 - (void)enQueue:(AVFrame *)frame;
 - (NSUInteger)size;

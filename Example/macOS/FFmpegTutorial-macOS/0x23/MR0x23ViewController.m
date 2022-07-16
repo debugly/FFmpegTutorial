@@ -19,7 +19,7 @@
 #import "MRUtil.h"
 #import <AudioUnit/AudioUnit.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MR0x23FrameQueue.h"
+#import "MR0x23AudioFrameQueue.h"
 
 #define QUEUE_BUFFER_SIZE 3
 #define MIN_SIZE_PER_FRAME 4096
@@ -52,7 +52,7 @@
 
 //音频渲染
 @property (nonatomic,assign) AudioQueueRef audioQueue;
-@property (atomic,strong) MR0x23FrameQueue *audioFrameQueue;
+@property (atomic,strong) MR0x23AudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -175,7 +175,7 @@
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
         [self prepareTickTimerIfNeed];
-        self.audioFrameQueue = [[MR0x23FrameQueue alloc] init];
+        self.audioFrameQueue = [[MR0x23AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

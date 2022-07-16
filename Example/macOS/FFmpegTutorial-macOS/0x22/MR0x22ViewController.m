@@ -19,7 +19,7 @@
 #import "MRUtil.h"
 #import <AudioUnit/AudioUnit.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MR0x22FrameQueue.h"
+#import "MR0x22AudioFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
@@ -47,7 +47,7 @@
 
 //音频渲染
 @property (nonatomic,assign) AudioUnit audioUnit;
-@property (atomic,strong) MR0x22FrameQueue *audioFrameQueue;
+@property (atomic,strong) MR0x22AudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -170,7 +170,7 @@
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
         [self prepareTickTimerIfNeed];
-        self.audioFrameQueue = [[MR0x22FrameQueue alloc] init];
+        self.audioFrameQueue = [[MR0x22AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
         [self playAudio];
     };

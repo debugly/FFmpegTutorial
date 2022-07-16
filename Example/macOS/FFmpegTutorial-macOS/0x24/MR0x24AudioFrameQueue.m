@@ -1,15 +1,15 @@
 //
-//  MR0x22FrameQueue.m
+//  MR0x24AudioFrameQueue.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/7/10.
+//  Created by qianlongxu on 2022/7/14.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x22FrameQueue.h"
+#import "MR0x24AudioFrameQueue.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 
-@interface MR0x22FrameItem : NSObject
+@interface MR0x24FrameItem : NSObject
 {
     BOOL _eof;
 }
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation MR0x22FrameItem
+@implementation MR0x24FrameItem
 
 - (instancetype)initWithAVFrame:(AVFrame *)frame
 {
@@ -77,17 +77,17 @@
 
 @end
 
-@interface MR0x22FrameQueue ()
+@interface MR0x24AudioFrameQueue ()
 
 @property (nonatomic, strong) NSMutableArray *queue;
 @property (nonatomic, strong) NSRecursiveLock *lock;
 @property (nonatomic, strong) NSCondition *condition;
-@property (nonatomic, strong) MR0x22FrameItem *currentItem;
+@property (nonatomic, strong) MR0x24FrameItem *currentItem;
 @property (atomic, assign) BOOL canceled;
 
 @end
 
-@implementation MR0x22FrameQueue
+@implementation MR0x24AudioFrameQueue
 
 - (void)dealloc
 {
@@ -115,7 +115,7 @@
     if (self.canceled) {
         return;
     }
-    MR0x22FrameItem *item = [[MR0x22FrameItem alloc] initWithAVFrame:frame];
+    MR0x24FrameItem *item = [[MR0x24FrameItem alloc] initWithAVFrame:frame];
     [self.lock lock];
     [self.queue addObject:item];
     [self.lock unlock];
@@ -130,9 +130,9 @@
     return size;
 }
 
-- (MR0x22FrameItem *)waitAitem
+- (MR0x24FrameItem *)waitAitem
 {
-    MR0x22FrameItem *item = nil;
+    MR0x24FrameItem *item = nil;
     while (!self.canceled) {
         [self.lock lock];
         if ([self.queue count] > 0) {
@@ -148,9 +148,10 @@
     return item;
 }
 
-- (void)fillBuffers:(uint8_t * [2])buffer
+- (int)fillBuffers:(uint8_t * [2])buffer
            byteSize:(int)bufferSize
 {
+    int totalFilled = 0;
     while (bufferSize > 0) {
         if (!self.currentItem || [self.currentItem eof]) {
             self.currentItem = nil;
@@ -160,11 +161,13 @@
             self.currentItem = [self waitAitem];
         }
         if (self.canceled) {
-            return;
+            return totalFilled;
         }
         int filled = [self.currentItem fillBuffers:buffer byteSize:bufferSize];
+        totalFilled += filled;
         bufferSize -= filled;
     }
+    return totalFilled;
 }
 
 @end

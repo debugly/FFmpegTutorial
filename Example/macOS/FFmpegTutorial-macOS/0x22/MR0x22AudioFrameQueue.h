@@ -1,5 +1,5 @@
 //
-//  MR0x22FrameQueue.h
+//  MR0x22AudioFrameQueue.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/7/10.
@@ -9,7 +9,7 @@
 #import <Foundation/Foundation.h>
 
 typedef struct AVFrame AVFrame;
-@interface MR0x22FrameQueue : NSObject
+@interface MR0x22AudioFrameQueue : NSObject
 
 - (void)enQueue:(AVFrame *)frame;
 - (NSUInteger)size;

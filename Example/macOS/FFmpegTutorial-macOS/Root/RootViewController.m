@@ -232,57 +232,57 @@
         @{
             @"title":@"0x30",
             @"detail":@"创建视频渲染线程，增加 VideoFrame 缓存队列",
-            @"class":@"MR0x03ViewController",
+            @"class":@"MR0x30ViewController",
         },
         @{
             @"title":@"0x31",
             @"detail":@"创建读包线程，增加 AVPacket 缓存队列",
-            @"class":@"MR0x05ViewController",
+            @"class":@"MR0x31ViewController",
         },
         @{
             @"title":@"0x32",
             @"detail":@"音视频同步",
-            @"class":@"",
+            @"class":@"MR0x32ViewController",
         },
         @{
             @"title":@"0x33",
             @"detail":@"显示播放进度和时长",
-            @"class":@"",
+            @"class":@"MR0x33ViewController",
         },
         @{
             @"title":@"0x34",
             @"detail":@"支持暂停和播放",
-            @"class":@"",
+            @"class":@"MR0x34ViewController",
         },
         @{
             @"title":@"0x35",
             @"detail":@"支持Seek",
-            @"class":@"",
+            @"class":@"MR0x35ViewController",
         },
         @{
             @"title":@"0x36",
             @"detail":@"支持指定播放开始位置",
-            @"class":@"",
+            @"class":@"MR0x36ViewController",
         },
         @{
             @"title":@"0x37",
             @"detail":@"使用硬件加速解码",
-            @"class":@"",
+            @"class":@"MR0x37ViewController",
         },
         @{
             @"title":@"0x38",
             @"detail":@"统一软硬解解码数据结构",
-            @"class":@"",
+            @"class":@"MR0x38ViewController",
         },
         @{
             @"title":@"0x39",
             @"detail":@"统一软硬解渲染逻辑",
-            @"class":@"",
+            @"class":@"MR0x39ViewController",
         },
         @{
             @"title":@"0x40",
             @"detail":@"iOS和Mac公用一套渲染逻辑",
-            @"class":@"",
+            @"class":@"MR0x40ViewController",
         },
         @{
             @"title":@"五、趣味实验",

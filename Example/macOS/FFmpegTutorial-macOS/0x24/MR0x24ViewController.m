@@ -16,7 +16,7 @@
 #import "MRRWeakProxy.h"
 #import "MR0x24VideoRenderer.h"
 #import "MR0x24AudioRenderer.h"
-#import "MR0x24FrameQueue.h"
+#import "MR0x24AudioFrameQueue.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 
@@ -50,7 +50,7 @@
 
 //音频渲染
 @property (nonatomic,strong) MR0x24AudioRenderer * audioRender;
-@property (atomic,strong) MR0x24FrameQueue *audioFrameQueue;
+@property (atomic,strong) MR0x24AudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -175,7 +175,7 @@
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
         [self prepareTickTimerIfNeed];
-        self.audioFrameQueue = [[MR0x24FrameQueue alloc] init];
+        self.audioFrameQueue = [[MR0x24AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
