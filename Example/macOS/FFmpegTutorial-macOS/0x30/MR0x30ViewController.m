@@ -1,12 +1,12 @@
 //
-//  MR0x24ViewController.m
+//  MR0x30ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/7/14.
+//  Created by qianlongxu on 2022/7/16.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x24ViewController.h"
+#import "MR0x30ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x20.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
@@ -14,16 +14,17 @@
 #import <FFmpegTutorial/FFPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
-#import "MR0x24VideoRenderer.h"
-#import "MR0x24AudioRenderer.h"
-#import "MR0x24AudioFrameQueue.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
+#import "MR0x30VideoRenderer.h"
+#import "MR0x30AudioRenderer.h"
+#import "MR0x30AudioFrameQueue.h"
+#import "MR0x30VideoFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
 
-@interface MR0x24ViewController ()
+@interface MR0x30ViewController ()
 {
 #if DEBUG_RECORD_PCM_TO_FILE
     FILE * file_pcm_l;
@@ -34,7 +35,7 @@
 @property (strong) FFPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x24VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x30VideoRenderer *videoRenderer;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -45,12 +46,12 @@
 @property (nonatomic,assign) MRSampleFormat audioFmt;
 
 //音频渲染
-@property (nonatomic,strong) MR0x24AudioRenderer * audioRender;
-@property (atomic,strong) MR0x24AudioFrameQueue *audioFrameQueue;
-
+@property (nonatomic,strong) MR0x30AudioRenderer * audioRender;
+@property (atomic,strong) MR0x30AudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) MR0x30VideoFrameQueue *videoFrameQueue;
 @end
 
-@implementation MR0x24ViewController
+@implementation MR0x30ViewController
 
 - (void)_stop
 {
@@ -61,6 +62,7 @@
     [self close_all_file];
 #endif
     
+    [self.videoFrameQueue cancel];
     if (_timer) {
         [_timer invalidate];
         _timer = nil;
@@ -110,22 +112,22 @@
     if (self.timer && ![self.timer isValid]) {
         return;
     }
+    
+    //假定视频帧率是 30；
     MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:1.0/30 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
     [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
     self.timer = timer;
 }
 
-- (void)onTimer:(NSTimer *)sender
+- (void)updateHud
 {
-    [self.indicatorView stopAnimation:nil];
-    
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
-
+    
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
@@ -134,7 +136,27 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.audioFrameQueue size]] forKey:@"a-frame-q"];
     
+    [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.videoFrameQueue size]] forKey:@"v-frame-q"];
+    
     [self.hud setHudValue:self.audioRender.name forKey:@"a-renderer"];
+}
+
+- (void)onTimer:(NSTimer *)sender
+{
+    static int tickCount = 0;
+    
+    if (++tickCount >= 30) {
+        [self updateHud];
+        tickCount = 0;
+    }
+    
+    [self.videoFrameQueue asyncDeQueue:^(AVFrame * _Nullable frame) {
+        if (frame) {
+            [self displayVideoFrame:frame];
+        } else {
+            NSLog(@"has no video frame to display.");
+        }
+    }];
 }
 
 - (void)parseURL:(NSString *)url
@@ -145,6 +167,9 @@
     }
     [self.audioFrameQueue cancel];
     self.audioFrameQueue = nil;
+    [self.videoFrameQueue cancel];
+    self.videoFrameQueue = nil;
+    
     [self stopAudio];
     [self.timer invalidate];
     self.timer = nil;
@@ -170,9 +195,11 @@
         int height = [info[kFFPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
+        [self.indicatorView stopAnimation:nil];
         [self prepareTickTimerIfNeed];
-        self.audioFrameQueue = [[MR0x24AudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[MR0x30AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
+        self.videoFrameQueue = [[MR0x30VideoFrameQueue alloc] init];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self playAudio];
@@ -192,14 +219,11 @@
         __strongSelf__
         //video
         if (type == 1) {
-            mr_msleep(20);
-            @autoreleasepool {
-                [self displayVideoFrame:frame];
-            }
+            [self enQueueVideoFrame:frame];
         }
         //audio
         else if (type == 2) {
-            [self displayAudioFrame:frame];
+            [self enQueueAudioFrame:frame];
         }
     };
     [player prepareToPlay];
@@ -209,20 +233,24 @@
 
 #pragma - mark Video
 
-- (void)displayVideoFrame:(AVFrame *)frame
+- (void)enQueueVideoFrame:(AVFrame *)frame
 {
-    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    int width  = (int)CVPixelBufferGetWidth(img);
-    int height = (int)CVPixelBufferGetHeight(img);
     const char *fmt_str = av_pixel_fmt_to_string(frame->format);
     
-    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,width,height];
-    
-    CFRetain(img);
-    mr_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
+    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
+    [self.videoFrameQueue enQueue:frame];
+}
+
+- (void)displayVideoFrame:(AVFrame *)frame
+{
+    @autoreleasepool {
+        CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+        CFRetain(img);
+        mr_sync_main_queue(^{
+            [self.videoRenderer displayPixelBuffer:img];
+            CFRelease(img);
+        });
+    }
 }
 
 #pragma - mark Audio
@@ -261,7 +289,7 @@
 - (void)setupAudioRender:(MRSampleFormat)fmt sampleRate:(Float64)sampleRate
 {
     //这里指定了优先使用AudioQueue，当遇到不支持的格式时，自动使用AudioUnit
-    MR0x24AudioRenderer *audioRender = [[MR0x24AudioRenderer alloc] initWithFmt:fmt preferredAudioQueue:YES sampleRate:sampleRate];
+    MR0x30AudioRenderer *audioRender = [[MR0x30AudioRenderer alloc] initWithFmt:fmt preferredAudioQueue:YES sampleRate:sampleRate];
     __weakSelf__
     [audioRender onFetchSamples:^UInt32(uint8_t * _Nonnull *buffer, UInt32 bufferSize) {
         __strongSelf__
@@ -301,7 +329,7 @@
     return filled;
 }
 
-- (void)displayAudioFrame:(AVFrame *)frame
+- (void)enQueueAudioFrame:(AVFrame *)frame
 {
     const char *fmt_str = av_sample_fmt_to_string(frame->format);
     self.audioSamplelInfo = [NSString stringWithFormat:@"(%s)%d",fmt_str,frame->sample_rate];

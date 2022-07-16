@@ -231,7 +231,7 @@
         },
         @{
             @"title":@"0x30",
-            @"detail":@"创建视频渲染线程，增加 VideoFrame 缓存队列",
+            @"detail":@"增加 VideoFrame 缓存队列，不再阻塞解码线程",
             @"class":@"MR0x30ViewController",
         },
         @{

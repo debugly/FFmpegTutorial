@@ -1,15 +1,15 @@
 //
-//  MR0x24AudioFrameQueue.m
+//  MR0x30AudioFrameQueue.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/7/14.
+//  Created by qianlongxu on 2022/7/16.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x24AudioFrameQueue.h"
+#import "MR0x30AudioFrameQueue.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 
-@interface MR0x24FrameItem : NSObject
+@interface MR0x30FrameItem : NSObject
 {
     BOOL _eof;
 }
@@ -18,14 +18,14 @@
 
 @end
 
-@implementation MR0x24FrameItem
+@implementation MR0x30FrameItem
 
 - (instancetype)initWithAVFrame:(AVFrame *)frame
 {
     self = [super init];
     if (self) {
         self.frame = av_frame_alloc();
-        av_frame_ref(self.frame, frame);
+        av_frame_move_ref(self.frame, frame);
     }
     return self;
 }
@@ -77,17 +77,16 @@
 
 @end
 
-@interface MR0x24AudioFrameQueue ()
+@interface MR0x30AudioFrameQueue ()
 
 @property (nonatomic, strong) NSMutableArray *queue;
 @property (nonatomic, strong) NSRecursiveLock *lock;
-@property (nonatomic, strong) NSCondition *condition;
-@property (nonatomic, strong) MR0x24FrameItem *currentItem;
+@property (nonatomic, strong) MR0x30FrameItem *currentItem;
 @property (atomic, assign) BOOL canceled;
 
 @end
 
-@implementation MR0x24AudioFrameQueue
+@implementation MR0x30AudioFrameQueue
 
 - (void)dealloc
 {
@@ -100,7 +99,6 @@
     if (self) {
         self.queue = [NSMutableArray array];
         self.lock = [[NSRecursiveLock alloc] init];
-        self.condition = [NSCondition new];
     }
     return self;
 }
@@ -115,7 +113,7 @@
     if (self.canceled) {
         return;
     }
-    MR0x24FrameItem *item = [[MR0x24FrameItem alloc] initWithAVFrame:frame];
+    MR0x30FrameItem *item = [[MR0x30FrameItem alloc] initWithAVFrame:frame];
     [self.lock lock];
     [self.queue addObject:item];
     [self.lock unlock];
@@ -130,20 +128,16 @@
     return size;
 }
 
-- (MR0x24FrameItem *)waitAitem
+- (MR0x30FrameItem *)popAitem
 {
-    MR0x24FrameItem *item = nil;
-    while (!self.canceled) {
+    MR0x30FrameItem *item = nil;
+    if (!self.canceled) {
         [self.lock lock];
         if ([self.queue count] > 0) {
             item = [self.queue firstObject];
             [self.queue removeObjectAtIndex:0];
-            [self.lock unlock];
-            break;
-        } else {
-            [self.lock unlock];
-            [self.condition waitUntilDate:[NSDate dateWithTimeIntervalSinceNow:0.01]];
         }
+        [self.lock unlock];
     }
     return item;
 }
@@ -158,9 +152,9 @@
         }
         
         if (!self.currentItem) {
-            self.currentItem = [self waitAitem];
+            self.currentItem = [self popAitem];
         }
-        if (self.canceled) {
+        if (!self.currentItem || self.canceled) {
             return totalFilled;
         }
         int filled = [self.currentItem fillBuffers:buffer byteSize:bufferSize];

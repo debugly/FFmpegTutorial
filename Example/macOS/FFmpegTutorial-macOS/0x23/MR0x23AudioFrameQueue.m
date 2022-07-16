@@ -25,7 +25,7 @@
     self = [super init];
     if (self) {
         self.frame = av_frame_alloc();
-        av_frame_move_ref(self.frame, frame);
+        av_frame_ref(self.frame, frame);
     }
     return self;
 }
