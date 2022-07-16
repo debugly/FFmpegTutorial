@@ -56,8 +56,6 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    [self.indicatorView stopAnimation:nil];
-    
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
@@ -130,7 +128,7 @@
         int width  = [info[kFFPlayer0x16Width] intValue];
         int height = [info[kFFPlayer0x16Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
-        
+        [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");
         NSLog(@"%@",info);
         NSLog(@"----------------------");

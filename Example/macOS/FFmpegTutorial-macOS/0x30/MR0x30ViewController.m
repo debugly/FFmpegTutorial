@@ -86,8 +86,6 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
-    [self.videoRenderer setWantsLayer:YES];
-    self.videoRenderer.layer.backgroundColor = [[NSColor redColor]CGColor];
     
     self.hud = [[MRHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
@@ -99,6 +97,7 @@
     rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewMaxYMargin;
+    [hudView setHidden:YES];
     
     _sampleRate = 44100;
     _videoFmt = MR_PIX_FMT_NV12;
@@ -145,7 +144,9 @@
 {
     static int tickCount = 0;
     
-    if (++tickCount >= 30) {
+    if (tickCount == 0) {
+        [self updateHud];
+    } else if (++tickCount == 30) {
         [self updateHud];
         tickCount = 0;
     }
@@ -194,15 +195,15 @@
         int width  = [info[kFFPlayer0x20Width] intValue];
         int height = [info[kFFPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
-        
-        [self.indicatorView stopAnimation:nil];
-        [self prepareTickTimerIfNeed];
         self.audioFrameQueue = [[MR0x30AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
         self.videoFrameQueue = [[MR0x30VideoFrameQueue alloc] init];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self.indicatorView stopAnimation:nil];
+            [self prepareTickTimerIfNeed];
             [self playAudio];
+            [[self.hud contentView]setHidden:NO];
         });
     };
     

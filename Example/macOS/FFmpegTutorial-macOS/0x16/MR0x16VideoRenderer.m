@@ -119,7 +119,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 {
     [[self openGLContext] makeCurrentContext];
     CGLLockContext([[self openGLContext] CGLContextObj]);
-    glClearColor(0.0,0.0,0.0,0.0);
+    glClearColor(0.2,0.2,0.2,0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);

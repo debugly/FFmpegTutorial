@@ -85,8 +85,6 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
-    [self.videoRenderer setWantsLayer:YES];
-    self.videoRenderer.layer.backgroundColor = [[NSColor redColor]CGColor];
     
     self.hud = [[MRHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
@@ -119,8 +117,6 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    [self.indicatorView stopAnimation:nil];
-    
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
@@ -168,7 +164,7 @@
         int width  = [info[kFFPlayer0x20Width] intValue];
         int height = [info[kFFPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
-        
+        [self.indicatorView stopAnimation:nil];
         [self prepareTickTimerIfNeed];
         self.audioFrameQueue = [[MR0x22AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];

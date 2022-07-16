@@ -90,8 +90,6 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
-    [self.videoRenderer setWantsLayer:YES];
-    self.videoRenderer.layer.backgroundColor = [[NSColor redColor]CGColor];
     
     self.hud = [[MRHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
@@ -124,8 +122,6 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    [self.indicatorView stopAnimation:nil];
-    
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
@@ -173,12 +169,12 @@
         int width  = [info[kFFPlayer0x20Width] intValue];
         int height = [info[kFFPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
-        
-        [self prepareTickTimerIfNeed];
         self.audioFrameQueue = [[MR0x23AudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            [self prepareTickTimerIfNeed];
+            [self.indicatorView stopAnimation:nil];
             [self playAudio];
         });
     };
