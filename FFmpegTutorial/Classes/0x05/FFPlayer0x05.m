@@ -167,7 +167,9 @@ static int decode_interrupt_cb(void *ctx)
     switch (stream->codecpar->codec_type) {
         case AVMEDIA_TYPE_VIDEO:
         {
-            self.videoPktCount++;
+            if (pkt->data != NULL) {
+                self.videoPktCount++;
+            }
             int got_frame = [self decodeVideoPacket:pkt frame:frame];
             if (got_frame > 0) {
                 self.videoFrameCount += got_frame;
@@ -179,7 +181,9 @@ static int decode_interrupt_cb(void *ctx)
             break;
         case AVMEDIA_TYPE_AUDIO:
         {
-            self.audioPktCount++;
+            if (pkt->data != NULL) {
+                self.audioPktCount++;
+            }
             int got_frame = [self decodeAudioPacket:pkt frame:frame];
             if (got_frame > 0) {
                 self.audioFrameCount += got_frame;

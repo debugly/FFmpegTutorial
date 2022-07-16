@@ -108,13 +108,17 @@ static int decode_interrupt_cb(void *ctx)
     switch (stream->codecpar->codec_type) {
         case AVMEDIA_TYPE_VIDEO:
         {
-            self.videoPktCount++;
+            if (pkt->data != NULL) {
+                self.videoPktCount++;
+            }
             [_videoDecoder sendPacket:pkt];
         }
             break;
         case AVMEDIA_TYPE_AUDIO:
         {
-            self.audioPktCount++;
+            if (pkt->data != NULL) {
+                self.audioPktCount++;
+            }
             [_audioDecoder sendPacket:pkt];
         }
             break;
