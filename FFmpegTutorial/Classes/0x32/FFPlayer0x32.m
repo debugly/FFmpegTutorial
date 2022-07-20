@@ -2,7 +2,7 @@
 //  FFPlayer0x32.m
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2020/8/4.
+//  Created by qianlongxu on 2022/7/20.
 //
 
 #import "FFPlayer0x32.h"
@@ -10,66 +10,52 @@
 #import "FFPlayerInternalHeader.h"
 #import "FFPlayerPacketHeader.h"
 #import "FFPlayerFrameHeader.h"
+#include <libavutil/pixdesc.h>
 #import "FFDecoder0x32.h"
 #import "FFVideoScale.h"
-#import "FFAudioResample0x32.h"
-#import "FFSyncClock0x32.h"
+#import "FFAudioResample.h"
+#import "MRDispatch.h"
+#import "FFPacketQueue.h"
 #import "MRConvertUtil.h"
-#import <CoreVideo/CVPixelBufferPool.h>
-#import <libavutil/time.h>
+#import "MR0x32VideoFrameQueue.h"
+#import "MR0x32VideoRenderer.h"
 
-//是否使用POOL
-#define USE_PIXEL_BUFFER_POOL 1
+//视频宽；单位像素
+kFFPlayer0x32InfoKey kFFPlayer0x32Width = @"kFFPlayer0x32Width";
+//视频高；单位像素
+kFFPlayer0x32InfoKey kFFPlayer0x32Height = @"kFFPlayer0x32Height";
 
-@interface FFPlayer0x32 ()<FFDecoderDelegate0x32>
+@interface  FFPlayer0x32 ()<FFDecoderDelegate0x32>
 {
-    //解码前的音频包缓存队列
-    PacketQueue _audioq;
-    //解码前的视频包缓存队列
-    PacketQueue _videoq;
+    //音频流解码器
+    FFDecoder0x32 *_audioDecoder;
+    //视频流解码器
+    FFDecoder0x32 *_videoDecoder;
     
-    //解码后的音频帧缓存队列
-    FrameQueue _sampq;
-    //解码后的视频帧缓存队列
-    FrameQueue _pictq;
+    //图像格式转换/缩放器
+    FFVideoScale *_videoScale;
+    //音频重采样
+    FFAudioResample *_audioResample;
+    
+    FFPacketQueue *_packetQueue;
+    
+    MR0x32VideoFrameQueue *_videoFrameQueue;
+    //视频尺寸
+    CGSize _videoSize;
+    AVFormatContext * _formatCtx;
+    //读包完毕？
+    int _eof;
 }
 
 //读包线程
 @property (nonatomic, strong) MRThread *readThread;
-//渲染线程
-@property (nonatomic, strong) MRThread *rendererThread;
+@property (nonatomic, strong) MRThread *decoderThread;
+@property (nonatomic, strong) MRThread *videoThread;
 
-//音频解码器
-@property (nonatomic, strong) FFDecoder0x32 *audioDecoder;
-//视频解码器
-@property (nonatomic, strong) FFDecoder0x32 *videoDecoder;
-//图像格式转换/缩放器
-@property (nonatomic, strong) FFVideoScale *videoScale;
-//音频格式转换器
-@property (nonatomic, strong) FFAudioResample0x32 *audioResample;
-//音频时钟
-@property (nonatomic, strong) FFSyncClock0x32 *audioClk;
-//视频时钟
-@property (nonatomic, strong) FFSyncClock0x32 *videoClk;
-
-//PixelBuffer池可提升效率
-@property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 @property (atomic, assign) int abort_request;
-
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
-@property (nonatomic, copy) dispatch_block_t onPacketBufferFullBlock;
-@property (nonatomic, copy) dispatch_block_t onPacketBufferEmptyBlock;
-@property (nonatomic, copy) dispatch_block_t onVideoEndsBlock;
-
-@property (atomic, assign) BOOL packetBufferIsFull;
-@property (atomic, assign) BOOL packetBufferIsEmpty;
-@property (nonatomic, assign) double max_frame_duration;
-//读包完毕
-@property (atomic, assign) BOOL eof;
-@property (atomic, assign) BOOL videoEnds;
-@property (atomic, assign) BOOL paused;
-@property (atomic, assign) BOOL audioFrameEmpty;
-@property (atomic, assign) BOOL videoFrameEmpty;
+@property (atomic, assign, readwrite) int videoPktCount;
+@property (atomic, assign, readwrite) int audioPktCount;
 @property (atomic, assign, readwrite) int videoFrameCount;
 @property (atomic, assign, readwrite) int audioFrameCount;
 
@@ -85,44 +71,34 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)_stop
 {
+    self.abort_request = 1;
+    [_packetQueue cancel];
+    [_videoFrameQueue cancel];
+    
     //避免重复stop做无用功
     if (self.readThread) {
-        self.abort_request = 1;
-        _audioq.abort_request = 1;
-        _videoq.abort_request = 1;
-        _sampq.abort_request = 1;
-        _pictq.abort_request = 1;
-        
         [self.readThread cancel];
-        [self.audioDecoder cancel];
-        [self.videoDecoder cancel];
-        [self.rendererThread cancel];
-        
         [self.readThread join];
-        [self.audioDecoder join];
-        [self.videoDecoder join];
-        [self.rendererThread join];
     }
+    
+    if (self.decoderThread) {
+        [self.decoderThread cancel];
+        [self.decoderThread join];
+    }
+    
+    if (self.videoThread) {
+        [self.videoThread cancel];
+        [self.videoThread join];
+    }
+    
+    //读包线程结束了，销毁下相关结构体
+    avformat_close_input(&_formatCtx);
     [self performSelectorOnMainThread:@selector(didStop:) withObject:self waitUntilDone:YES];
 }
 
 - (void)didStop:(id)sender
 {
     self.readThread = nil;
-    self.audioDecoder = nil;
-    self.videoDecoder = nil;
-    self.rendererThread = nil;
-    
-    if (self.pixelBufferPool){
-        CVPixelBufferPoolRelease(self.pixelBufferPool);
-        self.pixelBufferPool = NULL;
-    }
-    
-    packet_queue_destroy(&_audioq);
-    packet_queue_destroy(&_videoq);
-    
-    frame_queue_destory(&_pictq);
-    frame_queue_destory(&_sampq);
 }
 
 - (void)dealloc
@@ -136,72 +112,27 @@ static int decode_interrupt_cb(void *ctx)
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
-    
-    //初始化视频包队列
-    packet_queue_init(&_videoq);
-    //初始化音频包队列
-    packet_queue_init(&_audioq);
     //初始化ffmpeg相关函数
     init_ffmpeg_once();
-    
-    //初始化视频帧队列
-    frame_queue_init(&_pictq, VIDEO_PICTURE_QUEUE_SIZE, "pictq", 1);
-    //初始化音频帧队列
-    frame_queue_init(&_sampq, SAMPLE_QUEUE_SIZE, "sampq", 1);
+    _packetQueue = [[FFPacketQueue alloc] init];
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
-    [self.readThread start];
-}
-
-#pragma mark - clock
-
-- (void)initVideoClock
-{
-    self.videoClk = [[FFSyncClock0x32 alloc] init];
-    [self.videoClk setClock:0];
-}
-
-- (void)initAudioClock
-{
-    self.audioClk = [[FFSyncClock0x32 alloc] init];
-    [self.audioClk setClock:0];
-    enum AVSampleFormat fmt = 0;
-    if (self.audioResample) {
-        fmt = self.audioResample.out_sample_fmt;
-    } else {
-        fmt = self.audioDecoder.format;
-    }
     
-    int bytesPerSample = 0;
-    if (fmt == AV_SAMPLE_FMT_FLT || fmt == AV_SAMPLE_FMT_FLTP) {
-        bytesPerSample = sizeof(float);
-    } else if (fmt == AV_SAMPLE_FMT_S16 || fmt == AV_SAMPLE_FMT_S16P) {
-        bytesPerSample = sizeof(int16_t);
-    }
-    self.audioClk.bytesPerSample = bytesPerSample;
-}
-
-#pragma mark - 打开解码器创建解码线程
-
-- (FFDecoder0x32 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
-{
-    FFDecoder0x32 *decoder = [FFDecoder0x32 new];
-    decoder.ic = ic;
-    decoder.streamIdx = idx;
-    if ([decoder open] == 0) {
-        return decoder;
-    } else {
-        return nil;
-    }
+    self.decoderThread = [[MRThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
+    self.decoderThread.name = @"mr-decoder";
+    
+    self.videoThread = [[MRThread alloc] initWithTarget:self selector:@selector(videoThreadFunc) object:nil];
+    self.videoThread.name = @"mr-v-display";
 }
 
 #pragma -mark 读包线程
-
 //读包循环
 - (void)readPacketLoop:(AVFormatContext *)formatCtx
 {
     AVPacket pkt1, *pkt = &pkt1;
+    //创建一个frame就行了，可以复用
+    AVFrame *frame = av_frame_alloc();
     //循环读包
     for (;;) {
         
@@ -210,62 +141,60 @@ static int decode_interrupt_cb(void *ctx)
             break;
         }
         
-        /* 队列不满继续读，满了则休眠10 ms */
-        if (_audioq.size + _videoq.size > MAX_QUEUE_SIZE
-            || (stream_has_enough_packets(self.audioDecoder.stream, self.audioDecoder.streamIdx, &_audioq) &&
-                stream_has_enough_packets(self.videoDecoder.stream, self.videoDecoder.streamIdx, &_videoq))) {
-            
-            if (!self.packetBufferIsFull) {
-                self.packetBufferIsFull = YES;
-                if (self.onPacketBufferFullBlock) {
-                    self.onPacketBufferFullBlock();
-                }
-            }
-            /* wait 10 ms */
-            mr_msleep(10);
-            continue;
-        }
-        
-        self.packetBufferIsFull = NO;
         //读包
         int ret = av_read_frame(formatCtx, pkt);
         //读包出错
         if (ret < 0) {
             //读到最后结束了
-            if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb)) && !self.eof) {
-                //最后放一个空包进去
-                if (self.audioDecoder.streamIdx >= 0) {
-                    packet_queue_put_nullpacket(&_audioq, self.audioDecoder.streamIdx);
-                }
-                    
-                if (self.videoDecoder.streamIdx >= 0) {
-                    packet_queue_put_nullpacket(&_videoq, self.videoDecoder.streamIdx);
-                }
+            if ((ret == AVERROR_EOF || avio_feof(formatCtx->pb))) {
                 //标志为读包结束
-                self.eof = 1;
+                av_log(NULL, AV_LOG_DEBUG, "stream eof:%s\n",formatCtx->url);
+                //send null packet,let decoder eof.
+                pkt->data = NULL;
+                pkt->size = 0;
+                pkt->stream_index = _videoDecoder.streamIdx;
+                [_packetQueue enQueue:pkt];
+                pkt->stream_index = _audioDecoder.streamIdx;
+                [_packetQueue enQueue:pkt];
+                break;
             }
             
             if (formatCtx->pb && formatCtx->pb->error) {
                 break;
             }
+            
             /* wait 10 ms */
             mr_msleep(10);
             continue;
         } else {
-            //音频包入音频队列
-            if (pkt->stream_index == self.audioDecoder.streamIdx) {
-                packet_queue_put(&_audioq, pkt);
+            AVStream *stream = _formatCtx->streams[pkt->stream_index];
+            switch (stream->codecpar->codec_type) {
+                case AVMEDIA_TYPE_VIDEO:
+                {
+                    if (pkt->data != NULL) {
+                        self.videoPktCount++;
+                    }
+                    [_packetQueue enQueue:pkt];
+                }
+                    break;
+                case AVMEDIA_TYPE_AUDIO:
+                {
+                    if (pkt->data != NULL) {
+                        self.audioPktCount++;
+                    }
+                    [_packetQueue enQueue:pkt];
+                }
+                    break;
+                default:
+                    break;
             }
-            //视频包入视频队列
-            else if (pkt->stream_index == self.videoDecoder.streamIdx) {
-                packet_queue_put(&_videoq, pkt);
-            }
-            //其他包释放内存忽略掉
-            else {
-                av_packet_unref(pkt);
+            if (self.onReadPkt) {
+                self.onReadPkt(self.audioPktCount,self.videoPktCount);
             }
         }
     }
+    
+    av_frame_free(&frame);
 }
 
 #pragma mark - 查找最优的音视频流
@@ -300,122 +229,10 @@ static int decode_interrupt_cb(void *ctx)
     (*st_index)[AVMEDIA_TYPE_AUDIO] = av_find_best_stream(formatCtx, AVMEDIA_TYPE_AUDIO, (*st_index)[AVMEDIA_TYPE_AUDIO], (*st_index)[AVMEDIA_TYPE_VIDEO], NULL, 0);
 }
 
-#pragma mark - 视频像素格式转换
-
-- (FFVideoScale *)createVideoScaleIfNeed
-{
-    //未指定期望像素格式
-    if (self.supportedPixelFormats == MR_PIX_FMT_MASK_NONE) {
-        NSAssert(NO, @"supportedPixelFormats can't be none!");
-        return nil;
-    }
-    
-    //当前视频的像素格式
-    const enum AVPixelFormat format = self.videoDecoder.format;
-    
-    bool matched = false;
-    MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    for (int i = MR_PIX_FMT_BEGIN; i <= MR_PIX_FMT_END; i ++) {
-        const MRPixelFormat fmt = i;
-        const MRPixelFormatMask mask = 1 << fmt;
-        if (self.supportedPixelFormats & mask) {
-            if (firstSupportedFmt == MR_PIX_FMT_NONE) {
-                firstSupportedFmt = fmt;
-            }
-            
-            if (format == MRPixelFormat2AV(fmt)) {
-                matched = true;
-                break;
-            }
-        }
-    }
-    
-    if (matched) {
-        //期望像素格式包含了当前视频像素格式，则直接使用当前格式，不再转换。
-        av_log(NULL, AV_LOG_INFO, "video not need rescale!\n");
-        return nil;
-    }
-    
-    if (firstSupportedFmt == MR_PIX_FMT_NONE) {
-        NSAssert(NO, @"supportedPixelFormats is invalid!");
-        return nil;
-    }
-    
-    int dest = MRPixelFormat2AV(firstSupportedFmt);
-    if ([FFVideoScale checkCanConvertFrom:format to:dest]) {
-        //创建像素格式转换上下文
-        FFVideoScale *scale = [[FFVideoScale alloc] initWithSrcPixFmt:format dstPixFmt:dest picWidth:self.videoDecoder.picWidth picHeight:self.videoDecoder.picHeight];
-        return scale;
-    } else {
-        //TODO ??
-        return nil;
-    }
-}
-
-- (FFAudioResample0x32 *)createAudioResampleIfNeed
-{
-    //未指定期望音频格式
-    if (self.supportedSampleFormats == MR_SAMPLE_FMT_MASK_NONE) {
-        NSAssert(NO, @"supportedSampleFormats can't be none!");
-        return nil;
-    }
-    
-    //未指定支持的比特率就使用目标音频的
-    if (self.supportedSampleRate == 0) {
-        self.supportedSampleRate = self.audioDecoder.sampleRate;
-    }
-    
-    //当前视频的像素格式
-    const enum AVSampleFormat format = self.audioDecoder.format;
-    
-    bool matched = false;
-    MRSampleFormat firstSupportedFmt = MR_SAMPLE_FMT_NONE;
-    for (int i = MR_SAMPLE_FMT_BEGIN; i <= MR_SAMPLE_FMT_END; i ++) {
-        const MRSampleFormat fmt = i;
-        const MRSampleFormatMask mask = 1 << fmt;
-        if (self.supportedSampleFormats & mask) {
-            if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
-                firstSupportedFmt = fmt;
-            }
-            
-            if (format == MRSampleFormat2AV(fmt)) {
-                matched = true;
-                break;
-            }
-        }
-    }
-    
-    if (matched) {
-        //采样率不匹配
-        if (self.supportedSampleRate != self.audioDecoder.sampleRate) {
-            firstSupportedFmt = AVSampleFormat2MR(format);
-            matched = NO;
-        }
-    }
-    
-    if (matched) {
-        //期望音频格式包含了当前音频格式，则直接使用当前格式，不再转换。
-        av_log(NULL, AV_LOG_INFO, "audio not need resample!\n");
-        return nil;
-    }
-    
-    if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
-        NSAssert(NO, @"supportedSampleFormats is invalid!");
-        return nil;
-    }
-    
-    //创建音频格式转换上下文
-    FFAudioResample0x32 *resample = [[FFAudioResample0x32 alloc] initWithSrcSampleFmt:format
-                                                                         dstSampleFmt:MRSampleFormat2AV(firstSupportedFmt)
-                                                                           srcChannel:self.audioDecoder.channelLayout
-                                                                           dstChannel:self.audioDecoder.channelLayout
-                                                                              srcRate:self.audioDecoder.sampleRate
-                                                                              dstRate:self.supportedSampleRate];
-    return resample;
-}
-
 - (void)readPacketsFunc
 {
+    NSParameterAssert(self.contentPath);
+        
     if (![self.contentPath hasPrefix:@"/"]) {
         _init_net_work_once();
     }
@@ -474,475 +291,313 @@ static int decode_interrupt_cb(void *ctx)
     
     MRFF_DEBUG_LOG(@"avformat_find_stream_info coast time:%g",end-begin);
 #endif
-    self.max_frame_duration = (formatCtx->iformat->flags & AVFMT_TS_DISCONT) ? 10.0 : 3600.0;
+    
     //确定最优的音视频流
     int st_index[AVMEDIA_TYPE_NB];
     memset(st_index, -1, sizeof(st_index));
     [self findBestStreams:formatCtx result:&st_index];
     
-    //打开音频解码器，创建解码线程
+    //打开解码器，创建解码线程
     if (st_index[AVMEDIA_TYPE_AUDIO] >= 0){
-        
-        self.audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
-        
-        if(self.audioDecoder){
-            self.audioDecoder.delegate = self;
-            self.audioDecoder.name = @"mr-audio-dec";
-            self.audioResample = [self createAudioResampleIfNeed];
-        } else {
-            av_log(NULL, AV_LOG_ERROR, "can't open audio stream.\n");
-            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"音频流打开失败！");
+        _audioDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_AUDIO]];
+        if (!_audioDecoder) {
+            av_log(NULL, AV_LOG_ERROR, "can't open audio stream.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_AudioDecoderOpenFailed, @"音频解码器打开失败！");
             [self performErrorResultOnMainThread];
             //出错了，销毁下相关结构体
             avformat_close_input(&formatCtx);
             return;
+        } else {
+            _audioResample = [self createAudioResampleIfNeed];
         }
-        
-        if ([self.delegate respondsToSelector:@selector(onInitAudioRender:)]) {
-            if (self.audioResample) {
-                [self.delegate onInitAudioRender:AVSampleFormat2MR(self.audioResample.out_sample_fmt)];
-            } else {
-                [self.delegate onInitAudioRender:AVSampleFormat2MR(self.audioDecoder.format)];
+    }
+    
+    NSMutableDictionary *dumpDic = [NSMutableDictionary dictionary];
+    
+    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
+        _videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+        if (!_videoDecoder) {
+            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
+            self.error = _make_nserror_desc(FFPlayerErrorCode_VideoDecoderOpenFailed, @"音频解码器打开失败！");
+            [self performErrorResultOnMainThread];
+            //出错了，销毁下相关结构体
+            avformat_close_input(&formatCtx);
+            return;
+        } else {
+            _videoSize = CGSizeMake(_videoDecoder.picWidth, _videoDecoder.picHeight);
+            [dumpDic setObject:@(_videoDecoder.picWidth) forKey:kFFPlayer0x32Width];
+            [dumpDic setObject:@(_videoDecoder.picHeight) forKey:kFFPlayer0x32Height];
+            _videoScale = [self createVideoScaleIfNeed];
+        }
+    }
+    
+    _videoFrameQueue = [[MR0x32VideoFrameQueue alloc] init];
+    
+    mr_sync_main_queue(^{
+        if (self.onStreamOpened) {
+            self.onStreamOpened(dumpDic);
+        }
+    });
+    
+    _formatCtx = formatCtx;
+    [self.decoderThread start];
+    [self.videoThread start];
+    //循环读包
+    [self readPacketLoop:formatCtx];
+}
+
+#pragma mark - 视频像素格式转换
+
+- (FFVideoScale *)createVideoScaleIfNeed
+{
+    //未指定期望像素格式
+    if (self.supportedPixelFormat == MR_PIX_FMT_NONE) {
+        NSAssert(NO, @"supportedPixelFormats can't be none!");
+        return nil;
+    }
+    
+    //当前视频的像素格式
+    const enum AVPixelFormat format = _videoDecoder.format;
+    
+    bool matched = false;
+    MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
+    for (int i = MR_PIX_FMT_BEGIN; i <= MR_PIX_FMT_END; i ++) {
+        const MRPixelFormat fmt = i;
+        if (self.supportedPixelFormat == fmt) {
+            if (firstSupportedFmt == MR_PIX_FMT_NONE) {
+                firstSupportedFmt = fmt;
+            }
+            
+            if (format == MRPixelFormat2AV(fmt)) {
+                matched = true;
+                break;
             }
         }
     }
+    
+    if (matched) {
+        //期望像素格式包含了当前视频像素格式，则直接使用当前格式，不再转换。
+        return nil;
+    }
+    
+    if (firstSupportedFmt == MR_PIX_FMT_NONE) {
+        NSAssert(NO, @"supportedPixelFormats is invalid!");
+        return nil;
+    }
+    
+    int dest = MRPixelFormat2AV(firstSupportedFmt);
+    if ([FFVideoScale checkCanConvertFrom:format to:dest]) {
+        //创建像素格式转换上下文
+        av_log(NULL, AV_LOG_INFO, "will scale %d to %d (%dx%d)",format,dest,_videoDecoder.picWidth,_videoDecoder.picHeight);
+        FFVideoScale *scale = [[FFVideoScale alloc] initWithSrcPixFmt:format dstPixFmt:dest picWidth:_videoDecoder.picWidth picHeight:_videoDecoder.picHeight];
+        return scale;
+    } else {
+        NSAssert(NO, @"can't scale from %d to %d",format,dest);
+        return nil;
+    }
+}
 
-    //打开视频解码器，创建解码线程
-    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
-        self.videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
-        if(self.videoDecoder){
-            self.videoDecoder.delegate = self;
-            self.videoDecoder.name = @"mr-video-dec";
-            self.videoScale = [self createVideoScaleIfNeed];
-        } else {
-            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
-            self.error = _make_nserror_desc(FFPlayerErrorCode_StreamOpenFailed, @"视频流打开失败！");
-            [self performErrorResultOnMainThread];
-            //出错了，销毁下相关结构体
-            avformat_close_input(&formatCtx);
-            return;
+//音频重采样
+- (FFAudioResample *)createAudioResampleIfNeed
+{
+    //未指定期望音频格式
+    if (self.supportedSampleFormat == MR_SAMPLE_FMT_NONE) {
+        NSAssert(NO, @"supportedSampleFormats can't be none!");
+        return nil;
+    }
+    
+    //未指定支持的比特率就使用目标音频的
+    if (self.supportedSampleRate == 0) {
+        self.supportedSampleRate = _audioDecoder.sampleRate;
+    }
+    
+    //当前视频的像素格式
+    const enum AVSampleFormat format = _audioDecoder.format;
+    
+    bool matched = false;
+    MRSampleFormat firstSupportedFmt = MR_SAMPLE_FMT_NONE;
+    for (int i = MR_SAMPLE_FMT_BEGIN; i <= MR_SAMPLE_FMT_END; i ++) {
+        const MRSampleFormat fmt = i;
+        if (self.supportedSampleFormat == fmt) {
+            if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
+                firstSupportedFmt = fmt;
+            }
+            
+            if (format == MRSampleFormat2AV(fmt)) {
+                matched = true;
+                break;
+            }
         }
     }
-    self.duration = (long)(formatCtx->duration/AV_TIME_BASE);
-    if ([self.delegate respondsToSelector:@selector(onDurationUpdate:)]) {
-        [self.delegate onDurationUpdate:self.duration];
+    
+    if (matched) {
+        //采样率不匹配
+        if (self.supportedSampleRate != _audioDecoder.sampleRate) {
+            firstSupportedFmt = AVSampleFormat2MR(format);
+            matched = NO;
+        }
     }
-    //初始化同步时钟
-    [self initVideoClock];
-    [self initAudioClock];
-    //音视频解码线程开始工作
-    [self.audioDecoder start];
-    [self.videoDecoder start];
-    //准备渲染线程
-    [self prepareRendererThread];
-    //渲染线程开始工作
-    [self.rendererThread start];
-    //循环读包
-    [self readPacketLoop:formatCtx];
-    //读包线程结束了，销毁下相关结构体
-    avformat_close_input(&formatCtx);
+    
+    if (matched) {
+        //期望音频格式包含了当前音频格式，则直接使用当前格式，不再转换。
+        av_log(NULL, AV_LOG_INFO, "audio not need resample!\n");
+        return nil;
+    }
+    
+    if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
+        NSAssert(NO, @"supportedSampleFormats is invalid!");
+        return nil;
+    }
+    
+    //创建音频格式转换上下文
+    FFAudioResample *resample = [[FFAudioResample alloc] initWithSrcSampleFmt:format
+                                                                         dstSampleFmt:MRSampleFormat2AV(firstSupportedFmt)
+                                                                   srcChannel:_audioDecoder.channelLayout
+                                                                           dstChannel:_audioDecoder.channelLayout
+                                                                              srcRate:_audioDecoder.sampleRate
+                                                                              dstRate:self.supportedSampleRate];
+    return resample;
+}
+
+#pragma mark - 解码
+
+
+- (FFDecoder0x32 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+{
+    FFDecoder0x32 *decoder = [FFDecoder0x32 new];
+    decoder.ic = ic;
+    decoder.streamIdx = idx;
+    if ([decoder open] == 0) {
+        decoder.delegate = self;
+        return decoder;
+    } else {
+        return nil;
+    }
+}
+
+- (void)decodePkt:(AVPacket *)pkt
+{
+    AVStream *stream = _formatCtx->streams[pkt->stream_index];
+    switch (stream->codecpar->codec_type) {
+        case AVMEDIA_TYPE_VIDEO:
+        {
+            [_videoDecoder sendPacket:pkt];
+        }
+            break;
+        case AVMEDIA_TYPE_AUDIO:
+        {
+            [_audioDecoder sendPacket:pkt];
+        }
+            break;
+        default:
+            break;
+    }
+}
+
+- (void)decoderFunc
+{
+    while (!self.abort_request) {
+        __weakSelf__
+        [_packetQueue deQueue:^(AVPacket * pkt) {
+            __strongSelf__
+            if (pkt) {
+                [self decodePkt:pkt];
+            }
+        }];
+    }
 }
 
 #pragma mark - FFDecoderDelegate0x32
 
-- (int)decoder:(FFDecoder0x32 *)decoder wantAPacket:(AVPacket *)pkt
+- (void)decoder:(FFDecoder0x32 *)decoder reveivedAFrame:(AVFrame *)aFrame
 {
-    if (decoder == self.audioDecoder) {
-        return packet_queue_get(&_audioq, pkt, 1);
-    } else if (decoder == self.videoDecoder) {
-        return packet_queue_get(&_videoq, pkt, 1);
-    } else {
-        return -1;
-    }
-}
-
-- (void)decoder:(FFDecoder0x32 *)decoder reveivedAFrame:(AVFrame *)frame
-{
-    if (decoder == self.audioDecoder) {
-        FrameQueue *fq = &_sampq;
-        
-        AVFrame *outP = nil;
-        if (self.audioResample) {
-            if (![self.audioResample resampleFrame:frame out:&outP]) {
+    if (decoder == _audioDecoder) {
+        AVFrame *audioFrame = nil;
+        if (_audioResample) {
+            if (![_audioResample resampleFrame:aFrame out:&audioFrame]) {
                 self.error = _make_nserror_desc(FFPlayerErrorCode_ResampleFrameFailed, @"音频帧重采样失败！");
                 [self performErrorResultOnMainThread];
                 return;
             }
         } else {
-            outP = frame;
+            audioFrame = aFrame;
         }
-        double duration = av_q2d((AVRational){outP->nb_samples, outP->sample_rate});
-        AVRational tb = (AVRational){1, frame->sample_rate};
-        frame_queue_push_v2(fq, outP,^(Frame * const af){
-            af->duration = duration;
-            af->pts = (frame->pts == AV_NOPTS_VALUE) ? NAN : frame->pts * av_q2d(tb);;
-        });
-        self.audioFrameEmpty = NO;
-        self.audioFrameCount++;
-    } else if (decoder == self.videoDecoder) {
-        FrameQueue *fq = &_pictq;
         
-        AVFrame *outP = nil;
-        if (self.videoScale) {
-            if (![self.videoScale rescaleFrame:frame out:&outP]) {
+        self.audioFrameCount++;
+        if (self.onDecoderAudioFrame) {
+            self.onDecoderAudioFrame(self.audioFrameCount, audioFrame);
+        }
+    } else if (decoder == _videoDecoder) {
+        AVFrame *videoFrame = nil;
+        if (_videoScale) {
+            if (![_videoScale rescaleFrame:aFrame out:&videoFrame]) {
                 self.error = _make_nserror_desc(FFPlayerErrorCode_RescaleFrameFailed, @"视频帧重转失败！");
                 [self performErrorResultOnMainThread];
                 return;
             }
         } else {
-            outP = frame;
+            videoFrame = aFrame;
         }
         
-        double duration = (self.videoDecoder.frameRate.num && self.videoDecoder.frameRate.den ? av_q2d(self.videoDecoder.frameRate) : 0);
-        duration = 1.0 / duration;
-        AVRational tb = self.videoDecoder.stream->time_base;
-        double pts = (outP->pts == AV_NOPTS_VALUE) ? NAN : outP->pts * av_q2d(tb);
-        frame_queue_push_v2(fq, outP,^(Frame * const af){
-            af->duration = duration;
-            af->pts = pts;
-        });
-        self.videoFrameEmpty = NO;
         self.videoFrameCount++;
+        [self enQueueVideoFrame:videoFrame];
     }
 }
 
-#pragma mark - RendererThread
+#pragma - mark Video
 
-- (void)prepareRendererThread
+- (void)videoThreadFunc
 {
-    self.rendererThread = [[MRThread alloc] initWithTarget:self selector:@selector(rendererThreadFunc) object:nil];
-    self.rendererThread.name = @"mr-renderer";
-}
-
-- (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame *)frame
-{
-#if USE_PIXEL_BUFFER_POOL
-    if (!self.pixelBufferPool){
-        CVPixelBufferPoolRef pixelBufferPool = [MRConvertUtil createCVPixelBufferPoolRef:frame->format w:frame->width h:frame->height fullRange:frame->color_range != AVCOL_RANGE_MPEG];
-        if (pixelBufferPool) {
-            CVPixelBufferPoolRetain(pixelBufferPool);
-            self.pixelBufferPool = pixelBufferPool;
-        }
-    }
-#endif
-    
-    CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:self.pixelBufferPool];
-    return pixelBuffer;
-}
-
-- (void)doDisplayVideoFrame:(Frame *)vp
-{
-    if(NULL == vp){
-        return;
-    }
-    
-    if ([self.delegate respondsToSelector:@selector(reveiveFrameToRenderer:)]) {
-        @autoreleasepool {
-            CVPixelBufferRef pixelBuffer = [self pixelBufferFromAVFrame:vp->frame];
-            if (pixelBuffer) {
-                [self.delegate reveiveFrameToRenderer:pixelBuffer];
+    while (!_abort_request) {
+        NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
+        [_videoFrameQueue asyncDeQueue:^(AVFrame * _Nullable frame) {
+            if (frame) {
+                [self displayVideoFrame:frame];
+            } else {
+                NSLog(@"has no video frame to display.");
             }
+        }];
+        NSTimeInterval end = CFAbsoluteTimeGetCurrent();
+        int remained = 33 - (end - begin) * 1000;
+        if (remained > 0) {
+            mr_msleep(remained);
         }
     }
 }
 
-- (double)vp_durationWithP1:(Frame *)p1 p2:(Frame *)p2 {
-    double duration = p2->pts - p1->pts;
-    if (isnan(duration) || duration <= 0 || duration > self.max_frame_duration){
-        return p1->duration;
-    } else {
-        return duration;
-    }
-}
-
-- (double)compute_target_delay:(double)delay
+- (void)enQueueVideoFrame:(AVFrame *)frame
 {
-    //计算视频时钟和主时钟（音频时钟）的差距
-    if (self.audioClk.eof) {
-        return delay;
-    }
+    const char *fmt_str = av_pixel_fmt_to_string(frame->format);
     
-    double diff = [self.videoClk getClock] - [self.audioClk getClock];
-    
-    /* skip or repeat frame. We take into account the
-       delay to compute the threshold. I still don't know
-       if it is the best guess */
-    double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, FFMIN(AV_SYNC_THRESHOLD_MAX, delay));
-    if (!isnan(diff) && fabs(diff) < self.max_frame_duration) {
-        if (diff <= -sync_threshold)
-            delay = FFMAX(0, delay + diff);
-        else if (diff >= sync_threshold && delay > AV_SYNC_FRAMEDUP_THRESHOLD)
-            delay = delay + diff;
-        else if (diff >= sync_threshold)
-            delay = 2 * delay;
-    }
-    av_log(NULL, AV_LOG_INFO, "video: delay=%0.3f A-V=%f\n",
-            delay, -diff);
-    return delay;
+    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
+    [_videoFrameQueue enQueue:frame];
 }
 
-- (void)video_refresh:(double *)remaining_time
+- (void)displayVideoFrame:(AVFrame *)frame
 {
-    if (frame_queue_nb_remaining(&_pictq) > 0) {
-        Frame *vp, *lastvp;
-        //上一帧
-        lastvp = frame_queue_peek_last(&_pictq);
-        
-        if (self.paused) {
-            //仍旧显示上一帧
-            [self doDisplayVideoFrame:lastvp];
-            return;
-        }
-        
-        //当前帧
-        vp = frame_queue_peek(&_pictq);
-        //计算上一帧的持续时长
-        const double last_duration = [self vp_durationWithP1:lastvp p2:vp];
-        //参考audio clock计算上一帧真正的持续时长
-        const double delay = [self compute_target_delay:last_duration];
-        //相对系统时间
-        const double time = av_gettime_relative()/1000000.0;
-        //时间还没到上一帧结束点
-        if (time < self.videoClk.frame_timer + delay) {
-            *remaining_time = FFMIN(self.videoClk.frame_timer + delay - time, *remaining_time);
-            //仍旧显示上一帧
-            [self doDisplayVideoFrame:lastvp];
-            return;
-        }
-        
-        self.videoClk.frame_timer += delay;
-        if (delay > 0 && time - self.videoClk.frame_timer > AV_SYNC_THRESHOLD_MAX) {
-            self.videoClk.frame_timer = time;
-        }
-        
-        [self.videoClk setClock:vp->pts];
-        
-        //丢帧逻辑
-        if (frame_queue_nb_remaining(&_pictq) > 1) {
-            Frame *nextvp = frame_queue_peek_next(&_pictq);
-            double duration = [self vp_durationWithP1:vp p2:nextvp];//当前帧显示时长
-            if(time > self.videoClk.frame_timer + duration){//如果系统时间已经大于当前帧，则丢弃当前帧
-                static int frame_drops_late = 0;
-                frame_drops_late++;
-                av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
-                frame_drops_late);
-                frame_queue_pop(&_pictq);
-                self.videoFrameCount--;
-                if (frame_queue_nb_remaining(&_pictq) == 0) {
-                    self.videoFrameEmpty = YES;
-                }
-                //继续重试
-                [self video_refresh:remaining_time];
-                return;
-            }
-        }
-        
-        [self doDisplayVideoFrame:vp];
-        frame_queue_pop(&_pictq);
-        self.videoFrameCount--;
-        if (frame_queue_nb_remaining(&_pictq) > 1) {
-            Frame *nextvp = frame_queue_peek(&_pictq);
-            double duration = [self vp_durationWithP1:vp p2:nextvp];//vp显示时长
-            *remaining_time = FFMIN(duration, *remaining_time);
-        } else {
-            self.videoFrameEmpty = YES;
-        }
-    } else if(self.eof && self.videoDecoder.eof){
-        //no picture do display.
-        self.videoClk.eof = YES;
-        av_log(NULL, AV_LOG_INFO, "video frame is eof\n");
-        [self maybeReachEnds];
-    }
-}
-
-- (void)rendererThreadFunc
-{
-    double remaining_time = 0.0;
-    //调用了stop方法，则不再渲染
-    while (!self.abort_request) {
-        if (remaining_time > 0.0){
-            mr_sleep(remaining_time);
-        }
-        remaining_time = REFRESH_RATE;
-        [self video_refresh:&remaining_time];
-    }
-}
-
-- (void)updateAudioClock:(Frame *)ap filled:(UInt32)filled
-{
-    double audio_pts = ap->pts + 1.0 * ap->frame->nb_samples / ap->frame->sample_rate;
-    double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
-    double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
-    [self.audioClk setClock:audio_clock];
-}
-
-- (UInt32)fetchPacketSample:(uint8_t *)buffer
-                  wantBytes:(UInt32)bufferSize
-{
-    UInt32 filled = 0;
-    Frame *ap = NULL;
-    while (bufferSize > 0) {
-        //队列里缓存帧大于0，则取出
-        if (frame_queue_nb_remaining(&_sampq) > 0) {
-            ap = frame_queue_peek(&_sampq);
-            av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
-        } else {
-            //队列里没有音频桢了，跳出循环
-            break;
-        }
-        
-        uint8_t *src = ap->frame->data[0];
-        const int fmt = ap->frame->format;
-        assert(0 == av_sample_fmt_is_planar(fmt));
-        
-        int data_size = av_samples_get_buffer_size(ap->frame->linesize, 2, ap->frame->nb_samples, fmt, 1);
-        int l_src_size = data_size;//ap->frame->linesize[0];
-        const int offset = ap->offset;
-        const void *from = src + offset;
-        int left = l_src_size - offset;
-        
-        //根据剩余数据长度和需要数据长度算出应当copy的长度
-        int leftBytesToCopy = FFMIN(bufferSize, left);
-        
-        memcpy(buffer, from, leftBytesToCopy);
-        buffer += leftBytesToCopy;
-        bufferSize -= leftBytesToCopy;
-        ap->offset += leftBytesToCopy;
-        filled += leftBytesToCopy;
-        if (leftBytesToCopy >= left){
-            //读取完毕，则清空；读取下一个包
-            av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
-            frame_queue_pop(&_sampq);
-            self.audioFrameCount--;
-            if (frame_queue_nb_remaining(&_sampq) == 0) {
-                self.audioFrameEmpty = YES;
-            }
-        }
-    }
-    
-    if (NULL !=ap && filled > 0) {
-        [self updateAudioClock:ap filled:filled];
-    }
-    //没有取出采样桢，读包eof，解码也eof时标记为音频渲染完毕
-    else if(self.eof && self.audioDecoder.eof){
-        self.audioClk.eof = YES;
-        av_log(NULL, AV_LOG_INFO, "audio frame is eof\n");
-        [self maybeReachEnds];
-    }
-    
-    return filled;
-}
-
-- (UInt32)fetchPlanarSample:(uint8_t *)l_buffer
-                   leftSize:(UInt32)l_size
-                      right:(uint8_t *)r_buffer
-                  rightSize:(UInt32)r_size
-{
-    UInt32 filled = 0;
-    Frame *ap = NULL;
-    while (l_size > 0 || r_size > 0) {
-        //队列里缓存帧大于0，则取出
-        if (frame_queue_nb_remaining(&_sampq) > 0) {
-            ap = frame_queue_peek(&_sampq);
-            av_log(NULL, AV_LOG_VERBOSE, "render audio frame %lld\n", ap->frame->pts);
-        } else {
-            //队列里没有音频桢了，跳出循环
-            break;
-        }
-        uint8_t *l_src = ap->frame->data[0];
-        const int fmt  = ap->frame->format;
-        assert(av_sample_fmt_is_planar(fmt));
-        
-        int data_size = av_samples_get_buffer_size(ap->frame->linesize, 1, ap->frame->nb_samples, fmt, 1);
-        
-        int l_src_size = data_size;//af->frame->linesize[0];
-        const int offset = ap->offset;
-        const void *leftFrom = l_src + offset;
-        int leftBytesLeft = l_src_size - offset;
-        
-        //根据剩余数据长度和需要数据长度算出应当copy的长度
-        int leftBytesToCopy = FFMIN(l_size, leftBytesLeft);
-        
-        memcpy(l_buffer, leftFrom, leftBytesToCopy);
-        l_buffer += leftBytesToCopy;
-        l_size -= leftBytesToCopy;
-        ap->offset += leftBytesToCopy;
-        filled += leftBytesToCopy;
-        uint8_t *r_src = ap->frame->data[1];
-        int r_src_size = l_src_size;//af->frame->linesize[1];
-        if (r_src) {
-            const void *right_from = r_src + offset;
-            int right_bytes_left = r_src_size - offset;
-            
-            //根据剩余数据长度和需要数据长度算出应当copy的长度
-            int rightBytesToCopy = FFMIN(r_size, right_bytes_left);
-            memcpy(r_buffer, right_from, rightBytesToCopy);
-            r_buffer += rightBytesToCopy;
-            r_size -= rightBytesToCopy;
-        }
-        
-        if (leftBytesToCopy >= leftBytesLeft){
-            //读取完毕，则清空；读取下一个包
-            av_log(NULL, AV_LOG_DEBUG, "packet sample:next frame\n");
-            frame_queue_pop(&_sampq);
-            self.audioFrameCount--;
-            if (frame_queue_nb_remaining(&_sampq) == 0) {
-                self.audioFrameEmpty = YES;
-            }
-        }
-    }
-    
-    if (NULL !=ap && filled > 0) {
-        [self updateAudioClock:ap filled:filled];
-    }
-    //没有取出采样桢，读包eof，解码也eof时标记为音频渲染完毕
-    else if(self.eof && self.audioDecoder.eof){
-        self.audioClk.eof = YES;
-        av_log(NULL, AV_LOG_INFO, "audio frame is eof\n");
-        [self maybeReachEnds];
-    }
-    
-    return filled;
-}
-
-- (void)maybeReachEnds
-{
-    if (!self.videoEnds) {
-        if (self.audioClk.eof && self.videoClk.eof) {
-            self.videoEnds = YES;
-            MR_sync_main_queue(^{
-                if (self.onVideoEndsBlock) {
-                    self.onVideoEndsBlock();
-                }
-            });
-        }
+    @autoreleasepool {
+        CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+        CMSampleBufferRef sample = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
+        CFRetain(sample);
+        mr_sync_main_queue(^{
+            [[self _videoRender] displaySampleBuffer:sample];
+            CFRelease(sample);
+        });
     }
 }
 
 - (void)performErrorResultOnMainThread
 {
-    MR_sync_main_queue(^{
-        if (self.onErrorBlock) {
-            self.onErrorBlock();
+    mr_sync_main_queue(^{
+        if (self.onError) {
+            self.onError(self.error);
         }
     });
 }
 
-- (void)pause
-{
-    self.videoClk.frame_timer = av_gettime_relative() / 1000000.0 - self.videoClk.last_update;
-    [self.videoClk setClock:[self.videoClk getClock]];
-    [self.audioClk setClock:[self.audioClk getClock]];
-    
-    self.paused = self.audioClk.paused = self.videoClk.paused = !self.paused;
-}
-
 - (void)play
 {
-    self.videoClk.frame_timer = av_gettime_relative() / 1000000.0 - self.videoClk.last_update;
-    [self.videoClk setClock:[self.videoClk getClock]];
-    [self.audioClk setClock:[self.audioClk getClock]];
-    self.paused = self.audioClk.paused = self.videoClk.paused = !self.paused;
+    [self.readThread start];
 }
 
 - (void)asyncStop
@@ -955,38 +610,23 @@ static int decode_interrupt_cb(void *ctx)
     self.onErrorBlock = block;
 }
 
-- (void)onPacketBufferFull:(dispatch_block_t)block
+- (int)videoFrameQueueSize
 {
-    self.onPacketBufferFullBlock = block;
+    return (int)[_videoFrameQueue size];
 }
 
-- (void)onPacketBufferEmpty:(dispatch_block_t)block
+- (MR0x32VideoRenderer *)_videoRender
 {
-    self.onPacketBufferEmptyBlock = block;
+    return (MR0x32VideoRenderer *)_videoRender;
 }
 
-- (void)onVideoEnds:(dispatch_block_t)block
+- (NSView *)videoRender
 {
-    self.onVideoEndsBlock = block;
-}
-
-- (MR_PACKET_SIZE)peekPacketBufferStatus
-{
-    return (MR_PACKET_SIZE){_videoq.nb_packets,_audioq.nb_packets,0};
-}
-
-- (double)position
-{
-    if (self.videoEnds) {
-        return (double)self.duration;
+    if (!_videoRender) {
+        MR0x32VideoRenderer *videoRender = [[MR0x32VideoRenderer alloc] init];
+        _videoRender = videoRender;
     }
-    if (self.audioClk) {
-        return self.audioClk.pts;
-    } else if(self.videoClk) {
-        return self.videoClk.pts;
-    } else {
-        return 0;
-    }
+    return _videoRender;
 }
 
 @end

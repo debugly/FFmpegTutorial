@@ -241,18 +241,28 @@
         },
         @{
             @"title":@"0x32",
-            @"detail":@"音视频同步",
+            @"detail":@"创建视频渲染线程，将视频相关逻辑封装到播放器内",
             @"class":@"MR0x32ViewController",
         },
         @{
             @"title":@"0x33",
-            @"detail":@"显示播放进度和时长",
+            @"detail":@"将音频相关逻辑封装到播放器内",
             @"class":@"MR0x33ViewController",
         },
         @{
             @"title":@"0x34",
-            @"detail":@"支持暂停和播放",
+            @"detail":@"显示音视频播放进度",
             @"class":@"MR0x34ViewController",
+        },
+        @{
+            @"title":@"0x35",
+            @"detail":@"音视频同步",
+            @"class":@"MR0x35ViewController",
+        },
+        @{
+            @"title":@"0x36",
+            @"detail":@"支持暂停和播放",
+            @"class":@"MR0x37ViewController",
         },
         @{
             @"title":@"0x35",

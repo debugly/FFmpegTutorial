@@ -2,26 +2,25 @@
 //  FFDecoder0x32.m
 //  FFmpegTutorial
 //
-//  Created by Matt Reach on 2020/8/4.
+//  Created by Matt Reach on 2022/7/20.
 //
 
 #import "FFDecoder0x32.h"
-#import "MRThread.h"
 #include <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 
 @interface FFDecoder0x32()
+{
+    //创建一个frame就行了，可以复用
+    AVFrame *_frame;
+}
 
-//解码线程
-@property (nonatomic, strong) MRThread * workThread;
 @property (nonatomic, assign, readwrite) AVStream * stream;
 @property (nonatomic, assign) AVCodecContext * avctx;
-@property (nonatomic, assign) int abort_request;
 //for video
 @property (nonatomic, assign, readwrite) int format;
 @property (nonatomic, assign, readwrite) int picWidth;
 @property (nonatomic, assign, readwrite) int picHeight;
-@property (nonatomic, assign, readwrite) AVRational frameRate;
 //for audio
 @property (nonatomic, assign, readwrite) int sampleRate;
 @property (nonatomic, assign, readwrite) int channelLayout;
@@ -37,6 +36,10 @@
         avcodec_free_context(&_avctx);
         _avctx = NULL;
     }
+    //释放内存
+    if (_frame) {
+        av_frame_free(&_frame);
+    }
 }
 
 - (instancetype)init
@@ -44,6 +47,7 @@
     self = [super init];
     if (self) {
         _streamIdx = -1;
+        _frame = av_frame_alloc();
     }
     return self;
 }
@@ -101,145 +105,59 @@
         self.format = avctx->pix_fmt;
         self.picWidth = avctx->width;
         self.picHeight = avctx->height;
-        self.frameRate = av_guess_frame_rate(self.ic, stream, NULL);
     } else {
-        NSAssert(NO, @"hasn't handle other media type!");
+        
     }
-    self.workThread = [[MRThread alloc] initWithTarget:self selector:@selector(workFunc) object:nil];
-    if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
-        self.workThread.name = @"mr-audio-dec";
-    } else if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-        self.workThread.name = @"mr-video-dec";
-    }
-    
     return 0;
 }
 
 #pragma mark - 音视频通用解码方法
 
-- (int)decodeAFrame:(AVCodecContext *)avctx result:(AVFrame*)frame
+- (int)decoder_decode_frame:(AVCodecContext *)avctx pkt:(AVPacket *)pkt frame:(AVFrame*)frame
 {
+    int ret = 0;
+    
     for (;;) {
-        int ret;
         do {
-            //停止时，直接返回
-            if (self.abort_request){
-                return -1;
-            }
-            
             //先尝试接收帧
             ret = avcodec_receive_frame(avctx, frame);
             
             //成功接收到一个解码帧
             if (ret >= 0){
-                return 1;
+                if ([self.delegate respondsToSelector:@selector(decoder:reveivedAFrame:)]) {
+                    [self.delegate decoder:self reveivedAFrame:frame];
+                }
+                av_frame_unref(frame);
+                continue;
             }
             
             //结束标志，此次并没有获取到frame！
             if (ret == AVERROR_EOF) {
                 avcodec_flush_buffers(avctx);
-                return AVERROR_EOF;
+                goto end;
             }
             
         } while (ret != AVERROR(EAGAIN)/*需要更多packet数据*/);
         
-        AVPacket pkt;
-        
-        //[阻塞等待]直到获取一个packet
-        int r = -1;
-        if ([self.delegate respondsToSelector:@selector(decoder:wantAPacket:)]) {
-            r = [self.delegate decoder:self wantAPacket:&pkt];
-        }
-        
-        if (r < 0)
-        {
-            return -1;
-        }
-        
-        //发送给解码器去解码
-        if (avcodec_send_packet(avctx, &pkt) == AVERROR(EAGAIN)) {
-            av_log(avctx, AV_LOG_ERROR, "Receive_frame and send_packet both returned EAGAIN, which is an API violation.\n");
-        }
-        //释放内存
-        av_packet_unref(&pkt);
-    }
-}
-
-#pragma mark - 解码线程
-
-- (void)workFunc
-{
-    //创建一个frame就行了，可以复用
-    AVFrame *frame = av_frame_alloc();
-    if (!frame) {
-        av_log(NULL, AV_LOG_ERROR, "%s can't alloc a frame.\n",[self.name UTF8String]);
-        return;
-    }
-    do {
-        //使用通用方法解码一帧
-        int got_frame = [self decodeAFrame:self.avctx result:frame];
-        //解码出错
-        if (got_frame < 0) {
-            if (got_frame == AVERROR_EOF) {
-                av_log(NULL, AV_LOG_ERROR, "%s eof.\n",[self.name UTF8String]);
-                self.eof = YES;
-            } else if (self.abort_request){
-                av_log(NULL, AV_LOG_ERROR, "%s cancel.\n",[self.name UTF8String]);
-            } else {
-                av_log(NULL, AV_LOG_ERROR, "%s decode err %d.\n",[self.name UTF8String],got_frame);
-                self.eof = YES;
+        if (pkt) {
+            //发送给解码器去解码
+            if (avcodec_send_packet(avctx, pkt) == AVERROR(EAGAIN)) {
+                av_log(avctx, AV_LOG_ERROR, "Receive_frame and send_packet both returned EAGAIN, which is an API violation.\n");
             }
-            break;
+            pkt = NULL;
+            continue;
         } else {
-            if (self.avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-                frame->pts = frame->best_effort_timestamp;
-            } else if (self.avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
-                AVRational tb = (AVRational){1, frame->sample_rate};
-                if (frame->pts != AV_NOPTS_VALUE)
-                    frame->pts = av_rescale_q(frame->pts, self.avctx->pkt_timebase, tb);
-//                else if (d->next_pts != AV_NOPTS_VALUE)
-//                    frame->pts = av_rescale_q(d->next_pts, d->next_pts_tb, tb);
-//                if (frame->pts != AV_NOPTS_VALUE) {
-//                    d->next_pts = frame->pts + frame->nb_samples;
-//                    d->next_pts_tb = tb;
-//                }
-            }
-            //正常解码
-            av_log(NULL, AV_LOG_VERBOSE, "decode a frame:%lld\n",frame->pts);
-            if ([self.delegate respondsToSelector:@selector(decoder:reveivedAFrame:)]) {
-                [self.delegate decoder:self reveivedAFrame:frame];
-            }
+            break;
         }
-    } while (1);
-    
-    //释放内存
-    if (frame) {
-        av_frame_free(&frame);
     }
+end:
+    return ret;
 }
 
-- (void)start
+- (int)sendPacket:(AVPacket *)pkt
 {
-    if (self.workThread) {
-        if (self.name.length > 0) {
-            self.workThread.name = self.name;
-        }
-        [self.workThread start];
-    }
-}
-
-- (void)cancel
-{
-    self.abort_request = 1;
-    if (self.workThread) {
-        [self.workThread cancel];
-    }
-}
-
-- (void)join
-{
-    [self.workThread join];
-    self.workThread = nil;
+    int r = [self decoder_decode_frame:_avctx pkt:pkt frame:_frame];
+    return r;
 }
 
 @end
