@@ -1,5 +1,5 @@
 //
-//  MR0x32ViewController.h
+//  MR0x33ViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/7/20.
@@ -33,12 +33,13 @@
 // 0x30:增加 VideoFrame 缓存队列，不再阻塞解码线程
 // 0x31:增加 AVPacket 缓存队列，创建解码线程
 // 0x32:创建视频渲染线程，将视频相关逻辑封装到播放器内
+// 0x33:将音频相关逻辑封装到播放器内
 
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x32ViewController : NSViewController
+@interface MR0x33ViewController : NSViewController
 
 @end
 

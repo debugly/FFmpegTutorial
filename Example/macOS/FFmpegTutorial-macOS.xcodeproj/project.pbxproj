@@ -130,6 +130,8 @@
 		DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5991328883D3B0079D26E /* MR0x32ViewController.xib */; };
 		DDF5991A28883D3C0079D26E /* MR0x32AudioFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5991428883D3C0079D26E /* MR0x32AudioFrameQueue.m */; };
 		DDF5991B28883D3C0079D26E /* MR0x32AudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5991528883D3C0079D26E /* MR0x32AudioRenderer.m */; };
+		DDF5992128884D280079D26E /* MR0x33ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5991E28884D280079D26E /* MR0x33ViewController.m */; };
+		DDF5992228884D280079D26E /* MR0x33ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5991F28884D280079D26E /* MR0x33ViewController.xib */; };
 		DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF6576626273C6E00116F05 /* MR0x01ViewController.m */; };
 		DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
@@ -364,6 +366,9 @@
 		DDF5991328883D3B0079D26E /* MR0x32ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x32ViewController.xib; sourceTree = "<group>"; };
 		DDF5991428883D3C0079D26E /* MR0x32AudioFrameQueue.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x32AudioFrameQueue.m; sourceTree = "<group>"; };
 		DDF5991528883D3C0079D26E /* MR0x32AudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x32AudioRenderer.m; sourceTree = "<group>"; };
+		DDF5991E28884D280079D26E /* MR0x33ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x33ViewController.m; sourceTree = "<group>"; };
+		DDF5991F28884D280079D26E /* MR0x33ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x33ViewController.xib; sourceTree = "<group>"; };
+		DDF5992028884D280079D26E /* MR0x33ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x33ViewController.h; sourceTree = "<group>"; };
 		DDF6576526273C6E00116F05 /* MR0x01ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDF6576626273C6E00116F05 /* MR0x01ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
@@ -899,6 +904,16 @@
 			path = AudioRenderImp;
 			sourceTree = "<group>";
 		};
+		DDF5991D28884D280079D26E /* 0x33 */ = {
+			isa = PBXGroup;
+			children = (
+				DDF5992028884D280079D26E /* MR0x33ViewController.h */,
+				DDF5991E28884D280079D26E /* MR0x33ViewController.m */,
+				DDF5991F28884D280079D26E /* MR0x33ViewController.xib */,
+			);
+			path = 0x33;
+			sourceTree = "<group>";
+		};
 		DDF6576426273C3700116F05 /* 0x01 */ = {
 			isa = PBXGroup;
 			children = (
@@ -960,6 +975,7 @@
 				DDF598D028826AD70079D26E /* 0x30 */,
 				DDF598EA2882EA3C0079D26E /* 0x31 */,
 				DDF5990828883D3B0079D26E /* 0x32 */,
+				DDF5991D28884D280079D26E /* 0x33 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -1077,6 +1093,7 @@
 				DD56CB0F286F3CAA0046C28A /* MR0x10ViewController.xib in Resources */,
 				DD5FDCCD28709B6700F93BE9 /* MR0x144ViewController.xib in Resources */,
 				DD91F29226AC082C00B96334 /* README.md in Resources */,
+				DDF5992228884D280079D26E /* MR0x33ViewController.xib in Resources */,
 				DD5FDCF128709EEC00F93BE9 /* MR0x154ViewController.xib in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
 				DD5FDC8428708C9700F93BE9 /* MR0x14ViewController.xib in Resources */,
@@ -1175,6 +1192,7 @@
 				DD5FDC9728708F3000F93BE9 /* MR0x13VideoRenderer.m in Sources */,
 				DD5FDCC928709B6700F93BE9 /* MR0x142ViewController.m in Sources */,
 				DD5FDCEF28709EEC00F93BE9 /* MR0x152VideoRenderer.m in Sources */,
+				DDF5992128884D280079D26E /* MR0x33ViewController.m in Sources */,
 				DDF599012882EA3C0079D26E /* MR0x31AudioRenderer.m in Sources */,
 				DD7ABB73287B0D3100622984 /* MR0x22VideoRenderer.m in Sources */,
 				DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */,
