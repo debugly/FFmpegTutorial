@@ -262,32 +262,32 @@
         @{
             @"title":@"0x36",
             @"detail":@"支持暂停和播放",
-            @"class":@"MR0x37ViewController",
-        },
-        @{
-            @"title":@"0x35",
-            @"detail":@"支持Seek",
-            @"class":@"MR0x35ViewController",
-        },
-        @{
-            @"title":@"0x36",
-            @"detail":@"支持指定播放开始位置",
             @"class":@"MR0x36ViewController",
         },
         @{
             @"title":@"0x37",
-            @"detail":@"使用硬件加速解码",
+            @"detail":@"支持Seek",
             @"class":@"MR0x37ViewController",
         },
         @{
             @"title":@"0x38",
-            @"detail":@"统一软硬解解码数据结构",
+            @"detail":@"支持指定播放开始位置",
             @"class":@"MR0x38ViewController",
         },
         @{
             @"title":@"0x39",
-            @"detail":@"统一软硬解渲染逻辑",
+            @"detail":@"使用硬件加速解码",
             @"class":@"MR0x39ViewController",
+        },
+        @{
+            @"title":@"0x3a",
+            @"detail":@"统一软硬解解码数据结构",
+            @"class":@"MR0x3aViewController",
+        },
+        @{
+            @"title":@"0x3b",
+            @"detail":@"统一软硬解渲染逻辑",
+            @"class":@"MR0x3bViewController",
         },
         @{
             @"title":@"0x40",

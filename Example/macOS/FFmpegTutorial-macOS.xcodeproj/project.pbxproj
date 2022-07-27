@@ -134,6 +134,8 @@
 		DDF5992228884D280079D26E /* MR0x33ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5991F28884D280079D26E /* MR0x33ViewController.xib */; };
 		DDF59927288ED5D30079D26E /* MR0x34ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF59924288ED5D30079D26E /* MR0x34ViewController.m */; };
 		DDF59928288ED5D30079D26E /* MR0x34ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF59926288ED5D30079D26E /* MR0x34ViewController.xib */; };
+		DDF5992D288EE7970079D26E /* MR0x35ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5992A288EE7970079D26E /* MR0x35ViewController.m */; };
+		DDF5992E288EE7970079D26E /* MR0x35ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5992C288EE7970079D26E /* MR0x35ViewController.xib */; };
 		DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF6576626273C6E00116F05 /* MR0x01ViewController.m */; };
 		DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
@@ -374,6 +376,9 @@
 		DDF59924288ED5D30079D26E /* MR0x34ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x34ViewController.m; sourceTree = "<group>"; };
 		DDF59925288ED5D30079D26E /* MR0x34ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x34ViewController.h; sourceTree = "<group>"; };
 		DDF59926288ED5D30079D26E /* MR0x34ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x34ViewController.xib; sourceTree = "<group>"; };
+		DDF5992A288EE7970079D26E /* MR0x35ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x35ViewController.m; sourceTree = "<group>"; };
+		DDF5992B288EE7970079D26E /* MR0x35ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x35ViewController.h; sourceTree = "<group>"; };
+		DDF5992C288EE7970079D26E /* MR0x35ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x35ViewController.xib; sourceTree = "<group>"; };
 		DDF6576526273C6E00116F05 /* MR0x01ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDF6576626273C6E00116F05 /* MR0x01ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
@@ -929,6 +934,16 @@
 			path = 0x34;
 			sourceTree = "<group>";
 		};
+		DDF59929288EE7970079D26E /* 0x35 */ = {
+			isa = PBXGroup;
+			children = (
+				DDF5992B288EE7970079D26E /* MR0x35ViewController.h */,
+				DDF5992A288EE7970079D26E /* MR0x35ViewController.m */,
+				DDF5992C288EE7970079D26E /* MR0x35ViewController.xib */,
+			);
+			path = 0x35;
+			sourceTree = "<group>";
+		};
 		DDF6576426273C3700116F05 /* 0x01 */ = {
 			isa = PBXGroup;
 			children = (
@@ -992,6 +1007,7 @@
 				DDF5990828883D3B0079D26E /* 0x32 */,
 				DDF5991D28884D280079D26E /* 0x33 */,
 				DDF59923288ED5D30079D26E /* 0x34 */,
+				DDF59929288EE7970079D26E /* 0x35 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -1103,6 +1119,7 @@
 				C958FACE279A60740058D64A /* 2_sample2DRect_NV21.fsh in Resources */,
 				DD56CB082867FBBD0046C28A /* MR0x06ViewController.xib in Resources */,
 				C958F95F2796A7520058D64A /* common_v3.vsh in Resources */,
+				DDF5992E288EE7970079D26E /* MR0x35ViewController.xib in Resources */,
 				DDAD7FEC27FF3EBE00E947BB /* MR0x03ViewController.xib in Resources */,
 				DDAD7FEA27FF3EBE00E947BB /* MR0x02ViewController.xib in Resources */,
 				DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */,
@@ -1223,6 +1240,7 @@
 				DDF599022882EA3C0079D26E /* MR0x31ViewController.m in Sources */,
 				DD5FDCCE28709B6700F93BE9 /* MR0x144VideoRenderer.m in Sources */,
 				DD56CB0228674FA00046C28A /* MR0x05ViewController.m in Sources */,
+				DDF5992D288EE7970079D26E /* MR0x35ViewController.m in Sources */,
 				DD5FDC8628708C9700F93BE9 /* MR0x14ViewController.m in Sources */,
 				DD7ABB78287B0E4100622984 /* MR0x22AudioFrameQueue.m in Sources */,
 				DD56CAFB28670F460046C28A /* MR0x04ViewController.m in Sources */,

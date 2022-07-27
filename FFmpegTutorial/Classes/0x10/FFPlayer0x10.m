@@ -6,14 +6,13 @@
 //
 
 #import "FFPlayer0x10.h"
-#import "MRThread.h"
-#import "FFPlayerInternalHeader.h"
-#import "FFPlayerPacketHeader.h"
-#import "FFPlayerFrameHeader.h"
 #include <libavutil/pixdesc.h>
+#include <libavformat/avformat.h>
 #import "FFDecoder0x10.h"
 #import "FFVideoScale.h"
+#import "MRThread.h"
 #import "MRDispatch.h"
+#import "MRAbstractLogger.h"
 
 @interface  FFPlayer0x10 ()<FFDecoderDelegate0x10>
 {
@@ -74,8 +73,7 @@ static int decode_interrupt_cb(void *ctx)
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
-    //初始化ffmpeg相关函数
-    init_ffmpeg_once();
+    
     
     self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
@@ -215,7 +213,7 @@ static int decode_interrupt_cb(void *ctx)
     NSParameterAssert(self.contentPath);
         
     if (![self.contentPath hasPrefix:@"/"]) {
-        _init_net_work_once();
+        avformat_network_init();
     }
     
     AVFormatContext *formatCtx = avformat_alloc_context();

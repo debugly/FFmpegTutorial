@@ -7,10 +7,10 @@
 
 #import "FFPlayer0x02.h"
 #import "MRThread.h"
-#import "FFPlayerInternalHeader.h"
 #import "MRDispatch.h"
-#include <libavformat/avformat.h>
+#import "MRAbstractLogger.h"
 #include <libavutil/pixdesc.h>
+#include <libavformat/avformat.h>
 
 @interface FFPlayer0x02 ()
 //读包线程
@@ -46,8 +46,7 @@
         NSAssert(NO, @"不允许重复创建");
     }
     
-    //初始化ffmpeg相关函数
-    init_ffmpeg_once();
+    
     
     __weak __typeof(self)weakSelf = self;
     self.readThread = [[MRThread alloc] initWithBlock:^{
@@ -63,7 +62,7 @@
 {
     NSParameterAssert(self.contentPath);
     if (![self.contentPath hasPrefix:@"/"]) {
-        _init_net_work_once();
+        avformat_network_init();
     }
     
     AVFormatContext *formatCtx = NULL;

@@ -6,7 +6,6 @@
 //
 
 #import "FFAudioResample.h"
-#import "FFPlayerInternalHeader.h"
 #include <libswresample/swresample.h>
 #include <libavutil/samplefmt.h>
 

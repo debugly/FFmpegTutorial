@@ -1,15 +1,56 @@
 //
 //  FFPlayerHeader.h
-//  FFmpegTutorial
+//  FFmpegTutorial-macOS
 //
-//  Created by Matt Reach on 2020/4/27.
+//  Created by qianlongxu on 2022/7/27.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #ifndef FFPlayerHeader_h
 #define FFPlayerHeader_h
 
+#import <Foundation/Foundation.h>
 #include <stdbool.h>
 #include <unistd.h>
+
+#define PRINT_DEALLOC_ON 1
+#if PRINT_DEALLOC_ON
+    #define PRINT_DEALLOC \
+        do{ \
+            NSLog(@"%@ dealloc",NSStringFromClass([self class])); \
+        }while(0)
+#else
+    #define PRINT_DEALLOC \
+        do{ \
+        }while(0)
+#endif
+
+#ifndef __MRWS__
+#define __MRWS__
+
+#ifndef __weakSelf__
+#define __weakSelf__  __weak    typeof(self)weakSelf = self;
+#endif
+
+#ifndef __strongSelf__
+#define __strongSelf__ __strong typeof(weakSelf)self = weakSelf;
+#endif
+
+#define __weakObj(obj)   __weak   typeof(obj)weak##obj = obj;
+#define __strongObj(obj) __strong typeof(weak##obj)obj = weak##obj;
+
+#endif
+
+/* no AV sync correction is done if below the minimum AV sync threshold */
+#define AV_SYNC_THRESHOLD_MIN 0.04
+/* AV sync correction is done if above the maximum AV sync threshold */
+#define AV_SYNC_THRESHOLD_MAX 0.1
+/* If a frame duration is longer than this, it will not be duplicated to compensate AV sync */
+#define AV_SYNC_FRAMEDUP_THRESHOLD 0.1
+/* no AV correction is done if too big error */
+#define AV_NOSYNC_THRESHOLD 10.0
+/* polls for possible required screen refresh at least this often, should be less than 1/fps */
+#define REFRESH_RATE 0.01
 
 typedef enum FFPlayerErrorCode{
     FFPlayerErrorCode_AllocFmtCtxFailed,        //创建 avformat context 失败
@@ -93,6 +134,12 @@ typedef enum MRSampleFormatMask{
     MR_SAMPLE_FMT_MASK_AUTO = MR_SAMPLE_FMT_MASK_S16 + MR_SAMPLE_FMT_MASK_FLT + MR_SAMPLE_FMT_MASK_S16P + MR_SAMPLE_FMT_MASK_FLTP// auto select best match fmt
 }MRSampleFormatMask;
 
+enum AVSampleFormat MRSampleFormat2AV (MRSampleFormat mrsf);
+MRSampleFormat AVSampleFormat2MR (enum AVSampleFormat avsf);
+
+enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf);
+MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf);
+
 static inline bool MR_Sample_Fmt_Is_Packet(MRSampleFormat fmt){
     if (fmt == MR_SAMPLE_FMT_S16 || fmt == MR_SAMPLE_FMT_FLT) {
         return true;
@@ -131,42 +178,6 @@ typedef enum MRColorRange {
     MRCOL_RANGE_JPEG        = 2, // the normal     2^n-1   "JPEG" YUV ranges
     MRCOL_RANGE_NB               // Not part of ABI
 }MRColorRange;
-
-typedef struct MRPicture{
-    /**
-     * pointer to the picture/channel planes.
-     * This might be different from the first allocated byte
-     *
-     * Some decoders access areas outside 0,0 - width,height, please
-     * see avcodec_align_dimensions2(). Some filters and swscale can read
-     * up to 16 bytes beyond the planes, if these filters are to be used,
-     * then 16 extra bytes must be allocated.
-     *
-     * NOTE: Except for hwaccel formats, pointers not needed by the format
-     * MUST be set to NULL.
-     */
-    uint8_t *data[8];
-
-    /**
-     * For video, size in bytes of each picture line.
-     * For audio, size in bytes of each plane.
-     *
-     * For audio, only linesize[0] may be set. For planar audio, each channel
-     * plane must be the same size.
-     *
-     * For video the linesizes should be multiples of the CPUs alignment
-     * preference, this is 16 or 32 for modern desktop CPUs.
-     * Some code requires such alignment other code can be slower without
-     * correct alignment, for yet other it makes no difference.
-     *
-     * @note The linesize may be larger than the size of usable data -- there
-     * may be extra padding present for performance reasons.
-     */
-    int linesize[8];
-    int width, height;
-    enum MRColorRange color_range;
-    MRPixelFormat format;
-}MRPicture;
 
 // safe sleep us
 static inline void mr_usleep(long s) {
@@ -209,7 +220,27 @@ static inline int mr_packet_size_equal_zero(MR_PACKET_SIZE s1) {
     && s1.other_pkt_size == 0;
 }
 
+static __inline__ NSError * _make_nserror(int code)
+{
+    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:nil];
+}
+
+static __inline__ NSError * _make_nserror_desc(int code,NSString *desc)
+{
+    if (!desc || desc.length == 0) {
+        desc = @"";
+    }
+    
+    return [NSError errorWithDomain:@"com.debugly.fftutorial" code:(NSInteger)code userInfo:@{
+        NSLocalizedDescriptionKey:desc
+    }];
+}
+
+
 const char * av_pixel_fmt_to_string(int fmt);
 const char * av_sample_fmt_to_string(int format);
+
+typedef struct AVFrame AVFrame;
+int audio_buffer_size(AVFrame *frame);
 
 #endif /* FFPlayerHeader_h */

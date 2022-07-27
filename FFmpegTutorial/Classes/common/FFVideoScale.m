@@ -6,9 +6,9 @@
 //
 
 #import "FFVideoScale.h"
-#import "FFPlayerInternalHeader.h"
 #include <libswscale/swscale.h>
 #include <libavutil/imgutils.h>
+#include <libavutil/frame.h>
 
 @interface FFVideoScale()
 
