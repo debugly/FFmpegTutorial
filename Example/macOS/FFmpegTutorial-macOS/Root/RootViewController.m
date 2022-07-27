@@ -261,7 +261,7 @@
         },
         @{
             @"title":@"0x36",
-            @"detail":@"支持暂停和播放",
+            @"detail":@"处理结束，支持暂停、播放",
             @"class":@"MR0x36ViewController",
         },
         @{

@@ -136,6 +136,8 @@
 		DDF59928288ED5D30079D26E /* MR0x34ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF59926288ED5D30079D26E /* MR0x34ViewController.xib */; };
 		DDF5992D288EE7970079D26E /* MR0x35ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5992A288EE7970079D26E /* MR0x35ViewController.m */; };
 		DDF5992E288EE7970079D26E /* MR0x35ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5992C288EE7970079D26E /* MR0x35ViewController.xib */; };
+		DDF5993328918E410079D26E /* MR0x36ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5993128918E410079D26E /* MR0x36ViewController.m */; };
+		DDF5993428918E410079D26E /* MR0x36ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5993228918E410079D26E /* MR0x36ViewController.xib */; };
 		DDF6576826273C6E00116F05 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF6576626273C6E00116F05 /* MR0x01ViewController.m */; };
 		DDF6576926273C6E00116F05 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
@@ -379,6 +381,9 @@
 		DDF5992A288EE7970079D26E /* MR0x35ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x35ViewController.m; sourceTree = "<group>"; };
 		DDF5992B288EE7970079D26E /* MR0x35ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x35ViewController.h; sourceTree = "<group>"; };
 		DDF5992C288EE7970079D26E /* MR0x35ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x35ViewController.xib; sourceTree = "<group>"; };
+		DDF5993028918E410079D26E /* MR0x36ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x36ViewController.h; sourceTree = "<group>"; };
+		DDF5993128918E410079D26E /* MR0x36ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x36ViewController.m; sourceTree = "<group>"; };
+		DDF5993228918E410079D26E /* MR0x36ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x36ViewController.xib; sourceTree = "<group>"; };
 		DDF6576526273C6E00116F05 /* MR0x01ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x01ViewController.h; sourceTree = "<group>"; };
 		DDF6576626273C6E00116F05 /* MR0x01ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
 		DDF6576726273C6E00116F05 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
@@ -944,6 +949,16 @@
 			path = 0x35;
 			sourceTree = "<group>";
 		};
+		DDF5992F28918E410079D26E /* 0x36 */ = {
+			isa = PBXGroup;
+			children = (
+				DDF5993028918E410079D26E /* MR0x36ViewController.h */,
+				DDF5993128918E410079D26E /* MR0x36ViewController.m */,
+				DDF5993228918E410079D26E /* MR0x36ViewController.xib */,
+			);
+			path = 0x36;
+			sourceTree = "<group>";
+		};
 		DDF6576426273C3700116F05 /* 0x01 */ = {
 			isa = PBXGroup;
 			children = (
@@ -1008,6 +1023,7 @@
 				DDF5991D28884D280079D26E /* 0x33 */,
 				DDF59923288ED5D30079D26E /* 0x34 */,
 				DDF59929288EE7970079D26E /* 0x35 */,
+				DDF5992F28918E410079D26E /* 0x36 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -1089,6 +1105,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C958FACD279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh in Resources */,
+				DDF5993428918E410079D26E /* MR0x36ViewController.xib in Resources */,
 				DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */,
 				C958FAAD2797F0E90058D64A /* 2_sampler2DRect_v3.fsh in Resources */,
 				DDF598E628826AD70079D26E /* MR0x30ViewController.xib in Resources */,
@@ -1250,6 +1267,7 @@
 				C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 				DD5FDD042870A22900F93BE9 /* MR0x16VideoRenderer.m in Sources */,
+				DDF5993328918E410079D26E /* MR0x36ViewController.m in Sources */,
 				DD5FDC9528708F3000F93BE9 /* MR0x12VideoRenderer.m in Sources */,
 				DD5FDCC628709B6700F93BE9 /* MR0x145ViewController.m in Sources */,
 				DD5FDCCA28709B6700F93BE9 /* MR0x142VideoRenderer.m in Sources */,
