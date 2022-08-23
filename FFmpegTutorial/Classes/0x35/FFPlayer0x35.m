@@ -21,7 +21,7 @@
 #import "MR0x35VideoRenderer.h"
 #import "MR0x35AudioRenderer.h"
 #import "FFFrameQueue.h"
-#import "FFSyncClock.h"
+#import "FFSyncClock0x35.h"
 #import "MRAbstractLogger.h"
 
 //视频宽；单位像素
@@ -53,8 +53,8 @@ kFFPlayer0x35InfoKey kFFPlayer0x35Duration = @"kFFPlayer0x35Duration";
     //音频渲染
     MR0x35AudioRenderer *_audioRender;
     
-    FFSyncClock *_audioClk;
-    FFSyncClock *_videoClk;
+    FFSyncClock0x35 *_audioClk;
+    FFSyncClock0x35 *_videoClk;
     //视频尺寸
     CGSize _videoSize;
     AVFormatContext * _formatCtx;
@@ -363,8 +363,8 @@ static int decode_interrupt_cb(void *ctx)
 
     _videoFrameQueue = [[FFFrameQueue alloc] init];
     _audioFrameQueue = [[FFFrameQueue alloc] init];
-    _videoClk = [[FFSyncClock alloc] init];
-    _audioClk = [[FFSyncClock alloc] init];
+    _videoClk = [[FFSyncClock0x35 alloc] init];
+    _audioClk = [[FFSyncClock0x35 alloc] init];
     
     _duration = 1.0 * formatCtx->duration / AV_TIME_BASE;
     [dumpDic setObject:@(_duration) forKey:kFFPlayer0x35Duration];
@@ -582,7 +582,20 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma - mark Video
 
-- (double)vp_durationWithP1:(FFFrameItem *)p1 p2:(FFFrameItem *)p2
+- (void)doDisplayVideoFrame:(FFFrameItem *)vp
+{
+    @autoreleasepool {
+        CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:vp.frame opt:NULL];
+        CMSampleBufferRef sample = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
+        CFRetain(sample);
+        mr_sync_main_queue(^{
+            [[self _videoRender] displaySampleBuffer:sample];
+            CFRelease(sample);
+        });
+    }
+}
+
+- (double)vp_duration:(FFFrameItem *)p1 current:(FFFrameItem *)p2
 {
     if (p1 && p2) {
         double duration = p2.pts - p1.pts;
@@ -598,111 +611,43 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (double)compute_target_delay:(double)delay
-{
-    //计算视频时钟和主时钟（音频时钟）的差距
-    if (_audioClk.eof) {
-        return delay;
-    }
-    
-    double diff = [_videoClk getClock] - [_audioClk getClock];
-    
-    /* skip or repeat frame. We take into account the
-       delay to compute the threshold. I still don't know
-       if it is the best guess */
-    double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, FFMIN(AV_SYNC_THRESHOLD_MAX, delay));
-    if (!isnan(diff) && fabs(diff) < 10) {
-        if (diff <= -sync_threshold)
-            delay = FFMAX(0, delay + diff);
-        else if (diff >= sync_threshold && delay > AV_SYNC_FRAMEDUP_THRESHOLD)
-            delay = delay + diff;
-        else if (diff >= sync_threshold)
-            delay = 2 * delay;
-    }
-    av_log(NULL, AV_LOG_INFO, "video: delay=%0.3f A-V=%f\n",
-            delay, -diff);
-    return delay;
-}
-
-- (void)doDisplayVideoFrame:(FFFrameItem *)vp
-{
-    @autoreleasepool {
-        CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:vp.frame opt:NULL];
-        CMSampleBufferRef sample = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
-        CFRetain(sample);
-        mr_sync_main_queue(^{
-            [[self _videoRender] displaySampleBuffer:sample];
-            CFRelease(sample);
-        });
-    }
-}
-
 - (void)video_refresh:(double *)remaining_time
 {
     if ([_videoFrameQueue count] > 0) {
-        //上一帧
-        FFFrameItem *lastvp = [_videoFrameQueue peekLast];
-        
-//        if (self.paused) {
-//            //仍旧显示上一帧
-//            [self doDisplayVideoFrame:lastvp];
-//            return;
-//        }
-        
-        //当前帧
+        if (!_audioClk.eof) {
+            double master_time = [_audioClk getClock];
+            
+            for (;;) {
+                //当前帧
+                FFFrameItem *vp = [_videoFrameQueue peek];
+                FFFrameItem *nextvp = [_videoFrameQueue peekNext];
+                double duration = [self vp_duration:vp current:nextvp];//当前帧显示时长
+                if (vp.pts + duration < master_time) {
+                    [_videoClk setClock:vp.pts];
+                    [_videoFrameQueue pop];
+                    self.videoFrameCount--;
+                } else {
+                    break;
+                }
+            }
+        } else {
+            [_videoFrameQueue pop];
+            self.videoFrameCount--;
+            *remaining_time = 0.04;
+        }
+        double diff = [_audioClk getClock] - [_videoClk getClock];
+        av_log(NULL, AV_LOG_INFO, "A-V=%f\n",diff);
         FFFrameItem *vp = [_videoFrameQueue peek];
-        //计算上一帧的持续时长
-        const double last_duration = [self vp_durationWithP1:lastvp p2:vp];
-        //参考audio clock计算上一帧真正的持续时长
-        const double delay = [self compute_target_delay:last_duration];
-        //相对系统时间
-        const double time = av_gettime_relative()/1000000.0;
-        //时间还没到上一帧结束点
-        if (time < _videoClk.frame_timer + delay) {
-            *remaining_time = FFMIN(_videoClk.frame_timer + delay - time, *remaining_time);
-            //仍旧显示上一帧
-            [self doDisplayVideoFrame:lastvp];
-            return;
-        }
-        
-        _videoClk.frame_timer += delay;
-        if (delay > 0 && time - _videoClk.frame_timer > AV_SYNC_THRESHOLD_MAX) {
-            _videoClk.frame_timer = time;
-        }
-        
+        [self doDisplayVideoFrame:vp];
         [_videoClk setClock:vp.pts];
         
-        //丢帧逻辑
         if ([_videoFrameQueue count] > 1) {
             FFFrameItem *nextvp =[_videoFrameQueue peekNext];
-            double duration = [self vp_durationWithP1:vp p2:nextvp];//当前帧显示时长
-            if(time > _videoClk.frame_timer + duration){//如果系统时间已经大于当前帧，则丢弃当前帧
-                static int frame_drops_late = 0;
-                frame_drops_late++;
-                av_log(NULL, AV_LOG_INFO, "drop video:%4d\n",
-                frame_drops_late);
-                [_videoFrameQueue pop];
-                self.videoFrameCount--;
-                //继续重试
-                [self video_refresh:remaining_time];
-                return;
-            }
-        }
-        
-        [self doDisplayVideoFrame:vp];
-        [_videoFrameQueue pop];
-        self.videoFrameCount--;
-        if ([_videoFrameQueue count] > 1) {
-            FFFrameItem *nextvp = [_videoFrameQueue peek];
-            double duration = [self vp_durationWithP1:vp p2:nextvp];//vp显示时长
-            *remaining_time = FFMIN(duration, *remaining_time);
-        } else {
-            
+            double duration = [self vp_duration:vp current:nextvp];//当前帧显示时长
+            *remaining_time = FFMIN(duration, AV_SYNC_THRESHOLD_MIN);
         }
     } else {
-        //no picture do display ?
-        _videoClk.eof = YES;
-        av_log(NULL, AV_LOG_INFO, "video frame is eof\n");
+        //buffing ?
     }
 }
 

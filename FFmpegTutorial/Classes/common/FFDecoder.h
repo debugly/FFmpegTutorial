@@ -24,6 +24,7 @@ typedef struct AVRational AVRational;
 @required
 ///将解码后的 AVFrame 给 delegater
 - (void)decoder:(FFDecoder *)decoder reveivedAFrame:(AVFrame *)frame;
+- (void)decoderEof:(FFDecoder *)decoder;
 
 @end
 

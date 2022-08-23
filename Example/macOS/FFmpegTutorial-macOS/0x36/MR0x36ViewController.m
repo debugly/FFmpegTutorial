@@ -158,16 +158,20 @@
         });
     };
     
-    player.onError = ^(NSError * _Nonnull e) {
+    player.onEnd = ^(NSError * _Nonnull e) {
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
-        [self alert:[self.player.error localizedDescription]];
+        if (e) {
+            [self alert:[self.player.error localizedDescription]];
+        } else {
+            [self alert:@"播放结束"];
+        }
+        [self.player asyncStop];
         self.player = nil;
         [self.timer invalidate];
         self.timer = nil;
     };
     
-    [player prepareToPlay];
     [player load];
     self.player = player;
 }
@@ -177,7 +181,18 @@
 - (IBAction)go:(NSButton *)sender
 {
     if (self.inputField.stringValue.length > 0) {
-        [self parseURL:self.inputField.stringValue];
+        if (self.player) {
+            if ([self.player isPlaying]) {
+                [sender setTitle:@"播放"];
+                [self.player pause];
+            } else {
+                [sender setTitle:@"暂停"];
+                [self.player play];
+            }
+        } else {
+            [sender setTitle:@"暂停"];
+            [self parseURL:self.inputField.stringValue];
+        }
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }

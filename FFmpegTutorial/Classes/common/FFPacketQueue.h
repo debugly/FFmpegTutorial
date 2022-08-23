@@ -11,6 +11,8 @@ NS_ASSUME_NONNULL_BEGIN
 typedef struct AVPacket AVPacket;
 @interface FFPacketQueue : NSObject
 
+@property (nonatomic, assign) BOOL eof;
+
 - (void)enQueue:(AVPacket *)frame;
 - (NSUInteger)count;
 //wait forever unless cancel.

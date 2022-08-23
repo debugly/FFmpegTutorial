@@ -23,6 +23,8 @@ typedef struct AVFrame AVFrame;
 
 @interface FFFrameQueue : NSObject
 
+@property (nonatomic, assign) BOOL eof;
+
 - (void)push:(FFFrameItem *)frame;
 - (void)pop;
 - (int)count;

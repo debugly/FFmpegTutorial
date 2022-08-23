@@ -139,6 +139,9 @@
             //结束标志，此次并没有获取到frame！
             if (ret == AVERROR_EOF) {
                 avcodec_flush_buffers(avctx);
+                if ([self.delegate respondsToSelector:@selector(decoderEof:)]) {
+                    [self.delegate decoderEof:self];
+                }
                 goto end;
             }
             

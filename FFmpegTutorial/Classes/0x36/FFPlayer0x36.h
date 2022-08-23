@@ -59,17 +59,20 @@ typedef struct AVFrame AVFrame;
 
 @property (nonatomic, copy) void(^onStreamOpened)(NSDictionary *info);
 @property (nonatomic, copy) void(^onReadPkt)(int a,int v);
-@property (nonatomic, copy) void(^onError)(NSError *);
+@property (nonatomic, copy) void(^onEnd)(NSError *);
 //lazy getter
 @property (nonatomic, strong, nullable) NSView<MR0x36VideoRendererProtocol> *videoRender;
-///准备
-- (void)prepareToPlay;
-///读包
+
+//读包
 - (void)load;
-///停止读包
+//停止读包
 - (void)asyncStop;
 //播放
 - (void)play;
+//暂停
+- (void)pause;
+//
+- (BOOL)isPlaying;
 
 @end
 
