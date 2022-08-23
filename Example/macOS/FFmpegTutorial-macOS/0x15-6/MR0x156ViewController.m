@@ -174,6 +174,10 @@
     if (used) {
         [sender setTitle:@"UseGeneral"];
     } else {
+        if ([sender.title isEqualToString:@"UseIOSurface"]) {
+            [self alert:@"无法使用 IOSurface 上传纹理"];
+            return;
+        }
         [sender setTitle:@"UseIOSurface"];
     }
     [self.hud setHudValue:[NSString stringWithFormat:@"%d",used] forKey:@"ioSurface"];

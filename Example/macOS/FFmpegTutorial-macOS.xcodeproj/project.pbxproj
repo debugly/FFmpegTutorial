@@ -101,6 +101,7 @@
 		DDBFF17028B5189600AFCE44 /* MR0x156VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF16D28B5189600AFCE44 /* MR0x156VideoRenderer.m */; };
 		DDBFF17128B5189600AFCE44 /* MR0x156ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF16E28B5189600AFCE44 /* MR0x156ViewController.m */; };
 		DDBFF17328B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */; };
+		DDBFF17528B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17428B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
 		DDE855342871CA490006B140 /* MR0x20ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDE855302871CA490006B140 /* MR0x20ViewController.xib */; };
 		DDE855352871CA490006B140 /* MR0x20VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE855312871CA490006B140 /* MR0x20VideoRenderer.m */; };
@@ -317,6 +318,7 @@
 		DDBFF16D28B5189600AFCE44 /* MR0x156VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156VideoRenderer.m; sourceTree = "<group>"; };
 		DDBFF16E28B5189600AFCE44 /* MR0x156ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156ViewController.m; sourceTree = "<group>"; };
 		DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2DRect_BGR_v3.fsh; sourceTree = "<group>"; };
+		DDBFF17428B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_BGR_v3.fsh; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
 		DDE8552F2871CA490006B140 /* MR0x20ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x20ViewController.h; sourceTree = "<group>"; };
@@ -706,6 +708,7 @@
 		DD91F28C26AC082C00B96334 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
+				DDBFF17428B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh */,
 				DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */,
 				C958FAB72799384A0058D64A /* 1_sampler2DRect_v3.fsh */,
 				DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */,
@@ -1174,6 +1177,7 @@
 				DD5FDCF128709EEC00F93BE9 /* MR0x154ViewController.xib in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
 				DD5FDC8428708C9700F93BE9 /* MR0x14ViewController.xib in Resources */,
+				DDBFF17528B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh in Resources */,
 				DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */,
 				DDBFF17328B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh in Resources */,
 				DD5FDCC528709B6700F93BE9 /* MR0x143ViewController.xib in Resources */,
