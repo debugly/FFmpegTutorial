@@ -187,6 +187,11 @@
             @"class":@"MR0x155ViewController",
         },
         @{
+            @"title":@"0x15-6",
+            @"detail":@"使用 OpenGL 3.3 渲染 BGRA 视频桢",
+            @"class":@"MR0x156ViewController",
+        },
+        @{
             @"title":@"0x16",
             @"detail":@"使用 FBO 离屏渲染截图",
             @"class":@"MR0x16ViewController",

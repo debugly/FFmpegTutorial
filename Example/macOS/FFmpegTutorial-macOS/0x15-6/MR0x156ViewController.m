@@ -1,32 +1,32 @@
 //
-//  MR0x155ViewController.m
+//  MR0x156ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/21.
+//  Created by qianlongxu on 2022/8/23.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x155ViewController.h"
+#import "MR0x156ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
-#import "MR0x155VideoRenderer.h"
+#import "MR0x156VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x155ViewController ()
+@interface MR0x156ViewController ()
 
 @property (strong) FFPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x155VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x156VideoRenderer *videoRenderer;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
 
 @end
 
-@implementation MR0x155ViewController
+@implementation MR0x156ViewController
 
 - (void)dealloc
 {
@@ -120,7 +120,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV21;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_BGRA;
     
     __weakSelf__
     player.onError = ^(NSError * _Nonnull e) {

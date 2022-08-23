@@ -27,7 +27,6 @@ const vec3 offset = vec3(-0.0625, -0.5, -0.5);
 
 void main()
 {
-    
     vec2 recTexCoordX = texCoordVarying * textureDimensionY;
     vec3 tc = texture(SamplerY, recTexCoordX).rgb;
     vec3 yuv = vec3(tc.g, tc.b, tc.r);
