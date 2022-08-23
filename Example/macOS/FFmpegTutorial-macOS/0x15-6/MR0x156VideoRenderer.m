@@ -124,16 +124,17 @@ static GLint attributers[NUM_ATTRIBUTES];
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-#if (GL_TEXTURE_TARGET == GL_TEXTURE_2D)
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_BGR_v3.fsh"];
-#else
+#if USE_RECTANGLE
         self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2DRect_BGR_v3.fsh"];
+#else
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_BGR_v3.fsh"];
 #endif
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
+#if USE_RECTANGLE
             uniforms[DIMENSION_Y] = [self.openglCompiler getUniformLocation:"textureDimensionY"];
-            
+#endif
             attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
@@ -229,15 +230,23 @@ static GLint attributers[NUM_ATTRIBUTES];
     [self resetViewPort];
 }
 
-- (CGLError)doUploadTexture1:(GLenum)gl_target pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer plane_format:(const struct vt_gl_plane_format *)plane_format w:(GLfloat)w h:(GLfloat)h i:(int)i
+- (BOOL)exchangeUploadTextureMethod
 {
-    MR_checkGLError("");
-    glTexImage2D(gl_target, 0, plane_format->gl_internal_format, w, h, 0, plane_format->gl_format, plane_format->gl_type, CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, i));
-    MR_checkGLError("doUploadTexture1 glTexImage2D");
-    return kCGLNoError;
+#if USE_RECTANGLE
+    self.useIOSurface = !self.useIOSurface;
+    return self.useIOSurface;
+#else
+    return self.useIOSurface;
+#endif
 }
 
-- (CGLError)doUploadTexture2:(GLenum)gl_target pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer plane_format:(const struct vt_gl_plane_format *)plane_format w:(GLfloat)w h:(GLfloat)h i:(int)i
+- (BOOL)doUploadTexture1:(GLenum)gl_target pixels:(const GLvoid *)pixels plane_format:(const struct vt_gl_plane_format *)plane_format w:(GLfloat)w h:(GLfloat)h
+{
+    glTexImage2D(gl_target, 0, plane_format->gl_internal_format, w, h, 0, plane_format->gl_format, plane_format->gl_type, pixels);
+    return YES;
+}
+
+- (BOOL)doUploadTexture2:(GLenum)gl_target pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer plane_format:(const struct vt_gl_plane_format *)plane_format w:(GLfloat)w h:(GLfloat)h
 {
     IOSurfaceRef surface = CVPixelBufferGetIOSurface(pixelBuffer);
     
@@ -249,82 +258,51 @@ static GLint attributers[NUM_ATTRIBUTES];
                                           plane_format->gl_format,
                                           plane_format->gl_type,
                                           surface,
-                                          i);
-    return err;
+                                          0);
+    return err == kCGLNoError;
 }
 
-- (BOOL)exchangeUploadTextureMethod
+- (BOOL)uploadTexture:(CVPixelBufferRef)pixelBuffer
 {
-#if USE_RECTANGLE
-    self.useIOSurface = !self.useIOSurface;
-    return self.useIOSurface;
-#else
-    return self.useIOSurface;
-#endif
-}
-
-- (BOOL)uploadTexture:(CVPixelBufferRef _Nonnull)pixelBuffer
-{
-    int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
-     
-    NSAssert(kCVPixelFormatType_32BGRA == type,@"not supported pixel format:%d", type);
-    
-    uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
-    struct vt_format * f = vt_get_gl_format(cvpixfmt);
+    struct vt_format * f = vt_get_gl_format(kCVPixelFormatType_32BGRA);
     
     if (!f) {
-        NSAssert(!f,@"please add pixel format:%d to renderer_pixfmt.h", cvpixfmt);
+        NSAssert(!f,@"please add pixel format:kCVPixelFormatType_32BGRA to renderer_pixfmt.h");
         return NO;
     }
+    struct vt_gl_plane_format plane_format = f->gl[0];
     
-    const bool planar = CVPixelBufferIsPlanar(pixelBuffer);
-    const int planes  = (int)CVPixelBufferGetPlaneCount(pixelBuffer);
-    assert(planar && planes == f->planes || f->planes == 1);
-    BOOL useIOSurface = self.useIOSurface;
-
-    GLenum gl_target = GL_TEXTURE_TARGET;
-    BOOL uploaded = YES;
-    for (int i = 0; i < f->planes; i++) {
-        GLfloat w = (GLfloat)CVPixelBufferGetWidthOfPlane(pixelBuffer, i);
-        GLfloat h = (GLfloat)CVPixelBufferGetHeightOfPlane(pixelBuffer, i);
-        //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
-        if (useIOSurface) {
-            //设置纹理和采样器的对应关系
-            glUniform1i(uniforms[UNIFORM_Y + i], f->planes + i);
-            glActiveTexture(GL_TEXTURE0 + f->planes + i);
-            glBindTexture(gl_target, plane_textures[i] + f->planes);
-        } else {
-            glUniform1i(uniforms[UNIFORM_Y + i], 0 + i);
-            glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(gl_target, plane_textures[i]);
-        }
-        
-        glUniform2f(uniforms[DIMENSION_Y + i], w, h);
-        
-        struct vt_gl_plane_format plane_format = f->gl[i];
-        
-        CGLError err = kCGLNoError;
-        if (useIOSurface) {
-            err = [self doUploadTexture2:gl_target pixelBuffer:pixelBuffer plane_format:&plane_format w:w h:h i:i];
-        } else {
-            CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-            err = [self doUploadTexture1:gl_target pixelBuffer:pixelBuffer plane_format:&plane_format w:w h:h i:i];
-            CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-        }
-        
-        if (err != kCGLNoError) {
-            NSLog(@"error creating IOSurface texture for plane %d: %s\n",
-                   0, CGLErrorString(err));
-            uploaded = NO;
-            break;
-        } else {
-            glTexParameteri(gl_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameterf(gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameterf(gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        }
+    int width = (int)CVPixelBufferGetWidth(pixelBuffer);
+    int height = (int)CVPixelBufferGetHeight(pixelBuffer);
+    
+    glUniform2f(uniforms[DIMENSION_Y], width, height);
+    
+    int offset = self.useIOSurface ? 1 : 0;
+    
+    //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
+    glUniform1i(uniforms[UNIFORM_Y], offset);
+    glActiveTexture(GL_TEXTURE0 + offset);
+    glBindTexture(GL_TEXTURE_TARGET, plane_textures[offset]);
+    
+    BOOL succ;
+    
+    if (self.useIOSurface) {
+        succ = [self doUploadTexture2:GL_TEXTURE_TARGET pixelBuffer:pixelBuffer plane_format:&plane_format w:width h:height];
+    } else {
+        CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
+        void * bgra = CVPixelBufferGetBaseAddress(pixelBuffer);
+        succ = [self doUploadTexture1:GL_TEXTURE_TARGET pixels:bgra plane_format:&plane_format w:width h:height];
+        CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
     }
-    return uploaded;
+    
+    if (succ) {
+        glTexParameteri(GL_TEXTURE_TARGET, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_TARGET, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_TARGET, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_TARGET, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
+    
+    return succ;
 }
 
 - (void)updateOpenGLState:(const size_t)pictureWidth
@@ -418,6 +396,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 }
+
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
 {
     [[self openGLContext] makeCurrentContext];
