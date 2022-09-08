@@ -304,9 +304,9 @@
             @"isSection":@(YES)
         },
         @{
-            @"title":@"0x40",
+            @"title":@"0x50",
             @"detail":@"雪花屏，灰色色阶图，三个小球",
-            @"class":@"MR0x40ViewController",
+            @"class":@"MR0x50ViewController",
         },
         @{
             @"title":@"六、实用工具",

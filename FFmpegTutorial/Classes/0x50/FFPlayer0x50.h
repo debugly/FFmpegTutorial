@@ -1,32 +1,32 @@
 //
-//  FFPlayer0x40.h
+//  FFPlayer0x50.h
 //  FFmpegTutorial
 //
-//  Created by qianlongxu on 2022/1/10.
+//  Created by qianlongxu on 2022/9/8.
 //
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
 #import <CoreMedia/CMSampleBuffer.h>
 
-typedef NS_ENUM(NSUInteger, FFPlayer0x40VideoType) {
-    FFPlayer0x40VideoSnowType,
-    FFPlayer0x40VideoGrayType,
-    FFPlayer0x40Video3ballType,
+typedef NS_ENUM(NSUInteger, FFPlayer0x50VideoType) {
+    FFPlayer0x50VideoSnowType,
+    FFPlayer0x50VideoGrayType,
+    FFPlayer0x50Video3ballType,
 };
 
 NS_ASSUME_NONNULL_BEGIN
-@protocol FFPlayer0x40Delegate <NSObject>
+@protocol FFPlayer0x50Delegate <NSObject>
 
 @optional
 - (void)reveiveFrameToRenderer:(CMSampleBufferRef)img;
 
 @end
 
-@interface FFPlayer0x40 : NSObject
+@interface FFPlayer0x50 : NSObject
 
-@property (nonatomic, weak) id <FFPlayer0x40Delegate> delegate;
-@property (nonatomic, assign) FFPlayer0x40VideoType videoType;
+@property (nonatomic, weak) id <FFPlayer0x50Delegate> delegate;
+@property (nonatomic, assign) FFPlayer0x50VideoType videoType;
 
 - (void)prapareWithSize:(CGSize)size;
 - (void)play;

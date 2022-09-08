@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="MR0x40ViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="MR0x50ViewController">
             <connections>
                 <outlet property="videoRenderer" destination="xd5-Jb-nAf" id="6qt-Ci-VVA"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
@@ -18,7 +18,7 @@
             <rect key="frame" x="0.0" y="0.0" width="672" height="353"/>
             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
             <subviews>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x40VideoRenderer">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x50VideoRenderer">
                     <rect key="frame" x="0.0" y="0.0" width="672" height="353"/>
                     <subviews>
                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dr9-vJ-DtM">

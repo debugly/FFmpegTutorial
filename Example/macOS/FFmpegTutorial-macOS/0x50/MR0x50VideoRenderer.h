@@ -1,5 +1,5 @@
 //
-//  MR0x40VideoRenderer.h
+//  MR0x50VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/10.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x40VideoRenderer : NSView<MRVideoRendererProtocol>
+@interface MR0x50VideoRenderer : NSView<MRVideoRendererProtocol>
 
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)buffer;
 - (void)cleanScreen;

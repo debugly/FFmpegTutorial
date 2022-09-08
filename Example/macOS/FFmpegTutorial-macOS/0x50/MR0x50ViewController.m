@@ -1,24 +1,24 @@
 //
-//  MR0x40ViewController.m
+//  MR0x50ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/10.
+//  Created by qianlongxu on 2022/9/8.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x40ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x40.h>
+#import "MR0x50ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x50.h>
 #import <FFmpegTutorial/MRDispatch.h>
-#import "MR0x40VideoRenderer.h"
+#import "MR0x50VideoRenderer.h"
 
-@interface MR0x40ViewController ()<FFPlayer0x40Delegate>
+@interface MR0x50ViewController ()<FFPlayer0x50Delegate>
 
-@property (strong) FFPlayer0x40 *player;
-@property (weak) IBOutlet MR0x40VideoRenderer *videoRenderer;
+@property (strong) FFPlayer0x50 *player;
+@property (weak) IBOutlet MR0x50VideoRenderer *videoRenderer;
 
 @end
 
-@implementation MR0x40ViewController
+@implementation MR0x50ViewController
 
 - (void)dealloc
 {
@@ -44,8 +44,8 @@
         self.player = nil;
     }
     
-    FFPlayer0x40 *player = [[FFPlayer0x40 alloc] init];
-    player.videoType = FFPlayer0x40Video3ballType;
+    FFPlayer0x50 *player = [[FFPlayer0x50 alloc] init];
+    player.videoType = FFPlayer0x50Video3ballType;
     __weakSelf__
     [player onError:^{
         __strongSelf__

@@ -1,8 +1,8 @@
 //
-//  MR0x40ViewController.h
+//  MR0x50ViewController.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/10.
+//  Created by qianlongxu on 2022/9/8.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 使用 Core Media 渲染视频桢
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x40ViewController : NSViewController
+@interface MR0x50ViewController : NSViewController
 
 @end
 

@@ -1,17 +1,17 @@
 //
-//  FFPlayer0x40.m
+//  FFPlayer0x50.m
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2022/1/10.
 //
 
-#import "FFPlayer0x40.h"
+#import "FFPlayer0x50.h"
 #import "MRThread.h"
 #import "MRConvertUtil.h"
 #import "MRDispatch.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
-@interface FFPlayer0x40 ()
+@interface FFPlayer0x50 ()
 
 //渲染线程
 @property (nonatomic, strong) MRThread *rendererThread;
@@ -23,7 +23,7 @@
 
 @end
 
-@implementation  FFPlayer0x40
+@implementation  FFPlayer0x50
 
 - (void)_stop
 {
@@ -67,7 +67,7 @@
                 
                 CVPixelBufferRef sample = NULL;
                 switch (self.videoType) {
-                    case FFPlayer0x40VideoGrayType:
+                    case FFPlayer0x50VideoGrayType:
                     {
                         static int loopCount = 0;
                         static int op = 1;
@@ -86,12 +86,12 @@
                         sample = [MRConvertUtil grayColorBarPixelBuffer:self.videoSize.width h:self.videoSize.height barNum:barNum opt:self.pixelBufferPool];
                     }
                         break;
-                    case FFPlayer0x40VideoSnowType:
+                    case FFPlayer0x50VideoSnowType:
                     {
                         sample = [MRConvertUtil snowPixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
                     }
                         break;
-                    case FFPlayer0x40Video3ballType:
+                    case FFPlayer0x50Video3ballType:
                     {
                         sample = [MRConvertUtil ball3PixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
                     }

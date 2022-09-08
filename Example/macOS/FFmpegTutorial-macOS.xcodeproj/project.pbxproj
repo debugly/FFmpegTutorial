@@ -102,9 +102,9 @@
 		DDBFF17128B5189600AFCE44 /* MR0x156ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF16E28B5189600AFCE44 /* MR0x156ViewController.m */; };
 		DDBFF17328B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */; };
 		DDBFF17528B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17428B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh */; };
-		DDBFF18528CA300700AFCE44 /* MR0x40VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF18028CA300700AFCE44 /* MR0x40VideoRenderer.m */; };
-		DDBFF18628CA300700AFCE44 /* MR0x40ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF18128CA300700AFCE44 /* MR0x40ViewController.m */; };
-		DDBFF18728CA300700AFCE44 /* MR0x40ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF18228CA300700AFCE44 /* MR0x40ViewController.xib */; };
+		DDBFF18528CA300700AFCE44 /* MR0x50VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF18028CA300700AFCE44 /* MR0x50VideoRenderer.m */; };
+		DDBFF18628CA300700AFCE44 /* MR0x50ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF18128CA300700AFCE44 /* MR0x50ViewController.m */; };
+		DDBFF18728CA300700AFCE44 /* MR0x50ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF18228CA300700AFCE44 /* MR0x50ViewController.xib */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
 		DDE855342871CA490006B140 /* MR0x20ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDE855302871CA490006B140 /* MR0x20ViewController.xib */; };
 		DDE855352871CA490006B140 /* MR0x20VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE855312871CA490006B140 /* MR0x20VideoRenderer.m */; };
@@ -322,11 +322,11 @@
 		DDBFF16E28B5189600AFCE44 /* MR0x156ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x156ViewController.m; sourceTree = "<group>"; };
 		DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2DRect_BGR_v3.fsh; sourceTree = "<group>"; };
 		DDBFF17428B521A700AFCE44 /* 1_sampler2D_BGR_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_BGR_v3.fsh; sourceTree = "<group>"; };
-		DDBFF18028CA300700AFCE44 /* MR0x40VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x40VideoRenderer.m; sourceTree = "<group>"; };
-		DDBFF18128CA300700AFCE44 /* MR0x40ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x40ViewController.m; sourceTree = "<group>"; };
-		DDBFF18228CA300700AFCE44 /* MR0x40ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x40ViewController.xib; sourceTree = "<group>"; };
-		DDBFF18328CA300700AFCE44 /* MR0x40ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x40ViewController.h; sourceTree = "<group>"; };
-		DDBFF18428CA300700AFCE44 /* MR0x40VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x40VideoRenderer.h; sourceTree = "<group>"; };
+		DDBFF18028CA300700AFCE44 /* MR0x50VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x50VideoRenderer.m; sourceTree = "<group>"; };
+		DDBFF18128CA300700AFCE44 /* MR0x50ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x50ViewController.m; sourceTree = "<group>"; };
+		DDBFF18228CA300700AFCE44 /* MR0x50ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x50ViewController.xib; sourceTree = "<group>"; };
+		DDBFF18328CA300700AFCE44 /* MR0x50ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x50ViewController.h; sourceTree = "<group>"; };
+		DDBFF18428CA300700AFCE44 /* MR0x50VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x50VideoRenderer.h; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
 		DDE8552F2871CA490006B140 /* MR0x20ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x20ViewController.h; sourceTree = "<group>"; };
@@ -806,16 +806,16 @@
 			path = "FFmpegTutorial-macOS/0x15-6";
 			sourceTree = SOURCE_ROOT;
 		};
-		DDBFF17F28CA300700AFCE44 /* 0x40 */ = {
+		DDBFF17F28CA300700AFCE44 /* 0x50 */ = {
 			isa = PBXGroup;
 			children = (
-				DDBFF18428CA300700AFCE44 /* MR0x40VideoRenderer.h */,
-				DDBFF18028CA300700AFCE44 /* MR0x40VideoRenderer.m */,
-				DDBFF18328CA300700AFCE44 /* MR0x40ViewController.h */,
-				DDBFF18128CA300700AFCE44 /* MR0x40ViewController.m */,
-				DDBFF18228CA300700AFCE44 /* MR0x40ViewController.xib */,
+				DDBFF18428CA300700AFCE44 /* MR0x50VideoRenderer.h */,
+				DDBFF18028CA300700AFCE44 /* MR0x50VideoRenderer.m */,
+				DDBFF18328CA300700AFCE44 /* MR0x50ViewController.h */,
+				DDBFF18128CA300700AFCE44 /* MR0x50ViewController.m */,
+				DDBFF18228CA300700AFCE44 /* MR0x50ViewController.xib */,
 			);
-			path = 0x40;
+			path = 0x50;
 			sourceTree = "<group>";
 		};
 		DDE70E462584AC2900580A80 /* TextFieldCell */ = {
@@ -1072,7 +1072,7 @@
 				DDF59923288ED5D30079D26E /* 0x34 */,
 				DDF59929288EE7970079D26E /* 0x35 */,
 				DDF5992F28918E410079D26E /* 0x36 */,
-				DDBFF17F28CA300700AFCE44 /* 0x40 */,
+				DDBFF17F28CA300700AFCE44 /* 0x50 */,
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
 				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
@@ -1169,7 +1169,7 @@
 				DD5FDCFA28709EEC00F93BE9 /* MR0x155ViewController.xib in Resources */,
 				DD5FDCF328709EEC00F93BE9 /* MR0x153ViewController.xib in Resources */,
 				DD5FDCC728709B6700F93BE9 /* MR0x145ViewController.xib in Resources */,
-				DDBFF18728CA300700AFCE44 /* MR0x40ViewController.xib in Resources */,
+				DDBFF18728CA300700AFCE44 /* MR0x50ViewController.xib in Resources */,
 				C960C928287BC9D8005365CA /* MR0x23ViewController.xib in Resources */,
 				DD91F31C26B6E99800B96334 /* 3_sampler2DRect.fsh in Resources */,
 				DDE855342871CA490006B140 /* MR0x20ViewController.xib in Resources */,
@@ -1312,7 +1312,7 @@
 				DDF599022882EA3C0079D26E /* MR0x31ViewController.m in Sources */,
 				DD5FDCCE28709B6700F93BE9 /* MR0x144VideoRenderer.m in Sources */,
 				DD56CB0228674FA00046C28A /* MR0x05ViewController.m in Sources */,
-				DDBFF18528CA300700AFCE44 /* MR0x40VideoRenderer.m in Sources */,
+				DDBFF18528CA300700AFCE44 /* MR0x50VideoRenderer.m in Sources */,
 				DDF5992D288EE7970079D26E /* MR0x35ViewController.m in Sources */,
 				DD5FDC8628708C9700F93BE9 /* MR0x14ViewController.m in Sources */,
 				DD7ABB78287B0E4100622984 /* MR0x22AudioFrameQueue.m in Sources */,
@@ -1328,7 +1328,7 @@
 				DD5FDCC628709B6700F93BE9 /* MR0x145ViewController.m in Sources */,
 				DD5FDCCA28709B6700F93BE9 /* MR0x142VideoRenderer.m in Sources */,
 				DD7ABB74287B0D3100622984 /* MR0x22ViewController.m in Sources */,
-				DDBFF18628CA300700AFCE44 /* MR0x40ViewController.m in Sources */,
+				DDBFF18628CA300700AFCE44 /* MR0x50ViewController.m in Sources */,
 				DDF5991728883D3C0079D26E /* MR0x32AudioQueueRenderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
