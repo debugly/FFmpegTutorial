@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
+#import "MRPlatform.h"
 #import "MR0x35VideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
@@ -61,7 +62,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) void(^onReadPkt)(int a,int v);
 @property (nonatomic, copy) void(^onError)(NSError *);
 //lazy getter
-@property (nonatomic, strong, nullable) NSView<MR0x35VideoRendererProtocol> *videoRender;
+@property (nonatomic, strong, nullable) UIView<MR0x35VideoRendererProtocol> *videoRender;
 ///准备
 - (void)prepareToPlay;
 ///读包

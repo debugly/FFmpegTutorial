@@ -288,7 +288,6 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         return nil;
     }
     
-    const int linesize = 32;//FFmpeg 解码数据对齐是32，这里期望CVPixelBuffer也能使用32对齐，但实际来看却是64！
     NSMutableDictionary*attributes = [NSMutableDictionary dictionary];
     [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
     [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
@@ -837,7 +836,10 @@ static void fillGrayBar(int barnum,size_t bytesPerRow,unsigned char *y,unsigned 
     CGContextRef context = CGBitmapContextCreate(pxdata, width, height, 8, CVPixelBufferGetBytesPerRow(pxbuffer), rgbColorSpace, kCGImageAlphaPremultipliedFirst);
     NSParameterAssert(context);
 
-    CGColorRef backgroundColor = CGColorCreateGenericRGB(1, 1, 1, 1);
+    const CGFloat components[4] = {1, 1, 1, 1};
+    CGColorRef backgroundColor = CGColorCreate(rgbColorSpace, components);
+    CGColorSpaceRelease(rgbColorSpace);
+    
     CGContextSetFillColorWithColor(context, backgroundColor);
     CGContextFillRect(context, CGRectMake(0, 0, width, height));
     CGColorRelease(backgroundColor);
@@ -850,7 +852,8 @@ static void fillGrayBar(int barnum,size_t bytesPerRow,unsigned char *y,unsigned 
      */
     
     int delta = 50;
-    double time = 1.0 * mach_absolute_time() / NSEC_PER_SEC / delta;
+    
+    double time = 1.0 * CFAbsoluteTimeGetCurrent() / NSEC_PER_SEC / delta;
     
     double period = 4.0;
     double fraction = sin(2 * M_PI * time / period) / 2 + 0.5;
@@ -859,7 +862,11 @@ static void fillGrayBar(int barnum,size_t bytesPerRow,unsigned char *y,unsigned 
     rawBoxColorHSV.s = 0.5;
     rawBoxColorHSV.v = 1.0;
     rgb rawBoxColorRGB = hsv2rgb(rawBoxColorHSV);
-    CGColorRef boxColor = CGColorCreateGenericRGB(rawBoxColorRGB.r, rawBoxColorRGB.g, rawBoxColorRGB.b, 1);
+    
+    CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    const CGFloat components2[4] = {rawBoxColorRGB.r, rawBoxColorRGB.g, rawBoxColorRGB.b, 1};
+    CGColorRef boxColor = CGColorCreate(colorSpace, components2);
+    CGColorSpaceRelease(colorSpace);
     CGContextSetFillColorWithColor(context, boxColor);
     for (int i = 0; i < 3; i++) {
         CGContextSaveGState(context);

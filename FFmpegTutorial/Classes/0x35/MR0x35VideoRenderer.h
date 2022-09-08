@@ -6,13 +6,14 @@
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 #import <CoreMedia/CMSampleBuffer.h>
 #import "MR0x35VideoRendererProtocol.h"
+#import "MRPlatform.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x35VideoRenderer : NSView
+@interface MR0x35VideoRenderer : UIView
+
 - (void)displaySampleBuffer:(CMSampleBufferRef)buffer;
 - (void)cleanScreen;
 

@@ -732,7 +732,7 @@ static int decode_interrupt_cb(void *ctx)
     return (MR0x33VideoRenderer *)_videoRender;
 }
 
-- (NSView *)videoRender
+- (UIView *)videoRender
 {
     if (!_videoRender) {
         MR0x33VideoRenderer *videoRender = [[MR0x33VideoRenderer alloc] init];

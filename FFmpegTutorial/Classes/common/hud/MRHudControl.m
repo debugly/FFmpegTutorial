@@ -44,7 +44,7 @@ typedef UITableView HudContentView;
 //    self = [super initWithFrame:frameRect];
 //    if (self) {
 //        [self setWantsLayer:YES];
-//        self.layer.backgroundColor = [[NSColor blueColor] CGColor];
+//        self.layer.backgroundColor = [[UIColor blueColor] CGColor];
 //    }
 //    return self;
 //}
@@ -117,7 +117,7 @@ typedef UITableView HudContentView;
     scrollView.drawsBackground = NO;
     
     NSTableView *tableView = [[NSTableView alloc] initWithFrame:self.view.bounds];
-    tableView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
+    tableView.autoresizingMask = UIViewHeightSizable | UIViewWidthSizable;
     tableView.intercellSpacing = NSMakeSize(0, 0);
     tableView.delegate = self;
     tableView.dataSource = self;
@@ -125,7 +125,7 @@ typedef UITableView HudContentView;
     tableView.headerView = nil;
     tableView.usesAlternatingRowBackgroundColors = NO;
     tableView.rowSizeStyle = NSTableViewRowSizeStyleCustom;
-    tableView.backgroundColor = [NSColor colorWithWhite:5/255.0 alpha:0.5];
+    tableView.backgroundColor = [UIColor colorWithWhite:5/255.0 alpha:0.5];
     tableView.rowHeight = 25;
     scrollView.contentView.documentView = tableView;
     return scrollView;
@@ -141,7 +141,7 @@ typedef UITableView HudContentView;
     return [self.hudDataArray count];
 }
 
-- (nullable NSView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row
+- (nullable UIView *)tableView:(NSTableView *)tableView viewForTableColumn:(nullable NSTableColumn *)tableColumn row:(NSInteger)row
 {
     return nil;
 }

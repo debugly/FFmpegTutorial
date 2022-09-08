@@ -14,7 +14,7 @@
 - (CALayer *)makeBackingLayer
 {
     AVSampleBufferDisplayLayer *layer = [[AVSampleBufferDisplayLayer alloc] init];
-    layer.backgroundColor = [[NSColor blackColor] CGColor];
+    layer.backgroundColor = [[UIColor blackColor] CGColor];
     return layer;
 }
 
