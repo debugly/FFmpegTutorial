@@ -20,6 +20,7 @@
         @"rm",
         @"rmvb",
         @"mpg",
+        @"m2v",
         @"mpeg",
         @"3gp",
         @"mov",

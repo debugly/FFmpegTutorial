@@ -8,6 +8,7 @@
 
 #import "MR0x40ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x40.h>
+#import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x40VideoRenderer.h"
 
 @interface MR0x40ViewController ()<FFPlayer0x40Delegate>
@@ -30,7 +31,7 @@
 - (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
 {
     CFRetain(sampleBuffer);
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
         CFRelease(sampleBuffer);
     });
@@ -44,7 +45,7 @@
     }
     
     FFPlayer0x40 *player = [[FFPlayer0x40 alloc] init];
-    
+    player.videoType = FFPlayer0x40Video3ballType;
     __weakSelf__
     [player onError:^{
         __strongSelf__

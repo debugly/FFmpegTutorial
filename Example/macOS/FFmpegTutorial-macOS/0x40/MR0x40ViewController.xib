@@ -22,12 +22,13 @@
                     <rect key="frame" x="0.0" y="0.0" width="672" height="353"/>
                     <subviews>
                         <segmentedControl verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="Dr9-vJ-DtM">
-                            <rect key="frame" x="240" y="310" width="193" height="24"/>
+                            <rect key="frame" x="213" y="310" width="246" height="24"/>
                             <segmentedCell key="cell" borderStyle="border" alignment="left" style="rounded" trackingMode="selectOne" id="drE-RW-2ie">
                                 <font key="font" metaFont="system"/>
                                 <segments>
-                                    <segment label="雪花屏" width="92" selected="YES"/>
+                                    <segment label="雪花屏" width="92"/>
                                     <segment label="灰色色阶图" width="92" tag="1"/>
+                                    <segment label="三个球" selected="YES" tag="2"/>
                                 </segments>
                             </segmentedCell>
                             <connections>

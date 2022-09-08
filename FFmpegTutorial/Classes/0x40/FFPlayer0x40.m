@@ -8,7 +8,7 @@
 #import "FFPlayer0x40.h"
 #import "MRThread.h"
 #import "MRConvertUtil.h"
-#import "FFPlayerInternalHeader.h"
+#import "MRDispatch.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
 @interface FFPlayer0x40 ()
@@ -69,12 +69,31 @@
                 switch (self.videoType) {
                     case FFPlayer0x40VideoGrayType:
                     {
-                        sample = [MRConvertUtil grayColorBarPixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
+                        static int loopCount = 0;
+                        static int op = 1;
+                        static int barNum = 1;
+                        int delta = 20;
+                        
+                        loopCount++;
+                        if (loopCount % delta == 0) {
+                            loopCount = 0;
+                            barNum += op;
+                            if (barNum >= 500 || barNum <= 0) {
+                                op *= -1;
+                                barNum += op;
+                            }
+                        }
+                        sample = [MRConvertUtil grayColorBarPixelBuffer:self.videoSize.width h:self.videoSize.height barNum:barNum opt:self.pixelBufferPool];
                     }
                         break;
                     case FFPlayer0x40VideoSnowType:
                     {
                         sample = [MRConvertUtil snowPixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
+                    }
+                        break;
+                    case FFPlayer0x40Video3ballType:
+                    {
+                        sample = [MRConvertUtil ball3PixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
                     }
                         break;
                 }
@@ -87,7 +106,6 @@
         
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
         int cost = (end - begin) * 1000;
-        av_log(NULL, AV_LOG_DEBUG, "render video frame cost:%dms\n", cost);
         int delay = 40 - cost;
         if (delay > 0) {
             mr_msleep(delay);
@@ -104,7 +122,7 @@
 
 - (void)performErrorResultOnMainThread
 {
-    MR_sync_main_queue(^{
+    mr_sync_main_queue(^{
         if (self.onErrorBlock) {
             self.onErrorBlock();
         }

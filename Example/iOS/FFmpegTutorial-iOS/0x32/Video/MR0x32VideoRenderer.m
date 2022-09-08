@@ -554,7 +554,7 @@ static const GLfloat kColorConversion601FullRange[] = {
 - (UIImage *)saveSnapshort
 {
     GLuint render = _colorBufferHandle;
-    UIImage *img = [MRConvertUtil snapshot:render sacle:self.contentScaleFactor];
+    UIImage *img = [MRConvertUtil snapshot:render scale:self.contentScaleFactor];
     return img;
 }
 
