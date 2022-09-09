@@ -5,7 +5,7 @@
 //  Created by qianlongxu on 09/09/2022.
 //  Copyright (c) 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-// 查看视频流信息
+// 封装NSThread，方便后续调用
 
 #import <UIKit/UIKit.h>
 
