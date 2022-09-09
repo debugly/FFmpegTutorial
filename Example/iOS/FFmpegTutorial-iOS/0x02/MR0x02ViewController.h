@@ -2,8 +2,8 @@
 //  MR0x02ViewController.h
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/4/25.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 09/09/2022.
+//  Copyright (c) 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 查看视频流信息
 

@@ -26,6 +26,8 @@
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
 		DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */; };
 		DDBFF18D28CA371A00AFCE44 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF18C28CA371A00AFCE44 /* MR0x01ViewController.xib */; };
+		DDBFF19128CB7F2E00AFCE44 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF19028CB7F2E00AFCE44 /* MR0x02ViewController.m */; };
+		DDBFF19328CB802600AFCE44 /* MR0x02ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF19228CB802600AFCE44 /* MR0x02ViewController.xib */; };
 		DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */; };
 		DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */; };
 /* End PBXBuildFile section */
@@ -69,6 +71,9 @@
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceWrapper.swift; sourceTree = "<group>"; };
 		DDBFF18C28CA371A00AFCE44 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
+		DDBFF18F28CB7F2E00AFCE44 /* MR0x02ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x02ViewController.h; sourceTree = "<group>"; };
+		DDBFF19028CB7F2E00AFCE44 /* MR0x02ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x02ViewController.m; sourceTree = "<group>"; };
+		DDBFF19228CB802600AFCE44 /* MR0x02ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x02ViewController.xib; sourceTree = "<group>"; };
 		DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRRWeakProxy.m; sourceTree = "<group>"; };
 		DDF9BFF9259DC06A00B1D3EC /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRRWeakProxy.h; sourceTree = "<group>"; };
 		DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
@@ -137,6 +142,7 @@
 			isa = PBXGroup;
 			children = (
 				DDFA39A424B872DB005C6430 /* 0x01 */,
+				DDBFF18E28CB7F2E00AFCE44 /* 0x02 */,
 				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -192,6 +198,16 @@
 				8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DDBFF18E28CB7F2E00AFCE44 /* 0x02 */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFF18F28CB7F2E00AFCE44 /* MR0x02ViewController.h */,
+				DDBFF19028CB7F2E00AFCE44 /* MR0x02ViewController.m */,
+				DDBFF19228CB802600AFCE44 /* MR0x02ViewController.xib */,
+			);
+			path = 0x02;
 			sourceTree = "<group>";
 		};
 		DDFA39A424B872DB005C6430 /* 0x01 */ = {
@@ -288,6 +304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				DDBFF19328CB802600AFCE44 /* MR0x02ViewController.xib in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				DDBFF18D28CA371A00AFCE44 /* MR0x01ViewController.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
@@ -354,6 +371,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				DDBFF19128CB7F2E00AFCE44 /* MR0x02ViewController.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */,
 				DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */,
