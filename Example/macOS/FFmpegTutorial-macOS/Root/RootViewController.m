@@ -397,7 +397,6 @@
     if ([dic[@"isSection"] boolValue]) {
         return NO;
     }
-    NSString *clazz = info[@"class"];
     Class clazz = NSClassFromString(dic[@"class"]);
     if (clazz) {
         NSViewController *vc = [[clazz alloc] init];

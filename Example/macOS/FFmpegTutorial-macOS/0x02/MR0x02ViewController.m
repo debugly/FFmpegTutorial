@@ -12,6 +12,9 @@
 #import "MRUtil.h"
 
 @interface MR0x02ViewController ()
+{
+    NSMutableArray* _msg_buff;
+}
 
 @property (assign) IBOutlet NSTextView *textView;
 @property (strong) NSMutableArray *array;
@@ -25,7 +28,9 @@
 {
     [super viewDidLoad];
     self.lock = [[NSLock alloc] init];
+    _msg_buff = [NSMutableArray array];
 }
+
 - (void)doCancel:(NSMutableArray *)arr
 {
     if ([arr count] == 0) {
@@ -40,24 +45,18 @@
     
     NSString *msg = nil;
     [self.lock lock];
-    msg = [msg_buff componentsJoinedByString:@"\n"];
+    msg = [_msg_buff componentsJoinedByString:@"\n"];
     [self.lock unlock];
     self.textView.string = msg;
 }
 
-static NSMutableArray* msg_buff = nil;
-
 - (void)appendMsg:(NSString *)msg
 {
     [self.lock lock];
-    if (msg_buff == nil) {
-        msg_buff = [NSMutableArray array];
+    if ([_msg_buff count] > 25) {
+        [_msg_buff removeObjectAtIndex:0];
     }
-    
-    if ([msg_buff count] > 25) {
-        [msg_buff removeObjectAtIndex:0];
-    }
-    [msg_buff addObject:msg];
+    [_msg_buff addObject:msg];
     [self.lock unlock];
 }
 

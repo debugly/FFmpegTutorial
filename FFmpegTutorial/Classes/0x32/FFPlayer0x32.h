@@ -7,6 +7,7 @@
 
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
+#import "MRPlatform.h"
 #import "MR0x32VideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN

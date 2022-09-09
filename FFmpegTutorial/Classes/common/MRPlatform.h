@@ -9,11 +9,9 @@
 
 #if TARGET_OS_OSX
 #import <AppKit/AppKit.h>
-typedef UIView NSView
-typedef UIColor NSColor
-typedef UIFont NSFont
-#else
-
+typedef NSView UIView;
+typedef NSColor UIColor;
+typedef NSFont UIFont;
 #endif
 
 NS_ASSUME_NONNULL_BEGIN

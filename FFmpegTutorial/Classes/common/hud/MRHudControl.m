@@ -9,6 +9,7 @@
 #import "MRHudRowView.h"
 typedef NSScrollView HudContentView;
 typedef NSTableView UITableView;
+typedef NSColor UIColor;
 #else
 #import "MRHudViewCell.h"
 typedef UITableView HudContentView;
@@ -117,7 +118,7 @@ typedef UITableView HudContentView;
     scrollView.drawsBackground = NO;
     
     NSTableView *tableView = [[NSTableView alloc] initWithFrame:self.view.bounds];
-    tableView.autoresizingMask = UIViewHeightSizable | UIViewWidthSizable;
+    tableView.autoresizingMask = NSViewHeightSizable | NSViewWidthSizable;
     tableView.intercellSpacing = NSMakeSize(0, 0);
     tableView.delegate = self;
     tableView.dataSource = self;

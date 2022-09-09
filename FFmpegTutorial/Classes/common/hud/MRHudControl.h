@@ -7,7 +7,7 @@
 #import <TargetConditionals.h>
 #if TARGET_OS_OSX
 #import <AppKit/AppKit.h>
-typedef UIView  UIView;
+typedef NSView UIView;
 #else
 #import <UIKit/UIKit.h>
 #endif
