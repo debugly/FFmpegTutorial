@@ -8,7 +8,6 @@
 
 #import "MR0x10ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
-#import "MRRWeakProxy.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 
 @interface MR0x10ViewController ()

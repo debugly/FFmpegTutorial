@@ -8,7 +8,6 @@
 
 #import "MR0x05ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x05.h>
-#import "MRRWeakProxy.h"
 
 @interface MR0x05ViewController ()
 

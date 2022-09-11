@@ -757,8 +757,8 @@
 			isa = PBXGroup;
 			children = (
 				DDAD7FE327FF3EBE00E947BB /* MR0x02ViewController.h */,
-				DDAD7FE427FF3EBE00E947BB /* MR0x02ViewController.xib */,
 				DDAD7FE527FF3EBE00E947BB /* MR0x02ViewController.m */,
+				DDAD7FE427FF3EBE00E947BB /* MR0x02ViewController.xib */,
 			);
 			path = 0x02;
 			sourceTree = "<group>";
