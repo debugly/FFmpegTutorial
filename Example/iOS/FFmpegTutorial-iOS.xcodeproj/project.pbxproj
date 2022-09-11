@@ -34,6 +34,8 @@
 		DDBFF1A028CDB93200AFCE44 /* MR0x04ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF19E28CDB93200AFCE44 /* MR0x04ViewController.xib */; };
 		DDBFF1A528CDBFC000AFCE44 /* MR0x05ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF1A328CDBFC000AFCE44 /* MR0x05ViewController.m */; };
 		DDBFF1A628CDBFC000AFCE44 /* MR0x05ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF1A428CDBFC000AFCE44 /* MR0x05ViewController.xib */; };
+		DDBFF1AB28CDC26500AFCE44 /* MR0x06ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF1A828CDC26500AFCE44 /* MR0x06ViewController.m */; };
+		DDBFF1AC28CDC26500AFCE44 /* MR0x06ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF1A928CDC26500AFCE44 /* MR0x06ViewController.xib */; };
 		DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */; };
 		DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */; };
 /* End PBXBuildFile section */
@@ -89,6 +91,9 @@
 		DDBFF1A228CDBFC000AFCE44 /* MR0x05ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x05ViewController.h; sourceTree = "<group>"; };
 		DDBFF1A328CDBFC000AFCE44 /* MR0x05ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x05ViewController.m; sourceTree = "<group>"; };
 		DDBFF1A428CDBFC000AFCE44 /* MR0x05ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x05ViewController.xib; sourceTree = "<group>"; };
+		DDBFF1A828CDC26500AFCE44 /* MR0x06ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x06ViewController.m; sourceTree = "<group>"; };
+		DDBFF1A928CDC26500AFCE44 /* MR0x06ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x06ViewController.xib; sourceTree = "<group>"; };
+		DDBFF1AA28CDC26500AFCE44 /* MR0x06ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x06ViewController.h; sourceTree = "<group>"; };
 		DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRRWeakProxy.m; sourceTree = "<group>"; };
 		DDF9BFF9259DC06A00B1D3EC /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRRWeakProxy.h; sourceTree = "<group>"; };
 		DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
@@ -161,6 +166,7 @@
 				DDBFF19528CB863900AFCE44 /* 0x03 */,
 				DDBFF19B28CDB93200AFCE44 /* 0x04 */,
 				DDBFF1A128CDBFC000AFCE44 /* 0x05 */,
+				DDBFF1A728CDC26500AFCE44 /* 0x06 */,
 				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -256,6 +262,16 @@
 				DDBFF1A428CDBFC000AFCE44 /* MR0x05ViewController.xib */,
 			);
 			path = 0x05;
+			sourceTree = "<group>";
+		};
+		DDBFF1A728CDC26500AFCE44 /* 0x06 */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFF1AA28CDC26500AFCE44 /* MR0x06ViewController.h */,
+				DDBFF1A828CDC26500AFCE44 /* MR0x06ViewController.m */,
+				DDBFF1A928CDC26500AFCE44 /* MR0x06ViewController.xib */,
+			);
+			path = 0x06;
 			sourceTree = "<group>";
 		};
 		DDFA39A424B872DB005C6430 /* 0x01 */ = {
@@ -358,6 +374,7 @@
 				DDBFF19A28CB865600AFCE44 /* MR0x03ViewController.xib in Resources */,
 				DDBFF18D28CA371A00AFCE44 /* MR0x01ViewController.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				DDBFF1AC28CDC26500AFCE44 /* MR0x06ViewController.xib in Resources */,
 				DDBFF1A628CDBFC000AFCE44 /* MR0x05ViewController.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 			);
@@ -426,6 +443,7 @@
 				DDBFF19128CB7F2E00AFCE44 /* MR0x02ViewController.m in Sources */,
 				DDBFF19928CB865600AFCE44 /* MR0x03ViewController.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
+				DDBFF1AB28CDC26500AFCE44 /* MR0x06ViewController.m in Sources */,
 				DDBFF1A528CDBFC000AFCE44 /* MR0x05ViewController.m in Sources */,
 				DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */,
 				DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */,
