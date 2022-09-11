@@ -1,18 +1,23 @@
 //
-//  MR0x10ViewController.m
+//  MR0x11ViewController.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/11.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x10ViewController.h"
+#import "MR0x11ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
+#import "MR0x11VideoRenderer.h"
+#import "MRRWeakProxy.h"
 
-@interface MR0x10ViewController ()
+@interface MR0x11ViewController ()
 
+@property (weak, nonatomic) IBOutlet MR0x11VideoRenderer *videoRenderer;
 @property (weak, nonatomic) IBOutlet UITextField *input;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
@@ -22,10 +27,44 @@
 @property (weak, nonatomic) IBOutlet UILabel *infoLb;
 
 @property (strong) FFPlayer0x10 *player;
+@property (strong) MRHudControl *hud;
+@property (weak) NSTimer *timer;
 
 @end
 
-@implementation MR0x10ViewController
+@implementation MR0x11ViewController
+
+- (void)dealloc
+{
+    if (_timer) {
+        [_timer invalidate];
+        _timer = nil;
+    }
+}
+
+- (void)prepareTickTimerIfNeed
+{
+    if (self.timer && ![self.timer isValid]) {
+        return;
+    }
+    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
+    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
+    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
+    self.timer = timer;
+}
+
+- (void)onTimer:(NSTimer *)sender
+{
+    [self.indicator stopAnimating];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
+
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
+}
 
 - (void)resetUI {
     self.audioPktLb.text = nil;
@@ -40,8 +79,33 @@
     // Do any additional setup after loading the view from its nib.
     self.input.text = KTestVideoURL1;
     [self resetUI];
+    
+    self.hud = [[MRHudControl alloc] init];
+    UIView *hudView = [self.hud contentView];
+    
+    [self.view addSubview:hudView];
+    CGRect rect = self.view.bounds;
+    CGFloat viewWidth = CGRectGetWidth(rect);
+    CGFloat screenWidth = [[UIScreen mainScreen] bounds].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.y = 120;
+    rect.origin.x = viewWidth - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
 }
 
+- (void)displayVideoFrame:(AVFrame *)frame
+{
+    CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
+    [self.videoRenderer dispalyCGImage:img];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:animated];
+    [self.player asyncStop];
+}
+animated
 - (void)parseURL:(NSString *)url
 {
     [self.indicator startAnimating];
@@ -60,6 +124,8 @@
         NSLog(@"%@",err);
         __strongSelf__
         mr_async_main_queue(^{
+            [self.timer invalidate];
+            self.timer = nil;
             [self.indicator stopAnimating];
             self.player = nil;
         });
@@ -78,6 +144,10 @@
         mr_async_main_queue(^{
             //video
             if (type == 1) {
+                mr_msleep(40);
+                @autoreleasepool {
+                    [self displayVideoFrame:frame];
+                }
                 self.videoFrameLb.text = [NSString stringWithFormat:@"%d",serial];
                 self.infoLb.text = [NSString stringWithFormat:@"%d,%lld",frame->format,frame->pts];
             }
@@ -91,10 +161,10 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    [self prepareTickTimerIfNeed];
 }
 
 - (IBAction)go:(UIButton *)sender {
-    
     if (self.input.text.length > 0) {
         [self resetUI];
         [self parseURL:self.input.text];

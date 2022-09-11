@@ -176,7 +176,7 @@ typedef UITableView HudContentView;
     tableView.delegate = self;
     tableView.backgroundColor = [[UIColor alloc] initWithRed:.5f green:.5f blue:.5f alpha:.5f];
     tableView.separatorStyle  = UITableViewCellSeparatorStyleNone;
-    
+    tableView.allowsSelection = NO;
     return tableView;
 }
 

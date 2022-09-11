@@ -38,6 +38,9 @@
 		DDBFF1AC28CDC26500AFCE44 /* MR0x06ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF1A928CDC26500AFCE44 /* MR0x06ViewController.xib */; };
 		DDBFF1B128CDC47200AFCE44 /* MR0x10ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF1AE28CDC47200AFCE44 /* MR0x10ViewController.xib */; };
 		DDBFF1B228CDC47200AFCE44 /* MR0x10ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF1AF28CDC47200AFCE44 /* MR0x10ViewController.m */; };
+		DDBFF1B928CDC7D500AFCE44 /* MR0x11ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF1B428CDC7D500AFCE44 /* MR0x11ViewController.xib */; };
+		DDBFF1BA28CDC7D500AFCE44 /* MR0x11ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF1B528CDC7D500AFCE44 /* MR0x11ViewController.m */; };
+		DDBFF1BB28CDC7D500AFCE44 /* MR0x11VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF1B828CDC7D500AFCE44 /* MR0x11VideoRenderer.m */; };
 		DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */; };
 		DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */; };
 /* End PBXBuildFile section */
@@ -99,6 +102,11 @@
 		DDBFF1AE28CDC47200AFCE44 /* MR0x10ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x10ViewController.xib; sourceTree = "<group>"; };
 		DDBFF1AF28CDC47200AFCE44 /* MR0x10ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x10ViewController.m; sourceTree = "<group>"; };
 		DDBFF1B028CDC47200AFCE44 /* MR0x10ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x10ViewController.h; sourceTree = "<group>"; };
+		DDBFF1B428CDC7D500AFCE44 /* MR0x11ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x11ViewController.xib; sourceTree = "<group>"; };
+		DDBFF1B528CDC7D500AFCE44 /* MR0x11ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x11ViewController.m; sourceTree = "<group>"; };
+		DDBFF1B628CDC7D500AFCE44 /* MR0x11VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x11VideoRenderer.h; sourceTree = "<group>"; };
+		DDBFF1B728CDC7D500AFCE44 /* MR0x11ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x11ViewController.h; sourceTree = "<group>"; };
+		DDBFF1B828CDC7D500AFCE44 /* MR0x11VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x11VideoRenderer.m; sourceTree = "<group>"; };
 		DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRRWeakProxy.m; sourceTree = "<group>"; };
 		DDF9BFF9259DC06A00B1D3EC /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRRWeakProxy.h; sourceTree = "<group>"; };
 		DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x01ViewController.m; sourceTree = "<group>"; };
@@ -173,6 +181,7 @@
 				DDBFF1A128CDBFC000AFCE44 /* 0x05 */,
 				DDBFF1A728CDC26500AFCE44 /* 0x06 */,
 				DDBFF1AD28CDC47200AFCE44 /* 0x10 */,
+				DDBFF1B328CDC7D500AFCE44 /* 0x11 */,
 				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
 				6003F5A8195388D20070C39A /* Images.xcassets */,
 				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
@@ -290,6 +299,18 @@
 			path = 0x10;
 			sourceTree = "<group>";
 		};
+		DDBFF1B328CDC7D500AFCE44 /* 0x11 */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFF1B628CDC7D500AFCE44 /* MR0x11VideoRenderer.h */,
+				DDBFF1B828CDC7D500AFCE44 /* MR0x11VideoRenderer.m */,
+				DDBFF1B728CDC7D500AFCE44 /* MR0x11ViewController.h */,
+				DDBFF1B528CDC7D500AFCE44 /* MR0x11ViewController.m */,
+				DDBFF1B428CDC7D500AFCE44 /* MR0x11ViewController.xib */,
+			);
+			path = 0x11;
+			sourceTree = "<group>";
+		};
 		DDFA39A424B872DB005C6430 /* 0x01 */ = {
 			isa = PBXGroup;
 			children = (
@@ -388,6 +409,7 @@
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				DDBFF1A028CDB93200AFCE44 /* MR0x04ViewController.xib in Resources */,
 				DDBFF19A28CB865600AFCE44 /* MR0x03ViewController.xib in Resources */,
+				DDBFF1B928CDC7D500AFCE44 /* MR0x11ViewController.xib in Resources */,
 				DDBFF18D28CA371A00AFCE44 /* MR0x01ViewController.xib in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				DDBFF1AC28CDC26500AFCE44 /* MR0x06ViewController.xib in Resources */,
@@ -457,6 +479,7 @@
 			files = (
 				DDBFF1B228CDC47200AFCE44 /* MR0x10ViewController.m in Sources */,
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				DDBFF1BB28CDC7D500AFCE44 /* MR0x11VideoRenderer.m in Sources */,
 				DDBFF19F28CDB93200AFCE44 /* MR0x04ViewController.m in Sources */,
 				DDBFF19128CB7F2E00AFCE44 /* MR0x02ViewController.m in Sources */,
 				DDBFF19928CB865600AFCE44 /* MR0x03ViewController.m in Sources */,
@@ -468,6 +491,7 @@
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				DDBFF1BA28CDC7D500AFCE44 /* MR0x11ViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

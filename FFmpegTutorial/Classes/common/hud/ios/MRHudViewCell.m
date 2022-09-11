@@ -28,7 +28,7 @@
         for (int i = 0; i < COLUMN_COUNT; ++i) {
             _column[i] = [[UILabel alloc] init];
             _column[i].textColor = [UIColor whiteColor];
-            _column[i].font = [UIFont fontWithName:@"Menlo" size:9];
+            _column[i].font = [UIFont fontWithName:@"Menlo" size:12];
             _column[i].adjustsFontSizeToFitWidth = YES;
             _column[i].numberOfLines = 1;
             _column[i].minimumScaleFactor = 0.5;

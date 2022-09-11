@@ -17,7 +17,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
 @property (weak, nonatomic) IBOutlet UILabel *vidoePktLb;
 @property (weak, nonatomic) IBOutlet UILabel *audioFrameLb;
-@property (weak, nonatomic) IBOutlet UILabel *vidoeFrameLb;
+@property (weak, nonatomic) IBOutlet UILabel *videoFrameLb;
 
 @property (strong) FFPlayer0x05 *player;
 
@@ -32,7 +32,7 @@
     self.audioPktLb.text = nil;
     self.vidoePktLb.text = nil;
     self.audioFrameLb.text = nil;
-    self.vidoeFrameLb.text = nil;
+    self.videoFrameLb.text = nil;
 }
 
 - (void)parseURL:(NSString *)url
@@ -66,7 +66,7 @@
         __strongSelf__
         mr_async_main_queue(^{
             self.audioFrameLb.text = [NSString stringWithFormat:@"%d",a];
-            self.vidoeFrameLb.text = [NSString stringWithFormat:@"%d",v];
+            self.videoFrameLb.text = [NSString stringWithFormat:@"%d",v];
             [self.indicator stopAnimating];
         });
     };
@@ -82,7 +82,7 @@
         self.audioPktLb.text = nil;
         self.vidoePktLb.text = nil;
         self.audioFrameLb.text = nil;
-        self.vidoeFrameLb.text = nil;
+        self.videoFrameLb.text = nil;
         [self parseURL:self.input.text];
     }
 }
