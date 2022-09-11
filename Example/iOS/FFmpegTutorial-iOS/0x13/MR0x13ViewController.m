@@ -1,23 +1,23 @@
 //
-//  MR0x11ViewController.m
+//  MR0x13ViewController.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/11.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x11ViewController.h"
+#import "MR0x13ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRDispatch.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x11VideoRenderer.h"
+#import "MR0x13VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x11ViewController ()
+@interface MR0x13ViewController ()
 
-@property (weak, nonatomic) IBOutlet MR0x11VideoRenderer *videoRenderer;
+@property (weak, nonatomic) IBOutlet MR0x13VideoRenderer *videoRenderer;
 @property (weak, nonatomic) IBOutlet UITextField *input;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
@@ -32,7 +32,7 @@
 
 @end
 
-@implementation MR0x11ViewController
+@implementation MR0x13ViewController
 
 - (void)dealloc
 {
@@ -96,8 +96,14 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
-    [self.videoRenderer dispalyCGImage:img];
+    CVPixelBufferRef pixelBuff = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+    CMSampleBufferRef sampleBuffer = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuff];
+    
+    CFRetain(sampleBuffer);
+    mr_sync_main_queue(^{
+        [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
+        CFRelease(sampleBuffer);
+    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -115,9 +121,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;// |
-    //    MR_PIX_FMT_MASK_NV12 |
-    //    MR_PIX_FMT_MASK_BGRA;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     
     __weakSelf__
     player.onError = ^(NSError *err){
@@ -141,23 +145,23 @@
     
     player.onDecoderFrame = ^(int type,int serial,AVFrame *frame) {
         __strongSelf__
-        //video
-        if (type == 1) {
-            mr_msleep(40);
-            mr_async_main_queue(^{
-                @autoreleasepool {
-                    [self displayVideoFrame:frame];
-                }
-                self.videoFrameLb.text = [NSString stringWithFormat:@"%d",serial];
-                self.infoLb.text = [NSString stringWithFormat:@"%d,%lld",frame->format,frame->pts];
-            });
-        }
-        //audio
-        else if (type == 2) {
-            mr_async_main_queue(^{
-                self.audioFrameLb.text = [NSString stringWithFormat:@"%d",serial];
-            });
-        }
+            //video
+            if (type == 1) {
+                mr_msleep(40);
+                mr_async_main_queue(^{
+                    @autoreleasepool {
+                        [self displayVideoFrame:frame];
+                    }
+                    self.videoFrameLb.text = [NSString stringWithFormat:@"%d",serial];
+                    self.infoLb.text = [NSString stringWithFormat:@"%d,%lld",frame->format,frame->pts];
+                });
+            }
+            //audio
+            else if (type == 2) {
+                mr_async_main_queue(^{
+                    self.audioFrameLb.text = [NSString stringWithFormat:@"%d",serial];
+                });
+            }
     };
 
     [player prepareToPlay];
@@ -170,6 +174,19 @@
     if (self.input.text.length > 0) {
         [self resetUI];
         [self parseURL:self.input.text];
+    }
+}
+
+- (IBAction)onSelectedVideMode:(UISegmentedControl *)sender
+{
+    NSInteger idx = [sender selectedSegmentIndex];
+        
+    if (idx == 0) {
+        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill];
+    } else if (idx == 1) {
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill];
+    } else if (idx == 2) {
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit];
     }
 }
 

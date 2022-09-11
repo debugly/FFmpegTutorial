@@ -142,21 +142,23 @@
     
     player.onDecoderFrame = ^(int type,int serial,AVFrame *frame) {
         __strongSelf__
-        mr_async_main_queue(^{
-            //video
-            if (type == 1) {
-                mr_msleep(40);
+        //video
+        if (type == 1) {
+            mr_msleep(40);
+            mr_async_main_queue(^{
                 @autoreleasepool {
                     [self displayVideoFrame:frame];
                 }
                 self.videoFrameLb.text = [NSString stringWithFormat:@"%d",serial];
                 self.infoLb.text = [NSString stringWithFormat:@"%d,%lld",frame->format,frame->pts];
-            }
-            //audio
-            else if (type == 2) {
+            });
+        }
+        //audio
+        else if (type == 2) {
+            mr_async_main_queue(^{
                 self.audioFrameLb.text = [NSString stringWithFormat:@"%d",serial];
-            }
-        });
+            });
+        }
     };
 
     [player prepareToPlay];
