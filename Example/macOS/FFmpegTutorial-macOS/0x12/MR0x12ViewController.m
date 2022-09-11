@@ -34,11 +34,6 @@
         [_timer invalidate];
         _timer = nil;
     }
-    
-    if (_player) {
-        [_player asyncStop];
-        _player = nil;
-    }
 }
 
 - (void)prepareTickTimerIfNeed
@@ -157,6 +152,12 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
+}
+
+- (void)viewWillDisappear
+{
+    [super viewWillDisappear];
+    [self.player asyncStop];
 }
 
 #pragma - mark actions

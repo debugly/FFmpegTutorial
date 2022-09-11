@@ -10,6 +10,7 @@
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/MRDispatch.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x11VideoRenderer.h"
 #import "MRRWeakProxy.h"
@@ -90,16 +91,6 @@
         self.player = nil;
     }
     
-    self.hud = [[MRHudControl alloc] init];
-    NSView *hudView = [self.hud contentView];
-    [self.videoRenderer addSubview:hudView];
-    CGRect rect = self.videoRenderer.bounds;
-    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-    rect.size.width = MIN(screenWidth / 5.0, 150);
-    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-    [hudView setFrame:rect];
-    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    
     [self.indicatorView startAnimation:nil];
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
@@ -145,12 +136,24 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
+    
+    self.hud = [[MRHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.videoRenderer addSubview:hudView];
+    CGRect rect = self.videoRenderer.bounds;
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
 }
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
     CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
-    [self.videoRenderer dispalyCGImage:img];
+    mr_sync_main_queue(^{
+        [self.videoRenderer dispalyCGImage:img];
+    });
 }
 
 #pragma - mark actions
