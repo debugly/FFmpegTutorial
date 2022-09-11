@@ -2,129 +2,75 @@
 //  MR0x04ViewController.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/5/10.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/9/11.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import "MR0x04ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x04.h>
-#import "MRRWeakProxy.h"
+#import <FFmpegTutorial/MRDispatch.h>
 
-@interface MR0x04ViewController ()<UITextViewDelegate>
+@interface MR0x04ViewController ()
 
-@property (nonatomic, strong) FFPlayer0x04 *player;
-@property (weak, nonatomic) IBOutlet UITextView *textView;
-@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicatorView;
-@property (assign, nonatomic) NSInteger ignoreScrollBottom;
-@property (weak, nonatomic) NSTimer *timer;
-@property (assign, nonatomic) MR_PACKET_SIZE pktSize;
+@property (weak, nonatomic) IBOutlet UITextField *input;
+@property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
+@property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
+@property (weak, nonatomic) IBOutlet UILabel *vidoePktLb;
+
+@property (strong) FFPlayer0x04 *player;
 
 @end
 
 @implementation MR0x04ViewController
 
-- (void)dealloc
-{
-    if (self.timer) {
-        [self.timer invalidate];
-        self.timer = nil;
-    }
-    
-    if (self.player) {
-        [self.player asyncStop];
-        self.player = nil;
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
-    [self.indicatorView startAnimating];
-    self.textView.delegate = self;
-    self.textView.layoutManager.allowsNonContiguousLayout = NO;
+    // Do any additional setup after loading the view from its nib.
+    self.input.text = KTestVideoURL1;
+    self.audioPktLb.text = 0;
+    self.vidoePktLb.text = 0;
+}
+
+- (void)parseURL:(NSString *)url
+{
+    [self.indicator startAnimating];
+    if (self.player) {
+        [self.player asyncStop];
+    }
     
     FFPlayer0x04 *player = [[FFPlayer0x04 alloc] init];
-    player.contentPath = KTestVideoURL1;
+    player.contentPath = url;
     
     __weakSelf__
     [player onError:^{
         __strongSelf__
-        [self.indicatorView stopAnimating];
-        self.textView.text = [self.player.error localizedDescription];
-        self.player = nil;
-        [self.timer invalidate];
-        self.timer = nil;
+        mr_async_main_queue(^{
+            [self.indicator stopAnimating];
+            self.player = nil;
+        });
     }];
+    
+    player.onReadPkt = ^(int a,int v){
+        __strongSelf__
+        mr_async_main_queue(^{
+            self.audioPktLb.text = [NSString stringWithFormat:@"%d",a];
+            self.vidoePktLb.text = [NSString stringWithFormat:@"%d",v];
+            [self.indicator stopAnimating];
+        });
+    };
     
     [player prepareToPlay];
     [player play];
     self.player = player;
-    [self prepareTickTimerIfNeed];
 }
 
-- (void)prepareTickTimerIfNeed
-{
-    if (self.timer && ![self.timer isValid]) {
-        return;
-    }
-    MRRWeakProxy *weakProxy = [MRRWeakProxy weakProxyWithTarget:self];
-    NSTimer *timer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:weakProxy selector:@selector(onTimer:) userInfo:nil repeats:YES];
-    [[NSRunLoop currentRunLoop] addTimer:timer forMode:NSRunLoopCommonModes];
-    self.timer = timer;
-}
-
-- (void)onTimer:(NSTimer *)sender
-{
-    MR_PACKET_SIZE pktSize = [self.player peekPacketBufferStatus];
-    if (0 == mr_packet_size_equal(self.pktSize, pktSize)) {
-        return;
-    }
+- (IBAction)go:(UIButton *)sender {
     
-    if ([self.indicatorView isAnimating]) {
-        [self.indicatorView stopAnimating];
+    if (self.input.text.length > 0) {
+        self.audioPktLb.text = 0;
+        self.vidoePktLb.text = 0;
+        [self parseURL:self.input.text];
     }
-    
-    NSString *frmMsg = [NSString stringWithFormat:@"[Frame] audio(%002d)，video(%002d)",self.player.audioFrameCount,self.player.videoFrameCount];
-    
-    NSString *pktMsg = nil;
-    if (mr_packet_size_equal_zero(pktSize)) {
-        pktMsg = @"Packet Buffer is Empty";
-    } else {
-        pktMsg = [NSString stringWithFormat:@" [Packet] audio(%02d)，video(%02d)",pktSize.audio_pkt_size,pktSize.video_pkt_size];
-    }
-    self.pktSize = pktSize;
-    
-    [self appendMsg:[frmMsg stringByAppendingString:pktMsg]];
-    if (self.ignoreScrollBottom > 0) {
-        self.ignoreScrollBottom --;
-    } else {
-        [self.textView scrollRangeToVisible:NSMakeRange(self.textView.text.length, 1)];
-    }
-}
-
-- (void)appendMsg:(NSString *)txt
-{
-    self.textView.text = [self.textView.text stringByAppendingFormat:@"\n%@",txt];
-}
-
-//滑动时就暂停自动滚到到底部
-- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
-{
-    self.ignoreScrollBottom = NSIntegerMax;
-}
-
-//松开手了，不需要减速就当即设定5s后自动滚动
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-    if (!decelerate) {
-        self.ignoreScrollBottom = 5;
-    }
-}
-
-//需要减速时，就在停下来之后设定5s后自动滚动
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    self.ignoreScrollBottom = 5;
 }
 
 @end
