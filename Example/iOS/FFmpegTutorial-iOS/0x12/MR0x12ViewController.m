@@ -1,23 +1,23 @@
 //
-//  MR0x11ViewController.m
+//  MR0x12ViewController.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/11.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x11ViewController.h"
+#import "MR0x12ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRDispatch.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x11VideoRenderer.h"
+#import "MR0x12VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x11ViewController ()
+@interface MR0x12ViewController ()
 
-@property (weak, nonatomic) IBOutlet MR0x11VideoRenderer *videoRenderer;
+@property (weak, nonatomic) IBOutlet MR0x12VideoRenderer *videoRenderer;
 @property (weak, nonatomic) IBOutlet UITextField *input;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
@@ -32,7 +32,7 @@
 
 @end
 
-@implementation MR0x11ViewController
+@implementation MR0x12ViewController
 
 - (void)dealloc
 {
@@ -96,8 +96,9 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
-    [self.videoRenderer dispalyCGImage:img];
+    CGImageRef cgImg = [MRConvertUtil cgImageFromRGBFrame:frame];
+    UIImage *img = [[UIImage alloc] initWithCGImage:cgImg];
+    [self.videoRenderer dispalyUIImage:img];
 }
 
 - (void)viewWillDisappear:(BOOL)animated

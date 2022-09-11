@@ -75,7 +75,7 @@
                 @"class":@"MR0x11ViewController",
             },
             @{
-                @"title":@"0x12 memory leak",
+                @"title":@"0x12",
                 @"detail":@"使用 Core Animation 渲染视频桢",
                 @"class":@"MR0x12ViewController",
             },
