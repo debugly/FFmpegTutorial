@@ -1,16 +1,17 @@
 //
-//  MR0x14VideoRenderer.m
+//  MR0x141VideoRenderer.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2020/7/10.
 //  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x14VideoRenderer.h"
+#import "MR0x141VideoRenderer.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <AVFoundation/AVUtilities.h>
 #import "MROpenGLHelper.h"
+#import "MROpenGLCompiler.h"
 
 // Uniform index.
 enum
@@ -20,7 +21,6 @@ enum
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
-static GLint uniforms[NUM_UNIFORMS];
 
 // Attribute index.
 enum
@@ -30,16 +30,19 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x14VideoRenderer ()
+static GLint uniforms[NUM_UNIFORMS];
+static GLint attributers[NUM_ATTRIBUTES];
+
+@interface MR0x141VideoRenderer ()
 {
     // The pixel dimensions of the CAEAGLLayer.
     GLint _backingWidth;
     GLint _backingHeight;
 
     EAGLContext *_context;
+    //for iphone
     CVOpenGLESTextureRef _lumaTexture;
     CVOpenGLESTextureRef _chromaTexture;
-    //for iphone
     CVOpenGLESTextureCacheRef _videoTextureCache;
     //for simulator
     GLuint _lumaTextureS;
@@ -51,11 +54,11 @@ enum
     const GLfloat *_preferredConversion;
 }
 
-@property GLuint program;
+@property MROpenGLCompiler * openglCompiler;
 
 @end
 
-@implementation MR0x14VideoRenderer
+@implementation MR0x141VideoRenderer
 
 + (Class)layerClass
 {
@@ -92,13 +95,22 @@ enum
 - (void)setupGL
 {
     [EAGLContext setCurrentContext:_context];
-    [self setupBuffers];
-    [self loadShaders];
     
-    // Get uniform locations.
-    uniforms[UNIFORM_Y] = glGetUniformLocation(self.program, "SamplerY");
-    uniforms[UNIFORM_UV] = glGetUniformLocation(self.program, "SamplerUV");
-    uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = glGetUniformLocation(self.program, "colorConversionMatrix");
+    if (!self.openglCompiler) {
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2D.fsh"];
+
+        if ([self.openglCompiler compileIfNeed]) {
+            // Get uniform locations.
+            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
+            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
+            uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            
+            attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
+            attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
+            
+            [self setupBuffers];
+        }
+    }
     VerifyGL(;);
 }
 
@@ -191,6 +203,7 @@ enum
         if ([EAGLContext currentContext] != _context) {
             [EAGLContext setCurrentContext:_context]; // 非常重要的一行代码
         }
+        
         [self cleanUpTextures];
         
         /*
@@ -217,7 +230,7 @@ enum
          */
         glActiveTexture(GL_TEXTURE0);
         glUniform1i(uniforms[UNIFORM_Y], 0);
-
+        
         if ([self supportsFastTextureUpload]) {
             // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
             if (!_videoTextureCache) {
@@ -305,15 +318,13 @@ enum
     
     glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
     
-    // Use shader program.
-    glUseProgram(self.program);
     // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
-    
+    [self.openglCompiler active];
     // Compute normalized quad coordinates to draw the frame into.
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
 
-    if (_contentMode == MRViewContentModeScaleAspectFit0x14 || _contentMode == MRViewContentModeScaleAspectFill0x14) {
+    if (_contentMode == MRViewContentModeScaleAspectFit0x141 || _contentMode == MRViewContentModeScaleAspectFill0x141) {
         const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
         const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
@@ -322,7 +333,7 @@ enum
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
 
         // hold max
-        if (_contentMode == MRViewContentModeScaleAspectFit0x14) {
+        if (_contentMode == MRViewContentModeScaleAspectFit0x141) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -331,7 +342,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MRViewContentModeScaleAspectFill0x14) {
+        } else if (_contentMode == MRViewContentModeScaleAspectFill0x141) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;
@@ -356,8 +367,8 @@ enum
     };
     
     // 更新顶点数据
-    glVertexAttribPointer(ATTRIB_VERTEX, 2, GL_FLOAT, 0, 0, quadVertexData);
-    glEnableVertexAttribArray(ATTRIB_VERTEX);
+    glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
+    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
     
     GLfloat quadTextureData[] =  { // 坐标不对可能导致画面显示方向不对
         0, 1,
@@ -366,8 +377,8 @@ enum
         1, 0,
     };
     
-    glVertexAttribPointer(ATTRIB_TEXCOORD, 2, GL_FLOAT, 0, 0, quadTextureData);
-    glEnableVertexAttribArray(ATTRIB_TEXCOORD);
+    glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
+    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 
@@ -376,154 +387,6 @@ enum
     if ([EAGLContext currentContext] == _context) {
         [_context presentRenderbuffer:GL_RENDERBUFFER];
     }
-}
-
-#pragma mark -  OpenGL ES 2 shader compilation
-
-- (BOOL)loadShaders
-{
-    GLuint vertShader, fragShader;
-    NSURL *vertShaderURL, *fragShaderURL;
-    
-    self.program = glCreateProgram();
-    
-    // Create and compile the vertex shader.
-    vertShaderURL = [[NSBundle mainBundle] URLForResource:@"common" withExtension:@"vsh"];
-    if (![self compileShader:&vertShader type:GL_VERTEX_SHADER URL:vertShaderURL]) {
-        NSLog(@"Failed to compile vertex shader");
-        return NO;
-    }
-    
-    // Create and compile fragment shader.
-    fragShaderURL = [[NSBundle mainBundle] URLForResource:@"2_sampler2D" withExtension:@"fsh"];
-    if (![self compileShader:&fragShader type:GL_FRAGMENT_SHADER URL:fragShaderURL]) {
-        NSLog(@"Failed to compile fragment shader");
-        return NO;
-    }
-    
-    // Attach vertex shader to program.
-    glAttachShader(self.program, vertShader);
-    
-    // Attach fragment shader to program.
-    glAttachShader(self.program, fragShader);
-    
-    // Bind attribute locations. This needs to be done prior to linking.
-    glBindAttribLocation(self.program, ATTRIB_VERTEX, "position");
-    glBindAttribLocation(self.program, ATTRIB_TEXCOORD, "texCoord");
-
-    // Link the program.
-    if (![self linkProgram:self.program]) {
-        NSLog(@"Failed to link program: %d", self.program);
-        
-        if (vertShader) {
-            glDeleteShader(vertShader);
-            vertShader = 0;
-        }
-        if (fragShader) {
-            glDeleteShader(fragShader);
-            fragShader = 0;
-        }
-        if (self.program) {
-            glDeleteProgram(self.program);
-            self.program = 0;
-        }
-        
-        return NO;
-    }
-    
-    // Release vertex and fragment shaders.
-    if (vertShader) {
-        glDetachShader(self.program, vertShader);
-        glDeleteShader(vertShader);
-    }
-    if (fragShader) {
-        glDetachShader(self.program, fragShader);
-        glDeleteShader(fragShader);
-    }
-    VerifyGL(;);
-    return YES;
-}
-
-- (BOOL)compileShader:(GLuint *)shader type:(GLenum)type URL:(NSURL *)URL
-{
-    NSError *error;
-    NSString *sourceString = [[NSString alloc] initWithContentsOfURL:URL encoding:NSUTF8StringEncoding error:&error];
-    if (sourceString == nil) {
-        NSLog(@"Failed to load vertex shader: %@", [error localizedDescription]);
-        return NO;
-    }
-    
-    GLint status;
-    const GLchar *source;
-    source = (GLchar *)[sourceString UTF8String];
-    
-    *shader = glCreateShader(type);
-    glShaderSource(*shader, 1, &source, NULL);
-    glCompileShader(*shader);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetShaderiv(*shader, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetShaderInfoLog(*shader, logLength, &logLength, log);
-        NSLog(@"Shader compile log:\n%s", log);
-        free(log);
-    }
-#endif
-    
-    glGetShaderiv(*shader, GL_COMPILE_STATUS, &status);
-    if (status == 0) {
-        glDeleteShader(*shader);
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)linkProgram:(GLuint)prog
-{
-    GLint status;
-    glLinkProgram(prog);
-    
-#if defined(DEBUG)
-    GLint logLength;
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program link log:\n%s", log);
-        free(log);
-    }
-#endif
-    
-    glGetProgramiv(prog, GL_LINK_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
-}
-
-- (BOOL)validateProgram:(GLuint)prog
-{
-    GLint logLength, status;
-    
-    glValidateProgram(prog);
-    glGetProgramiv(prog, GL_INFO_LOG_LENGTH, &logLength);
-    if (logLength > 0) {
-        GLchar *log = (GLchar *)malloc(logLength);
-        glGetProgramInfoLog(prog, logLength, &logLength, log);
-        NSLog(@"Program validate log:\n%s", log);
-        free(log);
-    }
-    
-    glGetProgramiv(prog, GL_VALIDATE_STATUS, &status);
-    if (status == 0) {
-        return NO;
-    }
-    
-    return YES;
 }
 
 @end
