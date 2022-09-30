@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <dependencies>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MR0x151ViewController">
+            <connections>
+                <outlet property="indicator" destination="c3R-Bl-JJX" id="epa-bY-B60"/>
+                <outlet property="input" destination="adM-9N-T8H" id="b0Z-z8-ZgU"/>
+                <outlet property="videoRenderer" destination="dko-E4-RA8" id="Q86-Ew-fDR"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dko-E4-RA8" customClass="MR0x151VideoRenderer">
+                    <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <stackView opaque="NO" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" distribution="fillProportionally" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eBw-Qp-cGp">
+                    <rect key="frame" x="5" y="0.0" width="891" height="35"/>
+                    <subviews>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="1000" verticalHuggingPriority="251" horizontalCompressionResistancePriority="1000" text="  视频地址：" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HxB-hT-CpN">
+                            <rect key="frame" x="0.0" y="7.5" width="95.5" height="20.5"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="请输入视频地址" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="adM-9N-T8H">
+                            <rect key="frame" x="95.5" y="0.5" width="412.5" height="34"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                            <textInputTraits key="textInputTraits"/>
+                        </textField>
+                        <button opaque="NO" contentMode="scaleToFill" horizontalCompressionResistancePriority="1000" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jcr-Pk-Dnu">
+                            <rect key="frame" x="508" y="2" width="383" height="31"/>
+                            <state key="normal" title="Button"/>
+                            <buttonConfiguration key="configuration" style="plain" title="查看">
+                                <color key="baseForegroundColor" systemColor="labelColor"/>
+                            </buttonConfiguration>
+                            <connections>
+                                <action selector="go:" destination="-1" eventType="touchUpInside" id="v7e-9d-NBj"/>
+                            </connections>
+                        </button>
+                    </subviews>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="35" id="X7M-h3-1ft"/>
+                    </constraints>
+                </stackView>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="0Zt-QP-ef2">
+                    <rect key="frame" x="5" y="45" width="365" height="32"/>
+                    <segments>
+                        <segment title="Scale To Fill"/>
+                        <segment title="Scale Aspect Fill"/>
+                        <segment title="Scale Aspect Fit"/>
+                    </segments>
+                    <connections>
+                        <action selector="onSelectedVideMode:" destination="-1" eventType="valueChanged" id="h74-nF-rdq"/>
+                    </connections>
+                </segmentedControl>
+                <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="c3R-Bl-JJX">
+                    <rect key="frame" x="429.5" y="188.5" width="37" height="37"/>
+                </activityIndicatorView>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="eBw-Qp-cGp" secondAttribute="trailing" id="1HZ-FW-4Jo"/>
+                <constraint firstAttribute="bottom" secondItem="dko-E4-RA8" secondAttribute="bottom" id="1q1-b7-Gw2"/>
+                <constraint firstItem="dko-E4-RA8" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="47l-Oe-xZh"/>
+                <constraint firstItem="c3R-Bl-JJX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="5jc-5T-TEF"/>
+                <constraint firstItem="eBw-Qp-cGp" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="5" id="AkW-KK-t72"/>
+                <constraint firstItem="eBw-Qp-cGp" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="AmG-lN-znM"/>
+                <constraint firstItem="dko-E4-RA8" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="YEh-j6-niS"/>
+                <constraint firstItem="0Zt-QP-ef2" firstAttribute="leading" secondItem="eBw-Qp-cGp" secondAttribute="leading" id="a46-GK-gst"/>
+                <constraint firstItem="0Zt-QP-ef2" firstAttribute="top" secondItem="eBw-Qp-cGp" secondAttribute="bottom" constant="10" id="lVN-b1-KAb"/>
+                <constraint firstAttribute="trailing" secondItem="dko-E4-RA8" secondAttribute="trailing" id="rlz-95-jSJ"/>
+                <constraint firstItem="c3R-Bl-JJX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="t8U-WM-7LF"/>
+            </constraints>
+            <point key="canvasLocation" x="76" y="62"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="labelColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>
