@@ -13,12 +13,14 @@
 #import "MROpenGLHelper.h"
 #import "MROpenGLCompiler.h"
 
+#define kNumOfPlanes 3
+
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_U,
-    UNIFORM_V,
+    UNIFORM_0,
+    UNIFORM_1,
+    UNIFORM_2,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -100,9 +102,11 @@ static GLint attributers[NUM_ATTRIBUTES];
 
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
-            uniforms[UNIFORM_U] = [self.openglCompiler getUniformLocation:"SamplerU"];
-            uniforms[UNIFORM_V] = [self.openglCompiler getUniformLocation:"SamplerV"];
+            for (int i = 0; i < kNumOfPlanes; i++) {
+                char name[10] = {0};
+                sprintf(name, "Sampler%d",i);
+                uniforms[UNIFORM_0 + i] = [self.openglCompiler getUniformLocation:name];
+            }
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
@@ -201,13 +205,14 @@ static GLint attributers[NUM_ATTRIBUTES];
         _preferredConversion = kColorConversion709;
     }
     
-    for (int i = 0; i < 3; i ++) {
-        glActiveTexture(GL_TEXTURE0 + i);
+    for (int i = 0; i < kNumOfPlanes; i ++) {
         
-        glUniform1i(uniforms[UNIFORM_Y + i], i);
+        glActiveTexture(GL_TEXTURE0 + i);
+        glUniform1i(uniforms[UNIFORM_0 + i], i);
         
         int frameWidth  = (int)CVPixelBufferGetWidthOfPlane(pixelBuffer, i);
         int frameHeight = (int)CVPixelBufferGetHeightOfPlane(pixelBuffer, i);
+        GLenum format = GL_LUMINANCE;
         
         if ([self supportsFastTextureUpload]) {
             // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
@@ -233,10 +238,10 @@ static GLint attributers[NUM_ATTRIBUTES];
                                                                pixelBuffer,
                                                                NULL,
                                                                GL_TEXTURE_2D,
-                                                               GL_LUMINANCE,
+                                                               format,
                                                                frameWidth,
                                                                frameHeight,
-                                                               GL_LUMINANCE,
+                                                               format,
                                                                GL_UNSIGNED_BYTE,
                                                                i,
                                                                tp);
@@ -251,7 +256,7 @@ static GLint attributers[NUM_ATTRIBUTES];
             }
             CVPixelBufferLockBaseAddress(pixelBuffer, 0);
             glBindTexture(GL_TEXTURE_2D, texture);
-            glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, frameWidth, frameHeight, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,i));
+            glTexImage2D(GL_TEXTURE_2D, 0, format, frameWidth, frameHeight, 0, format, GL_UNSIGNED_BYTE, CVPixelBufferGetBaseAddressOfPlane(pixelBuffer,i));
             CVPixelBufferUnlockBaseAddress(pixelBuffer, 0);
         }
         

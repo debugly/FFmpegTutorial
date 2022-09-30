@@ -49,8 +49,8 @@
 //ERROR: 0:51: 'mat3' : declaration must include a precision qualifier for type
 //precision mediump float;
 
-uniform sampler2D SamplerY;
-uniform sampler2D SamplerUV;
+uniform sampler2D Sampler0;
+uniform sampler2D Sampler1;
 uniform mediump mat3 colorConversionMatrix;
 varying highp vec2 texCoordVarying;
 
@@ -59,9 +59,9 @@ void main()
     mediump vec3 yuv;
     lowp vec3 rgb;
     //使用 r,g,b 都可以，a不行！
-    yuv.x  = texture2D(SamplerY, texCoordVarying).r;
+    yuv.x  = texture2D(Sampler0, texCoordVarying).r;
     //使用 ra,ga,ba 都可以！
-    yuv.yz = texture2D(SamplerUV, texCoordVarying).ra - vec2(0.5, 0.5);
+    yuv.yz = texture2D(Sampler1, texCoordVarying).ra - vec2(0.5, 0.5);
     rgb = colorConversionMatrix * yuv;
     
     gl_FragColor = vec4(rgb, 1);

@@ -206,8 +206,8 @@ static GLint attributers[NUM_ATTRIBUTES];
     }
     
     for (int i = 0; i < kNumOfPlanes; i ++) {
-        glActiveTexture(GL_TEXTURE0 + i);
         
+        glActiveTexture(GL_TEXTURE0 + i);
         glUniform1i(uniforms[UNIFORM_0 + i], i);
         
         int frameWidth  = (int)CVPixelBufferGetWidthOfPlane(pixelBuffer, i);

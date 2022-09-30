@@ -16,8 +16,9 @@
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_UV,
+    UNIFORM_0,
+    UNIFORM_1,
+    UNIFORM_2,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -101,8 +102,8 @@ static GLint attributers[NUM_ATTRIBUTES];
 
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
-            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
+            uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
@@ -229,7 +230,7 @@ static GLint attributers[NUM_ATTRIBUTES];
          Create Y and UV textures from the pixel buffer. These textures will be drawn on the frame buffer Y-plane.
          */
         glActiveTexture(GL_TEXTURE0);
-        glUniform1i(uniforms[UNIFORM_Y], 0);
+        glUniform1i(uniforms[UNIFORM_0], 0);
         
         if ([self supportsFastTextureUpload]) {
             // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
@@ -273,7 +274,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         // UV-plane.
         glActiveTexture(GL_TEXTURE1);
-        glUniform1i(uniforms[UNIFORM_UV], 1);
+        glUniform1i(uniforms[UNIFORM_1], 1);
         
         if ([self supportsFastTextureUpload]) {
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,

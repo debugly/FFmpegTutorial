@@ -15,11 +15,13 @@
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_UV,
+    UNIFORM_0,
+    UNIFORM_1,
+    UNIFORM_2,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
+
 static GLint uniforms[NUM_UNIFORMS];
 
 // Attribute index.
@@ -96,8 +98,8 @@ enum
     [self loadShaders];
     
     // Get uniform locations.
-    uniforms[UNIFORM_Y] = glGetUniformLocation(self.program, "SamplerY");
-    uniforms[UNIFORM_UV] = glGetUniformLocation(self.program, "SamplerUV");
+    uniforms[UNIFORM_0] = glGetUniformLocation(self.program, "Sampler0");
+    uniforms[UNIFORM_1] = glGetUniformLocation(self.program, "Sampler1");
     uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = glGetUniformLocation(self.program, "colorConversionMatrix");
     VerifyGL(;);
 }
@@ -216,7 +218,7 @@ enum
          Create Y and UV textures from the pixel buffer. These textures will be drawn on the frame buffer Y-plane.
          */
         glActiveTexture(GL_TEXTURE0);
-        glUniform1i(uniforms[UNIFORM_Y], 0);
+        glUniform1i(uniforms[UNIFORM_0], 0);
 
         if ([self supportsFastTextureUpload]) {
             // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
@@ -260,7 +262,7 @@ enum
         
         // UV-plane.
         glActiveTexture(GL_TEXTURE1);
-        glUniform1i(uniforms[UNIFORM_UV], 1);
+        glUniform1i(uniforms[UNIFORM_1], 1);
         
         if ([self supportsFastTextureUpload]) {
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,

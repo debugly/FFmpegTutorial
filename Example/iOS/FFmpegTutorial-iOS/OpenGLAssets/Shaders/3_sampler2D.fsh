@@ -49,9 +49,9 @@
 //ERROR: 0:51: 'mat3' : declaration must include a precision qualifier for type
 //precision mediump float;
 
-uniform sampler2D SamplerY;
-uniform sampler2D SamplerU;
-uniform sampler2D SamplerV;
+uniform sampler2D Sampler0;
+uniform sampler2D Sampler1;
+uniform sampler2D Sampler2;
 uniform mediump mat3 colorConversionMatrix;
 varying highp vec2 texCoordVarying;
 
@@ -60,9 +60,9 @@ void main()
     mediump vec3 yuv;
     lowp vec3 rgb;
     //
-    yuv.x = texture2D(SamplerY, texCoordVarying).r;
-    yuv.y = texture2D(SamplerU, texCoordVarying).r - 0.5;
-    yuv.z = texture2D(SamplerV, texCoordVarying).r - 0.5;
+    yuv.x = texture2D(Sampler0, texCoordVarying).r;
+    yuv.y = texture2D(Sampler1, texCoordVarying).r - 0.5;
+    yuv.z = texture2D(Sampler2, texCoordVarying).r - 0.5;
 
     rgb = colorConversionMatrix * yuv;
     
