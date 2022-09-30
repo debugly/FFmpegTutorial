@@ -26,4 +26,15 @@ const char * GetGLErrorString(GLenum error);
     } \
 }
 
+// Color Conversion Constants (YUV to RGB) including adjustment from 16-235/16-240 (video range)
+
+// BT.601, which is the standard for SDTV.
+extern const float kColorConversion601[9];
+
+// BT.709, which is the standard for HDTV.
+extern const float kColorConversion709[9];
+
+// BT.601 full range (ref: http://www.equasys.de/colorconversion.html)
+extern const float kColorConversion601FullRange[9];
+
 #endif /* MROpenGLHelper_h */
