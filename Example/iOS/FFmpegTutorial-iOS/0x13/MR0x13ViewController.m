@@ -184,9 +184,9 @@
     if (idx == 0) {
         [self.videoRenderer setContentMode:MRViewContentModeScaleToFill];
     } else if (idx == 1) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x13];
     } else if (idx == 2) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x13];
     }
 }
 
