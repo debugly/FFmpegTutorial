@@ -1,23 +1,23 @@
 //
-//  MR0x13ViewController.m
+//  MR0x14ViewController.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/11.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x13ViewController.h"
+#import "MR0x14ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRDispatch.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x13VideoRenderer.h"
+#import "MR0x14VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x13ViewController ()
+@interface MR0x14ViewController ()
 
-@property (weak, nonatomic) IBOutlet MR0x13VideoRenderer *videoRenderer;
+@property (weak, nonatomic) IBOutlet MR0x14VideoRenderer *videoRenderer;
 @property (weak, nonatomic) IBOutlet UITextField *input;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
@@ -32,7 +32,7 @@
 
 @end
 
-@implementation MR0x13ViewController
+@implementation MR0x14ViewController
 
 - (void)dealloc
 {
@@ -75,8 +75,7 @@
     self.infoLb.text = nil;
 }
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view from its nib.
     self.input.text = KTestVideoURL1;
@@ -94,18 +93,6 @@
     rect.origin.x = viewWidth - rect.size.width;
     [hudView setFrame:rect];
     hudView.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin | UIViewAutoresizingFlexibleHeight;
-}
-
-- (void)displayVideoFrame:(AVFrame *)frame
-{
-    CVPixelBufferRef pixelBuff = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    CMSampleBufferRef sampleBuffer = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuff];
-    
-    CFRetain(sampleBuffer);
-    mr_sync_main_queue(^{
-        [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
-        CFRelease(sampleBuffer);
-    });
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -149,11 +136,12 @@
         __strongSelf__
             //video
             if (type == 1) {
+                CVPixelBufferRef pixelBuff = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+                CVPixelBufferRetain(pixelBuff);
                 mr_msleep(40);
                 mr_async_main_queue(^{
-                    @autoreleasepool {
-                        [self displayVideoFrame:frame];
-                    }
+                    [self.videoRenderer displayPixelBuffer:pixelBuff];
+                    CVPixelBufferRelease(pixelBuff);
                     self.videoFrameLb.text = [NSString stringWithFormat:@"%d",serial];
                     self.infoLb.text = [NSString stringWithFormat:@"%d,%lld",frame->format,frame->pts];
                 });
@@ -183,13 +171,12 @@
 - (IBAction)onSelectedVideMode:(UISegmentedControl *)sender
 {
     NSInteger idx = [sender selectedSegmentIndex];
-        
     if (idx == 0) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill0x13];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill0x14];
     } else if (idx == 1) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x13];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x14];
     } else if (idx == 2) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x13];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x14];
     }
 }
 
