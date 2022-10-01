@@ -1,24 +1,27 @@
 //
-//  MR0x146VideoRenderer.m
+//  MR0x144VideoRenderer.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/7/10.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/1.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x146VideoRenderer.h"
+#import "MR0x144VideoRenderer.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <AVFoundation/AVUtilities.h>
 #import "MROpenGLHelper.h"
 #import "MROpenGLCompiler.h"
 
-#define kNumOfPlanes 1
+#define kNumOfPlanes 3
 
 // Uniform index.
 enum
 {
     UNIFORM_0,
+    UNIFORM_1,
+    UNIFORM_2,
+    UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
 
@@ -33,7 +36,7 @@ enum
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 
-@interface MR0x146VideoRenderer ()
+@interface MR0x144VideoRenderer ()
 {
     // The pixel dimensions of the CAEAGLLayer.
     GLint _backingWidth;
@@ -41,20 +44,22 @@ static GLint attributers[NUM_ATTRIBUTES];
 
     EAGLContext *_context;
     //for iphone
-    CVOpenGLESTextureRef _textureRefs[kNumOfPlanes];
+    CVOpenGLESTextureRef _textureRefs[3];
     CVOpenGLESTextureCacheRef _videoTextureCache;
     //for simulator
-    GLuint _textures[kNumOfPlanes];
+    GLuint _textures[3];
     
     GLuint _frameBufferHandle;
     GLuint _colorBufferHandle;
+    
+    const GLfloat *_preferredConversion;
 }
 
 @property MROpenGLCompiler * openglCompiler;
 
 @end
 
-@implementation MR0x146VideoRenderer
+@implementation MR0x144VideoRenderer
 
 + (Class)layerClass
 {
@@ -79,6 +84,8 @@ static GLint attributers[NUM_ATTRIBUTES];
             return nil;
         }
         
+        _preferredConversion = kColorConversion709;
+        
         [self setupGL];
     }
     return self;
@@ -91,15 +98,17 @@ static GLint attributers[NUM_ATTRIBUTES];
     [EAGLContext setCurrentContext:_context];
     
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"1_sampler2D.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"3_sampler2D.fsh"];
 
         if ([self.openglCompiler compileIfNeed]) {
+            // Get uniform locations.
             for (int i = 0; i < kNumOfPlanes; i++) {
-                // Get uniform locations.
                 char name[10] = {0};
                 sprintf(name, "Sampler%d",i);
                 uniforms[UNIFORM_0 + i] = [self.openglCompiler getUniformLocation:name];
             }
+            uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
@@ -181,6 +190,21 @@ static GLint attributers[NUM_ATTRIBUTES];
         [EAGLContext setCurrentContext:_context]; // 非常重要的一行代码
     }
     
+    /*
+     Use the color attachment of the pixel buffer to determine the appropriate color conversion matrix.
+     */
+    CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
+    
+    if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
+        if (self.isFullYUVRange) {
+            _preferredConversion = kColorConversion601FullRange;
+        } else {
+            _preferredConversion = kColorConversion601;
+        }
+    } else {
+        _preferredConversion = kColorConversion709;
+    }
+    
     for (int i = 0; i < kNumOfPlanes; i ++) {
         
         glActiveTexture(GL_TEXTURE0 + i);
@@ -188,7 +212,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         int frameWidth  = (int)CVPixelBufferGetWidthOfPlane(pixelBuffer, i);
         int frameHeight = (int)CVPixelBufferGetHeightOfPlane(pixelBuffer, i);
-        GLenum format = GL_BGRA;
+        GLenum format = GL_LUMINANCE;
         
         if ([self supportsFastTextureUpload]) {
             // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
@@ -208,6 +232,7 @@ static GLint attributers[NUM_ATTRIBUTES];
                 CFRelease(*tp);
                 *tp = NULL;
             }
+            
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                _videoTextureCache,
                                                                pixelBuffer,
@@ -249,13 +274,15 @@ static GLint attributers[NUM_ATTRIBUTES];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
+    glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
+    
     // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
     [self.openglCompiler active];
     // Compute normalized quad coordinates to draw the frame into.
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
 
-    if (_contentMode == MRViewContentModeScaleAspectFit0x146 || _contentMode == MRViewContentModeScaleAspectFill0x146) {
+    if (_contentMode == MRViewContentModeScaleAspectFit0x144 || _contentMode == MRViewContentModeScaleAspectFill0x144) {
         const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
         const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
@@ -264,7 +291,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
 
         // hold max
-        if (_contentMode == MRViewContentModeScaleAspectFit0x146) {
+        if (_contentMode == MRViewContentModeScaleAspectFit0x144) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -273,7 +300,7 @@ static GLint attributers[NUM_ATTRIBUTES];
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MRViewContentModeScaleAspectFill0x146) {
+        } else if (_contentMode == MRViewContentModeScaleAspectFill0x144) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;

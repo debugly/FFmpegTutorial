@@ -22,10 +22,10 @@ const char * GetGLErrorString(GLenum error);
     while (err != GL_NO_ERROR)  \
     {  \
         NSLog(@"GLError: %s set in File:%s Line:%d\n", GetGLErrorString(err), __FILE__, __LINE__); \
+        assert(0); \
         err = glGetError(); \
     } \
 }
-
 // Color Conversion Constants (YUV to RGB) including adjustment from 16-235/16-240 (video range)
 
 // BT.601, which is the standard for SDTV.

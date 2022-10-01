@@ -54,6 +54,6 @@ varying highp vec2 texCoordVarying;
 
 void main()
 {
-    lowp vec3 rgb = texture2D(Sampler0, texCoordVarying).bgra;
+    lowp vec3 rgb = texture2D(Sampler0, texCoordVarying).rgb;
     gl_FragColor = vec4(rgb, 1);
 }

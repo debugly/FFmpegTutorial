@@ -7,7 +7,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MR0x146ViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MR0x144ViewController">
             <connections>
                 <outlet property="indicator" destination="c3R-Bl-JJX" id="epa-bY-B60"/>
                 <outlet property="input" destination="adM-9N-T8H" id="b0Z-z8-ZgU"/>
@@ -20,7 +20,7 @@
             <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dko-E4-RA8" customClass="MR0x146VideoRenderer">
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dko-E4-RA8" customClass="MR0x144VideoRenderer">
                     <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>

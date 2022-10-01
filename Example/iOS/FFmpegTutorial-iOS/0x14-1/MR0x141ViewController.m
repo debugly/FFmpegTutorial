@@ -2,7 +2,7 @@
 //  MR0x141ViewController.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2022/9/11.
+//  Created by qianlongxu on 2022/10/1.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
@@ -110,7 +110,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_BGRA;//MR_PIX_FMT_MASK_BGR0
     
     __weakSelf__
     player.onError = ^(NSError *err){

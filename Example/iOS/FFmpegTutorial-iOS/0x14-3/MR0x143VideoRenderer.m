@@ -1,12 +1,12 @@
 //
-//  MR0x145VideoRenderer.m
+//  MR0x143VideoRenderer.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/7/10.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/1.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x145VideoRenderer.h"
+#import "MR0x143VideoRenderer.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <AVFoundation/AVUtilities.h>
@@ -20,7 +20,6 @@ enum
 {
     UNIFORM_0,
     UNIFORM_1,
-    UNIFORM_2,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -36,7 +35,7 @@ enum
 static GLint uniforms[NUM_UNIFORMS];
 static GLint attributers[NUM_ATTRIBUTES];
 
-@interface MR0x145VideoRenderer ()
+@interface MR0x143VideoRenderer ()
 {
     // The pixel dimensions of the CAEAGLLayer.
     GLint _backingWidth;
@@ -59,7 +58,7 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 @end
 
-@implementation MR0x145VideoRenderer
+@implementation MR0x143VideoRenderer
 
 + (Class)layerClass
 {
@@ -281,7 +280,7 @@ static GLint attributers[NUM_ATTRIBUTES];
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
 
-    if (_contentMode == MRViewContentModeScaleAspectFit0x145 || _contentMode == MRViewContentModeScaleAspectFill0x145) {
+    if (_contentMode == MRViewContentModeScaleAspectFit0x143 || _contentMode == MRViewContentModeScaleAspectFill0x143) {
         const size_t pictureWidth = CVPixelBufferGetWidth(pixelBuffer);
         const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
@@ -290,7 +289,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
 
         // hold max
-        if (_contentMode == MRViewContentModeScaleAspectFit0x145) {
+        if (_contentMode == MRViewContentModeScaleAspectFit0x143) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -299,7 +298,7 @@ static GLint attributers[NUM_ATTRIBUTES];
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MRViewContentModeScaleAspectFill0x145) {
+        } else if (_contentMode == MRViewContentModeScaleAspectFill0x143) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;

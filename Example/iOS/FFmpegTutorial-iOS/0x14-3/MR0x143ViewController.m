@@ -1,23 +1,23 @@
 //
-//  MR0x145ViewController.m
+//  MR0x143ViewController.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2022/9/11.
+//  Created by qianlongxu on 2022/10/1.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x145ViewController.h"
+#import "MR0x143ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRDispatch.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x145VideoRenderer.h"
+#import "MR0x143VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x145ViewController ()
+@interface MR0x143ViewController ()
 
-@property (weak, nonatomic) IBOutlet MR0x145VideoRenderer *videoRenderer;
+@property (weak, nonatomic) IBOutlet MR0x143VideoRenderer *videoRenderer;
 @property (weak, nonatomic) IBOutlet UITextField *input;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
@@ -32,7 +32,7 @@
 
 @end
 
-@implementation MR0x145ViewController
+@implementation MR0x143ViewController
 
 - (void)dealloc
 {
@@ -172,11 +172,11 @@
 {
     NSInteger idx = [sender selectedSegmentIndex];
     if (idx == 0) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill0x145];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill0x143];
     } else if (idx == 1) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x145];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x143];
     } else if (idx == 2) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x145];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x143];
     }
 }
 

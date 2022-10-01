@@ -2,8 +2,8 @@
 //  MR0x142VideoRenderer.h
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/7/10.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/1.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>

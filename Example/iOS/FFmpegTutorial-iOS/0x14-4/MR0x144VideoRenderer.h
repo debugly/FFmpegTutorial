@@ -1,5 +1,5 @@
 //
-//  MR0x141VideoRenderer.h
+//  MR0x144VideoRenderer.h
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/10/1.
@@ -10,15 +10,15 @@
 #import <CoreVideo/CVPixelBuffer.h>
 
 typedef enum : NSUInteger {
-    MRViewContentModeScaleToFill0x141,
-    MRViewContentModeScaleAspectFill0x141,
-    MRViewContentModeScaleAspectFit0x141
-} MRViewContentMode0x141;
+    MRViewContentModeScaleToFill0x144,
+    MRViewContentModeScaleAspectFill0x144,
+    MRViewContentModeScaleAspectFit0x144
+} MRViewContentMode0x144;
 
-@interface MR0x141VideoRenderer : UIView
+@interface MR0x144VideoRenderer : UIView
 
 @property (nonatomic, assign) BOOL isFullYUVRange;
-@property (nonatomic, assign) MRViewContentMode0x141 contentMode;
+@property (nonatomic, assign) MRViewContentMode0x144 contentMode;
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
 

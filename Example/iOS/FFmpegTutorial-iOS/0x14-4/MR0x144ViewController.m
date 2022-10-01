@@ -1,23 +1,23 @@
 //
-//  MR0x146ViewController.m
+//  MR0x144ViewController.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/11.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x146ViewController.h"
+#import "MR0x144ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRDispatch.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x146VideoRenderer.h"
+#import "MR0x144VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x146ViewController ()
+@interface MR0x144ViewController ()
 
-@property (weak, nonatomic) IBOutlet MR0x146VideoRenderer *videoRenderer;
+@property (weak, nonatomic) IBOutlet MR0x144VideoRenderer *videoRenderer;
 @property (weak, nonatomic) IBOutlet UITextField *input;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 @property (weak, nonatomic) IBOutlet UILabel *audioPktLb;
@@ -32,7 +32,7 @@
 
 @end
 
-@implementation MR0x146ViewController
+@implementation MR0x144ViewController
 
 - (void)dealloc
 {
@@ -110,7 +110,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_BGRA;//MR_PIX_FMT_MASK_BGR0
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
     
     __weakSelf__
     player.onError = ^(NSError *err){
@@ -172,11 +172,11 @@
 {
     NSInteger idx = [sender selectedSegmentIndex];
     if (idx == 0) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill0x146];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill0x144];
     } else if (idx == 1) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x146];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill0x144];
     } else if (idx == 2) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x146];
+        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit0x144];
     }
 }
 

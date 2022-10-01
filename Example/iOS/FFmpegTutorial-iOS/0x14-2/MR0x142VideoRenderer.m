@@ -2,8 +2,8 @@
 //  MR0x142VideoRenderer.m
 //  FFmpegTutorial-iOS
 //
-//  Created by qianlongxu on 2020/7/10.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/1.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import "MR0x142VideoRenderer.h"
@@ -13,14 +13,13 @@
 #import "MROpenGLHelper.h"
 #import "MROpenGLCompiler.h"
 
-#define kNumOfPlanes 3
+#define kNumOfPlanes 2
 
 // Uniform index.
 enum
 {
     UNIFORM_0,
     UNIFORM_1,
-    UNIFORM_2,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -44,10 +43,10 @@ static GLint attributers[NUM_ATTRIBUTES];
 
     EAGLContext *_context;
     //for iphone
-    CVOpenGLESTextureRef _textureRefs[3];
+    CVOpenGLESTextureRef _textureRefs[kNumOfPlanes];
     CVOpenGLESTextureCacheRef _videoTextureCache;
     //for simulator
-    GLuint _textures[3];
+    GLuint _textures[kNumOfPlanes];
     
     GLuint _frameBufferHandle;
     GLuint _colorBufferHandle;
@@ -75,7 +74,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         CAEAGLLayer *eaglLayer = (CAEAGLLayer *)self.layer;
 
         eaglLayer.opaque = TRUE;
-        eaglLayer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking :[NSNumber numberWithBool:NO],
+        eaglLayer.drawableProperties = @{ kEAGLDrawablePropertyRetainedBacking : [NSNumber numberWithBool:NO],
                                           kEAGLDrawablePropertyColorFormat : kEAGLColorFormatRGBA8};
 
         _context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
@@ -98,11 +97,11 @@ static GLint attributers[NUM_ATTRIBUTES];
     [EAGLContext setCurrentContext:_context];
     
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"3_sampler2D.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2D.fsh"];
 
         if ([self.openglCompiler compileIfNeed]) {
-            // Get uniform locations.
             for (int i = 0; i < kNumOfPlanes; i++) {
+                // Get uniform locations.
                 char name[10] = {0};
                 sprintf(name, "Sampler%d",i);
                 uniforms[UNIFORM_0 + i] = [self.openglCompiler getUniformLocation:name];
@@ -212,7 +211,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         int frameWidth  = (int)CVPixelBufferGetWidthOfPlane(pixelBuffer, i);
         int frameHeight = (int)CVPixelBufferGetHeightOfPlane(pixelBuffer, i);
-        GLenum format = GL_LUMINANCE;
+        GLenum format = i == 0 ? GL_LUMINANCE : GL_LUMINANCE_ALPHA;
         
         if ([self supportsFastTextureUpload]) {
             // Create CVOpenGLESTextureCacheRef for optimal CVPixelBufferRef to GLES texture conversion.
@@ -232,7 +231,6 @@ static GLint attributers[NUM_ATTRIBUTES];
                 CFRelease(*tp);
                 *tp = NULL;
             }
-            
             err = CVOpenGLESTextureCacheCreateTextureFromImage(kCFAllocatorDefault,
                                                                _videoTextureCache,
                                                                pixelBuffer,
