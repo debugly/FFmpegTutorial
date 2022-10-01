@@ -12,13 +12,13 @@
 #version 330
 
 out vec4 FragColor;
-uniform sampler2DRect SamplerY;
-uniform vec2 textureDimensionY;
+uniform sampler2DRect Sampler0;
+uniform vec2 textureDimension0;
 in vec2 texCoordVarying;
 
 void main()
 {
-    vec2 recTexCoordY = texCoordVarying * textureDimensionY;
-    vec3 rgb = texture(SamplerY, recTexCoordY).rgb;
+    vec2 recTexCoordY = texCoordVarying * textureDimension0;
+    vec3 rgb = texture(Sampler0, recTexCoordY).rgb;
     FragColor = vec4(rgb, 1);
 }

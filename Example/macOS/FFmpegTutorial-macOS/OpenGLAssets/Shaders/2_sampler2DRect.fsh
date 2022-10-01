@@ -8,10 +8,10 @@
 //ERROR: 0:51: 'mat3' : declaration must include a precision qualifier for type
 //precision mediump float;
 
-uniform sampler2DRect SamplerY;
-uniform sampler2DRect SamplerUV;
-uniform vec2 textureDimensionY;
-uniform vec2 textureDimensionUV;
+uniform sampler2DRect Sampler0;
+uniform sampler2DRect Sampler1;
+uniform vec2 textureDimension0;
+uniform vec2 textureDimension1;
 
 uniform mat3 colorConversionMatrix;
 varying vec2 texCoordVarying;
@@ -21,11 +21,11 @@ void main()
     vec3 yuv;
     vec3 rgb;
     
-    vec2 recTexCoordY = texCoordVarying * textureDimensionY;
-    vec2 recTexCoordUV = texCoordVarying * textureDimensionUV;
+    vec2 recTexCoordY = texCoordVarying * textureDimension0;
+    vec2 recTexCoordUV = texCoordVarying * textureDimension1;
     
-    yuv.x = texture2DRect(SamplerY, recTexCoordY).r;
-    yuv.yz = texture2DRect(SamplerUV, recTexCoordUV).rg - vec2(0.5, 0.5);
+    yuv.x = texture2DRect(Sampler0, recTexCoordY).r;
+    yuv.yz = texture2DRect(Sampler1, recTexCoordUV).rg - vec2(0.5, 0.5);
     rgb = colorConversionMatrix * yuv;
     
     gl_FragColor = vec4(rgb, 1);

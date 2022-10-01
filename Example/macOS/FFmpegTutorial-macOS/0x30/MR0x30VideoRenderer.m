@@ -23,10 +23,10 @@
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_UV,
-    DIMENSION_Y,
-    DIMENSION_UV,
+    UNIFORM_0,
+    UNIFORM_1,
+    DIMENSION_0,
+    DIMENSION_1,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -133,11 +133,11 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_Y]  = [self.openglCompiler getUniformLocation:"SamplerY"];
-            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
+            uniforms[UNIFORM_0]  = [self.openglCompiler getUniformLocation:"Sampler0"];
+            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
             
-            uniforms[DIMENSION_Y]  = [self.openglCompiler getUniformLocation:"textureDimensionY"];
-            uniforms[DIMENSION_UV] = [self.openglCompiler getUniformLocation:"textureDimensionUV"];
+            uniforms[DIMENSION_0]  = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            uniforms[DIMENSION_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
             
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
@@ -280,16 +280,16 @@ static GLint attributers[NUM_ATTRIBUTES];
         //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
         if (useIOSurface) {
             //设置纹理和采样器的对应关系
-            glUniform1i(uniforms[UNIFORM_Y + i], f->planes + i);
+            glUniform1i(uniforms[UNIFORM_0 + i], f->planes + i);
             glActiveTexture(GL_TEXTURE0 + f->planes + i);
             glBindTexture(gl_target, plane_textures[i] + f->planes);
         } else {
-            glUniform1i(uniforms[UNIFORM_Y + i], 0 + i);
+            glUniform1i(uniforms[UNIFORM_0 + i], 0 + i);
             glActiveTexture(GL_TEXTURE0 + i);
             glBindTexture(gl_target, plane_textures[i]);
         }
         
-        glUniform2f(uniforms[DIMENSION_Y + i], w, h);
+        glUniform2f(uniforms[DIMENSION_0 + i], w, h);
         
         struct vt_gl_plane_format plane_format = f->gl[i];
         

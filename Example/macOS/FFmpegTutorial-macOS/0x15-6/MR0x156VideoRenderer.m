@@ -30,8 +30,8 @@
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    DIMENSION_Y,
+    UNIFORM_0,
+    DIMENSION_0,
     NUM_UNIFORMS
 };
 
@@ -131,9 +131,9 @@ static GLint attributers[NUM_ATTRIBUTES];
 #endif
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
+            uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
 #if USE_RECTANGLE
-            uniforms[DIMENSION_Y] = [self.openglCompiler getUniformLocation:"textureDimensionY"];
+            uniforms[DIMENSION_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
 #endif
             attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -275,12 +275,12 @@ static GLint attributers[NUM_ATTRIBUTES];
     int width = (int)CVPixelBufferGetWidth(pixelBuffer);
     int height = (int)CVPixelBufferGetHeight(pixelBuffer);
     
-    glUniform2f(uniforms[DIMENSION_Y], width, height);
+    glUniform2f(uniforms[DIMENSION_0], width, height);
     
     int offset = self.useIOSurface ? 1 : 0;
     
     //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
-    glUniform1i(uniforms[UNIFORM_Y], offset);
+    glUniform1i(uniforms[UNIFORM_0], offset);
     glActiveTexture(GL_TEXTURE0 + offset);
     glBindTexture(GL_TEXTURE_TARGET, plane_textures[offset]);
     

@@ -14,8 +14,8 @@
 #version 330
 
 out vec4 FragColor;
-uniform sampler2DRect SamplerY;
-uniform vec2 textureDimensionY;
+uniform sampler2DRect Sampler0;
+uniform vec2 textureDimension0;
 
 uniform mat3 colorConversionMatrix;
 in vec2 texCoordVarying;
@@ -27,8 +27,8 @@ const vec3 offset = vec3(-0.0625, -0.5, -0.5);
 
 void main()
 {
-    vec2 recTexCoordX = texCoordVarying * textureDimensionY;
-    vec3 tc = texture(SamplerY, recTexCoordX).rgb;
+    vec2 recTexCoordX = texCoordVarying * textureDimension0;
+    vec3 tc = texture(Sampler0, recTexCoordX).rgb;
     vec3 yuv = vec3(tc.g, tc.b, tc.r);
     yuv += offset;
     FragColor.r = dot(yuv, R_cf);

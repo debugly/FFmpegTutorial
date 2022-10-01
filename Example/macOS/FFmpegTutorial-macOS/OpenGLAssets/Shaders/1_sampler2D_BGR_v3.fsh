@@ -12,11 +12,11 @@
 #version 330
 
 out vec4 FragColor;
-uniform sampler2D SamplerY;
+uniform sampler2D Sampler0;
 in vec2 texCoordVarying;
 
 void main()
 {
-    vec3 rgb = texture(SamplerY, texCoordVarying).rgb;
+    vec3 rgb = texture(Sampler0, texCoordVarying).rgb;
     FragColor = vec4(rgb, 1);
 }

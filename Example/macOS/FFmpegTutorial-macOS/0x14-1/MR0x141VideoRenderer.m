@@ -19,8 +19,8 @@
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_UV,
+    UNIFORM_0,
+    UNIFORM_1,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -112,17 +112,17 @@ static GLint textureDimension[2];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_Y] = [self.openglCompiler getUniformLocation:"SamplerY"];
-            uniforms[UNIFORM_UV] = [self.openglCompiler getUniformLocation:"SamplerUV"];
+            uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
             uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            GLint textureDimensionY = [self.openglCompiler getUniformLocation:"textureDimensionY"];
-            assert(textureDimensionY >= 0);
-            textureDimension[0] = textureDimensionY;
+            GLint textureDimension0 = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            assert(textureDimension0 >= 0);
+            textureDimension[0] = textureDimension0;
             
-            GLint textureDimensionUV = [self.openglCompiler getUniformLocation:"textureDimensionUV"];
-            assert(textureDimensionUV >= 0);
-            textureDimension[1] = textureDimensionUV;
+            GLint textureDimension1 = [self.openglCompiler getUniformLocation:"textureDimension1"];
+            assert(textureDimension1 >= 0);
+            textureDimension[1] = textureDimension1;
             
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -248,8 +248,8 @@ static GLint textureDimension[2];
         assert(planar && planes == f->planes || f->planes == 1);
         
         //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_Y], 0);
-        glUniform1i(uniforms[UNIFORM_UV], 1);
+        glUniform1i(uniforms[UNIFORM_0], 0);
+        glUniform1i(uniforms[UNIFORM_1], 1);
         
         CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         

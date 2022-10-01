@@ -9,14 +9,14 @@
 //ERROR: 0:51: 'mat3' : declaration must include a precision qualifier for type
 //precision mediump float;
 
-uniform sampler2DRect SamplerY;
-uniform vec2 textureDimensionY;
+uniform sampler2DRect Sampler0;
+uniform vec2 textureDimension0;
 
 uniform mat3 colorConversionMatrix;
 varying vec2 texCoordVarying;
 
 void main()
 {
-    vec2 recTexCoordX = texCoordVarying * textureDimensionY;
-    gl_FragColor = texture2DRect(SamplerY, recTexCoordX);
+    vec2 recTexCoordX = texCoordVarying * textureDimension0;
+    gl_FragColor = texture2DRect(Sampler0, recTexCoordX);
 }

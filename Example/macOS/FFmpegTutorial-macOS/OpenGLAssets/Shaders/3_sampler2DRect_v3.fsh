@@ -13,13 +13,13 @@
 out vec4 FragColor;
 in vec2 texCoordVarying;
 
-uniform sampler2DRect SamplerY;
-uniform sampler2DRect SamplerU;
-uniform sampler2DRect SamplerV;
+uniform sampler2DRect Sampler0;
+uniform sampler2DRect Sampler1;
+uniform sampler2DRect Sampler2;
 
-uniform vec2 textureDimensionY;
-uniform vec2 textureDimensionU;
-uniform vec2 textureDimensionV;
+uniform vec2 textureDimension0;
+uniform vec2 textureDimension1;
+uniform vec2 textureDimension2;
 
 uniform mat3 colorConversionMatrix;
 
@@ -29,13 +29,13 @@ void main()
     vec3 yuv;
     vec3 rgb;
     
-    vec2 recTexCoord0 = texCoordVarying * textureDimensionY;
-    vec2 recTexCoord1 = texCoordVarying * textureDimensionU;
-    vec2 recTexCoord2 = texCoordVarying * textureDimensionV;
+    vec2 recTexCoord0 = texCoordVarying * textureDimension0;
+    vec2 recTexCoord1 = texCoordVarying * textureDimension1;
+    vec2 recTexCoord2 = texCoordVarying * textureDimension2;
     
-    yuv.x = texture(SamplerY, recTexCoord0).r;
-    yuv.y = texture(SamplerU, recTexCoord1).r - 0.5;
-    yuv.z = texture(SamplerV, recTexCoord2).r - 0.5;
+    yuv.x = texture(Sampler0, recTexCoord0).r;
+    yuv.y = texture(Sampler1, recTexCoord1).r - 0.5;
+    yuv.z = texture(Sampler2, recTexCoord2).r - 0.5;
     
     rgb = colorConversionMatrix * yuv;
     FragColor = vec4(rgb, 1);

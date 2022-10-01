@@ -18,8 +18,8 @@
 // Uniform index.
 enum
 {
-    UNIFORM_Y,
-    UNIFORM_UV,
+    UNIFORM_0,
+    UNIFORM_1,
     UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
@@ -205,8 +205,8 @@ enum
             
             glUseProgram(self.program);
             
-            glUniform1i(uniforms[UNIFORM_Y], 0);
-            glUniform1i(uniforms[UNIFORM_UV], 1);
+            glUniform1i(uniforms[UNIFORM_0], 0);
+            glUniform1i(uniforms[UNIFORM_1], 1);
         }
         
         int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
@@ -229,8 +229,8 @@ enum
             glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
         
         //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_Y], 0);
-        glUniform1i(uniforms[UNIFORM_UV], 1);
+        glUniform1i(uniforms[UNIFORM_0], 0);
+        glUniform1i(uniforms[UNIFORM_1], 1);
         
         CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
         
@@ -409,17 +409,17 @@ enum
     }
     
     // Get uniform locations.
-    uniforms[UNIFORM_Y] = glGetUniformLocation(self.program, "SamplerY");
-    uniforms[UNIFORM_UV] = glGetUniformLocation(self.program, "SamplerUV");
+    uniforms[UNIFORM_0] = glGetUniformLocation(self.program, "Sampler0");
+    uniforms[UNIFORM_1] = glGetUniformLocation(self.program, "Sampler1");
     uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = glGetUniformLocation(self.program, "colorConversionMatrix");
     
-    GLint textureDimensionY = glGetUniformLocation(self.program, "textureDimensionY");
-    assert(textureDimensionY >= 0);
-    textureDimension[0] = textureDimensionY;
+    GLint textureDimension0 = glGetUniformLocation(self.program, "textureDimension0");
+    assert(textureDimension0 >= 0);
+    textureDimension[0] = textureDimension0;
     
-    GLint textureDimensionUV = glGetUniformLocation(self.program, "textureDimensionUV");
-    assert(textureDimensionUV >= 0);
-    textureDimension[1] = textureDimensionUV;
+    GLint textureDimension1 = glGetUniformLocation(self.program, "textureDimension1");
+    assert(textureDimension1 >= 0);
+    textureDimension[1] = textureDimension1;
     
     // Release vertex and fragment shaders.
     if (vertShader) {
