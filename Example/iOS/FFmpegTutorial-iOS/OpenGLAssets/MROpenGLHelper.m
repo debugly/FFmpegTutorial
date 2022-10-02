@@ -7,6 +7,19 @@
 //
 
 #import "MROpenGLHelper.h"
+#import <Foundation/Foundation.h>
+
+void printf_opengl_string(const char *name, GLenum s)
+{
+    const char *v = (const char *) glGetString(s);
+    NSLog(@"[OpenGL] %s = %s\n", name, v);
+}
+
+void MR_checkGLError(const char* op) {
+    for (GLint error = glGetError(); error; error = glGetError()) {
+        printf("[GL] after %s() glError (0x%x)\n", op, error);
+    }
+}
 
 const char * GetGLErrorString(GLenum error)
 {

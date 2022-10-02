@@ -10,10 +10,18 @@
 #define MROpenGLHelper_h
 
 #include <stdio.h>
-#import <OpenGLES/EAGL.h>
 #import <OpenGLES/ES2/gl.h>
 
+void MR_checkGLError(const char* op);
 const char * GetGLErrorString(GLenum error);
+void printf_opengl_string(const char *name, GLenum s);
+
+#if DEBUG
+#define debug_opengl_string(name,s) printf_opengl_string(name,s)
+#else
+#define debug_opengl_string(name,s)
+#endif
+
 
 #define VerifyGL(_f) \
 {                    \

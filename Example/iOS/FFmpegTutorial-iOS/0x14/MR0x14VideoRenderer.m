@@ -144,6 +144,7 @@ enum
     
     glDeleteFramebuffers(1, &_frameBufferHandle);
     glDeleteRenderbuffers(1, &_colorBufferHandle);
+    glDeleteProgram(_program);
 }
 
 #pragma mark - OpenGLES drawing
