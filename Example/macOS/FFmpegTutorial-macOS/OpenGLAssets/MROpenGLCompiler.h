@@ -7,10 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MROpenGLHelper.h"
 
 NS_ASSUME_NONNULL_BEGIN
-
-void MR_checkGLError(const char* op);
 
 @interface MROpenGLCompiler : NSObject
 

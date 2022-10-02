@@ -133,7 +133,7 @@
         },
         @{
             @"title":@"0x14",
-            @"detail":@"使用 OpenGL 渲染 NV12 视频桢",
+            @"detail":@"使用 OpenGL 渲染 BGRA 视频桢",
             @"class":@"MR0x14ViewController",
         },
         @{
@@ -143,23 +143,28 @@
         },
         @{
             @"title":@"0x14-2",
-            @"detail":@"使用 OpenGL 渲染 YUV420P 视频桢",
+            @"detail":@"使用 OpenGL 渲染 NV12 视频桢",
             @"class":@"MR0x142ViewController",
         },
         @{
             @"title":@"0x14-3",
-            @"detail":@"使用 OpenGL 渲染 UYVY422 视频桢",
+            @"detail":@"使用 OpenGL 渲染 NV21 视频桢",
             @"class":@"MR0x143ViewController",
         },
         @{
             @"title":@"0x14-4",
-            @"detail":@"使用 OpenGL 渲染 YUYV422 视频桢",
+            @"detail":@"使用 OpenGL 渲染 YUV420P 视频桢",
             @"class":@"MR0x144ViewController",
         },
         @{
             @"title":@"0x14-5",
-            @"detail":@"使用 OpenGL 渲染 NV21 视频桢",
+            @"detail":@"使用 OpenGL 渲染 UYVY422 视频桢",
             @"class":@"MR0x145ViewController",
+        },
+        @{
+            @"title":@"0x14-6",
+            @"detail":@"使用 OpenGL 渲染 YUYV422 视频桢",
+            @"class":@"MR0x146ViewController",
         },
         @{
             @"title":@"0x15-1",

@@ -1,5 +1,5 @@
 //
-//  MR0x14VideoRenderer.h
+//  MR0x146VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
@@ -13,7 +13,7 @@ typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x14VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x146VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
 

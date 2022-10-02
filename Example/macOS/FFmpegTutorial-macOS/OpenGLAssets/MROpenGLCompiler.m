@@ -8,15 +8,6 @@
 
 #import "MROpenGLCompiler.h"
 #import <OpenGL/gl.h>
-#import "renderer_pixfmt.h"
-
-
-void MR_checkGLError(const char* op) {
-    for (GLint error = glGetError(); error; error = glGetError()) {
-        printf("[GL] after %s() glError (0x%x)\n", op, error);
-    }
-}
-
 
 @interface MROpenGLCompiler ()
 
@@ -92,7 +83,6 @@ void MR_checkGLError(const char* op) {
 
 - (GLuint)compileProgram
 {
-    MR_checkGLError("QQ");
     debug_opengl_string("Version", GL_VERSION);
     debug_opengl_string("Vendor", GL_VENDOR);
     debug_opengl_string("Renderer", GL_RENDERER);

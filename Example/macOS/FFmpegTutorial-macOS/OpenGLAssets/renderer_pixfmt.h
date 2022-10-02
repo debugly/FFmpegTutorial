@@ -18,28 +18,6 @@
 #import <AVFoundation/AVCaptureVideoDataOutput.h>
 #include <OpenGL/gl.h>
 #include <OpenGL/gl3ext.h>
-// Color Conversion Constants (YUV to RGB) including adjustment from 16-235/16-240 (video range)
-
-// BT.601, which is the standard for SDTV.
-static const GLfloat kColorConversion601[] = {
-        1.164,  1.164, 1.164,
-          0.0, -0.392, 2.017,
-        1.596, -0.813,   0.0,
-};
-
-// BT.709, which is the standard for HDTV.
-static const GLfloat kColorConversion709[] = {
-        1.164,  1.164, 1.164,
-          0.0, -0.213, 2.112,
-        1.793, -0.533,   0.0,
-};
-
-// BT.601 full range (ref: http://www.equasys.de/colorconversion.html)
-static const GLfloat kColorConversion601FullRange[] = {
-    1.0,    1.0,    1.0,
-    0.0,    -0.343, 1.765,
-    1.4,    -0.711, 0.0,
-};
 
 #if TARGET_OS_OSX
     #define OpenGLTextureCacheRef   CVOpenGLTextureCacheRef
@@ -166,17 +144,6 @@ static struct vt_format *vt_get_gl_format(uint32_t cvpixfmt)
     }
     return NULL;
 }
-
-#if DEBUG
-__unused static void printf_opengl_string(const char *name, GLenum s) {
-    const char *v = (const char *) glGetString(s);
-    NSLog(@"[OpenGL] %s = %s\n", name, v);
-}
-#define debug_opengl_string(name,s) printf_opengl_string(name,s)
-#else
-#define debug_opengl_string(name,s)
-#endif
-
 
 static void printSupportedPixelFormats(bool showPrivate)
 {

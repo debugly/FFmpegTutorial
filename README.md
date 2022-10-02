@@ -71,13 +71,6 @@ open FFmpegTutorial-macOS.xcworkspace
 └── md  //教程配套文档        
 ```
 
-# Anti-Illiteracy
-
-- 0x01:[常见封装格式介绍](md/illiteracy/0x01.md)
-- 0x02:[播放器总体架构设计](md/illiteracy/0x02.md)
-- 0x03:[封装 NSThread，支持 join](md/illiteracy/0x03.md)
-- 0x04:[AVFrame 内存管理分析](md/illiteracy/0x04.md)
-
 # FFmpegTutorial
 
 教程共分为六个部分，其中第六部分是独立的仓库:
@@ -98,18 +91,19 @@ open FFmpegTutorial-macOS.xcworkspace
 - 0x11:使用 Core Graphics 渲染视频帧
 - 0x12:使用 Core Image 渲染视频帧
 - 0x13:使用 Core Media 渲染视频帧
-- 0x14:使用 OpenGL 渲染 NV12 视频帧
+- 0x14:使用 OpenGL 渲染 BGRA 视频帧
     - 0x14-1:抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑
-    - 0x14-2:渲染 YUV420P（Mac Only）
-    - 0x14-3:渲染 UYVY422（Mac Only）
-    - 0x14-4:渲染 YUYV422（Mac Only）
-    - 0x14-5:渲染 NV21
-- 0x15:使用 OpenGL 3.3 渲染视频帧，两种上传纹理方式随时切换
+    - 0x14-2:渲染 NV12
+    - 0x14-3:渲染 NV21
+    - 0x14-4:渲染 YUV420P
+    - 0x14-5:渲染 UYVY422（Mac Only）
+    - 0x14-6:渲染 YUYV422（Mac Only）
+- 0x15:使用 OpenGL 3.3 / ES3 渲染视频帧
     - 0x15-1:渲染 NV12
-    - 0x15-2:渲染 YUV420P（Mac Only）
-    - 0x15-3:渲染 UYVY422（Mac Only）
-    - 0x15-4:渲染 YUYV422（Mac Only）
-    - 0x15-5:渲染 NV21（Mac Only）
+    - 0x15-2:渲染 NV21
+    - 0x15-3:渲染 YUV420P
+    - 0x15-4:渲染 UYVY422（Mac Only）
+    - 0x15-5:渲染 YUYV422（Mac Only）
 - 0x16:使用 FBO 离屏渲染截图（Mac Only）
 - 0x17:使用 Metal 渲染视频桢（TODO）
 

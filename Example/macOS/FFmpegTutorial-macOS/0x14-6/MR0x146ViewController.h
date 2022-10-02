@@ -1,5 +1,5 @@
 //
-//  MR0x14ViewController.h
+//  MR0x146ViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
@@ -14,12 +14,18 @@
 // 0x12:使用 Core Animation 渲染视频桢
 // 0x13:使用 Core Media 渲染视频桢
 // 0x14:使用 OpenGL 渲染 BGRA 视频桢
+// 0x14-1:抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑
+// 0x14-2:使用 OpenGL 渲染 NV12 视频桢
+// 0x14-3:使用 OpenGL 渲染 NV21 视频桢
+// 0x14-4:使用 OpenGL 渲染 YUV420P 视频桢
+// 0x14-5:使用 OpenGL 渲染 UYVY422 视频桢
+// 0x14-6:使用 OpenGL 渲染 YUYV422 视频桢
 
 #import <Cocoa/Cocoa.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x14ViewController : NSViewController
+@interface MR0x146ViewController : NSViewController
 
 @end
 

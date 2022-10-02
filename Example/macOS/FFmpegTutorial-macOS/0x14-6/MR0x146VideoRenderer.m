@@ -1,12 +1,12 @@
 //
-//  MR0x142VideoRenderer.m
+//  MR0x146VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x142VideoRenderer.h"
+#import "MR0x146VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/glext.h>
 #import <AVFoundation/AVUtilities.h>
@@ -19,7 +19,6 @@
 enum
 {
     UNIFORM_0,
-    UNIFORM_1,
     NUM_UNIFORMS
 };
 
@@ -31,10 +30,9 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x142VideoRenderer ()
+
+@interface MR0x146VideoRenderer ()
 {
-    //color conversion matrix uniform
-    GLint ccmUniform;
     GLint uniforms[NUM_UNIFORMS];
     GLint attributers[NUM_ATTRIBUTES];
     GLuint plane_textures[NUM_UNIFORMS];
@@ -46,7 +44,7 @@ enum
 
 @end
 
-@implementation MR0x142VideoRenderer
+@implementation MR0x146VideoRenderer
 
 - (void)dealloc
 {
@@ -129,13 +127,12 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2D.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"1_sampler2D.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
-            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
-            ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
         }
@@ -189,35 +186,19 @@ enum
 
 - (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
 {
-    //for y plane
-    {
-        //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_0], 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, frame->width, frame->height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, frame->data[0]);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    }
+    //设置纹理和采样器的对应关系
+    glUniform1i(uniforms[UNIFORM_0], 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+    //internalformat 必须是 GL_RGBA，与创建 OpenGL 上下文指定的格式一样；
+    //format 是当前数据的格式，可以是 GL_BGRA 也可以是 GL_RGBA，根据实际情况；但 CVPixelBufferRef 是不支持 RGBA 的；
+    //这里指定好格式后，将会自动转换好对应关系，shader 无需做额外处理。
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame->width, frame->height, 0, GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, frame->data[0]);
     
-    //for uv plane
-    {
-        //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_1], 1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, plane_textures[1]);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, frame->width/2, frame->height/2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, frame->data[1]);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 - (void)displayAVFrame:(AVFrame *)frame
@@ -232,9 +213,6 @@ enum
     [self.openglCompiler active];
     
     [self uploadFrameToTexture:frame];
-    
-    glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversion709);
-    
     {
         GLsizei frameWidth = frame->width;
         GLsizei frameHeight = frame->height;

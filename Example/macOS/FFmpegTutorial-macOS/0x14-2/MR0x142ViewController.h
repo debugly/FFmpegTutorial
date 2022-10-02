@@ -14,8 +14,8 @@
 // 0x12:使用 Core Animation 渲染视频桢
 // 0x13:使用 Core Media 渲染视频桢
 // 0x14:使用 OpenGL 渲染 NV12 视频桢
-// 0x141:抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑
-// 0x142:使用 OpenGL 渲染 YUV420P 视频桢
+// 0x14-1:抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑
+// 0x14-2:使用 OpenGL 渲染 NV12 视频桢
 
 #import <Cocoa/Cocoa.h>
 

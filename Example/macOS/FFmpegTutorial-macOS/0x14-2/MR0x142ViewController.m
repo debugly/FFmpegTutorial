@@ -9,8 +9,6 @@
 #import "MR0x142ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x142VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
@@ -85,12 +83,7 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    CFRetain(img);
-    mr_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
+    [self.videoRenderer displayAVFrame:frame];
 }
 
 - (void)parseURL:(NSString *)url
@@ -118,7 +111,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     
     __weakSelf__
     player.onError = ^(NSError * _Nonnull e) {

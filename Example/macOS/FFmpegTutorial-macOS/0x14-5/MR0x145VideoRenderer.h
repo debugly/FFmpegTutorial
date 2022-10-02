@@ -2,19 +2,20 @@
 //  MR0x145VideoRenderer.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/8/22.
+//  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CoreVideo/CVPixelBuffer.h>
 #import "MRVideoRendererProtocol.h"
+
+typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x145VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
+- (void)displayAVFrame:(AVFrame *)frame;
 
 @end
 

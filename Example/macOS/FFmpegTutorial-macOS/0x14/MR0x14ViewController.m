@@ -9,8 +9,6 @@
 #import "MR0x14ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
 #import "MRRWeakProxy.h"
 #import "MR0x14VideoRenderer.h"
 
@@ -86,12 +84,7 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    CFRetain(img);
-    mr_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
+    [self.videoRenderer displayAVFrame:frame];
 }
 
 - (void)parseURL:(NSString *)url
@@ -119,7 +112,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_BGRA;
     
     __weakSelf__
     player.onError = ^(NSError * _Nonnull e) {
@@ -136,9 +129,7 @@
         //video
         if (type == 1) {
             mr_msleep(40);
-            @autoreleasepool {
-                [self displayVideoFrame:frame];
-            }
+            [self displayVideoFrame:frame];
         }
         //audio
         else if (type == 2) {

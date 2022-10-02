@@ -7,14 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CoreVideo/CVPixelBuffer.h>
 #import "MRVideoRendererProtocol.h"
+
+typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x141VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
+- (void)displayAVFrame:(AVFrame *)frame;
 
 @end
 

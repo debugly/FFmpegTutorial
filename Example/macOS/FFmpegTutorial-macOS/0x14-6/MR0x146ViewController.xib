@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="MR0x145ViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="MR0x146ViewController">
             <connections>
                 <outlet property="indicatorView" destination="A8v-NC-bh6" id="vrp-86-BMn"/>
                 <outlet property="inputField" destination="X45-WW-lE6" id="vzy-yO-Yvh"/>
@@ -90,7 +89,7 @@
                         <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x145VideoRenderer">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x146VideoRenderer">
                     <rect key="frame" x="0.0" y="0.0" width="672" height="232"/>
                 </customView>
                 <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="A8v-NC-bh6">

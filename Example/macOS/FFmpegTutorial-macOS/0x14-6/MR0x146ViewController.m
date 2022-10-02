@@ -1,30 +1,30 @@
 //
-//  MR0x144ViewController.m
+//  MR0x146ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/8/2.
+//  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x144ViewController.h"
+#import "MR0x146ViewController.h"
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import "MR0x144VideoRenderer.h"
+#import "MR0x146VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
-@interface MR0x144ViewController ()
+@interface MR0x146ViewController ()
 
 @property (strong) FFPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x144VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x146VideoRenderer *videoRenderer;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
 
 @end
 
-@implementation MR0x144ViewController
+@implementation MR0x146ViewController
 
 - (void)dealloc
 {
@@ -112,7 +112,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUV420P;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_YUYV422;
     
     __weakSelf__
     player.onError = ^(NSError * _Nonnull e) {
@@ -160,7 +160,7 @@
     }
 }
 
-- (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
+- (IBAction)onSelectedVideoMode:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
         

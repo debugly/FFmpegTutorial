@@ -100,12 +100,12 @@
             <constraints>
                 <constraint firstAttribute="trailing" secondItem="xd5-Jb-nAf" secondAttribute="trailing" id="45u-vN-MBV"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="776-j1-rIJ"/>
-                <constraint firstItem="xd5-Jb-nAf" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="DG4-eA-fAS"/>
                 <constraint firstAttribute="bottom" secondItem="xd5-Jb-nAf" secondAttribute="bottom" id="EHJ-7A-BDf"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
                 <constraint firstItem="xd5-Jb-nAf" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="mn5-G9-TL9"/>
                 <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
                 <constraint firstItem="A8v-NC-bh6" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="rfw-6M-es0"/>
+                <constraint firstItem="xd5-Jb-nAf" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="sgV-ll-ZtW"/>
                 <constraint firstAttribute="trailing" secondItem="NMB-98-nYq" secondAttribute="trailing" id="yDU-gp-9m5"/>
             </constraints>
             <point key="canvasLocation" x="-131" y="120"/>
