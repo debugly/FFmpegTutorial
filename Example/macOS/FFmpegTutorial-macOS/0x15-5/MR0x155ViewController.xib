@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
-        <deployment identifier="macosx"/>
         <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -32,7 +31,7 @@
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="X45-WW-lE6">
-                            <rect key="frame" x="84" y="10" width="133" height="21"/>
+                            <rect key="frame" x="84" y="10" width="379" height="21"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="JaS-Je-Vlq">
                                 <font key="font" usesAppearanceFont="YES"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -40,7 +39,7 @@
                             </textFieldCell>
                         </textField>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Hh-br-Haq">
-                            <rect key="frame" x="220" y="3" width="61" height="32"/>
+                            <rect key="frame" x="466" y="3" width="61" height="32"/>
                             <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
@@ -49,19 +48,8 @@
                                 <action selector="go:" target="-2" id="gpZ-YI-9b1"/>
                             </connections>
                         </button>
-                        <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" id="oV4-hh-0tw">
-                            <rect key="frame" x="277" y="4" width="118" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="UseIOSurface" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hGv-AN-A7q">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="onExchangeUploadTextureMethod:" target="-2" id="Mwe-Nz-r2j"/>
-                            </connections>
-                        </button>
                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ohP-6S-w0k">
-                            <rect key="frame" x="395" y="6" width="271" height="25"/>
+                            <rect key="frame" x="527" y="6" width="139" height="25"/>
                             <popUpButtonCell key="cell" type="push" title="Scale To Fill" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="yzr-ff-CJ4" id="xpv-0r-RZn">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="menu"/>
@@ -93,10 +81,8 @@
                         <integer value="1000"/>
                         <integer value="1000"/>
                         <integer value="1000"/>
-                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
-                        <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>

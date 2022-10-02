@@ -2,16 +2,13 @@
 //  MR0x153ViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/18.
+//  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import "MR0x153ViewController.h"
-#import <FFmpegTutorial/OpenGLVersionHelper.h>
 #import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x153VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
@@ -87,12 +84,7 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    CFRetain(img);
-    mr_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
+    [self.videoRenderer displayAVFrame:frame];
 }
 
 - (void)parseURL:(NSString *)url
@@ -121,7 +113,7 @@
     
     FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_UYVY422;
+    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV21;
     
     __weakSelf__
     player.onError = ^(NSError * _Nonnull e) {
@@ -167,17 +159,6 @@
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
-}
-
-- (IBAction)onExchangeUploadTextureMethod:(NSButton *)sender
-{
-    BOOL used = [self.videoRenderer exchangeUploadTextureMethod];
-    if (used) {
-        [sender setTitle:@"UseGeneral"];
-    } else {
-        [sender setTitle:@"UseIOSurface"];
-    }
-    [self.hud setHudValue:[NSString stringWithFormat:@"%d",used] forKey:@"ioSurface"];
 }
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
