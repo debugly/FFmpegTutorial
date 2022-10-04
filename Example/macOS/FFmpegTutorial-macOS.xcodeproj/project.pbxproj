@@ -827,7 +827,7 @@
 			path = 0x01;
 			sourceTree = "<group>";
 		};
-		DDF9231D28EBFD3A00F29C1A /* 1.The basis of AV */ = {
+		DDF9231D28EBFD3A00F29C1A /* 1.The Basis Of AV */ = {
 			isa = PBXGroup;
 			children = (
 				DDF6576426273C3700116F05 /* 0x01 */,
@@ -837,7 +837,7 @@
 				DD56CAFD28674FA00046C28A /* 0x05 */,
 				DD56CB032867FBBD0046C28A /* 0x06 */,
 			);
-			path = "1.The basis of AV";
+			path = "1.The Basis Of AV";
 			sourceTree = "<group>";
 		};
 		DDF9231F28EC4A5F00F29C1A /* 2.Video Rendering */ = {
@@ -1134,7 +1134,7 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
-				DDF9231D28EBFD3A00F29C1A /* 1.The basis of AV */,
+				DDF9231D28EBFD3A00F29C1A /* 1.The Basis Of AV */,
 				DDF9231F28EC4A5F00F29C1A /* 2.Video Rendering */,
 				DDF923BF28EC4A7A00F29C1A /* 3.Audio Rendering */,
 				DDF923C028EC4A9B00F29C1A /* 4.Movie Player */,
