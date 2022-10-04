@@ -5,7 +5,7 @@
 //  Created by qianlongxu on 2022/9/8.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
-// 使用 Core Media 渲染视频桢
+// 0x50:雪花屏，灰色色阶图，三个小球
 
 #import <Cocoa/Cocoa.h>
 

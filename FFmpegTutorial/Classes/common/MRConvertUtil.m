@@ -851,9 +851,9 @@ static void fillGrayBar(int barnum,size_t bytesPerRow,unsigned char *y,unsigned 
      假如 delta 为 50 时, 上层 40ms 调用一次，那么每次改变的角度就是 0.4 * 360 / 50 = 2.88度
      */
     
-    int delta = 50;
+    int delta = 25;
     
-    double time = 1.0 * CFAbsoluteTimeGetCurrent() / NSEC_PER_SEC / delta;
+    double time = 1.0 * CFAbsoluteTimeGetCurrent() / delta;
     
     double period = 4.0;
     double fraction = sin(2 * M_PI * time / period) / 2 + 0.5;

@@ -130,7 +130,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 五、趣味实验
 
-- 0x40:[黑白电视机雪花屏、灰色色阶图] 
+- 0x50:黑白电视机雪花屏、灰色色阶图
 
 六、实用工具
 
