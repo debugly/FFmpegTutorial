@@ -15,7 +15,6 @@
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
-#import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
