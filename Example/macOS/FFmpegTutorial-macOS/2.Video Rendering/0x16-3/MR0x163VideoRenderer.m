@@ -40,6 +40,7 @@ enum
     //color conversion matrix uniform
     GLint ccmUniform;
     GLint uniforms[NUM_UNIFORMS];
+    GLint textureDimensions[NUM_UNIFORMS];
     GLint attributers[NUM_ATTRIBUTES];
     GLuint plane_textures[NUM_UNIFORMS];
     CGRect _layerBounds;
@@ -114,12 +115,15 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_NV21_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_NV21_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
             uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
+            
+            textureDimensions[UNIFORM_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            textureDimensions[UNIFORM_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
             
             ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
@@ -172,7 +176,7 @@ enum
     [self setupOpenGLProgram];
     
     glDisable(GL_DEPTH_TEST);
-    //glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_RECTANGLE);
     glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
 }
 
@@ -208,15 +212,17 @@ enum
         //设置纹理和采样器的对应关系
         glUniform1i(uniforms[UNIFORM_0], 0);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+        glBindTexture(GL_TEXTURE_RECTANGLE, plane_textures[0]);
         
+        //设置矩形纹理尺寸
+        glUniform2f(textureDimensions[UNIFORM_0], frame->width, frame->height);
         //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
         VerifyGL(;);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
     VerifyGL(;);
     //for uv plane
@@ -224,14 +230,18 @@ enum
         //设置纹理和采样器的对应关系
         glUniform1i(uniforms[UNIFORM_1], 1);
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, plane_textures[1]);
+        glBindTexture(GL_TEXTURE_RECTANGLE, plane_textures[1]);
+        
+        //设置矩形纹理尺寸
+        glUniform2f(textureDimensions[UNIFORM_1], frame->width/2, frame->height/2);
+        
         //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE_ALPHA
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
         VerifyGL(;);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
     VerifyGL(;);
 }

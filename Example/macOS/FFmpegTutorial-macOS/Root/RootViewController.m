@@ -223,12 +223,12 @@
         },
         @{
             @"title":@"0x16-5",
-            @"detail":@"使用矩形纹理渲染 UYVY422 视频桢",
+            @"detail":@"(TODO)使用矩形纹理渲染 UYVY422 视频桢",
             @"class":@"MR0x165ViewController",
         },
         @{
             @"title":@"0x16-6",
-            @"detail":@"使用矩形纹理渲染 YUYV422 视频桢",
+            @"detail":@"(TODO)使用矩形纹理渲染 YUYV422 视频桢",
             @"class":@"MR0x166ViewController",
         },
         @{

@@ -37,6 +37,7 @@ enum
 @interface MR0x165VideoRenderer ()
 {
     GLint uniforms[NUM_UNIFORMS];
+    GLint textureDimensions[NUM_UNIFORMS];
     GLint attributers[NUM_ATTRIBUTES];
     GLuint plane_textures[NUM_UNIFORMS];
     CGRect _layerBounds;
@@ -111,11 +112,12 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            textureDimensions[UNIFORM_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
             
             attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -166,7 +168,7 @@ enum
     [self setupOpenGLProgram];
     
     glDisable(GL_DEPTH_TEST);
-    //glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_RECTANGLE);
     glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
 }
 
@@ -200,15 +202,18 @@ enum
     //设置纹理和采样器的对应关系
     glUniform1i(uniforms[UNIFORM_0], 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+    glBindTexture(GL_TEXTURE_RECTANGLE, plane_textures[0]);
+    
+    //设置矩形纹理尺寸
+    glUniform2f(textureDimensions[UNIFORM_0], frame->width, frame->height);
     //GL_INVALID_ENUM: GL_YCBCR_422_APPLE
 //    { GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, GL_RGB },
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame->width, frame->height, 0, GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, frame->data[0]);
+    glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGB, frame->width, frame->height, 0, GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, frame->data[0]);
     VerifyGL(;);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 - (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame

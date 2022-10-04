@@ -9,12 +9,11 @@
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
 		C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */; };
-		C958F95E2796A7520058D64A /* 3_sampler2DRect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95C2796A7520058D64A /* 3_sampler2DRect_v3.fsh */; };
+		C958F95E2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */; };
 		C958F95F2796A7520058D64A /* common_v3.vsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95D2796A7520058D64A /* common_v3.vsh */; };
-		C958FAAD2797F0E90058D64A /* 2_sampler2DRect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FAAC2797F0E90058D64A /* 2_sampler2DRect_v3.fsh */; };
-		C958FAB82799384A0058D64A /* 1_sampler2DRect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FAB72799384A0058D64A /* 1_sampler2DRect_v3.fsh */; };
-		C958FACD279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FACB279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh */; };
-		C958FACE279A60740058D64A /* 2_sample2DRect_NV21.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FACC279A60740058D64A /* 2_sample2DRect_NV21.fsh */; };
+		C958FAAD2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */; };
+		C958FACD279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */; };
+		C958FACE279A60740058D64A /* 2_sampler2D_NV21_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FACC279A60740058D64A /* 2_sampler2D_NV21_Rect.fsh */; };
 		C960C926287BC9D8005365CA /* MR0x23ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C960C91F287BC9D8005365CA /* MR0x23ViewController.m */; };
 		C960C928287BC9D8005365CA /* MR0x23ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C960C922287BC9D8005365CA /* MR0x23ViewController.xib */; };
 		C960C929287BC9D8005365CA /* MR0x23AudioFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = C960C925287BC9D8005365CA /* MR0x23AudioFrameQueue.m */; };
@@ -30,12 +29,12 @@
 		DD7ABB75287B0D3100622984 /* MR0x22ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7ABB70287B0D3100622984 /* MR0x22ViewController.xib */; };
 		DD7ABB78287B0E4100622984 /* MR0x22AudioFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7ABB77287B0E4100622984 /* MR0x22AudioFrameQueue.m */; };
 		DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */; };
-		DD7D80A726C1687F00D968F3 /* 1_sampler2DRect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */; };
+		DD7D80A726C1687F00D968F3 /* 1_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */; };
 		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
-		DD91F29126AC082C00B96334 /* 2_sampler2DRect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28D26AC082C00B96334 /* 2_sampler2DRect.fsh */; };
+		DD91F29126AC082C00B96334 /* 2_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */; };
 		DD91F29226AC082C00B96334 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28E26AC082C00B96334 /* README.md */; };
 		DD91F29326AC082C00B96334 /* common.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28F26AC082C00B96334 /* common.vsh */; };
-		DD91F31C26B6E99800B96334 /* 3_sampler2DRect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F31B26B6E99800B96334 /* 3_sampler2DRect.fsh */; };
+		DD91F31C26B6E99800B96334 /* 3_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */; };
 		DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82A256EA4D000B93F9F /* RootViewController.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
 		DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E83A25720F2A00B93F9F /* NSNavigationController.m */; };
@@ -47,7 +46,7 @@
 		DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB144D226282E4100495754 /* MRRWeakProxy.m */; };
 		DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73E922577DB9A0060EB57 /* MRDragView.m */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
-		DDBFF17328B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */; };
+		DDBFF17328B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17228B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh */; };
 		DDBFF17528B521A700AFCE44 /* 1_sampler2D_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17428B521A700AFCE44 /* 1_sampler2D_v3.fsh */; };
 		DDBFF18528CA300700AFCE44 /* MR0x50VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF18028CA300700AFCE44 /* MR0x50VideoRenderer.m */; };
 		DDBFF18628CA300700AFCE44 /* MR0x50ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF18128CA300700AFCE44 /* MR0x50ViewController.m */; };
@@ -197,12 +196,11 @@
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
 		C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
-		C958F95C2796A7520058D64A /* 3_sampler2DRect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2DRect_v3.fsh; sourceTree = "<group>"; };
+		C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
 		C958F95D2796A7520058D64A /* common_v3.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_v3.vsh; sourceTree = "<group>"; };
-		C958FAAC2797F0E90058D64A /* 2_sampler2DRect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2DRect_v3.fsh; sourceTree = "<group>"; };
-		C958FAB72799384A0058D64A /* 1_sampler2DRect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2DRect_v3.fsh; sourceTree = "<group>"; };
-		C958FACB279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sample2DRect_NV21_v3.fsh; sourceTree = "<group>"; };
-		C958FACC279A60740058D64A /* 2_sample2DRect_NV21.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sample2DRect_NV21.fsh; sourceTree = "<group>"; };
+		C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
+		C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_Rect_v3.fsh; sourceTree = "<group>"; };
+		C958FACC279A60740058D64A /* 2_sampler2D_NV21_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_Rect.fsh; sourceTree = "<group>"; };
 		C960C91F287BC9D8005365CA /* MR0x23ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x23ViewController.m; sourceTree = "<group>"; };
 		C960C921287BC9D8005365CA /* MR0x23AudioFrameQueue.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x23AudioFrameQueue.h; sourceTree = "<group>"; };
 		C960C922287BC9D8005365CA /* MR0x23ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x23ViewController.xib; sourceTree = "<group>"; };
@@ -229,14 +227,14 @@
 		DD7ABB77287B0E4100622984 /* MR0x22AudioFrameQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x22AudioFrameQueue.m; sourceTree = "<group>"; };
 		DD7D80A226BAED3300D968F3 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
 		DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
-		DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2DRect.fsh; sourceTree = "<group>"; };
+		DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F143268CC78A00B96334 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
-		DD91F28D26AC082C00B96334 /* 2_sampler2DRect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2DRect.fsh; sourceTree = "<group>"; };
+		DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F28E26AC082C00B96334 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DD91F28F26AC082C00B96334 /* common.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common.vsh; sourceTree = "<group>"; };
 		DD91F29026AC082C00B96334 /* renderer_pixfmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer_pixfmt.h; sourceTree = "<group>"; };
 		DD91F30E26AEEDD900B96334 /* MRVideoRendererProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoRendererProtocol.h; sourceTree = "<group>"; };
-		DD91F31B26B6E99800B96334 /* 3_sampler2DRect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2DRect.fsh; sourceTree = "<group>"; };
+		DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E8312571458600B93F9F /* RootTableRowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootTableRowView.h; sourceTree = "<group>"; };
@@ -256,7 +254,7 @@
 		DDB73E932577DB9A0060EB57 /* MRDragView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRDragView.h; sourceTree = "<group>"; };
 		DDB73F652577DDE60060EB57 /* MRUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRUtil.h; sourceTree = "<group>"; };
 		DDB73F662577DDE60060EB57 /* MRUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRUtil.m; sourceTree = "<group>"; };
-		DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2DRect_BGR_v3.fsh; sourceTree = "<group>"; };
+		DDBFF17228B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
 		DDBFF17428B521A700AFCE44 /* 1_sampler2D_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_v3.fsh; sourceTree = "<group>"; };
 		DDBFF18028CA300700AFCE44 /* MR0x50VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x50VideoRenderer.m; sourceTree = "<group>"; };
 		DDBFF18128CA300700AFCE44 /* MR0x50ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x50ViewController.m; sourceTree = "<group>"; };
@@ -585,21 +583,20 @@
 			children = (
 				DDBFF17428B521A700AFCE44 /* 1_sampler2D_v3.fsh */,
 				DDF922A928E947FA00F29C1A /* 1_sampler2D.fsh */,
-				DDBFF17228B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh */,
-				C958FAB72799384A0058D64A /* 1_sampler2DRect_v3.fsh */,
-				DD7D80A626C1687F00D968F3 /* 1_sampler2DRect.fsh */,
-				C958FACB279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh */,
-				C958FACC279A60740058D64A /* 2_sample2DRect_NV21.fsh */,
+				DDBFF17228B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh */,
+				DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */,
+				C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */,
+				C958FACC279A60740058D64A /* 2_sampler2D_NV21_Rect.fsh */,
 				DDF9231828E9839600F29C1A /* 2_sampler2D_NV21_v3.fsh */,
 				DDF922A828E947FA00F29C1A /* 2_sampler2D_NV21.fsh */,
 				DDF922E028E9675A00F29C1A /* 2_sampler2D_v3.fsh */,
 				DDF922AA28E947FA00F29C1A /* 2_sampler2D.fsh */,
-				C958FAAC2797F0E90058D64A /* 2_sampler2DRect_v3.fsh */,
-				DD91F28D26AC082C00B96334 /* 2_sampler2DRect.fsh */,
+				C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */,
+				DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */,
 				DDF9231A28E9859800F29C1A /* 3_sampler2D_v3.fsh */,
 				DDF922D528E94A8700F29C1A /* 3_sampler2D.fsh */,
-				C958F95C2796A7520058D64A /* 3_sampler2DRect_v3.fsh */,
-				DD91F31B26B6E99800B96334 /* 3_sampler2DRect.fsh */,
+				C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */,
+				DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */,
 				C958F95D2796A7520058D64A /* common_v3.vsh */,
 				DD91F28F26AC082C00B96334 /* common.vsh */,
 				DD91F28E26AC082C00B96334 /* README.md */,
@@ -1345,26 +1342,25 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C958FACD279A60740058D64A /* 2_sample2DRect_NV21_v3.fsh in Resources */,
+				C958FACD279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh in Resources */,
 				DDF923BC28EC4A5F00F29C1A /* MR0x141ViewController.xib in Resources */,
 				DDF923E628EC5A2A00F29C1A /* MR0x163ViewController.xib in Resources */,
 				DDF5993428918E410079D26E /* MR0x36ViewController.xib in Resources */,
 				DDF922AC28E947FA00F29C1A /* 1_sampler2D.fsh in Resources */,
 				DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */,
-				C958FAAD2797F0E90058D64A /* 2_sampler2DRect_v3.fsh in Resources */,
+				C958FAAD2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh in Resources */,
 				DDF598E628826AD70079D26E /* MR0x30ViewController.xib in Resources */,
 				DDF9231928E9839600F29C1A /* 2_sampler2D_NV21_v3.fsh in Resources */,
 				DD91F29326AC082C00B96334 /* common.vsh in Resources */,
 				DDF9239028EC4A5F00F29C1A /* MR0x156ViewController.xib in Resources */,
-				C958FAB82799384A0058D64A /* 1_sampler2DRect_v3.fsh in Resources */,
 				DD7ABB75287B0D3100622984 /* MR0x22ViewController.xib in Resources */,
 				DDF923BB28EC4A5F00F29C1A /* MR0x146ViewController.xib in Resources */,
 				DDF923A028EC4A5F00F29C1A /* MR0x142ViewController.xib in Resources */,
-				DD7D80A726C1687F00D968F3 /* 1_sampler2DRect.fsh in Resources */,
+				DD7D80A726C1687F00D968F3 /* 1_sampler2D_Rect.fsh in Resources */,
 				DD56CAFC28670F460046C28A /* MR0x04ViewController.xib in Resources */,
 				DDBFF18728CA300700AFCE44 /* MR0x50ViewController.xib in Resources */,
 				C960C928287BC9D8005365CA /* MR0x23ViewController.xib in Resources */,
-				DD91F31C26B6E99800B96334 /* 3_sampler2DRect.fsh in Resources */,
+				DD91F31C26B6E99800B96334 /* 3_sampler2D_Rect.fsh in Resources */,
 				DDE855342871CA490006B140 /* MR0x20ViewController.xib in Resources */,
 				DDF9239528EC4A5F00F29C1A /* MR0x11ViewController.xib in Resources */,
 				DDF59928288ED5D30079D26E /* MR0x34ViewController.xib in Resources */,
@@ -1382,8 +1378,8 @@
 				DDF923A228EC4A5F00F29C1A /* MR0x145ViewController.xib in Resources */,
 				DDF923A428EC4A5F00F29C1A /* MR0x153ViewController.xib in Resources */,
 				DDF922D628E94A8700F29C1A /* 3_sampler2D.fsh in Resources */,
-				DD91F29126AC082C00B96334 /* 2_sampler2DRect.fsh in Resources */,
-				C958FACE279A60740058D64A /* 2_sample2DRect_NV21.fsh in Resources */,
+				DD91F29126AC082C00B96334 /* 2_sampler2D_Rect.fsh in Resources */,
+				C958FACE279A60740058D64A /* 2_sampler2D_NV21_Rect.fsh in Resources */,
 				DD56CB082867FBBD0046C28A /* MR0x06ViewController.xib in Resources */,
 				C958F95F2796A7520058D64A /* common_v3.vsh in Resources */,
 				DDF5992E288EE7970079D26E /* MR0x35ViewController.xib in Resources */,
@@ -1406,10 +1402,10 @@
 				DDF9239328EC4A5F00F29C1A /* MR0x10ViewController.xib in Resources */,
 				DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */,
 				DDF923AD28EC4A5F00F29C1A /* MR0x152ViewController.xib in Resources */,
-				DDBFF17328B51A9F00AFCE44 /* 1_sampler2DRect_BGR_v3.fsh in Resources */,
+				DDBFF17328B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh in Resources */,
 				DDF923AB28EC4A5F00F29C1A /* MR0x155ViewController.xib in Resources */,
 				DDF923F128EC5A2A00F29C1A /* MR0x161ViewController.xib in Resources */,
-				C958F95E2796A7520058D64A /* 3_sampler2DRect_v3.fsh in Resources */,
+				C958F95E2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
