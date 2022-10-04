@@ -28,11 +28,11 @@ enum
     NUM_ATTRIBUTES
 };
 
-static GLint uniforms[NUM_UNIFORMS];
-static GLint attributers[NUM_ATTRIBUTES];
-
 @interface MR0x141VideoRenderer ()
 {
+    GLint uniforms[NUM_UNIFORMS];
+    GLint attributers[NUM_ATTRIBUTES];
+
     // The pixel dimensions of the CAEAGLLayer.
     GLint _backingWidth;
     GLint _backingHeight;

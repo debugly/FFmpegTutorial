@@ -13,15 +13,12 @@
 #import "MROpenGLHelper.h"
 #import "MROpenGLCompiler.h"
 
-#define kNumOfPlanes 3
-
 // Uniform index.
 enum
 {
     UNIFORM_0,
     UNIFORM_1,
     UNIFORM_2,
-    UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
 
@@ -33,11 +30,13 @@ enum
     NUM_ATTRIBUTES
 };
 
-static GLint uniforms[NUM_UNIFORMS];
-static GLint attributers[NUM_ATTRIBUTES];
-
 @interface MR0x144VideoRenderer ()
 {
+    //color conversion matrix uniform
+    GLint ccmUniform;
+    GLint uniforms[NUM_UNIFORMS];
+    GLint attributers[NUM_ATTRIBUTES];
+    
     // The pixel dimensions of the CAEAGLLayer.
     GLint _backingWidth;
     GLint _backingHeight;
@@ -51,8 +50,6 @@ static GLint attributers[NUM_ATTRIBUTES];
     
     GLuint _frameBufferHandle;
     GLuint _colorBufferHandle;
-    
-    const GLfloat *_preferredConversion;
 }
 
 @property MROpenGLCompiler * openglCompiler;
@@ -84,8 +81,6 @@ static GLint attributers[NUM_ATTRIBUTES];
             return nil;
         }
         
-        _preferredConversion = kColorConversion709;
-        
         [self setupGL];
     }
     return self;
@@ -102,12 +97,12 @@ static GLint attributers[NUM_ATTRIBUTES];
 
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            for (int i = 0; i < kNumOfPlanes; i++) {
+            for (int i = 0; i < NUM_UNIFORMS; i++) {
                 char name[10] = {0};
                 sprintf(name, "Sampler%d",i);
                 uniforms[UNIFORM_0 + i] = [self.openglCompiler getUniformLocation:name];
             }
-            uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
             attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -190,22 +185,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         [EAGLContext setCurrentContext:_context]; // 非常重要的一行代码
     }
     
-    /*
-     Use the color attachment of the pixel buffer to determine the appropriate color conversion matrix.
-     */
-    CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
-    
-    if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
-        if (self.isFullYUVRange) {
-            _preferredConversion = kColorConversion601FullRange;
-        } else {
-            _preferredConversion = kColorConversion601;
-        }
-    } else {
-        _preferredConversion = kColorConversion709;
-    }
-    
-    for (int i = 0; i < kNumOfPlanes; i ++) {
+    for (int i = 0; i < NUM_UNIFORMS; i ++) {
         
         glActiveTexture(GL_TEXTURE0 + i);
         glUniform1i(uniforms[UNIFORM_0 + i], i);
@@ -274,7 +254,7 @@ static GLint attributers[NUM_ATTRIBUTES];
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
     
-    glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, _preferredConversion);
+    glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversion709);
     
     // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
     [self.openglCompiler active];

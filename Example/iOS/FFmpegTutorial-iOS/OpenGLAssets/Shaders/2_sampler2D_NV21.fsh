@@ -48,6 +48,7 @@
 //https://stackoverflow.com/questions/8788049/shader-differences-on-ios
 //ERROR: 0:51: 'mat3' : declaration must include a precision qualifier for type
 //precision mediump float;
+#version 100
 
 uniform sampler2D Sampler0;
 uniform sampler2D Sampler1;
