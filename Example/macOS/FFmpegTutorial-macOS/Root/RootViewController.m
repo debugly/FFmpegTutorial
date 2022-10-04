@@ -202,7 +202,37 @@
             @"class":@"MR0x157ViewController",
         },
         @{
-            @"title":@"0x16",
+            @"title":@"0x16-1",
+            @"detail":@"使用矩形纹理渲染 BGRA 视频桢",
+            @"class":@"MR0x161ViewController",
+        },
+        @{
+            @"title":@"0x16-2",
+            @"detail":@"使用矩形纹理渲染 NV12 视频桢",
+            @"class":@"MR0x162ViewController",
+        },
+        @{
+            @"title":@"0x16-3",
+            @"detail":@"使用矩形纹理渲染 NV21 视频桢",
+            @"class":@"MR0x163ViewController",
+        },
+        @{
+            @"title":@"0x16-4",
+            @"detail":@"使用矩形纹理渲染 YUV420P 视频桢",
+            @"class":@"MR0x164ViewController",
+        },
+        @{
+            @"title":@"0x16-5",
+            @"detail":@"使用矩形纹理渲染 UYVY422 视频桢",
+            @"class":@"MR0x165ViewController",
+        },
+        @{
+            @"title":@"0x16-6",
+            @"detail":@"使用矩形纹理渲染 YUYV422 视频桢",
+            @"class":@"MR0x166ViewController",
+        },
+        @{
+            @"title":@"0x17",
             @"detail":@"TODO:使用 Metal 渲染视频桢",
             @"class":@"",
         },
