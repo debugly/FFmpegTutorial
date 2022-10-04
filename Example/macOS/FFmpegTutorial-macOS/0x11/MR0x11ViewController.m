@@ -21,8 +21,10 @@
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet MR0x11VideoRenderer *videoRenderer;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
+
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
+@property (copy) NSString *videoPixelInfo;
 
 @end
 
@@ -63,6 +65,8 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
 
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
 }
 
 - (void)alert:(NSString *)msg
@@ -150,6 +154,9 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
+    const char *fmt_str = av_pixel_fmt_to_string(frame->format);
+    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
+
     CGImageRef img = [MRConvertUtil cgImageFromRGBFrame:frame];
     mr_sync_main_queue(^{
         [self.videoRenderer dispalyCGImage:img];

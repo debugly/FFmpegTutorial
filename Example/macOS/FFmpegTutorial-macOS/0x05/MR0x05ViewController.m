@@ -22,7 +22,6 @@
 @end
 
 @implementation MR0x05ViewController
-
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {

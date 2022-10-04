@@ -96,7 +96,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
         
-    #if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3 && defined(DEBUG)
+    #if defined(DEBUG)
         // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
         // This will make it much more obvious where and when such a function call is made so
         // that we can remove such calls.
@@ -106,10 +106,7 @@ static GLint attributers[NUM_ATTRIBUTES];
     #endif
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
-    #if 1 || SUPPORT_RETINA_RESOLUTION
-        // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
-    #endif // SUPPORT_RETINA_RESOLUTION
         
         [self drawInitBackgroundColor];
     }
@@ -147,10 +144,7 @@ static GLint attributers[NUM_ATTRIBUTES];
             glGenVertexArrays(1, &_VAO);
             /// 创建顶点缓存对象
             glGenBuffers(1, &_VBO);
-            glBindVertexArray(_VAO);
-            /// 绑定顶点缓存对象到当前的顶点位置,之后对GL_ARRAY_BUFFER的操作即是对_VBO的操作
-            /// 同时也指定了_VBO的对象类型是一个顶点数据对象
-            glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+            
         }
     }
 }

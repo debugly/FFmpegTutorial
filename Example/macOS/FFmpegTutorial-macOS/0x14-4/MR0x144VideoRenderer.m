@@ -75,21 +75,9 @@ enum
         
         NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
         
-    #if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3 && defined(DEBUG)
-        // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
-        // This will make it much more obvious where and when such a function call is made so
-        // that we can remove such calls.
-        // Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
-        // but it would be more difficult to see where that function was called.
-        CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
-    #endif
-        
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
-    #if 1 || SUPPORT_RETINA_RESOLUTION
-        // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
-    #endif // SUPPORT_RETINA_RESOLUTION
         
         [self drawInitBackgroundColor];
     }
@@ -237,6 +225,44 @@ enum
     }
 }
 
+- (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
+{
+    GLsizei frameWidth = frame->width;
+    GLsizei frameHeight = frame->height;
+    // Compute normalized quad coordinates to draw the frame into.
+    CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
+    
+    if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
+        // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
+        CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
+        
+        CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
+        
+        // hold max
+        if (_contentMode == MRViewContentModeScaleAspectFit) {
+            if (cropScaleAmount.width > cropScaleAmount.height) {
+                normalizedSamplingSize.width = 1.0;
+                normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
+            }
+            else {
+                normalizedSamplingSize.height = 1.0;
+                normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+            }
+        } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+            // hold min
+            if (cropScaleAmount.width > cropScaleAmount.height) {
+                normalizedSamplingSize.height = 1.0;
+                normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+            }
+            else {
+                normalizedSamplingSize.width = 1.0;
+                normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
+            }
+        }
+    }
+    return normalizedSamplingSize;
+}
+
 - (void)displayAVFrame:(AVFrame *)frame
 {
     [[self openGLContext] makeCurrentContext];
@@ -252,68 +278,34 @@ enum
     
     glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversion709);
     
-    {
-        GLsizei frameWidth = frame->width;
-        GLsizei frameHeight = frame->height;
-        // Compute normalized quad coordinates to draw the frame into.
-        CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
-
-        if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
-            // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
-            CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
-
-            CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
-
-            // hold max
-            if (_contentMode == MRViewContentModeScaleAspectFit) {
-                if (cropScaleAmount.width > cropScaleAmount.height) {
-                    normalizedSamplingSize.width = 1.0;
-                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-                }
-                else {
-                    normalizedSamplingSize.height = 1.0;
-                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
-                }
-            } else if (_contentMode == MRViewContentModeScaleAspectFill) {
-                // hold min
-                if (cropScaleAmount.width > cropScaleAmount.height) {
-                    normalizedSamplingSize.height = 1.0;
-                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
-                }
-                else {
-                    normalizedSamplingSize.width = 1.0;
-                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-                }
-            }
-        }
-        
-        /*
-         The quad vertex data defines the region of 2D plane onto which we draw our pixel buffers.
-         Vertex data formed using (-1,-1) and (1,1) as the bottom left and top right coordinates respectively, covers the entire screen.
-         */
-        GLfloat quadVertexData [] = {
-            -1 * normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
-            normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
-            -1 * normalizedSamplingSize.width, normalizedSamplingSize.height,
-            normalizedSamplingSize.width, normalizedSamplingSize.height,
-        };
-        
-        // 更新顶点数据
-        glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
-        glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
-    }
+    // Compute normalized quad coordinates to draw the frame into.
+    CGSize normalizedSamplingSize = [self computeNormalizedSize:frame];
     
-    {
-        GLfloat quadTextureData[] = { // 坐标不对可能导致画面显示方向不对
-            0, 1,
-            1, 1,
-            0, 0,
-            1, 0,
-        };
-        
-        glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
-        glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
-    }
+    /*
+     The quad vertex data defines the region of 2D plane onto which we draw our pixel buffers.
+     Vertex data formed using (-1,-1) and (1,1) as the bottom left and top right coordinates respectively, covers the entire screen.
+     */
+    GLfloat quadVertexData [] = {
+        -1 * normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
+        normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
+        -1 * normalizedSamplingSize.width, normalizedSamplingSize.height,
+        normalizedSamplingSize.width, normalizedSamplingSize.height,
+    };
+    
+    // 更新顶点数据
+    glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
+    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
+   
+    GLfloat quadTextureData[] = { // 坐标不对可能导致画面显示方向不对
+        0, 1,
+        1, 1,
+        0, 0,
+        1, 0,
+    };
+    
+    glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
+    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+    
     VerifyGL(;);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -197,12 +197,12 @@
             @"class":@"MR0x156ViewController",
         },
         @{
-            @"title":@"0x16",
-            @"detail":@"使用 FBO 离屏渲染截图",
-            @"class":@"MR0x16ViewController",
+            @"title":@"0x15-7",
+            @"detail":@"截屏：使用 FBO 离屏渲染",
+            @"class":@"MR0x157ViewController",
         },
         @{
-            @"title":@"0x17",
+            @"title":@"0x16",
             @"detail":@"TODO:使用 Metal 渲染视频桢",
             @"class":@"",
         },

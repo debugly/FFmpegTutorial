@@ -8,6 +8,14 @@
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
 
+//videoOpened info's key
+typedef NSString * const kFFPlayer0x10InfoKey;
+
+//视频宽；单位像素
+FOUNDATION_EXPORT kFFPlayer0x10InfoKey kFFPlayer0x10Width;
+//视频高；单位像素
+FOUNDATION_EXPORT kFFPlayer0x10InfoKey kFFPlayer0x10Height;
+
 NS_ASSUME_NONNULL_BEGIN
 typedef struct AVFrame AVFrame;
 
@@ -28,6 +36,7 @@ typedef struct AVFrame AVFrame;
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
 
+@property (nonatomic, copy) void(^onVideoOpened)(NSDictionary *info);
 @property (nonatomic, copy) void(^onReadPkt)(int a,int v);
 //type: 1->video;2->audio;
 @property (nonatomic, copy) void(^onDecoderFrame)(int type,int serial,AVFrame *frame);

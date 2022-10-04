@@ -14,6 +14,11 @@
 #import "MRDispatch.h"
 #import "MRAbstractLogger.h"
 
+//视频宽；单位像素
+kFFPlayer0x10InfoKey kFFPlayer0x10Width = @"kFFPlayer0x10Width";
+//视频高；单位像素
+kFFPlayer0x10InfoKey kFFPlayer0x10Height = @"kFFPlayer0x10Height";
+
 @interface  FFPlayer0x10 ()<FFDecoderDelegate0x10>
 {
     //音频流解码器
@@ -289,6 +294,8 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
+    NSMutableDictionary *dumpDic = [NSMutableDictionary dictionary];
+    
     if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
         _videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
         if (!_videoDecoder) {
@@ -299,9 +306,18 @@ static int decode_interrupt_cb(void *ctx)
             avformat_close_input(&formatCtx);
             return;
         } else {
+            [dumpDic setObject:@(_videoDecoder.picWidth) forKey:kFFPlayer0x10Width];
+            [dumpDic setObject:@(_videoDecoder.picHeight) forKey:kFFPlayer0x10Height];
             _videoScale = [self createVideoScaleIfNeed];
         }
     }
+    
+    mr_sync_main_queue(^{
+        if (self.onVideoOpened) {
+            self.onVideoOpened(dumpDic);
+        }
+    });
+    
     //循环读包
     [self readPacketLoop:formatCtx];
     //读包线程结束了，销毁下相关结构体

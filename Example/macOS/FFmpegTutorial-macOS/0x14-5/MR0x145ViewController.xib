@@ -69,7 +69,7 @@
                                 </menu>
                             </popUpButtonCell>
                             <connections>
-                                <action selector="onSelectedVideMode:" target="-2" id="6Es-xu-eKz"/>
+                                <action selector="onSelectedVideoMode:" target="-2" id="etJ-IZ-N1b"/>
                             </connections>
                         </popUpButton>
                     </subviews>

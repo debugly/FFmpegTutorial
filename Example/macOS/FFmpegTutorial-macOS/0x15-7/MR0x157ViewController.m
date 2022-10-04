@@ -1,34 +1,36 @@
 //
-//  MR0x16ViewController.m
+//  MR0x157ViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/24.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x16ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x16.h>
+#import "MR0x157ViewController.h"
+#import <FFmpegTutorial/FFPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
+#import <MRFFmpegPod/libavutil/frame.h>
 #import "NSFileManager+Sandbox.h"
-#import "MR0x16VideoRenderer.h"
+#import "MR0x157VideoRenderer.h"
 #import "MRRWeakProxy.h"
 #import "MRUtil.h"
 
-@interface MR0x16ViewController ()
+@interface MR0x157ViewController ()
 
-@property (strong) FFPlayer0x16 *player;
+@property (strong) FFPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x16VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x157VideoRenderer *videoRenderer;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
+@property (copy) NSString *videoPixelInfo;
 
 @end
 
-@implementation MR0x16ViewController
+@implementation MR0x157ViewController
 
 - (void)dealloc
 {
@@ -63,6 +65,8 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
 
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
 }
 
 - (void)alert:(NSString *)msg
@@ -86,12 +90,9 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-    CFRetain(img);
-    mr_sync_main_queue(^{
-        [self.videoRenderer displayPixelBuffer:img];
-        CFRelease(img);
-    });
+    const char *fmt_str = av_pixel_fmt_to_string(frame->format);
+    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
+    [self.videoRenderer displayAVFrame:frame];
 }
 
 - (void)parseURL:(NSString *)url
@@ -114,19 +115,18 @@
     rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    [self.hud setHudValue:@"0" forKey:@"ioSurface"];
     
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x16 *player = [[FFPlayer0x16 alloc] init];
+    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     
     __weakSelf__
     player.onVideoOpened = ^(NSDictionary * _Nonnull info) {
         __strongSelf__
-        int width  = [info[kFFPlayer0x16Width] intValue];
-        int height = [info[kFFPlayer0x16Height] intValue];
+        int width  = [info[kFFPlayer0x10Width] intValue];
+        int height = [info[kFFPlayer0x10Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");
@@ -179,20 +179,15 @@
     }
 }
 
-- (IBAction)onExchangeUploadTextureMethod:(NSButton *)sender
-{
-    BOOL used = [self.videoRenderer exchangeUploadTextureMethod];
-    if (used) {
-        [sender setTitle:@"UseGeneral"];
-    } else {
-        [sender setTitle:@"UseIOSurface"];
-    }
-    [self.hud setHudValue:[NSString stringWithFormat:@"%d",used] forKey:@"ioSurface"];
-}
-
 - (IBAction)onSaveSnapshot:(NSButton *)sender
 {
+    if (!self.player) {
+        return;
+    }
     NSImage *img = [self.videoRenderer snapshot];
+    if (!img) {
+        return;
+    }
     NSString *videoName = [[NSURL URLWithString:self.player.contentPath] lastPathComponent];
     if ([videoName isEqualToString:@"/"]) {
         videoName = @"未知";

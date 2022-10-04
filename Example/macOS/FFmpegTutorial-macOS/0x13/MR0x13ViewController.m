@@ -11,6 +11,7 @@
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
+#import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x13VideoRenderer.h"
 #import "MRRWeakProxy.h"
 
@@ -24,6 +25,7 @@
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
+@property (copy) NSString *videoPixelInfo;
 
 @end
 
@@ -64,6 +66,8 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
 
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
+    
+    [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
 }
 
 - (void)alert:(NSString *)msg
@@ -87,6 +91,9 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
+    const char *fmt_str = av_pixel_fmt_to_string(frame->format);
+    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
+
     CVPixelBufferRef pixelBuff = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
     CMSampleBufferRef sampleBuffer = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuff];
     

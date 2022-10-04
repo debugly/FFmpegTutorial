@@ -1,12 +1,12 @@
 //
-//  MR0x156VideoRenderer.m
+//  MR0x157VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x156VideoRenderer.h"
+#import "MR0x157VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -18,11 +18,13 @@
 #import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
+#import <FFmpegTutorial/MRConvertUtil.h>
 
 // Uniform index.
 enum
 {
     UNIFORM_0,
+    UNIFORM_1,
     NUM_UNIFORMS
 };
 
@@ -34,8 +36,10 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x156VideoRenderer ()
+@interface MR0x157VideoRenderer ()
 {
+    //color conversion matrix uniform
+    GLint ccmUniform;
     GLint uniforms[NUM_UNIFORMS];
     GLint attributers[NUM_ATTRIBUTES];
     GLuint plane_textures[NUM_UNIFORMS];
@@ -44,19 +48,26 @@ enum
     /// 顶点对象
     GLuint _VBO;
     GLuint _VAO;
+    
+    AVFrame * _lastFrame;
+    
+    CGSize _FBOTextureSize;
+    GLuint _FBO;
+    GLuint _ColorTexture;
 }
 
 @property MROpenGLCompiler * openglCompiler;
 
 @end
 
-@implementation MR0x156VideoRenderer
+@implementation MR0x157VideoRenderer
 
 - (void)dealloc
 {
     glDeleteBuffers(1, &_VBO);
     glDeleteVertexArrays(1, &_VAO);
     glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    av_frame_free(&_lastFrame);
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -92,8 +103,8 @@ enum
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
         [self setWantsBestResolutionOpenGLSurface:YES];
-        
         [self drawInitBackgroundColor];
+        _lastFrame = av_frame_alloc();
     }
     return self;
 }
@@ -111,13 +122,16 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
             
-            attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
+            ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            
+            attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
             glGenVertexArrays(1, &_VAO);
@@ -197,18 +211,37 @@ enum
 
 - (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
 {
-    //设置纹理和采样器的对应关系
-    glUniform1i(uniforms[UNIFORM_0], 0);
-    glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
-    //GL_YCBCR_422_APPLE
-//    { GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, GL_RGB },
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame->width, frame->height, 0, GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, frame->data[0]);
+    //for y plane
+    {
+        //设置纹理和采样器的对应关系
+        glUniform1i(uniforms[UNIFORM_0], 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+        
+        //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
+        VerifyGL(;);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
     VerifyGL(;);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    //for uv plane
+    {
+        //设置纹理和采样器的对应关系
+        glUniform1i(uniforms[UNIFORM_1], 1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, plane_textures[1]);
+        //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE_ALPHA
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
+        VerifyGL(;);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
+    VerifyGL(;);
 }
 
 - (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
@@ -289,15 +322,9 @@ enum
     glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
 }
 
-- (void)displayAVFrame:(AVFrame *)frame
-{
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext([[self openGLContext] CGLContextObj]);
-    
-    [self.openglCompiler active];
-    glClearColor(0.0,0.0,0.0,0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+- (void)drawFrame:(AVFrame * _Nonnull)frame {
+    glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversion709);
+    VerifyGL(;);
     
     [self uploadFrameToTexture:frame];
     VerifyGL(;);
@@ -307,10 +334,115 @@ enum
     VerifyGL(;);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    VerifyGL(;);
+    VerifyGL(;)
+}
+
+- (void)displayAVFrame:(AVFrame *)frame
+{
+    av_frame_ref(_lastFrame, frame);
+    
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+    
+    [self.openglCompiler active];
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    
+    [self drawFrame:frame];
     
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
+}
+
+- (void)destroyFBO
+{
+    glDeleteFramebuffers(1, &_FBO);
+    glDeleteFramebuffers(1, &_ColorTexture);
+    _FBOTextureSize = CGSizeZero;
+}
+
+// Create texture and framebuffer objects to render and snapshot.
+- (BOOL)prepareFBOIfNeed:(CGSize)size
+{
+    if (CGSizeEqualToSize(CGSizeZero, size)) {
+        return NO;
+    }
+    
+    if (CGSizeEqualToSize(_FBOTextureSize, size)) {
+        return YES;
+    } else {
+        [self destroyFBO];
+    }
+    
+    // Create a texture object that you apply to the model.
+    glGenTextures(1, &_ColorTexture);
+    glBindTexture(GL_TEXTURE_2D, _ColorTexture);
+
+    // Set up filter and wrap modes for the texture object.
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+    // Mipmap generation is not accelerated on iOS, so you can't enable trilinear filtering.
+#if TARGET_IOS
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+#else
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+#endif
+
+    // Allocate a texture image to which you can render to. Pass `NULL` for the data parameter
+    // becuase you don't need to load image data. You generate the image by rendering to the texture.
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
+                 size.width, size.height, 0,
+                 GL_RGBA, GL_UNSIGNED_BYTE, NULL);
+
+    glGenFramebuffers(1, &_FBO);
+    glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _ColorTexture, 0);
+
+    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
+        _FBOTextureSize = size;
+        return YES;
+    } else {
+    #if DEBUG
+        NSAssert(NO, @"Failed to make complete framebuffer object %x.",  glCheckFramebufferStatus(GL_FRAMEBUFFER));
+    #endif
+        return NO;
+    }
+}
+
+- (NSImage *)snapshot
+{
+    if (_lastFrame) {
+        CGSize picSize = self.videoSize;
+        if ([self prepareFBOIfNeed:picSize]) {
+            [[self openGLContext] makeCurrentContext];
+            CGLLockContext([[self openGLContext] CGLContextObj]);
+            
+            // Bind the snapshot FBO and render the scene.
+            glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
+            glViewport(0, 0, picSize.width, picSize.height);
+            // Bind the texture that you previously render to (i.e. the snapshot texture).
+            glBindTexture(GL_TEXTURE_2D, _ColorTexture);
+            
+            [self drawFrame:_lastFrame];
+            
+            CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+            
+            NSImage *img = [MRConvertUtil snapshotFBO:_ColorTexture size:picSize];
+            
+            // Bind the default FBO to render to the screen.
+            NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
+            glViewport(0, 0, pixelSize.width, pixelSize.height);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
+            CGLUnlockContext([[self openGLContext] CGLContextObj]);
+            
+            return img;
+        }
+    }
+    return nil;
 }
 
 @end

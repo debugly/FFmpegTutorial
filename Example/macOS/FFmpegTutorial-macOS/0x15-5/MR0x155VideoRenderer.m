@@ -81,7 +81,7 @@ enum
         
         NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
         
-    #if ESSENTIAL_GL_PRACTICES_SUPPORT_GL3 && defined(DEBUG)
+    #if defined(DEBUG)
         // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
         // This will make it much more obvious where and when such a function call is made so
         // that we can remove such calls.
@@ -91,10 +91,7 @@ enum
     #endif
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
-    #if 1 || SUPPORT_RETINA_RESOLUTION
-        // Opt-In to Retina resolution
         [self setWantsBestResolutionOpenGLSurface:YES];
-    #endif // SUPPORT_RETINA_RESOLUTION
         
         [self drawInitBackgroundColor];
     }
@@ -126,11 +123,6 @@ enum
             glGenVertexArrays(1, &_VAO);
             /// 创建顶点缓存对象
             glGenBuffers(1, &_VBO);
-            
-            glBindVertexArray(_VAO);
-            /// 绑定顶点缓存对象到当前的顶点位置,之后对GL_ARRAY_BUFFER的操作即是对_VBO的操作
-            /// 同时也指定了_VBO的对象类型是一个顶点数据对象
-            glBindBuffer(GL_ARRAY_BUFFER, _VBO);
             
             glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
         }
@@ -219,32 +211,19 @@ enum
     glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
-- (void)displayAVFrame:(AVFrame *)frame
+- (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
 {
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext([[self openGLContext] CGLContextObj]);
-    
-    glClearColor(0.0,0.0,0.0,0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    [self.openglCompiler active];
-    
-    VerifyGL(;);
-    
-    [self uploadFrameToTexture:frame];
-    
     GLsizei frameWidth = frame->width;
     GLsizei frameHeight = frame->height;
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
-
+    
     if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
-
+        
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
-
+        
         // hold max
         if (_contentMode == MRViewContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
@@ -267,16 +246,20 @@ enum
             }
         }
     }
-    
+    return normalizedSamplingSize;
+}
+
+- (void)updateArrayBuffer:(CGSize)normalizedSamplingSize
+{
     /*
      The quad vertex data defines the region of 2D plane onto which we draw our pixel buffers.
      Vertex data formed using (-1,-1) and (1,1) as the bottom left and top right coordinates respectively, covers the entire screen.
      */
     GLfloat quadData [] = {
         -1 * normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
-             normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
+        normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
         -1 * normalizedSamplingSize.width, normalizedSamplingSize.height,
-             normalizedSamplingSize.width, normalizedSamplingSize.height,
+        normalizedSamplingSize.width, normalizedSamplingSize.height,
         //Texture Postition
         0, 1,
         1, 1,
@@ -284,10 +267,15 @@ enum
         1, 0,
     };
     
+    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
     /// 将CPU数据发送到GPU,数据类型GL_ARRAY_BUFFER
     /// GL_STATIC_DRAW 表示数据不会被修改,将其放置在GPU显存的更合适的位置,增加其读取速度
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadData), quadData, GL_DYNAMIC_DRAW);
     
+    // 更新顶点数据
+    glBindVertexArray(_VAO);
+    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
+    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
     /// 指定顶点着色器位置为0的参数的数据读取方式与数据类型
     /// 第一个参数: 参数位置
     /// 第二个参数: 一次读取数据
@@ -296,24 +284,33 @@ enum
     /// 第五个参数: 间隔多少个数据读取下一次数据
     /// 第六个参数: 指定读取第一个数据在顶点数据中的偏移量
     glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-    /// 启用顶点着色器中位置为0的参数
-    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
     
     // texture coord attribute
     glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
-    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+}
+
+- (void)displayAVFrame:(AVFrame *)frame
+{
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
     
-    // 更新顶点数据
-    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
-    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+    [self.openglCompiler active];
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     
+    [self uploadFrameToTexture:frame];
+    VerifyGL(;);
     
-    glBindVertexArray(_VAO);
+    CGSize normalizedSamplingSize = [self computeNormalizedSize:frame];
+    [self updateArrayBuffer:normalizedSamplingSize];
+    VerifyGL(;);
+    
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    
     VerifyGL(;);
     
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
+
 @end

@@ -6,7 +6,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <customObject id="-2" userLabel="File's Owner" customClass="MR0x16ViewController">
+        <customObject id="-2" userLabel="File's Owner" customClass="MR0x157ViewController">
             <connections>
                 <outlet property="indicatorView" destination="A8v-NC-bh6" id="vrp-86-BMn"/>
                 <outlet property="inputField" destination="X45-WW-lE6" id="vzy-yO-Yvh"/>
@@ -32,7 +32,7 @@
                             </textFieldCell>
                         </textField>
                         <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="X45-WW-lE6">
-                            <rect key="frame" x="84" y="10" width="133" height="21"/>
+                            <rect key="frame" x="84" y="10" width="183" height="21"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="JaS-Je-Vlq">
                                 <font key="font" usesAppearanceFont="YES"/>
                                 <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
@@ -40,24 +40,13 @@
                             </textFieldCell>
                         </textField>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Hh-br-Haq">
-                            <rect key="frame" x="220" y="3" width="61" height="32"/>
+                            <rect key="frame" x="270" y="3" width="61" height="32"/>
                             <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
                                 <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="system"/>
                             </buttonCell>
                             <connections>
                                 <action selector="go:" target="-2" id="gpZ-YI-9b1"/>
-                            </connections>
-                        </button>
-                        <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" id="oV4-hh-0tw">
-                            <rect key="frame" x="277" y="4" width="118" height="32"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
-                            <buttonCell key="cell" type="push" title="UseIOSurface" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="hGv-AN-A7q">
-                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
-                                <font key="font" metaFont="system"/>
-                            </buttonCell>
-                            <connections>
-                                <action selector="onExchangeUploadTextureMethod:" target="-2" id="Mwe-Nz-r2j"/>
                             </connections>
                         </button>
                         <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" id="SjS-cc-0p6">
@@ -105,7 +94,6 @@
                         <integer value="1000"/>
                         <integer value="1000"/>
                         <integer value="1000"/>
-                        <integer value="1000"/>
                     </visibilityPriorities>
                     <customSpacing>
                         <real value="3.4028234663852886e+38"/>
@@ -113,10 +101,9 @@
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
                         <real value="3.4028234663852886e+38"/>
-                        <real value="3.4028234663852886e+38"/>
                     </customSpacing>
                 </stackView>
-                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x16VideoRenderer">
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x157VideoRenderer">
                     <rect key="frame" x="0.0" y="0.0" width="655" height="232"/>
                 </customView>
                 <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="A8v-NC-bh6">
