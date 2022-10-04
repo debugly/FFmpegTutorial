@@ -44,4 +44,7 @@ extern const float kColorConversion709[9];
 // BT.601 full range (ref: http://www.equasys.de/colorconversion.html)
 extern const float kColorConversion601FullRange[9];
 
+// for yuv422. (ref https://gist.github.com/roxlu/5795504)
+extern const float kColorConversionYUV422[9];
+
 #endif /* MROpenGLHelper_h */

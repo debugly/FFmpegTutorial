@@ -96,7 +96,7 @@ open FFmpegTutorial-macOS.xcworkspace
   - 0x14-4:渲染 YUV420P
   - 0x14-5:渲染 UYVY422（Mac Only）
   - 0x14-6:渲染 YUYV422（Mac Only）
-- 0x15:使用 OpenGL 3.3 / ES3 渲染视频帧
+- 0x15:使用 OpenGL 3.2 / ES3 渲染视频帧
   - 0x15-1:渲染 BGRA 视频桢
   - 0x15-2:渲染 NV12
   - 0x15-3:渲染 NV21
@@ -104,6 +104,13 @@ open FFmpegTutorial-macOS.xcworkspace
   - 0x15-5:渲染 UYVY422（Mac Only）
   - 0x15-6:渲染 YUYV422（Mac Only）
   - 0x15-7:截屏：使用 FBO 离屏渲染（Mac Only）
+- 0x16:使用 OpenGL 3.2 + 矩形纹理 渲染视频帧（Mac Only）
+  - 0x16-1:使用矩形纹理渲染 BGRA 视频桢
+  - 0x16-2:使用矩形纹理渲染 NV12 视频桢
+  - 0x16-3:使用矩形纹理渲染 NV21 视频桢
+  - 0x16-4:使用矩形纹理渲染 YUV420P 视频桢
+  - 0x16-5:使用矩形纹理渲染 UYVY422 视频桢
+  - 0x16-6:使用矩形纹理渲染 YUYV422 视频桢
 - 0x17:使用 Metal 渲染视频桢（TODO）
 
 三、音频渲染

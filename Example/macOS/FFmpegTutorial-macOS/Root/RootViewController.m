@@ -188,12 +188,12 @@
         },
         @{
             @"title":@"0x15-5",
-            @"detail":@"(TODO)使用 OpenGL 3.3 渲染 UYVY422 视频桢",
+            @"detail":@"使用 OpenGL 3.3 渲染 UYVY422 视频桢",
             @"class":@"MR0x155ViewController",
         },
         @{
             @"title":@"0x15-6",
-            @"detail":@"(TODO)使用 OpenGL 3.3 渲染 YUYV422 视频桢",
+            @"detail":@"使用 OpenGL 3.3 渲染 YUYV422 视频桢",
             @"class":@"MR0x156ViewController",
         },
         @{
@@ -223,12 +223,12 @@
         },
         @{
             @"title":@"0x16-5",
-            @"detail":@"(TODO)使用矩形纹理渲染 UYVY422 视频桢",
+            @"detail":@"使用矩形纹理渲染 UYVY422 视频桢",
             @"class":@"MR0x165ViewController",
         },
         @{
             @"title":@"0x16-6",
-            @"detail":@"(TODO)使用矩形纹理渲染 YUYV422 视频桢",
+            @"detail":@"使用矩形纹理渲染 YUYV422 视频桢",
             @"class":@"MR0x166ViewController",
         },
         @{

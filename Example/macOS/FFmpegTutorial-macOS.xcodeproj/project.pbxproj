@@ -172,6 +172,8 @@
 		DDF923F528EC5A2A00F29C1A /* MR0x164VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF923E228EC5A2A00F29C1A /* MR0x164VideoRenderer.m */; };
 		DDF923F628EC5A2A00F29C1A /* MR0x164ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF923E328EC5A2A00F29C1A /* MR0x164ViewController.xib */; };
 		DDF923F728EC5A2A00F29C1A /* MR0x164ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF923E428EC5A2A00F29C1A /* MR0x164ViewController.m */; };
+		DDF923FB28EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF923F928EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh */; };
+		DDF923FD28EC7D1C00F29C1A /* 1_sampler2D_422_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF923FC28EC7D1B00F29C1A /* 1_sampler2D_422_v3.fsh */; };
 		DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */; };
 		DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */; };
 		DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */; };
@@ -466,6 +468,8 @@
 		DDF923E328EC5A2A00F29C1A /* MR0x164ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x164ViewController.xib; sourceTree = "<group>"; };
 		DDF923E428EC5A2A00F29C1A /* MR0x164ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x164ViewController.m; sourceTree = "<group>"; };
 		DDF923E528EC5A2A00F29C1A /* MR0x164VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x164VideoRenderer.h; sourceTree = "<group>"; };
+		DDF923F928EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_422_Rect_v3.fsh; sourceTree = "<group>"; };
+		DDF923FC28EC7D1B00F29C1A /* 1_sampler2D_422_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_422_v3.fsh; sourceTree = "<group>"; };
 		DDFDF8A12564CDC700F1CAE2 /* FFmpegTutorial-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FFmpegTutorial-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -581,22 +585,24 @@
 		DD91F28C26AC082C00B96334 /* Shaders */ = {
 			isa = PBXGroup;
 			children = (
-				DDBFF17428B521A700AFCE44 /* 1_sampler2D_v3.fsh */,
-				DDF922A928E947FA00F29C1A /* 1_sampler2D.fsh */,
+				DDF923F928EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh */,
+				DDF923FC28EC7D1B00F29C1A /* 1_sampler2D_422_v3.fsh */,
 				DDBFF17228B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh */,
 				DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */,
+				DDBFF17428B521A700AFCE44 /* 1_sampler2D_v3.fsh */,
+				DDF922A928E947FA00F29C1A /* 1_sampler2D.fsh */,
 				C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */,
 				C958FACC279A60740058D64A /* 2_sampler2D_NV21_Rect.fsh */,
 				DDF9231828E9839600F29C1A /* 2_sampler2D_NV21_v3.fsh */,
 				DDF922A828E947FA00F29C1A /* 2_sampler2D_NV21.fsh */,
-				DDF922E028E9675A00F29C1A /* 2_sampler2D_v3.fsh */,
-				DDF922AA28E947FA00F29C1A /* 2_sampler2D.fsh */,
 				C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */,
 				DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */,
-				DDF9231A28E9859800F29C1A /* 3_sampler2D_v3.fsh */,
-				DDF922D528E94A8700F29C1A /* 3_sampler2D.fsh */,
+				DDF922E028E9675A00F29C1A /* 2_sampler2D_v3.fsh */,
+				DDF922AA28E947FA00F29C1A /* 2_sampler2D.fsh */,
 				C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */,
 				DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */,
+				DDF9231A28E9859800F29C1A /* 3_sampler2D_v3.fsh */,
+				DDF922D528E94A8700F29C1A /* 3_sampler2D.fsh */,
 				C958F95D2796A7520058D64A /* common_v3.vsh */,
 				DD91F28F26AC082C00B96334 /* common.vsh */,
 				DD91F28E26AC082C00B96334 /* README.md */,
@@ -943,11 +949,11 @@
 		DDF9232C28EC4A5F00F29C1A /* 0x15-6 */ = {
 			isa = PBXGroup;
 			children = (
-				DDF9232D28EC4A5F00F29C1A /* MR0x156ViewController.xib */,
 				DDF9232E28EC4A5F00F29C1A /* MR0x156VideoRenderer.h */,
-				DDF9232F28EC4A5F00F29C1A /* MR0x156ViewController.h */,
 				DDF9233028EC4A5F00F29C1A /* MR0x156VideoRenderer.m */,
+				DDF9232F28EC4A5F00F29C1A /* MR0x156ViewController.h */,
 				DDF9233128EC4A5F00F29C1A /* MR0x156ViewController.m */,
+				DDF9232D28EC4A5F00F29C1A /* MR0x156ViewController.xib */,
 			);
 			path = "0x15-6";
 			sourceTree = "<group>";
@@ -1014,10 +1020,10 @@
 			isa = PBXGroup;
 			children = (
 				DDF9234F28EC4A5F00F29C1A /* MR0x145VideoRenderer.h */,
-				DDF9235028EC4A5F00F29C1A /* MR0x145ViewController.m */,
-				DDF9235128EC4A5F00F29C1A /* MR0x145ViewController.xib */,
 				DDF9235228EC4A5F00F29C1A /* MR0x145VideoRenderer.m */,
 				DDF9235328EC4A5F00F29C1A /* MR0x145ViewController.h */,
+				DDF9235028EC4A5F00F29C1A /* MR0x145ViewController.m */,
+				DDF9235128EC4A5F00F29C1A /* MR0x145ViewController.xib */,
 			);
 			path = "0x14-5";
 			sourceTree = "<group>";
@@ -1049,11 +1055,11 @@
 		DDF9236028EC4A5F00F29C1A /* 0x15-5 */ = {
 			isa = PBXGroup;
 			children = (
-				DDF9236128EC4A5F00F29C1A /* MR0x155ViewController.m */,
-				DDF9236228EC4A5F00F29C1A /* MR0x155ViewController.xib */,
 				DDF9236328EC4A5F00F29C1A /* MR0x155VideoRenderer.h */,
 				DDF9236428EC4A5F00F29C1A /* MR0x155VideoRenderer.m */,
 				DDF9236528EC4A5F00F29C1A /* MR0x155ViewController.h */,
+				DDF9236128EC4A5F00F29C1A /* MR0x155ViewController.m */,
+				DDF9236228EC4A5F00F29C1A /* MR0x155ViewController.xib */,
 			);
 			path = "0x15-5";
 			sourceTree = "<group>";
@@ -1109,10 +1115,10 @@
 		DDF9237E28EC4A5F00F29C1A /* 0x14-6 */ = {
 			isa = PBXGroup;
 			children = (
-				DDF9237F28EC4A5F00F29C1A /* MR0x146ViewController.h */,
 				DDF9238028EC4A5F00F29C1A /* MR0x146VideoRenderer.h */,
-				DDF9238128EC4A5F00F29C1A /* MR0x146ViewController.m */,
 				DDF9238228EC4A5F00F29C1A /* MR0x146VideoRenderer.m */,
+				DDF9237F28EC4A5F00F29C1A /* MR0x146ViewController.h */,
+				DDF9238128EC4A5F00F29C1A /* MR0x146ViewController.m */,
 				DDF9238328EC4A5F00F29C1A /* MR0x146ViewController.xib */,
 			);
 			path = "0x14-6";
@@ -1368,6 +1374,7 @@
 				DDF922E128E9675A00F29C1A /* 2_sampler2D_v3.fsh in Resources */,
 				DDF922AD28E947FA00F29C1A /* 2_sampler2D.fsh in Resources */,
 				DDF923F628EC5A2A00F29C1A /* MR0x164ViewController.xib in Resources */,
+				DDF923FD28EC7D1C00F29C1A /* 1_sampler2D_422_v3.fsh in Resources */,
 				DDF599032882EA3C0079D26E /* MR0x31ViewController.xib in Resources */,
 				DD7ABB6A287A87D800622984 /* MR0x21ViewController.xib in Resources */,
 				DDF9238A28EC4A5F00F29C1A /* MR0x157ViewController.xib in Resources */,
@@ -1399,6 +1406,7 @@
 				DDF9238D28EC4A5F00F29C1A /* MR0x151ViewController.xib in Resources */,
 				DDF9231B28E9859800F29C1A /* 3_sampler2D_v3.fsh in Resources */,
 				DDBFF17528B521A700AFCE44 /* 1_sampler2D_v3.fsh in Resources */,
+				DDF923FB28EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh in Resources */,
 				DDF9239328EC4A5F00F29C1A /* MR0x10ViewController.xib in Resources */,
 				DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */,
 				DDF923AD28EC4A5F00F29C1A /* MR0x152ViewController.xib in Resources */,

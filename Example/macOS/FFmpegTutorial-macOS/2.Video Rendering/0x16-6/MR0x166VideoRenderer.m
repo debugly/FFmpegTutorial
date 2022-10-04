@@ -36,6 +36,8 @@ enum
 
 @interface MR0x166VideoRenderer ()
 {
+    //color conversion matrix uniform
+    GLint ccmUniform;
     GLint uniforms[NUM_UNIFORMS];
     GLint textureDimensions[NUM_UNIFORMS];
     GLint attributers[NUM_ATTRIBUTES];
@@ -112,12 +114,14 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_Rect_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_422_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
             textureDimensions[UNIFORM_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            
+            ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
             attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -303,6 +307,8 @@ enum
     glClearColor(0.0,0.0,0.0,0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+    glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversionYUV422);
+    VerifyGL(;);
     
     [self uploadFrameToTexture:frame];
     VerifyGL(;);
