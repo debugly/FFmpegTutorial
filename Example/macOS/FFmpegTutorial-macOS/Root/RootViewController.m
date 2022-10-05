@@ -232,6 +232,11 @@
             @"class":@"MR0x166ViewController",
         },
         @{
+            @"title":@"0x16-7",
+            @"detail":@"0x16-7:使用矩形纹理渲染 NV12 视频桢+截屏",
+            @"class":@"MR0x167ViewController",
+        },
+        @{
             @"title":@"0x17",
             @"detail":@"TODO:使用 Metal 渲染视频桢",
             @"class":@"",

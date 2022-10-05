@@ -6,7 +6,7 @@
 
 [![Stargazers repo roster for @debugly/FFmpegTutorial](https://reporoster.com/stars/debugly/FFmpegTutorial)](https://github.com/debugly/FFmpegTutorial/stargazers)
 
-## Usage
+# Usage
 
 #### 1、运行 iOS 示例工程:
 
@@ -111,6 +111,7 @@ open FFmpegTutorial-macOS.xcworkspace
   - 0x16-4:使用矩形纹理渲染 YUV420P 视频桢
   - 0x16-5:使用矩形纹理渲染 UYVY422 视频桢
   - 0x16-6:使用矩形纹理渲染 YUYV422 视频桢
+  - 0x16-7:使用矩形纹理渲染 NV12 视频桢+截屏
 - 0x17:使用 Metal 渲染视频桢（TODO）
 
 三、音频渲染
@@ -143,11 +144,11 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - 高效视频抽帧器:[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)
 
-## Cross-platform
+# Cross-Platform
 
 本教程的终极目标是写一款跨平台播放器，考虑到这是一项庞大的工程，本教程仅实现最基础的功能。
 
-播放器更多丰富的功能则站在 B 站开源的 ijkplayer 肩膀上进行二次开发，我已经从 iOS 平台移植到了 macOS 平台:[ijkplayer](https://github.com/debugly/ijkplayer) ，增加了字幕、视频旋转等功能，最主要的是重构了视频渲染逻辑，值得一看！
+完整的播放器功能则在 B 站开源的 ijkplayer 之上进行二次开发，我已经从 iOS 平台移植到了 macOS 平台 : [ijkplayer](https://github.com/debugly/ijkplayer) ，增加了字幕、视频旋转等功能，最主要的是重构了视频渲染逻辑，值得一看！
 
 ## Ends
 

@@ -1,12 +1,12 @@
 //
-//  MR0x20VideoRenderer.m
+//  MR0x167VideoRenderer.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x20VideoRenderer.h"
+#import "MR0x167VideoRenderer.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -15,7 +15,6 @@
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
-#import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
@@ -36,11 +35,12 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x20VideoRenderer ()
+@interface MR0x167VideoRenderer ()
 {
     //color conversion matrix uniform
     GLint _ccmUniform;
     GLint _uniforms[NUM_UNIFORMS];
+    GLint _textureDimensions[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
@@ -60,15 +60,15 @@ enum
 
 @end
 
-@implementation MR0x20VideoRenderer
+@implementation MR0x167VideoRenderer
 
 - (void)dealloc
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
-    av_frame_free(&_lastFrame);
     [self destroyFBO];
+    av_frame_free(&_lastFrame);
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -104,6 +104,7 @@ enum
         [self setPixelFormat:pf];
         [self setOpenGLContext:context];
         [self setWantsBestResolutionOpenGLSurface:YES];
+        
         [self drawInitBackgroundColor];
         _lastFrame = av_frame_alloc();
     }
@@ -123,16 +124,18 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
             _uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
+            _textureDimensions[UNIFORM_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            _textureDimensions[UNIFORM_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
             
             _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            _attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
             glGenVertexArrays(1, &_vao);
@@ -181,7 +184,7 @@ enum
     [self setupOpenGLProgram];
     
     glDisable(GL_DEPTH_TEST);
-    //glEnable(GL_TEXTURE_2D);
+    //glEnable(GL_TEXTURE_RECTANGLE);
     glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
@@ -217,15 +220,17 @@ enum
         //设置纹理和采样器的对应关系
         glUniform1i(_uniforms[UNIFORM_0], 0);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, _textures[0]);
+        glBindTexture(GL_TEXTURE_RECTANGLE, _textures[0]);
         
+        //设置矩形纹理尺寸
+        glUniform2f(_textureDimensions[UNIFORM_0], frame->width, frame->height);
         //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
         VerifyGL(;);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
     VerifyGL(;);
     //for uv plane
@@ -233,14 +238,17 @@ enum
         //设置纹理和采样器的对应关系
         glUniform1i(_uniforms[UNIFORM_1], 1);
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, _textures[1]);
+        glBindTexture(GL_TEXTURE_RECTANGLE, _textures[1]);
+        //设置矩形纹理尺寸
+        glUniform2f(_textureDimensions[UNIFORM_1], frame->width/2, frame->height/2);
+        
         //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE_ALPHA
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
         VerifyGL(;);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
     VerifyGL(;);
 }
@@ -323,7 +331,8 @@ enum
     glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
 }
 
-- (void)drawFrame:(AVFrame * _Nonnull)frame {
+- (void)drawFrame:(AVFrame * _Nonnull)frame
+{
     glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
     VerifyGL(;);
     

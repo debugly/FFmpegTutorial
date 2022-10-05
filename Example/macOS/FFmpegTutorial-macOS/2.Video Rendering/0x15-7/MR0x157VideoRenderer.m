@@ -50,9 +50,9 @@ enum
     
     AVFrame * _lastFrame;
     
-    CGSize _FBOTextureSize;
-    GLuint _FBO;
-    GLuint _ColorTexture;
+    CGSize _fboTextureSize;
+    GLuint _fbo;
+    GLuint _colorTexture;
 }
 
 @property MROpenGLCompiler * openglCompiler;
@@ -67,6 +67,7 @@ enum
     glDeleteVertexArrays(1, &_vao);
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
     av_frame_free(&_lastFrame);
+    [self destroyFBO];
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -321,7 +322,8 @@ enum
     glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
 }
 
-- (void)drawFrame:(AVFrame * _Nonnull)frame {
+- (void)drawFrame:(AVFrame * _Nonnull)frame
+{
     glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
     VerifyGL(;);
     
@@ -356,9 +358,9 @@ enum
 
 - (void)destroyFBO
 {
-    glDeleteFramebuffers(1, &_FBO);
-    glDeleteFramebuffers(1, &_ColorTexture);
-    _FBOTextureSize = CGSizeZero;
+    glDeleteFramebuffers(1, &_fbo);
+    glDeleteFramebuffers(1, &_colorTexture);
+    _fboTextureSize = CGSizeZero;
 }
 
 // Create texture and framebuffer objects to render and snapshot.
@@ -368,15 +370,15 @@ enum
         return NO;
     }
     
-    if (CGSizeEqualToSize(_FBOTextureSize, size)) {
+    if (CGSizeEqualToSize(_fboTextureSize, size)) {
         return YES;
     } else {
         [self destroyFBO];
     }
     
     // Create a texture object that you apply to the model.
-    glGenTextures(1, &_ColorTexture);
-    glBindTexture(GL_TEXTURE_2D, _ColorTexture);
+    glGenTextures(1, &_colorTexture);
+    glBindTexture(GL_TEXTURE_2D, _colorTexture);
 
     // Set up filter and wrap modes for the texture object.
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -396,12 +398,12 @@ enum
                  size.width, size.height, 0,
                  GL_RGBA, GL_UNSIGNED_BYTE, NULL);
 
-    glGenFramebuffers(1, &_FBO);
-    glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _ColorTexture, 0);
+    glGenFramebuffers(1, &_fbo);
+    glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _colorTexture, 0);
 
     if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
-        _FBOTextureSize = size;
+        _fboTextureSize = size;
         return YES;
     } else {
     #if DEBUG
@@ -420,16 +422,16 @@ enum
             CGLLockContext([[self openGLContext] CGLContextObj]);
             
             // Bind the snapshot FBO and render the scene.
-            glBindFramebuffer(GL_FRAMEBUFFER, _FBO);
+            glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
             glViewport(0, 0, picSize.width, picSize.height);
             // Bind the texture that you previously render to (i.e. the snapshot texture).
-            glBindTexture(GL_TEXTURE_2D, _ColorTexture);
+            glBindTexture(GL_TEXTURE_2D, _colorTexture);
             
             [self drawFrame:_lastFrame];
             
             CGLFlushDrawable([[self openGLContext] CGLContextObj]);
             
-            NSImage *img = [MRConvertUtil snapshotFBO:_ColorTexture size:picSize];
+            NSImage *img = [MRConvertUtil snapshotFBO:_colorTexture size:picSize];
             
             // Bind the default FBO to render to the screen.
             NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
