@@ -101,8 +101,6 @@
     _sampleRate = 44100;
     _videoFmt = MR_PIX_FMT_NV12;
     _audioFmt = MR_SAMPLE_FMT_S16;
-    
-    [self.hud setHudValue:@"0" forKey:@"ioSurface"];
 }
 
 - (void)prepareTickTimerIfNeed
@@ -243,14 +241,7 @@
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    @autoreleasepool {
-        CVPixelBufferRef img = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-        CFRetain(img);
-        mr_sync_main_queue(^{
-            [self.videoRenderer displayPixelBuffer:img];
-            CFRelease(img);
-        });
-    }
+    [self.videoRenderer displayAVFrame:frame];
 }
 
 #pragma - mark Audio
@@ -347,17 +338,6 @@
     }
 }
 
-- (IBAction)onExchangeUploadTextureMethod:(NSButton *)sender
-{
-    BOOL used = [self.videoRenderer exchangeUploadTextureMethod];
-    if (used) {
-        [sender setTitle:@"UseGeneral"];
-    } else {
-        [sender setTitle:@"UseIOSurface"];
-    }
-    [self.hud setHudValue:[NSString stringWithFormat:@"%d",used] forKey:@"ioSurface"];
-}
-
 - (IBAction)onSaveSnapshot:(NSButton *)sender
 {
     NSImage *img = [self.videoRenderer snapshot];
@@ -430,39 +410,6 @@
             self.player = nil;
             [self parseURL:url];
         }
-    }
-}
-
-- (IBAction)onSelectVideoFormat:(NSPopUpButton *)sender
-{
-    NSMenuItem *item = [sender selectedItem];
-    int targetFmt = 0;
-    if (item.tag == 1) {
-        //nv12
-        targetFmt = MR_PIX_FMT_NV12;
-    } else if (item.tag == 2) {
-        //nv21
-        targetFmt = MR_PIX_FMT_NV21;
-    } else if (item.tag == 3) {
-        //yuv420p
-        targetFmt = MR_PIX_FMT_YUV420P;
-    } else if (item.tag == 4) {
-        //uyvy422
-        targetFmt = MR_PIX_FMT_UYVY422;
-    } else if (item.tag == 5) {
-        //yuyv422
-        targetFmt = MR_PIX_FMT_YUYV422;
-    }
-    if (_videoFmt == targetFmt) {
-        return;
-    }
-    _videoFmt = targetFmt;
-    
-    if (self.player) {
-        NSString *url = self.player.contentPath;
-        [self.player asyncStop];
-        self.player = nil;
-        [self parseURL:url];
     }
 }
 

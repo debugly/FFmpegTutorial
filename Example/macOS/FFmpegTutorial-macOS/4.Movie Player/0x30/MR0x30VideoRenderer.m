@@ -15,19 +15,15 @@
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
-#import "renderer_pixfmt.h"
 #import "MROpenGLCompiler.h"
+#import <MRFFmpegPod/libavutil/frame.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
 
 // Uniform index.
 enum
 {
     UNIFORM_0,
     UNIFORM_1,
-    DIMENSION_0,
-    DIMENSION_1,
-    UNIFORM_COLOR_CONVERSION_MATRIX,
     NUM_UNIFORMS
 };
 
@@ -41,24 +37,26 @@ enum
 
 @interface MR0x30VideoRenderer ()
 {
+    //color conversion matrix uniform
+    GLint _ccmUniform;
     GLint _uniforms[NUM_UNIFORMS];
+    GLint _textureDimensions[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
-    GLuint _textures[4];
+    GLuint _textures[NUM_UNIFORMS];
+    CGRect _layerBounds;
     MRViewContentMode _contentMode;
     /// 顶点对象
     GLuint _vbo;
     GLuint _vao;
     
+    AVFrame * _lastFrame;
+    
     CGSize _fboTextureSize;
     GLuint _fbo;
     GLuint _colorTexture;
-    
-    //hold the last pixelbuffer for snapshot.
-    CVPixelBufferRef _lastPixelBuffer;
 }
 
 @property MROpenGLCompiler * openglCompiler;
-@property BOOL useIOSurface;
 
 @end
 
@@ -70,7 +68,7 @@ enum
     glDeleteVertexArrays(1, &_vao);
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
     [self destroyFBO];
-    [self destroyLastPixelBuffer];
+    av_frame_free(&_lastFrame);
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -108,6 +106,7 @@ enum
         [self setWantsBestResolutionOpenGLSurface:YES];
         
         [self drawInitBackgroundColor];
+        _lastFrame = av_frame_alloc();
     }
     return self;
 }
@@ -125,17 +124,16 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2DRect_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            _uniforms[UNIFORM_0]  = [self.openglCompiler getUniformLocation:"Sampler0"];
+            _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
             _uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
+            _textureDimensions[UNIFORM_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            _textureDimensions[UNIFORM_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
             
-            _uniforms[DIMENSION_0]  = [self.openglCompiler getUniformLocation:"textureDimension0"];
-            _uniforms[DIMENSION_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
-            
-            _uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
             _attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
@@ -144,6 +142,7 @@ enum
             /// 创建顶点缓存对象
             glGenBuffers(1, &_vbo);
             
+            glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
         }
     }
 }
@@ -157,39 +156,15 @@ enum
     CGLLockContext([[self openGLContext] CGLContextObj]);
     
     // Get the view size in Points
-    NSRect viewRectPoints = [self bounds];
+    _layerBounds = [self bounds];
     
-#if SUPPORT_RETINA_RESOLUTION
-    
-    // Rendering at retina resolutions will reduce aliasing, but at the potential
-    // cost of framerate and battery life due to the GPU needing to render more
-    // pixels.
-    
-    // Any calculations the renderer does which use pixel dimentions, must be
-    // in "retina" space.  [NSView convertRectToBacking] converts point sizes
-    // to pixel sizes.  Thus the renderer gets the size in pixels, not points,
-    // so that it can set it's viewport and perform and other pixel based
-    // calculations appropriately.
-    // viewRectPixels will be larger than viewRectPoints for retina displays.
-    // viewRectPixels will be the same as viewRectPoints for non-retina displays
-    NSRect viewRectPixels = [self convertRectToBacking:viewRectPoints];
-    
-#else //if !SUPPORT_RETINA_RESOLUTION
-    
-    // App will typically render faster and use less power rendering at
-    // non-retina resolutions since the GPU needs to render less pixels.
-    // There is the cost of more aliasing, but it will be no-worse than
-    // on a Mac without a retina display.
-    
-    // Points:Pixels is always 1:1 when not supporting retina resolutions
-    NSRect viewRectPixels = viewRectPoints;
-    
-#endif // !SUPPORT_RETINA_RESOLUTION
+    NSRect viewRectPixels = [self convertRectToBacking:_layerBounds];
     
     GLsizei backingWidth = viewRectPixels.size.width;
     GLsizei backingHeight = viewRectPixels.size.height;
     // Set the new dimensions in our renderer
     glViewport(0, 0, backingWidth, backingHeight);
+    
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
 
@@ -205,6 +180,12 @@ enum
     // Synchronize buffer swaps with vertical refresh rate
     GLint swapInt = 1;
     [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
+    
+    [self setupOpenGLProgram];
+    
+    glDisable(GL_DEPTH_TEST);
+    //glEnable(GL_TEXTURE_RECTANGLE);
+    glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)prepareOpenGL
@@ -222,245 +203,164 @@ enum
     [self resetViewPort];
 }
 
-- (CGLError)doUploadTexture1:(GLenum)gl_target pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer plane_format:(const struct vt_gl_plane_format *)plane_format w:(GLfloat)w h:(GLfloat)h i:(int)i
+- (void)setContentMode:(MRViewContentMode)contentMode
 {
-    glTexImage2D(gl_target, 0, plane_format->gl_internal_format, w, h, 0, plane_format->gl_format, plane_format->gl_type, CVPixelBufferGetBaseAddressOfPlane(pixelBuffer, i));
-    return kCGLNoError;
+    _contentMode = contentMode;
 }
 
-- (CGLError)doUploadTexture2:(GLenum)gl_target pixelBuffer:(CVPixelBufferRef _Nonnull)pixelBuffer plane_format:(const struct vt_gl_plane_format *)plane_format w:(GLfloat)w h:(GLfloat)h i:(int)i
+- (MRViewContentMode)contentMode
 {
-    IOSurfaceRef surface = CVPixelBufferGetIOSurface(pixelBuffer);
-    
-    CGLError err = CGLTexImageIOSurface2D(CGLGetCurrentContext(),
-                                          gl_target,
-                                          plane_format->gl_internal_format,
-                                          w,
-                                          h,
-                                          plane_format->gl_format,
-                                          plane_format->gl_type,
-                                          surface,
-                                          i);
-    return err;
+    return _contentMode;
 }
 
-- (BOOL)exchangeUploadTextureMethod
+- (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
 {
-    self.useIOSurface = !self.useIOSurface;
-    return self.useIOSurface;
+    //for y plane
+    {
+        //设置纹理和采样器的对应关系
+        glUniform1i(_uniforms[UNIFORM_0], 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_RECTANGLE, _textures[0]);
+        
+        //设置矩形纹理尺寸
+        glUniform2f(_textureDimensions[UNIFORM_0], frame->width, frame->height);
+        //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RED, frame->width, frame->height, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[0]);
+        VerifyGL(;);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
+    VerifyGL(;);
+    //for uv plane
+    {
+        //设置纹理和采样器的对应关系
+        glUniform1i(_uniforms[UNIFORM_1], 1);
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_RECTANGLE, _textures[1]);
+        //设置矩形纹理尺寸
+        glUniform2f(_textureDimensions[UNIFORM_1], frame->width/2, frame->height/2);
+        
+        //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE_ALPHA
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
+        VerifyGL(;);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
+    VerifyGL(;);
 }
 
-- (void)uploadTexture:(CVPixelBufferRef _Nonnull)pixelBuffer
+- (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
 {
-    uint32_t cvpixfmt = CVPixelBufferGetPixelFormatType(pixelBuffer);
-    struct vt_format * f = vt_get_gl_format(cvpixfmt);
+    GLsizei frameWidth = frame->width;
+    GLsizei frameHeight = frame->height;
+    // Compute normalized quad coordinates to draw the frame into.
+    CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (!f) {
-        NSAssert(!f,@"please add pixel format:%d to renderer_pixfmt.h", cvpixfmt);
-        return;
-    }
-    
-    const bool planar = CVPixelBufferIsPlanar(pixelBuffer);
-    const int planes  = (int)CVPixelBufferGetPlaneCount(pixelBuffer);
-    assert(planar && planes == f->planes || f->planes == 1);
-    BOOL useIOSurface = self.useIOSurface;
-    
-    GLenum gl_target = GL_TEXTURE_RECTANGLE;
-    
-    for (int i = 0; i < f->planes; i++) {
-        GLfloat w = (GLfloat)CVPixelBufferGetWidthOfPlane(pixelBuffer, i);
-        GLfloat h = (GLfloat)CVPixelBufferGetHeightOfPlane(pixelBuffer, i);
-        //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
-        if (useIOSurface) {
-            //设置纹理和采样器的对应关系
-            glUniform1i(_uniforms[UNIFORM_0 + i], f->planes + i);
-            glActiveTexture(GL_TEXTURE0 + f->planes + i);
-            glBindTexture(gl_target, _textures[i] + f->planes);
-        } else {
-            glUniform1i(_uniforms[UNIFORM_0 + i], 0 + i);
-            glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(gl_target, _textures[i]);
-        }
+    if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
+        // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
+        CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
-        glUniform2f(_uniforms[DIMENSION_0 + i], w, h);
+        CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
-        struct vt_gl_plane_format plane_format = f->gl[i];
-        
-        CGLError err = kCGLNoError;
-        if (useIOSurface) {
-            err = [self doUploadTexture2:gl_target pixelBuffer:pixelBuffer plane_format:&plane_format w:w h:h i:i];
-        } else {
-            CVPixelBufferLockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-            err = [self doUploadTexture1:gl_target pixelBuffer:pixelBuffer plane_format:&plane_format w:w h:h i:i];
-            CVPixelBufferUnlockBaseAddress(pixelBuffer, kCVPixelBufferLock_ReadOnly);
-        }
-        
-        if (err != kCGLNoError) {
-            NSLog(@"error creating IOSurface texture for plane %d: %s\n",
-                   0, CGLErrorString(err));
-        } else {
-            glTexParameteri(gl_target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-            glTexParameteri(gl_target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-            glTexParameterf(gl_target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-            glTexParameterf(gl_target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-        }
-    }
-}
-
-- (void)drawPixelBuffer:(CVPixelBufferRef)pixelBuffer
-{
-    //active opengl program
-    {
-        [self setupOpenGLProgram];
-        [self.openglCompiler active];
-    }
-    
-    {
-        if (0 == _textures[0]) {
-            glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
-        }
-    }
-    
-    {
-        glDisable(GL_DEPTH_TEST);
-    }
-    
-    {
-        int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
-        
-        CFTypeRef colorAttachments = CVBufferGetAttachment(pixelBuffer, kCVImageBufferYCbCrMatrixKey, NULL);
-        
-        const GLfloat * preferredConversion = NULL;
-        if (colorAttachments == kCVImageBufferYCbCrMatrix_ITU_R_601_4) {
-            BOOL isFullYUVRange = kCVPixelFormatType_420YpCbCr8BiPlanarFullRange == type;
-            if (isFullYUVRange) {
-                preferredConversion = kColorConversion601FullRange;
+        // hold max
+        if (_contentMode == MRViewContentModeScaleAspectFit) {
+            if (cropScaleAmount.width > cropScaleAmount.height) {
+                normalizedSamplingSize.width = 1.0;
+                normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
             }
             else {
-                preferredConversion = kColorConversion601;
+                normalizedSamplingSize.height = 1.0;
+                normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+            }
+        } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+            // hold min
+            if (cropScaleAmount.width > cropScaleAmount.height) {
+                normalizedSamplingSize.height = 1.0;
+                normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
+            }
+            else {
+                normalizedSamplingSize.width = 1.0;
+                normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
             }
         }
-        else {
-            preferredConversion = kColorConversion709;
-        }
-        glUniformMatrix3fv(_uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
     }
-    
-    {
-        [self uploadTexture:pixelBuffer];
-    }
-    
-    {
-        // Compute normalized quad coordinates to draw the frame into.
-        CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
-
-        if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
-            const size_t pictureWidth  = CVPixelBufferGetWidth(pixelBuffer);
-            const size_t pictureHeight = CVPixelBufferGetHeight(pixelBuffer);
-            // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
-            CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(pictureWidth, pictureHeight), self.layer.bounds);
-
-            CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/self.layer.bounds.size.width, vertexSamplingRect.size.height/self.layer.bounds.size.height);
-
-            // hold max
-            if (_contentMode == MRViewContentModeScaleAspectFit) {
-                if (cropScaleAmount.width > cropScaleAmount.height) {
-                    normalizedSamplingSize.width = 1.0;
-                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-                }
-                else {
-                    normalizedSamplingSize.height = 1.0;
-                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
-                }
-            } else if (_contentMode == MRViewContentModeScaleAspectFill) {
-                // hold min
-                if (cropScaleAmount.width > cropScaleAmount.height) {
-                    normalizedSamplingSize.height = 1.0;
-                    normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
-                }
-                else {
-                    normalizedSamplingSize.width = 1.0;
-                    normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
-                }
-            }
-        }
-
-        /*
-         The quad vertex data defines the region of 2D plane onto which we draw our pixel buffers.
-         Vertex data formed using (-1,-1) and (1,1) as the bottom left and top right coordinates respectively, covers the entire screen.
-         */
-        GLfloat quadData [] = {
-            -1 * normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
-                 normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
-            -1 * normalizedSamplingSize.width, normalizedSamplingSize.height,
-                 normalizedSamplingSize.width, normalizedSamplingSize.height,
-            //Texture Postition
-            0, 1,
-            1, 1,
-            0, 0,
-            1, 0,
-        };
-        
-        /// 将CPU数据发送到GPU,数据类型GL_ARRAY_BUFFER
-        /// GL_STATIC_DRAW 表示数据不会被修改,将其放置在GPU显存的更合适的位置,增加其读取速度
-        glBufferData(GL_ARRAY_BUFFER, sizeof(quadData), quadData, GL_DYNAMIC_DRAW);
-        
-        /// 指定顶点着色器位置为0的参数的数据读取方式与数据类型
-        /// 第一个参数: 参数位置
-        /// 第二个参数: 一次读取数据
-        /// 第三个参数: 数据类型
-        /// 第四个参数: 是否归一化数据
-        /// 第五个参数: 间隔多少个数据读取下一次数据
-        /// 第六个参数: 指定读取第一个数据在顶点数据中的偏移量
-        glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
-        /// 启用顶点着色器中位置为0的参数
-        glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
-        
-        // texture coord attribute
-        glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
-        glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
-        
-        // 更新顶点数据
-        glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
-        glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
-        
-        glBindVertexArray(_vao);
-        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    }
+    return normalizedSamplingSize;
 }
 
-- (void)destroyLastPixelBuffer
+- (void)updateArrayBuffer:(CGSize)normalizedSamplingSize
 {
-    if (_lastPixelBuffer) {
-        CVPixelBufferRelease(_lastPixelBuffer);
-        _lastPixelBuffer = NULL;
-    }
+    /*
+     The quad vertex data defines the region of 2D plane onto which we draw our pixel buffers.
+     Vertex data formed using (-1,-1) and (1,1) as the bottom left and top right coordinates respectively, covers the entire screen.
+     */
+    GLfloat quadData [] = {
+        -1 * normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
+        normalizedSamplingSize.width, -1 * normalizedSamplingSize.height,
+        -1 * normalizedSamplingSize.width, normalizedSamplingSize.height,
+        normalizedSamplingSize.width, normalizedSamplingSize.height,
+        //Texture Postition
+        0, 1,
+        1, 1,
+        0, 0,
+        1, 0,
+    };
+    
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+    /// 将CPU数据发送到GPU,数据类型GL_ARRAY_BUFFER
+    /// GL_STATIC_DRAW 表示数据不会被修改,将其放置在GPU显存的更合适的位置,增加其读取速度
+    glBufferData(GL_ARRAY_BUFFER, sizeof(quadData), quadData, GL_DYNAMIC_DRAW);
+    
+    // 更新顶点数据
+    glBindVertexArray(_vao);
+    glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
+    glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
+    /// 指定顶点着色器位置为0的参数的数据读取方式与数据类型
+    /// 第一个参数: 参数位置
+    /// 第二个参数: 一次读取数据
+    /// 第三个参数: 数据类型
+    /// 第四个参数: 是否归一化数据
+    /// 第五个参数: 间隔多少个数据读取下一次数据
+    /// 第六个参数: 指定读取第一个数据在顶点数据中的偏移量
+    glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    
+    // texture coord attribute
+    glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
 }
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer
+- (void)drawFrame:(AVFrame * _Nonnull)frame
 {
-    int type = CVPixelBufferGetPixelFormatType(pixelBuffer);
-     
-    if(kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange != type && kCVPixelFormatType_420YpCbCr8BiPlanarFullRange != type) {
-        NSLog(@"not supported pixel format:%d",type);
-        return;
-    }
+    glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
+    VerifyGL(;);
+    
+    [self uploadFrameToTexture:frame];
+    VerifyGL(;);
+    
+    CGSize normalizedSamplingSize = [self computeNormalizedSize:frame];
+    [self updateArrayBuffer:normalizedSamplingSize];
+    VerifyGL(;);
+    
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+    VerifyGL(;)
+}
+
+- (void)displayAVFrame:(AVFrame *)frame
+{
+    av_frame_ref(_lastFrame, frame);
     
     [[self openGLContext] makeCurrentContext];
     CGLLockContext([[self openGLContext] CGLContextObj]);
-    // Bind the default FBO to render to the screen.
-    glBindFramebuffer(GL_FRAMEBUFFER, 0);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     
-    NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
-    glViewport(0, 0, pixelSize.width, pixelSize.height);
-
+    [self.openglCompiler active];
     glClearColor(0.0,0.0,0.0,0.0);
     glClear(GL_COLOR_BUFFER_BIT);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     
-    [self drawPixelBuffer:pixelBuffer];
-    [self destroyLastPixelBuffer];
-    _lastPixelBuffer = CVPixelBufferRetain(pixelBuffer);
+    [self drawFrame:frame];
+    
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
 }
@@ -524,7 +424,7 @@ enum
 
 - (NSImage *)snapshot
 {
-    if (_lastPixelBuffer) {
+    if (_lastFrame) {
         CGSize picSize = self.videoSize;
         if ([self prepareFBOIfNeed:picSize]) {
             [[self openGLContext] makeCurrentContext];
@@ -536,25 +436,23 @@ enum
             // Bind the texture that you previously render to (i.e. the snapshot texture).
             glBindTexture(GL_TEXTURE_2D, _colorTexture);
             
-            [self drawPixelBuffer:_lastPixelBuffer];
+            [self drawFrame:_lastFrame];
             
             CGLFlushDrawable([[self openGLContext] CGLContextObj]);
+            
+            NSImage *img = [MRConvertUtil snapshotFBO:_colorTexture size:picSize];
+            
+            // Bind the default FBO to render to the screen.
+            NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
+            glViewport(0, 0, pixelSize.width, pixelSize.height);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            
             CGLUnlockContext([[self openGLContext] CGLContextObj]);
-
-            return [MRConvertUtil snapshotFBO:_colorTexture size:picSize];
+            
+            return img;
         }
     }
     return nil;
-}
-
-- (void)setContentMode:(MRViewContentMode)contentMode
-{
-    _contentMode = contentMode;
-}
-
-- (MRViewContentMode)contentMode
-{
-    return _contentMode;
 }
 
 @end

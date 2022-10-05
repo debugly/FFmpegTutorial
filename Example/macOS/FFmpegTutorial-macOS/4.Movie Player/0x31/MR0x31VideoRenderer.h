@@ -7,17 +7,16 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CoreVideo/CVPixelBuffer.h>
 #import "MRVideoRendererProtocol.h"
 
+typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x31VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 //画面原始尺寸；
 @property (assign) CGSize videoSize;
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
-- (BOOL)exchangeUploadTextureMethod;
+- (void)displayAVFrame:(AVFrame *)frame;
 - (NSImage *)snapshot;
 
 @end

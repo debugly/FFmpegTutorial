@@ -124,8 +124,8 @@ open FFmpegTutorial-macOS.xcworkspace
 
 四、封装播放器
 
-- 0x30:创建视频渲染线程，增加 VideoFrame 缓存队列（TODO）
-- 0x31:创建读包线程，增加 AVPacket 缓存队列（TODO）
+- 0x30:创建视频渲染线程，增加 VideoFrame 缓存队列
+- 0x31:创建读包线程，增加 AVPacket 缓存队列
 - 0x32:音视频同步（TODO）
 - 0x33:显示播放进度和时长（TODO）
 - 0x34:支持暂停和播放（TODO）
