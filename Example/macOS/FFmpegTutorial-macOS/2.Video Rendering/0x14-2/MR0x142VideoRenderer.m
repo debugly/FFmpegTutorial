@@ -34,10 +34,10 @@ enum
 @interface MR0x142VideoRenderer ()
 {
     //color conversion matrix uniform
-    GLint ccmUniform;
-    GLint uniforms[NUM_UNIFORMS];
-    GLint attributers[NUM_ATTRIBUTES];
-    GLuint plane_textures[NUM_UNIFORMS];
+    GLint _ccmUniform;
+    GLint _uniforms[NUM_UNIFORMS];
+    GLint _attributers[NUM_ATTRIBUTES];
+    GLuint _textures[NUM_UNIFORMS];
     MRViewContentMode _contentMode;
     CGRect _layerBounds;
 }
@@ -50,7 +50,7 @@ enum
 
 - (void)dealloc
 {
-    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -121,11 +121,11 @@ enum
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
-            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
-            ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
-            attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
-            attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
+            _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            _uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
+            _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            _attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
         }
     }
 }
@@ -147,7 +147,7 @@ enum
     
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-    glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)prepareOpenGL
@@ -180,9 +180,9 @@ enum
     //for y plane
     {
         //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_0], 0);
+        glUniform1i(_uniforms[UNIFORM_0], 0);
         glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+        glBindTexture(GL_TEXTURE_2D, _textures[0]);
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, frame->width, frame->height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, frame->data[0]);
         
@@ -195,9 +195,9 @@ enum
     //for uv plane
     {
         //设置纹理和采样器的对应关系
-        glUniform1i(uniforms[UNIFORM_1], 1);
+        glUniform1i(_uniforms[UNIFORM_1], 1);
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, plane_textures[1]);
+        glBindTexture(GL_TEXTURE_2D, _textures[1]);
         
         glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, frame->width/2, frame->height/2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, frame->data[1]);
         
@@ -259,7 +259,7 @@ enum
     
     [self uploadFrameToTexture:frame];
     
-    glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversion709);
+    glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
     
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = [self computeNormalizedSize:frame];
@@ -276,8 +276,8 @@ enum
     };
     
     // 更新顶点数据
-    glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
-    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
+    glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
+    glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
    
     GLfloat quadTextureData[] = { // 坐标不对可能导致画面显示方向不对
         0, 1,
@@ -286,8 +286,8 @@ enum
         1, 0,
     };
     
-    glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
-    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+    glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
+    glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
     
     VerifyGL(;);
     

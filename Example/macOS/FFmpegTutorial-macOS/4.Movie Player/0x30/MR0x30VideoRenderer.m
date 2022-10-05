@@ -39,16 +39,15 @@ enum
     NUM_ATTRIBUTES
 };
 
-static GLint uniforms[NUM_UNIFORMS];
-static GLint attributers[NUM_ATTRIBUTES];
-
 @interface MR0x30VideoRenderer ()
 {
-    GLuint plane_textures[4];
+    GLint _uniforms[NUM_UNIFORMS];
+    GLint _attributers[NUM_ATTRIBUTES];
+    GLuint _textures[4];
     MRViewContentMode _contentMode;
     /// 顶点对象
-    GLuint _VBO;
-    GLuint _VAO;
+    GLuint _vbo;
+    GLuint _vao;
     
     CGSize _FBOTextureSize;
     GLuint _FBO;
@@ -67,9 +66,9 @@ static GLint attributers[NUM_ATTRIBUTES];
 
 - (void)dealloc
 {
-    glDeleteBuffers(1, &_VBO);
-    glDeleteVertexArrays(1, &_VAO);
-    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glDeleteBuffers(1, &_vbo);
+    glDeleteVertexArrays(1, &_vao);
+    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
     [self destroyFBO];
     [self destroyLastPixelBuffer];
 }
@@ -130,20 +129,20 @@ static GLint attributers[NUM_ATTRIBUTES];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_0]  = [self.openglCompiler getUniformLocation:"Sampler0"];
-            uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
+            _uniforms[UNIFORM_0]  = [self.openglCompiler getUniformLocation:"Sampler0"];
+            _uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
             
-            uniforms[DIMENSION_0]  = [self.openglCompiler getUniformLocation:"textureDimension0"];
-            uniforms[DIMENSION_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
+            _uniforms[DIMENSION_0]  = [self.openglCompiler getUniformLocation:"textureDimension0"];
+            _uniforms[DIMENSION_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
             
-            uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            _uniforms[UNIFORM_COLOR_CONVERSION_MATRIX] = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
-            attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
+            _attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
-            glGenVertexArrays(1, &_VAO);
+            glGenVertexArrays(1, &_vao);
             /// 创建顶点缓存对象
-            glGenBuffers(1, &_VBO);
+            glGenBuffers(1, &_vbo);
             
         }
     }
@@ -274,16 +273,16 @@ static GLint attributers[NUM_ATTRIBUTES];
         //为了实现实时切换纹理上传的方式，因此各自创建了纹理，需要修改于采样器的对应关系。
         if (useIOSurface) {
             //设置纹理和采样器的对应关系
-            glUniform1i(uniforms[UNIFORM_0 + i], f->planes + i);
+            glUniform1i(_uniforms[UNIFORM_0 + i], f->planes + i);
             glActiveTexture(GL_TEXTURE0 + f->planes + i);
-            glBindTexture(gl_target, plane_textures[i] + f->planes);
+            glBindTexture(gl_target, _textures[i] + f->planes);
         } else {
-            glUniform1i(uniforms[UNIFORM_0 + i], 0 + i);
+            glUniform1i(_uniforms[UNIFORM_0 + i], 0 + i);
             glActiveTexture(GL_TEXTURE0 + i);
-            glBindTexture(gl_target, plane_textures[i]);
+            glBindTexture(gl_target, _textures[i]);
         }
         
-        glUniform2f(uniforms[DIMENSION_0 + i], w, h);
+        glUniform2f(_uniforms[DIMENSION_0 + i], w, h);
         
         struct vt_gl_plane_format plane_format = f->gl[i];
         
@@ -317,8 +316,8 @@ static GLint attributers[NUM_ATTRIBUTES];
     }
     
     {
-        if (0 == plane_textures[0]) {
-            glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+        if (0 == _textures[0]) {
+            glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
         }
     }
     
@@ -344,7 +343,7 @@ static GLint attributers[NUM_ATTRIBUTES];
         else {
             preferredConversion = kColorConversion709;
         }
-        glUniformMatrix3fv(uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
+        glUniformMatrix3fv(_uniforms[UNIFORM_COLOR_CONVERSION_MATRIX], 1, GL_FALSE, preferredConversion);
     }
     
     {
@@ -413,19 +412,19 @@ static GLint attributers[NUM_ATTRIBUTES];
         /// 第四个参数: 是否归一化数据
         /// 第五个参数: 间隔多少个数据读取下一次数据
         /// 第六个参数: 指定读取第一个数据在顶点数据中的偏移量
-        glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+        glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
         /// 启用顶点着色器中位置为0的参数
-        glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
+        glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
         
         // texture coord attribute
-        glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
-        glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+        glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
+        glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
         
         // 更新顶点数据
-        glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
-        glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+        glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
+        glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
         
-        glBindVertexArray(_VAO);
+        glBindVertexArray(_vao);
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     }
 }

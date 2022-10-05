@@ -36,15 +36,15 @@ enum
 @interface MR0x155VideoRenderer ()
 {
     //color conversion matrix uniform
-    GLint ccmUniform;
-    GLint uniforms[NUM_UNIFORMS];
-    GLint attributers[NUM_ATTRIBUTES];
-    GLuint plane_textures[NUM_UNIFORMS];
+    GLint _ccmUniform;
+    GLint _uniforms[NUM_UNIFORMS];
+    GLint _attributers[NUM_ATTRIBUTES];
+    GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
     MRViewContentMode _contentMode;
     /// 顶点对象
-    GLuint _VBO;
-    GLuint _VAO;
+    GLuint _vbo;
+    GLuint _vao;
 }
 
 @property MROpenGLCompiler * openglCompiler;
@@ -55,9 +55,9 @@ enum
 
 - (void)dealloc
 {
-    glDeleteBuffers(1, &_VBO);
-    glDeleteVertexArrays(1, &_VAO);
-    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glDeleteBuffers(1, &_vbo);
+    glDeleteVertexArrays(1, &_vao);
+    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -116,17 +116,17 @@ enum
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
-            ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
-            attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
+            _attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
-            glGenVertexArrays(1, &_VAO);
+            glGenVertexArrays(1, &_vao);
             /// 创建顶点缓存对象
-            glGenBuffers(1, &_VBO);
+            glGenBuffers(1, &_vbo);
             
-            glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+            glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
         }
     }
 }
@@ -169,7 +169,7 @@ enum
     
     glDisable(GL_DEPTH_TEST);
     //glEnable(GL_TEXTURE_2D);
-    glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)prepareOpenGL
@@ -200,9 +200,9 @@ enum
 - (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
 {
     //设置纹理和采样器的对应关系
-    glUniform1i(uniforms[UNIFORM_0], 0);
+    glUniform1i(_uniforms[UNIFORM_0], 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+    glBindTexture(GL_TEXTURE_2D, _textures[0]);
     //GL_INVALID_ENUM: GL_YCBCR_422_APPLE
 //    { GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, GL_RGB },
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, frame->width, frame->height, 0, GL_RGB_422_APPLE, GL_UNSIGNED_SHORT_8_8_APPLE, frame->data[0]);
@@ -269,15 +269,15 @@ enum
         1, 0,
     };
     
-    glBindBuffer(GL_ARRAY_BUFFER, _VBO);
+    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
     /// 将CPU数据发送到GPU,数据类型GL_ARRAY_BUFFER
     /// GL_STATIC_DRAW 表示数据不会被修改,将其放置在GPU显存的更合适的位置,增加其读取速度
     glBufferData(GL_ARRAY_BUFFER, sizeof(quadData), quadData, GL_DYNAMIC_DRAW);
     
     // 更新顶点数据
-    glBindVertexArray(_VAO);
-    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
-    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+    glBindVertexArray(_vao);
+    glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
+    glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
     /// 指定顶点着色器位置为0的参数的数据读取方式与数据类型
     /// 第一个参数: 参数位置
     /// 第二个参数: 一次读取数据
@@ -285,10 +285,10 @@ enum
     /// 第四个参数: 是否归一化数据
     /// 第五个参数: 间隔多少个数据读取下一次数据
     /// 第六个参数: 指定读取第一个数据在顶点数据中的偏移量
-    glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
+    glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, GL_FALSE, 0, (void*)0);
     
     // texture coord attribute
-    glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
+    glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
 }
 
 - (void)displayAVFrame:(AVFrame *)frame
@@ -300,7 +300,7 @@ enum
     glClearColor(0.0,0.0,0.0,0.0);
     glClear(GL_COLOR_BUFFER_BIT);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    glUniformMatrix3fv(ccmUniform, 1, GL_FALSE, kColorConversionYUV422);
+    glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversionYUV422);
     VerifyGL(;);
     
     [self uploadFrameToTexture:frame];

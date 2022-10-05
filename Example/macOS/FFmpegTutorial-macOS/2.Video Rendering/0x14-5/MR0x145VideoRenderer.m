@@ -33,9 +33,9 @@ enum
 
 @interface MR0x145VideoRenderer ()
 {
-    GLint uniforms[NUM_UNIFORMS];
-    GLint attributers[NUM_ATTRIBUTES];
-    GLuint plane_textures[NUM_UNIFORMS];
+    GLint _uniforms[NUM_UNIFORMS];
+    GLint _attributers[NUM_ATTRIBUTES];
+    GLuint _textures[NUM_UNIFORMS];
     MRViewContentMode _contentMode;
     CGRect _layerBounds;
 }
@@ -48,7 +48,7 @@ enum
 
 - (void)dealloc
 {
-    glDeleteTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
@@ -119,10 +119,10 @@ enum
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
-            uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
+            _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
             
-            attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
-            attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
+            _attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
         }
     }
 }
@@ -144,7 +144,7 @@ enum
     
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-    glGenTextures(sizeof(plane_textures)/sizeof(GLuint), plane_textures);
+    glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)prepareOpenGL
@@ -175,9 +175,9 @@ enum
 - (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
 {
     //设置纹理和采样器的对应关系
-    glUniform1i(uniforms[UNIFORM_0], 0);
+    glUniform1i(_uniforms[UNIFORM_0], 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, plane_textures[0]);
+    glBindTexture(GL_TEXTURE_2D, _textures[0]);
     //internalformat 必须是 GL_RGBA，与创建 OpenGL 上下文指定的格式一样；
     //format 是当前数据的格式，可以是 GL_BGRA 也可以是 GL_RGBA，根据实际情况；但 CVPixelBufferRef 是不支持 RGBA 的；
     //这里指定好格式后，将会自动转换好对应关系，shader 无需做额外处理。
@@ -253,8 +253,8 @@ enum
     };
     
     // 更新顶点数据
-    glVertexAttribPointer(attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
-    glEnableVertexAttribArray(attributers[ATTRIB_VERTEX]);
+    glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
+    glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
     GLfloat quadTextureData[] = { // 坐标不对可能导致画面显示方向不对
         0, 1,
         1, 1,
@@ -262,8 +262,8 @@ enum
         1, 0,
     };
     
-    glVertexAttribPointer(attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
-    glEnableVertexAttribArray(attributers[ATTRIB_TEXCOORD]);
+    glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, 0, 0, quadTextureData);
+    glEnableVertexAttribArray(_attributers[ATTRIB_TEXCOORD]);
     
     VerifyGL(;);
     

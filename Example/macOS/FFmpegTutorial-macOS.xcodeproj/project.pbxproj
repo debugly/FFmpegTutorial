@@ -1067,11 +1067,11 @@
 		DDF9236628EC4A5F00F29C1A /* 0x15-2 */ = {
 			isa = PBXGroup;
 			children = (
-				DDF9236728EC4A5F00F29C1A /* MR0x152ViewController.xib */,
-				DDF9236828EC4A5F00F29C1A /* MR0x152ViewController.m */,
 				DDF9236928EC4A5F00F29C1A /* MR0x152VideoRenderer.h */,
-				DDF9236A28EC4A5F00F29C1A /* MR0x152ViewController.h */,
 				DDF9236B28EC4A5F00F29C1A /* MR0x152VideoRenderer.m */,
+				DDF9236A28EC4A5F00F29C1A /* MR0x152ViewController.h */,
+				DDF9236828EC4A5F00F29C1A /* MR0x152ViewController.m */,
+				DDF9236728EC4A5F00F29C1A /* MR0x152ViewController.xib */,
 			);
 			path = "0x15-2";
 			sourceTree = "<group>";
