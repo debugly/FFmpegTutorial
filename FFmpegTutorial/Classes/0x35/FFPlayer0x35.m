@@ -641,7 +641,7 @@ static int decode_interrupt_cb(void *ctx)
             *remaining_time = 0.04;
         }
         double diff = [_audioClk getClock] - [_videoClk getClock];
-        if (diff > 0.1) {
+        if (diff > 0.05) {
             av_log(NULL, AV_LOG_INFO, "A-V=%f\n",diff);
         }
         
@@ -665,7 +665,7 @@ static int decode_interrupt_cb(void *ctx)
     //调用了stop方法，则不再渲染
     while (!self.abort_request) {
         if (remaining_time > 0.0){
-            mr_sleep(remaining_time);
+            mr_msleep(remaining_time * 1000);
         }
         remaining_time = REFRESH_RATE;
         [self video_refresh:&remaining_time];

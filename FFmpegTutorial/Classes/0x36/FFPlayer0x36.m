@@ -676,7 +676,7 @@ static int decode_interrupt_cb(void *ctx)
     //调用了stop方法，则不再渲染
     while (!self.abort_request) {
         if (remaining_time > 0.0){
-            mr_sleep(remaining_time);
+            mr_msleep(remaining_time * 1000);
         }
         remaining_time = REFRESH_RATE;
         [self video_refresh:&remaining_time];

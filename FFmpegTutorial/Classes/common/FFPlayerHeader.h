@@ -196,8 +196,12 @@ static inline void mr_msleep(long s) {
 // safe sleep s
 static inline void mr_sleep(long s) {
     //sleep is unsigned int type!
-    if (s >= 0) {
+    if (s > 0) {
         sleep((unsigned int)s);
+    } else {
+#if DEBUG
+        assert(s != 0);
+#endif
     }
 }
 
