@@ -19,7 +19,7 @@
 #import "FFPacketQueue.h"
 #import "MRVideoRenderer.h"
 #import "MR0x36AudioRenderer.h"
-#import "FFFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 #import "FFSyncClock0x36.h"
 #import "MRAbstractLogger.h"
 
@@ -48,7 +48,7 @@ kFFPlayer0x36InfoKey kFFPlayer0x36Duration = @"kFFPlayer0x36Duration";
     FFPacketQueue *_packetQueue;
     
     FFFrameQueue *_videoFrameQueue;
-    FFFrameQueue *_audioFrameQueue;
+    FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
     MR0x36AudioRenderer *_audioRender;
     
@@ -852,16 +852,7 @@ static int decode_interrupt_cb(void *ctx)
     const char *fmt_str = av_sample_fmt_to_string(frame->format);
     self.audioSamplelInfo = [NSString stringWithFormat:@"(%s)%d",fmt_str,frame->sample_rate];
  
-    FFFrameItem *item = [[FFFrameItem alloc] initWithAVFrame:frame];
-
-    if (frame->pts != AV_NOPTS_VALUE) {
-        AVRational tb = (AVRational){1, frame->sample_rate};
-        item.pts = frame->pts * av_q2d(tb);
-    }
-    
-    item.duration = av_q2d((AVRational){frame->nb_samples, frame->sample_rate});
-    
-    [_audioFrameQueue push:item];
+    [_audioFrameQueue enQueue:frame];
 }
 
 - (void)performErrorResultOnMainThread

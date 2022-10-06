@@ -19,7 +19,7 @@
 #import "FFPacketQueue.h"
 #import "MRVideoRenderer.h"
 #import "MR0x35AudioRenderer.h"
-#import "FFFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 #import "FFSyncClock0x35.h"
 #import "MRAbstractLogger.h"
 
@@ -48,7 +48,7 @@ kFFPlayer0x35InfoKey kFFPlayer0x35Duration = @"kFFPlayer0x35Duration";
     FFPacketQueue *_packetQueue;
     
     FFFrameQueue *_videoFrameQueue;
-    FFFrameQueue *_audioFrameQueue;
+    FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
     MR0x35AudioRenderer *_audioRender;
     
@@ -57,8 +57,7 @@ kFFPlayer0x35InfoKey kFFPlayer0x35Duration = @"kFFPlayer0x35Duration";
     //视频尺寸
     CGSize _videoSize;
     AVFormatContext * _formatCtx;
-    //音频frame已经读的数据
-    int _audioFrameRead;
+    
     //读包完毕？
     int _eof;
     
@@ -361,7 +360,7 @@ static int decode_interrupt_cb(void *ctx)
     }
 
     _videoFrameQueue = [[FFFrameQueue alloc] init];
-    _audioFrameQueue = [[FFFrameQueue alloc] init];
+    _audioFrameQueue = [[FFAudioFrameQueue alloc] init];
     _videoClk = [[FFSyncClock0x35 alloc] init];
     _audioClk = [[FFSyncClock0x35 alloc] init];
     
@@ -730,73 +729,12 @@ static int decode_interrupt_cb(void *ctx)
     _audioRender = audioRender;
 }
 
-- (int)doFillAudioBuffers:(uint8_t * [2])buffer
-                 byteSize:(int)bufferSize
-{
-    FFFrameItem *item = [_audioFrameQueue peek];
-    if (!item) {
-        return 0;
-    }
-    AVFrame *frame = item.frame;
-    int data_size = audio_buffer_size(frame);
-    int leave = data_size - _audioFrameRead;
-    if (leave <= 0) {
-        _audioFrameRead = 0;
-        [_audioFrameQueue pop];
-        return 0;
-    }
-    
-    int cpSize = MIN(bufferSize,leave);
-    
-    for (int i = 0; i < 2; i++) {
-        uint8_t *dst = buffer[i];
-        if (NULL != dst) {
-            uint8_t *src = (uint8_t *)(frame->data[i]) + _audioFrameRead;
-            memcpy(dst, src, cpSize);
-        } else {
-            break;
-        }
-    }
-    _audioFrameRead += cpSize;
-    
-    if (data_size - _audioFrameRead <= 0) {
-        _audioFrameRead = 0;
-        [_audioFrameQueue pop];
-    }
-    
-    return cpSize;
-}
-
-- (void)updateAudioClock:(FFFrameItem *)ap
-{
-    if (!ap) {
-        return;
-    }
-    AVFrame *frame = ap.frame;
-    int data_size = audio_buffer_size(frame);
-    float percent = 1.0 * _audioFrameRead / data_size;
-    double audio_clock = ap.pts + percent * ap.frame->nb_samples / ap.frame->sample_rate;
-    //double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
-    //double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
-    [_audioClk setClock:audio_clock];
-}
-
 - (UInt32)fillBuffers:(uint8_t *[2])buffer
              byteSize:(UInt32)bufferSize
 {
-    int totalFilled = 0;
-    while (bufferSize > 0) {
-        int filled = [self doFillAudioBuffers:buffer byteSize:bufferSize];
-        if (filled) {
-            totalFilled += filled;
-            bufferSize -= filled;
-        } else {
-            break;
-        }
-    }
-    
-    FFFrameItem *item = [_audioFrameQueue peek];
-    [self updateAudioClock:item];
+    int totalFilled = [_audioFrameQueue fillBuffers:buffer byteSize:bufferSize];
+    double audioClock = [_audioFrameQueue clock];
+    [_audioClk setClock:audioClock];
     
 #if DEBUG_RECORD_PCM_TO_FILE
     for(int i = 0; i < 2; i++) {
@@ -830,16 +768,7 @@ static int decode_interrupt_cb(void *ctx)
     const char *fmt_str = av_sample_fmt_to_string(frame->format);
     self.audioSamplelInfo = [NSString stringWithFormat:@"(%s)%d",fmt_str,frame->sample_rate];
  
-    FFFrameItem *item = [[FFFrameItem alloc] initWithAVFrame:frame];
-
-    if (frame->pts != AV_NOPTS_VALUE) {
-        AVRational tb = (AVRational){1, frame->sample_rate};
-        item.pts = frame->pts * av_q2d(tb);
-    }
-    
-    item.duration = av_q2d((AVRational){frame->nb_samples, frame->sample_rate});
-    
-    [_audioFrameQueue push:item];
+    [_audioFrameQueue enQueue:frame];
 }
 
 - (void)performErrorResultOnMainThread

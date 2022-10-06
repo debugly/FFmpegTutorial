@@ -17,7 +17,7 @@
 #import "MR0x33VideoFrameQueue.h"
 #import "MRVideoRenderer.h"
 #import "MR0x33AudioRenderer.h"
-#import "MR0x33AudioFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 #import "MRAbstractLogger.h"
 
 //视频宽；单位像素
@@ -43,7 +43,7 @@ kFFPlayer0x33InfoKey kFFPlayer0x33Height = @"kFFPlayer0x33Height";
     FFPacketQueue *_packetQueue;
     
     MR0x33VideoFrameQueue *_videoFrameQueue;
-    MR0x33AudioFrameQueue *_audioFrameQueue;
+    FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
     MR0x33AudioRenderer *_audioRender;
     
@@ -348,7 +348,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     _videoFrameQueue = [[MR0x33VideoFrameQueue alloc] init];
-    _audioFrameQueue = [[MR0x33AudioFrameQueue alloc] init];
+    _audioFrameQueue = [[FFAudioFrameQueue alloc] init];
     
     mr_sync_main_queue(^{
         //audio queue 不能跨线程，不可以在子线程创建，主线程play。audio unit 可以
@@ -710,7 +710,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (int)audioFrameQueueSize
 {
-    return (int)[_audioFrameQueue size];
+    return (int)[_audioFrameQueue count];
 }
 
 - (NSString *)audioRenderName

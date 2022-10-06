@@ -59,6 +59,11 @@
     self.canceled = YES;
 }
 
+- (BOOL)isCanceled
+{
+    return self.canceled;
+}
+
 - (void)push:(FFFrameItem *)item
 {
     if (self.canceled) {

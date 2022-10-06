@@ -32,6 +32,7 @@ typedef struct AVFrame AVFrame;
 - (FFFrameItem *)peek;
 - (FFFrameItem *)peekNext;
 - (void)cancel;
+- (BOOL)isCanceled;
 
 @end
 

@@ -16,7 +16,7 @@
 #import "MRRWeakProxy.h"
 #import "MR0x20VideoRenderer.h"
 #import "MR0x24AudioRenderer.h"
-#import "MR0x24AudioFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 
@@ -46,7 +46,7 @@
 
 //音频渲染
 @property (nonatomic,strong) MR0x24AudioRenderer * audioRender;
-@property (atomic,strong) MR0x24AudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -126,7 +126,7 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSamplelInfo] forKey:@"a-sample"];
     
-    [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.audioFrameQueue size]] forKey:@"a-frame-q"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.audioFrameQueue count]] forKey:@"a-frame-q"];
     
     [self.hud setHudValue:self.audioRender.name forKey:@"a-renderer"];
 }
@@ -164,7 +164,7 @@
         int height = [info[kFFPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
-        self.audioFrameQueue = [[MR0x24AudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

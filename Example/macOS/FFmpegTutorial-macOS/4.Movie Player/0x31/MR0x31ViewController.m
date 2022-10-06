@@ -18,7 +18,7 @@
 #import "MRUtil.h"
 #import "MR0x31VideoRenderer.h"
 #import "MR0x31AudioRenderer.h"
-#import "MR0x31AudioFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 #import "MR0x31VideoFrameQueue.h"
 
 //将音频裸流PCM写入到文件
@@ -47,7 +47,7 @@
 
 //音频渲染
 @property (nonatomic,strong) MR0x31AudioRenderer * audioRender;
-@property (atomic,strong) MR0x31AudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
 @property (atomic,strong) MR0x31VideoFrameQueue *videoFrameQueue;
 @end
 
@@ -129,7 +129,7 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSamplelInfo] forKey:@"a-sample"];
     
-    [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.audioFrameQueue size]] forKey:@"a-frame-q"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.audioFrameQueue count]] forKey:@"a-frame-q"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.videoFrameQueue size]] forKey:@"v-frame-q"];
     
@@ -192,7 +192,7 @@
         int height = [info[kFFPlayer0x31Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
-        self.audioFrameQueue = [[MR0x31AudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
         self.videoFrameQueue = [[MR0x31VideoFrameQueue alloc] init];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放

@@ -17,7 +17,7 @@
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 #import "MR0x32AudioRenderer.h"
-#import "MR0x32AudioFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
@@ -44,7 +44,7 @@
 
 //音频渲染
 @property (nonatomic,strong) MR0x32AudioRenderer * audioRender;
-@property (atomic,strong) MR0x32AudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -125,7 +125,7 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSamplelInfo] forKey:@"a-sample"];
     
-    [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.audioFrameQueue size]] forKey:@"a-frame-q"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.audioFrameQueue count]] forKey:@"a-frame-q"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%d",self.player.videoFrameQueueSize] forKey:@"v-frame-q"];
     
@@ -171,7 +171,7 @@
         self.player.videoRender.frame = [self.videoRendererContainer bounds];
         self.player.videoRender.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         
-        self.audioFrameQueue = [[MR0x32AudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
         
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放

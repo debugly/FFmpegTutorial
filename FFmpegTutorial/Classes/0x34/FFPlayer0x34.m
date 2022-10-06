@@ -18,7 +18,7 @@
 #import "MR0x34VideoFrameQueue.h"
 #import "MRVideoRenderer.h"
 #import "MR0x34AudioRenderer.h"
-#import "MR0x34AudioFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 #import "MRAbstractLogger.h"
 
 //视频宽；单位像素
@@ -46,7 +46,7 @@ kFFPlayer0x34InfoKey kFFPlayer0x34Duration = @"kFFPlayer0x34Duration";
     FFPacketQueue *_packetQueue;
     
     MR0x34VideoFrameQueue *_videoFrameQueue;
-    MR0x34AudioFrameQueue *_audioFrameQueue;
+    FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
     MR0x34AudioRenderer *_audioRender;
     
@@ -355,7 +355,7 @@ static int decode_interrupt_cb(void *ctx)
     _videoFrameQueue = [[MR0x34VideoFrameQueue alloc] init];
     _videoFrameQueue.time_base = st->time_base;
     
-    _audioFrameQueue = [[MR0x34AudioFrameQueue alloc] init];
+    _audioFrameQueue = [[FFAudioFrameQueue alloc] init];
     _duration = 1.0 * formatCtx->duration / AV_TIME_BASE;
     [dumpDic setObject:@(_duration) forKey:kFFPlayer0x34Duration];
     
@@ -706,7 +706,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (float)audioPosition
 {
-    return 1.0 * [_audioFrameQueue position];
+    return 1.0 * [_audioFrameQueue clock];
 }
 
 - (float)videoPosition
@@ -736,7 +736,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (int)audioFrameQueueSize
 {
-    return (int)[_audioFrameQueue size];
+    return (int)[_audioFrameQueue count];
 }
 
 - (NSString *)audioRenderName

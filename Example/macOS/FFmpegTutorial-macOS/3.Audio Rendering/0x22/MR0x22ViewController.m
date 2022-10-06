@@ -19,7 +19,7 @@
 #import "MRUtil.h"
 #import <AudioUnit/AudioUnit.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "MR0x22AudioFrameQueue.h"
+#import "FFAudioFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
@@ -47,7 +47,7 @@
 
 //音频渲染
 @property (nonatomic,assign) AudioUnit audioUnit;
-@property (atomic,strong) MR0x22AudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -127,7 +127,7 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSamplelInfo] forKey:@"a-sample"];
     
-    [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.audioFrameQueue size]] forKey:@"a-frame-q"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.audioFrameQueue count]] forKey:@"a-frame-q"];
 }
 
 - (void)parseURL:(NSString *)url
@@ -164,7 +164,7 @@
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         [self.indicatorView stopAnimation:nil];
         [self prepareTickTimerIfNeed];
-        self.audioFrameQueue = [[MR0x22AudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
         [self playAudio];
     };
