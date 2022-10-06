@@ -644,7 +644,10 @@ static int decode_interrupt_cb(void *ctx)
             *remaining_time = 0.04;
         }
         double diff = [_audioClk getClock] - [_videoClk getClock];
-        av_log(NULL, AV_LOG_INFO, "A-V=%f\n",diff);
+        if (diff > 0.05) {
+            av_log(NULL, AV_LOG_INFO, "A-V=%f\n",diff);
+        }
+        
         FFFrameItem *vp = [_videoFrameQueue peek];
         [self doDisplayVideoFrame:vp];
         [_videoClk setClock:vp.pts];
@@ -656,9 +659,11 @@ static int decode_interrupt_cb(void *ctx)
         }
     } else if (_videoFrameQueue.eof){
         //no picture do display ?
-        _videoClk.eof = YES;
-        av_log(NULL, AV_LOG_INFO, "video frame is eof\n");
-        [self checkReachEnd];
+        if (!_videoClk.eof) {
+            _videoClk.eof = YES;
+            av_log(NULL, AV_LOG_INFO, "video frame is eof\n");
+            [self checkReachEnd];
+        }
         *remaining_time = 0.01;
     } else {
         //buffing ?
@@ -817,9 +822,11 @@ static int decode_interrupt_cb(void *ctx)
     
     if (totalFilled < bufferSize) {
         if (_audioFrameQueue.eof && [_audioFrameQueue count] == 0) {
-            _audioClk.eof = YES;
-            av_log(NULL, AV_LOG_INFO, "audio frame is eof\n");
-            [self checkReachEnd];
+            if (!_audioClk.eof) {
+                _audioClk.eof = YES;
+                av_log(NULL, AV_LOG_INFO, "audio frame is eof\n");
+                [self checkReachEnd];
+            }
         }
     }
 #if DEBUG_RECORD_PCM_TO_FILE
@@ -880,7 +887,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)checkReachEnd
 {
     mr_sync_main_queue(^{
-        if (_audioClk.eof && _videoClk.eof) {
+        if (self->_audioClk.eof && self->_videoClk.eof) {
             av_log(NULL, AV_LOG_INFO, "stream is eof\n");
             self.error = nil;
             if (self.onEnd) {

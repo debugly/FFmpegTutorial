@@ -23,6 +23,7 @@
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet NSView *videoRendererContainer;
+@property (weak) IBOutlet NSButton *playBtn;
 
 @property (strong) MRHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -166,6 +167,7 @@
         } else {
             [self alert:@"播放结束"];
         }
+        self.playBtn.state = NSControlStateValueOff;
         [self.player asyncStop];
         self.player = nil;
         [self.timer invalidate];
@@ -183,14 +185,14 @@
     if (self.inputField.stringValue.length > 0) {
         if (self.player) {
             if ([self.player isPlaying]) {
-                [sender setTitle:@"播放"];
+                sender.state = NSControlStateValueOff;
                 [self.player pause];
             } else {
-                [sender setTitle:@"暂停"];
+                sender.state = NSControlStateValueOn;
                 [self.player play];
             }
         } else {
-            [sender setTitle:@"暂停"];
+            sender.state = NSControlStateValueOn;
             [self parseURL:self.inputField.stringValue];
         }
     } else {

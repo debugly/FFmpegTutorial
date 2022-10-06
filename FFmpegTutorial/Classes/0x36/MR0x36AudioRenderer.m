@@ -101,7 +101,6 @@
 
 - (float)outputVolume
 {
-#warning TODO
     return 1.0;
 }
 

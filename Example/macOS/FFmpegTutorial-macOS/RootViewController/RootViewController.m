@@ -233,7 +233,7 @@
         },
         @{
             @"title":@"0x16-7",
-            @"detail":@"0x16-7:使用矩形纹理渲染 NV12 视频桢+截屏",
+            @"detail":@"使用矩形纹理渲染 NV12 视频桢+截屏",
             @"class":@"MR0x167ViewController",
         },
         @{
@@ -311,32 +311,37 @@
         },
         @{
             @"title":@"0x37",
-            @"detail":@"支持Seek",
+            @"detail":@"(TODO)使用 FFmpeg 内置的硬件加速解码器",
             @"class":@"MR0x37ViewController",
         },
         @{
             @"title":@"0x38",
-            @"detail":@"支持指定播放开始位置",
+            @"detail":@"(TODO)使用将硬件解码数据快速上传至矩形纹理，避免拷贝解码数据",
             @"class":@"MR0x38ViewController",
         },
         @{
             @"title":@"0x39",
-            @"detail":@"使用硬件加速解码",
+            @"detail":@"(TODO)两种方式将软解解码数据格式封装成 CVPixelBuffer",
             @"class":@"MR0x39ViewController",
         },
         @{
             @"title":@"0x3a",
-            @"detail":@"统一软硬解解码数据结构",
-            @"class":@"MR0x3aViewController",
+            @"detail":@"(TODO)统一软硬解渲染逻辑",
+            @"class":@"MR0x3cViewController",
         },
         @{
             @"title":@"0x3b",
-            @"detail":@"统一软硬解渲染逻辑",
-            @"class":@"MR0x3bViewController",
+            @"detail":@"(TODO)支持 Seek",
+            @"class":@"MR0x37ViewController",
+        },
+        @{
+            @"title":@"0x3b",
+            @"detail":@"(TODO)支持从指定位置处播放",
+            @"class":@"MR0x38ViewController",
         },
         @{
             @"title":@"0x40",
-            @"detail":@"iOS和Mac公用一套渲染逻辑",
+            @"detail":@"(TODO)iOS和Mac公用一套渲染逻辑",
             @"class":@"MR0x40ViewController",
         },
         @{
@@ -356,6 +361,15 @@
             @"title":@"VTP",
             @"detail":@"高效视频抽帧器",
             @"url":@"https://github.com/debugly/MRVideoToPicture",
+        },
+        @{
+            @"title":@"七、跨平台播放器",
+            @"isSection":@(YES)
+        },
+        @{
+            @"title":@"IJKPlayer",
+            @"detail":@"移植到了 macOS 平台",
+            @"url":@"https://github.com/debugly/ijkplayer",
         }
     ];
     
