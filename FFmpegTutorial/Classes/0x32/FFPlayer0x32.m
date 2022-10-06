@@ -9,7 +9,7 @@
 #import "MRThread.h"
 #include <libavutil/pixdesc.h>
 #include <libavformat/avformat.h>
-#import "FFDecoder0x32.h"
+#import "FFDecoder.h"
 #import "FFVideoScale.h"
 #import "FFAudioResample.h"
 #import "MRDispatch.h"
@@ -23,12 +23,12 @@ kFFPlayer0x32InfoKey kFFPlayer0x32Width = @"kFFPlayer0x32Width";
 //视频高；单位像素
 kFFPlayer0x32InfoKey kFFPlayer0x32Height = @"kFFPlayer0x32Height";
 
-@interface  FFPlayer0x32 ()<FFDecoderDelegate0x32>
+@interface  FFPlayer0x32 ()<FFDecoderDelegate>
 {
     //音频流解码器
-    FFDecoder0x32 *_audioDecoder;
+    FFDecoder *_audioDecoder;
     //视频流解码器
-    FFDecoder0x32 *_videoDecoder;
+    FFDecoder *_videoDecoder;
     
     //图像格式转换/缩放器
     FFVideoScale *_videoScale;
@@ -459,9 +459,9 @@ static int decode_interrupt_cb(void *ctx)
 #pragma mark - 解码
 
 
-- (FFDecoder0x32 *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
+- (FFDecoder *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
-    FFDecoder0x32 *decoder = [FFDecoder0x32 new];
+    FFDecoder *decoder = [FFDecoder new];
     decoder.ic = ic;
     decoder.streamIdx = idx;
     if ([decoder open] == 0) {
@@ -504,9 +504,9 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-#pragma mark - FFDecoderDelegate0x32
+#pragma mark - FFDecoderDelegate
 
-- (void)decoder:(FFDecoder0x32 *)decoder reveivedAFrame:(AVFrame *)aFrame
+- (void)decoder:(FFDecoder *)decoder reveivedAFrame:(AVFrame *)aFrame
 {
     if (decoder == _audioDecoder) {
         AVFrame *audioFrame = nil;

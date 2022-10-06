@@ -578,11 +578,6 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoderEof:(nonnull FFDecoder *)decoder
-{
-    
-}
-
 #pragma - mark Video
 
 - (void)doDisplayVideoFrame:(FFFrameItem *)vp
