@@ -136,7 +136,7 @@ static struct vt_format vt_formats[] = {
     },
 };
 
-static struct vt_format *vt_get_gl_format(uint32_t cvpixfmt)
+static inline struct vt_format *vt_get_gl_format(uint32_t cvpixfmt)
 {
     for (int i = 0; i < MP_ARRAY_SIZE(vt_formats); i++) {
         if (vt_formats[i].cvpixfmt == cvpixfmt)
@@ -145,7 +145,7 @@ static struct vt_format *vt_get_gl_format(uint32_t cvpixfmt)
     return NULL;
 }
 
-static void printSupportedPixelFormats(bool showPrivate)
+static inline void printSupportedPixelFormats(bool showPrivate)
 {
     // As of the 10.13 SDK
     NSDictionary * knownFormats = @{

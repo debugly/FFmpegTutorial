@@ -118,7 +118,7 @@ static int decode_interrupt_cb(void *ctx)
         return -1;
     }
     
-    av_codec_set_pkt_timebase(avctx, stream->time_base);
+    avctx->pkt_timebase = stream->time_base;
     
     //查找解码器
     AVCodec *codec = avcodec_find_decoder(avctx->codec_id);

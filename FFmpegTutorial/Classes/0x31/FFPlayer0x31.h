@@ -11,13 +11,13 @@
 //videoOpened info's key
 typedef NSString * const kFFPlayer0x31InfoKey;
 
+NS_ASSUME_NONNULL_BEGIN
+typedef struct AVFrame AVFrame;
+
 //视频宽；单位像素
 FOUNDATION_EXPORT kFFPlayer0x31InfoKey kFFPlayer0x31Width;
 //视频高；单位像素
 FOUNDATION_EXPORT kFFPlayer0x31InfoKey kFFPlayer0x31Height;
-
-NS_ASSUME_NONNULL_BEGIN
-typedef struct AVFrame AVFrame;
 
 @interface FFPlayer0x31 : NSObject
 

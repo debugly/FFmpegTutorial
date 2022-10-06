@@ -54,7 +54,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) void(^onReadPkt)(int a,int v);
 @property (nonatomic, copy) void(^onError)(NSError *);
 //lazy getter
-@property (nonatomic, strong, nullable) UIView<MR0x33VideoRendererProtocol> *videoRender;
+@property (nonatomic, strong) UIView<MR0x33VideoRendererProtocol> *videoRender;
 ///准备
 - (void)prepareToPlay;
 ///读包

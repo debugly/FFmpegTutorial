@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-typedef UInt32(^MRFetchSamples)(uint8_t*buffer[2],UInt32 bufferSize);
+typedef UInt32(^MRFetchSamples)(uint8_t* _Nonnull buffer[_Nullable 2],UInt32 bufferSize);
 
 @protocol MR0x36AudioRendererImpProtocol <NSObject>
 

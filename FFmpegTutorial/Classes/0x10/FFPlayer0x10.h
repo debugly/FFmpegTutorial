@@ -8,6 +8,9 @@
 #import <Foundation/Foundation.h>
 #import "FFPlayerHeader.h"
 
+NS_ASSUME_NONNULL_BEGIN
+
+typedef struct AVFrame AVFrame;
 //videoOpened info's key
 typedef NSString * const kFFPlayer0x10InfoKey;
 
@@ -15,9 +18,6 @@ typedef NSString * const kFFPlayer0x10InfoKey;
 FOUNDATION_EXPORT kFFPlayer0x10InfoKey kFFPlayer0x10Width;
 //视频高；单位像素
 FOUNDATION_EXPORT kFFPlayer0x10InfoKey kFFPlayer0x10Height;
-
-NS_ASSUME_NONNULL_BEGIN
-typedef struct AVFrame AVFrame;
 
 @interface FFPlayer0x10 : NSObject
 

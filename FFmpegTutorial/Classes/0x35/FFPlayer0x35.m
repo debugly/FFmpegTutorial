@@ -580,6 +580,11 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
+- (void)decoderEof:(nonnull FFDecoder *)decoder
+{
+    
+}
+
 #pragma - mark Video
 
 - (void)doDisplayVideoFrame:(FFFrameItem *)vp
@@ -636,7 +641,10 @@ static int decode_interrupt_cb(void *ctx)
             *remaining_time = 0.04;
         }
         double diff = [_audioClk getClock] - [_videoClk getClock];
-        av_log(NULL, AV_LOG_INFO, "A-V=%f\n",diff);
+        if (diff > 0.1) {
+            av_log(NULL, AV_LOG_INFO, "A-V=%f\n",diff);
+        }
+        
         FFFrameItem *vp = [_videoFrameQueue peek];
         [self doDisplayVideoFrame:vp];
         [_videoClk setClock:vp.pts];

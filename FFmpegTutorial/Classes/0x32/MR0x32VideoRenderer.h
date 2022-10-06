@@ -12,7 +12,8 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x32VideoRenderer : UIView
+@interface MR0x32VideoRenderer : UIView <MR0x32VideoRendererProtocol>
+
 - (void)displaySampleBuffer:(CMSampleBufferRef)buffer;
 - (void)cleanScreen;
 

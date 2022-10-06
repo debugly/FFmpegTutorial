@@ -19,7 +19,6 @@ FOUNDATION_EXPORT kFFPlayer0x32InfoKey kFFPlayer0x32Width;
 //视频高；单位像素
 FOUNDATION_EXPORT kFFPlayer0x32InfoKey kFFPlayer0x32Height;
 
-
 typedef struct AVFrame AVFrame;
 
 @interface FFPlayer0x32 : NSObject
@@ -52,7 +51,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) void(^onDecoderAudioFrame)(int serial,AVFrame *frame);
 @property (nonatomic, copy) void(^onError)(NSError *);
 //lazy getter
-@property (nonatomic, strong, nullable) UIView<MR0x32VideoRendererProtocol> *videoRender;
+@property (nonatomic, strong) UIView<MR0x32VideoRendererProtocol> *videoRender;
 ///准备
 - (void)prepareToPlay;
 ///读包
