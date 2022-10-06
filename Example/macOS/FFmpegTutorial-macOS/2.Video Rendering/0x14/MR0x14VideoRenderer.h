@@ -7,13 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MRVideoRendererProtocol.h"
+#import "MR0x141VideoRendererProtocol.h"
 
 typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x14VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x14VideoRenderer : NSOpenGLView<MR0x141VideoRendererProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
 

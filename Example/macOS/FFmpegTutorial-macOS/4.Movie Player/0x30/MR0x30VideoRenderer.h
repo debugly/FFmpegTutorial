@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MRVideoRendererProtocol.h"
+#import "MR0x141VideoRendererProtocol.h"
 
 typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x30VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MR0x30VideoRenderer : NSOpenGLView<MR0x141VideoRendererProtocol>
 //画面原始尺寸；
 @property (assign) CGSize videoSize;
 

@@ -1,5 +1,5 @@
 //
-//  MRVideoRendererProtocol.h
+//  MRViewVideoRendererProtocol.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/26.

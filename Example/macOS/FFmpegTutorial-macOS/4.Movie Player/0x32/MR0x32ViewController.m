@@ -300,11 +300,11 @@
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.player.videoRender setContentMode:MR0x32ContentModeScaleToFill];
+        [self.player.videoRender setContentMode:MRViewContentModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.player.videoRender setContentMode:MR0x32ContentModeScaleAspectFill];
+        [self.player.videoRender setContentMode:MRViewContentModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.player.videoRender setContentMode:MR0x32ContentModeScaleAspectFit];
+        [self.player.videoRender setContentMode:MRViewContentModeScaleAspectFit];
     }
 }
 

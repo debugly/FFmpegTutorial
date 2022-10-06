@@ -31,7 +31,7 @@
 		DD7ABB74287B0D3100622984 /* MR0x22ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7ABB6F287B0D3100622984 /* MR0x22ViewController.m */; };
 		DD7ABB75287B0D3100622984 /* MR0x22ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7ABB70287B0D3100622984 /* MR0x22ViewController.xib */; };
 		DD7ABB78287B0E4100622984 /* MR0x22AudioFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7ABB77287B0E4100622984 /* MR0x22AudioFrameQueue.m */; };
-		DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */; };
+		DD7D80A426BAED3300D968F3 /* MR0x141OpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80A326BAED3300D968F3 /* MR0x141OpenGLCompiler.m */; };
 		DD7D80A726C1687F00D968F3 /* 1_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */; };
 		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
 		DD91F29126AC082C00B96334 /* 2_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */; };
@@ -99,7 +99,7 @@
 		DDF922AB28E947FA00F29C1A /* 2_sampler2D_NV21.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF922A828E947FA00F29C1A /* 2_sampler2D_NV21.fsh */; };
 		DDF922AC28E947FA00F29C1A /* 1_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF922A928E947FA00F29C1A /* 1_sampler2D.fsh */; };
 		DDF922AD28E947FA00F29C1A /* 2_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF922AA28E947FA00F29C1A /* 2_sampler2D.fsh */; };
-		DDF922B028E9481000F29C1A /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF922AE28E9481000F29C1A /* MROpenGLHelper.m */; };
+		DDF922B028E9481000F29C1A /* MR0x141OpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF922AE28E9481000F29C1A /* MR0x141OpenGLHelper.m */; };
 		DDF922D628E94A8700F29C1A /* 3_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF922D528E94A8700F29C1A /* 3_sampler2D.fsh */; };
 		DDF922E128E9675A00F29C1A /* 2_sampler2D_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF922E028E9675A00F29C1A /* 2_sampler2D_v3.fsh */; };
 		DDF9231928E9839600F29C1A /* 2_sampler2D_NV21_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9231828E9839600F29C1A /* 2_sampler2D_NV21_v3.fsh */; };
@@ -235,15 +235,15 @@
 		DD7ABB72287B0D3100622984 /* MR0x22ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x22ViewController.h; sourceTree = "<group>"; };
 		DD7ABB76287B0E4100622984 /* MR0x22AudioFrameQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x22AudioFrameQueue.h; sourceTree = "<group>"; };
 		DD7ABB77287B0E4100622984 /* MR0x22AudioFrameQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x22AudioFrameQueue.m; sourceTree = "<group>"; };
-		DD7D80A226BAED3300D968F3 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
-		DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
+		DD7D80A226BAED3300D968F3 /* MR0x141OpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLCompiler.h; sourceTree = "<group>"; };
+		DD7D80A326BAED3300D968F3 /* MR0x141OpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLCompiler.m; sourceTree = "<group>"; };
 		DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F143268CC78A00B96334 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F28E26AC082C00B96334 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DD91F28F26AC082C00B96334 /* common.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common.vsh; sourceTree = "<group>"; };
 		DD91F29026AC082C00B96334 /* renderer_pixfmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer_pixfmt.h; sourceTree = "<group>"; };
-		DD91F30E26AEEDD900B96334 /* MRVideoRendererProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoRendererProtocol.h; sourceTree = "<group>"; };
+		DD91F30E26AEEDD900B96334 /* MR0x141VideoRendererProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x141VideoRendererProtocol.h; sourceTree = "<group>"; };
 		DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
@@ -258,8 +258,8 @@
 		DDAD7FE727FF3EBE00E947BB /* MR0x03ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x03ViewController.h; sourceTree = "<group>"; };
 		DDAD7FE827FF3EBE00E947BB /* MR0x03ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x03ViewController.xib; sourceTree = "<group>"; };
 		DDAD7FE927FF3EBE00E947BB /* MR0x03ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x03ViewController.m; sourceTree = "<group>"; };
-		DDB144D126282E4100495754 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRRWeakProxy.h; path = "../../iOS/FFmpegTutorial-iOS/MRRWeakProxy.h"; sourceTree = "<group>"; };
-		DDB144D226282E4100495754 /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRRWeakProxy.m; path = "../../iOS/FFmpegTutorial-iOS/MRRWeakProxy.m"; sourceTree = "<group>"; };
+		DDB144D126282E4100495754 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRRWeakProxy.h; sourceTree = "<group>"; };
+		DDB144D226282E4100495754 /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRRWeakProxy.m; sourceTree = "<group>"; };
 		DDB73E922577DB9A0060EB57 /* MRDragView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRDragView.m; sourceTree = "<group>"; };
 		DDB73E932577DB9A0060EB57 /* MRDragView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRDragView.h; sourceTree = "<group>"; };
 		DDB73F652577DDE60060EB57 /* MRUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRUtil.h; sourceTree = "<group>"; };
@@ -352,8 +352,8 @@
 		DDF922A828E947FA00F29C1A /* 2_sampler2D_NV21.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21.fsh; sourceTree = "<group>"; };
 		DDF922A928E947FA00F29C1A /* 1_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D.fsh; sourceTree = "<group>"; };
 		DDF922AA28E947FA00F29C1A /* 2_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D.fsh; sourceTree = "<group>"; };
-		DDF922AE28E9481000F29C1A /* MROpenGLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLHelper.m; sourceTree = "<group>"; };
-		DDF922AF28E9481000F29C1A /* MROpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLHelper.h; sourceTree = "<group>"; };
+		DDF922AE28E9481000F29C1A /* MR0x141OpenGLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLHelper.m; sourceTree = "<group>"; };
+		DDF922AF28E9481000F29C1A /* MR0x141OpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLHelper.h; sourceTree = "<group>"; };
 		DDF922D528E94A8700F29C1A /* 3_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D.fsh; sourceTree = "<group>"; };
 		DDF922E028E9675A00F29C1A /* 2_sampler2D_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_v3.fsh; sourceTree = "<group>"; };
 		DDF9231828E9839600F29C1A /* 2_sampler2D_NV21_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_v3.fsh; sourceTree = "<group>"; };
@@ -537,6 +537,23 @@
 			path = "FFmpegTutorial-macOS/2.Video Rendering/0x16-7";
 			sourceTree = SOURCE_ROOT;
 		};
+		DD4CCBDB28EEC80E0047F238 /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				DDB73E912577DB9A0060EB57 /* DragView */,
+				DDB73F642577DDD10060EB57 /* MRUtil */,
+				DD97E8482572B05400B93F9F /* NSNavigationController */,
+				DDE70E462584AC2900580A80 /* TextFieldCell */,
+				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
+				DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */,
+				DDFDF8AF2564CDCA00F1CAE2 /* Info.plist */,
+				DDFDF8B02564CDCA00F1CAE2 /* main.m */,
+				DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */,
+				DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
 		DD56CAF728670F450046C28A /* 0x04 */ = {
 			isa = PBXGroup;
 			children = (
@@ -593,12 +610,12 @@
 			isa = PBXGroup;
 			children = (
 				DD91F28C26AC082C00B96334 /* Shaders */,
-				DD7D80A226BAED3300D968F3 /* MROpenGLCompiler.h */,
-				DD7D80A326BAED3300D968F3 /* MROpenGLCompiler.m */,
-				DDF922AF28E9481000F29C1A /* MROpenGLHelper.h */,
-				DDF922AE28E9481000F29C1A /* MROpenGLHelper.m */,
+				DD7D80A226BAED3300D968F3 /* MR0x141OpenGLCompiler.h */,
+				DD7D80A326BAED3300D968F3 /* MR0x141OpenGLCompiler.m */,
+				DDF922AF28E9481000F29C1A /* MR0x141OpenGLHelper.h */,
+				DDF922AE28E9481000F29C1A /* MR0x141OpenGLHelper.m */,
 				DD91F29026AC082C00B96334 /* renderer_pixfmt.h */,
-				DD91F30E26AEEDD900B96334 /* MRVideoRendererProtocol.h */,
+				DD91F30E26AEEDD900B96334 /* MR0x141VideoRendererProtocol.h */,
 			);
 			path = OpenGLAssets;
 			sourceTree = "<group>";
@@ -683,6 +700,8 @@
 		DDB73F642577DDD10060EB57 /* MRUtil */ = {
 			isa = PBXGroup;
 			children = (
+				DDB144D126282E4100495754 /* MRRWeakProxy.h */,
+				DDB144D226282E4100495754 /* MRRWeakProxy.m */,
 				C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */,
 				C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */,
 				DDB73F652577DDE60060EB57 /* MRUtil.h */,
@@ -1285,27 +1304,16 @@
 		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
 			isa = PBXGroup;
 			children = (
+				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
+				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
 				DDF9231D28EBFD3A00F29C1A /* 1.The Basis Of AV */,
 				DDF9231F28EC4A5F00F29C1A /* 2.Video Rendering */,
 				DDF923BF28EC4A7A00F29C1A /* 3.Audio Rendering */,
 				DDF923C028EC4A9B00F29C1A /* 4.Movie Player */,
 				DDF923C128EC4AB400F29C1A /* 5.Have Fun */,
 				DD97E83525720E3000B93F9F /* RootViewController */,
-				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
-				DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */,
-				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
-				DDB73E912577DB9A0060EB57 /* DragView */,
-				DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */,
-				DDFDF8AF2564CDCA00F1CAE2 /* Info.plist */,
-				DDFDF8B02564CDCA00F1CAE2 /* main.m */,
-				DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */,
-				DDB144D126282E4100495754 /* MRRWeakProxy.h */,
-				DDB144D226282E4100495754 /* MRRWeakProxy.m */,
-				DDB73F642577DDD10060EB57 /* MRUtil */,
-				DD97E8482572B05400B93F9F /* NSNavigationController */,
 				DD91F28B26AC081200B96334 /* OpenGLAssets */,
-				DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */,
-				DDE70E462584AC2900580A80 /* TextFieldCell */,
+				DD4CCBDB28EEC80E0047F238 /* Support Files */,
 			);
 			path = "FFmpegTutorial-macOS";
 			sourceTree = "<group>";
@@ -1539,7 +1547,7 @@
 				DDF9238C28EC4A5F00F29C1A /* MR0x157ViewController.m in Sources */,
 				DDF923F528EC5A2A00F29C1A /* MR0x164VideoRenderer.m in Sources */,
 				DDF923EC28EC5A2A00F29C1A /* MR0x165VideoRenderer.m in Sources */,
-				DD7D80A426BAED3300D968F3 /* MROpenGLCompiler.m in Sources */,
+				DD7D80A426BAED3300D968F3 /* MR0x141OpenGLCompiler.m in Sources */,
 				DDF9239C28EC4A5F00F29C1A /* MR0x143VideoRenderer.m in Sources */,
 				DDF598E428826AD70079D26E /* MR0x30AudioRenderer.m in Sources */,
 				DDF598E328826AD70079D26E /* MR0x30AudioFrameQueue.m in Sources */,
@@ -1575,7 +1583,7 @@
 				DD7ABB74287B0D3100622984 /* MR0x22ViewController.m in Sources */,
 				DDBFF18628CA300700AFCE44 /* MR0x50ViewController.m in Sources */,
 				DDF5991728883D3C0079D26E /* MR0x32AudioQueueRenderer.m in Sources */,
-				DDF922B028E9481000F29C1A /* MROpenGLHelper.m in Sources */,
+				DDF922B028E9481000F29C1A /* MR0x141OpenGLHelper.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

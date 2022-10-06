@@ -1,12 +1,12 @@
 //
-//  MR0x32VideoRendererProtocol.h
+//  MRVideoRendererProtocol.h
 //  Pods
 //
 //  Created by qianlongxu on 2022/7/20.
 //
 
-#ifndef MR0x32VideoRendererProtocol_h
-#define MR0x32VideoRendererProtocol_h
+#ifndef MRVideoRendererProtocol_h
+#define MRVideoRendererProtocol_h
 
 typedef enum : NSUInteger {
     MR0x32ContentModeScaleToFill,
@@ -14,11 +14,11 @@ typedef enum : NSUInteger {
     MR0x32ContentModeScaleAspectFit
 } MR0x32ContentMode;
 
-@protocol MR0x32VideoRendererProtocol <NSObject>
+@protocol MRVideoRendererProtocol <NSObject>
 
 - (void)setContentMode:(MR0x32ContentMode)contentMode;
 - (MR0x32ContentMode)contentMode;
 
 @end
 
-#endif /* MR0x32VideoRendererProtocol_h */
+#endif /* MRVideoRendererProtocol_h */

@@ -14,9 +14,8 @@
 #import "FFAudioResample.h"
 #import "MRDispatch.h"
 #import "FFPacketQueue.h"
-#import "MRConvertUtil.h"
 #import "MR0x33VideoFrameQueue.h"
-#import "MR0x33VideoRenderer.h"
+#import "MRVideoRenderer.h"
 #import "MR0x33AudioRenderer.h"
 #import "MR0x33AudioFrameQueue.h"
 #import "MRAbstractLogger.h"
@@ -593,15 +592,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    @autoreleasepool {
-        CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-        CMSampleBufferRef sample = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
-        CFRetain(sample);
-        mr_sync_main_queue(^{
-            [[self _videoRender] displaySampleBuffer:sample];
-            CFRelease(sample);
-        });
-    }
+    [[self _videoRender] displayAVFrame:frame];
 }
 
 #pragma - mark Audio
@@ -727,15 +718,15 @@ static int decode_interrupt_cb(void *ctx)
     return [_audioRender name];
 }
 
-- (MR0x33VideoRenderer *)_videoRender
+- (MRVideoRenderer *)_videoRender
 {
-    return (MR0x33VideoRenderer *)_videoRender;
+    return (MRVideoRenderer *)_videoRender;
 }
 
-- (UIView<MR0x33VideoRendererProtocol> *)videoRender
+- (UIView<MRVideoRendererProtocol> *)videoRender
 {
     if (!_videoRender) {
-        MR0x33VideoRenderer *videoRender = [[MR0x33VideoRenderer alloc] init];
+        MRVideoRenderer *videoRender = [[MRVideoRenderer alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;

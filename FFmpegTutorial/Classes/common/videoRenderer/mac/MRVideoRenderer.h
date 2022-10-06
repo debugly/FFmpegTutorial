@@ -1,23 +1,22 @@
 //
-//  MR0x304VideoRenderer.h
+//  MRVideoRenderer.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/21.
+//  Created by qianlongxu on 2022/10/6.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CoreVideo/CVPixelBuffer.h>
 #import "MRVideoRendererProtocol.h"
 
+typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x304VideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
+@interface MRVideoRenderer : NSOpenGLView<MRVideoRendererProtocol>
 //画面原始尺寸；
 @property (assign) CGSize videoSize;
 
-- (void)displayPixelBuffer:(CVPixelBufferRef)pixelBuffer;
-- (void)exchangeUploadTextureMethod;
+- (void)displayAVFrame:(AVFrame *)frame;
 - (NSImage *)snapshot;
 
 @end

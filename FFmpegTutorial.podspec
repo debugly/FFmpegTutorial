@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.5.11'
+  s.version          = '0.5.12'
   s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
   为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
@@ -28,6 +28,7 @@ Pod::Spec.new do |s|
     ss.public_header_files = [
       'FFmpegTutorial/Classes/common/*.h',
       'FFmpegTutorial/Classes/common/hud/*.h',
+      'FFmpegTutorial/Classes/common/videoRenderer/mac/MRVideoRendererProtocol.h'
     ]
     ss.private_header_files = 'FFmpegTutorial/Classes/common/headers/private/*.h'
     ss.osx.exclude_files = 'FFmpegTutorial/Classes/common/hud/ios/*.*'
@@ -82,27 +83,27 @@ Pod::Spec.new do |s|
 
   s.subspec '0x32' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x32/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h', 'FFmpegTutorial/Classes/0x32/MR0x32VideoRendererProtocol.h'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x32/FFPlayer0x32.h', 'FFmpegTutorial/Classes/0x32/MRVideoRendererProtocol.h'
   end
 
   s.subspec '0x33' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x33/**/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x33/FFPlayer0x33.h', 'FFmpegTutorial/Classes/0x33/MR0x33VideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x33/MR0x33AudioRendererProtocol.h'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x33/FFPlayer0x33.h', 'FFmpegTutorial/Classes/0x33/MRVideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x33/MR0x33AudioRendererProtocol.h'
   end
 
   s.subspec '0x34' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x34/**/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x34/FFPlayer0x34.h', 'FFmpegTutorial/Classes/0x34/MR0x34VideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x34/MR0x34AudioRendererProtocol.h'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x34/FFPlayer0x34.h', 'FFmpegTutorial/Classes/0x34/MRVideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x34/MR0x34AudioRendererProtocol.h'
   end
 
   s.subspec '0x35' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x35/**/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x35/FFPlayer0x35.h', 'FFmpegTutorial/Classes/0x35/MR0x35VideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x35/MR0x35AudioRendererProtocol.h'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x35/FFPlayer0x35.h', 'FFmpegTutorial/Classes/0x35/MRVideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x35/MR0x35AudioRendererProtocol.h'
   end
 
   s.subspec '0x36' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x36/**/*.{h,m}'
-    ss.public_header_files = 'FFmpegTutorial/Classes/0x36/FFPlayer0x36.h', 'FFmpegTutorial/Classes/0x36/MR0x36VideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x36/MR0x36AudioRendererProtocol.h'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x36/FFPlayer0x36.h', 'FFmpegTutorial/Classes/0x36/MRVideoRendererProtocol.h', 'FFmpegTutorial/Classes/0x36/MR0x36AudioRendererProtocol.h'
   end
 
   s.subspec '0x50' do |ss|

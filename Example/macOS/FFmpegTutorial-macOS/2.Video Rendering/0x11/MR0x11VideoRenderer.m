@@ -11,7 +11,7 @@
 @implementation MR0x11VideoRenderer
 {
     CGImageRef _img;
-    MRViewContentMode _contentMode;
+    MR0x141ContentMode _contentMode;
 }
 
 - (void)dealloc
@@ -55,7 +55,7 @@
         CGFloat targetWidth = viewWidth;
         CGFloat targetHeight = viewHeight;
         
-        if (_contentMode == MRViewContentModeScaleAspectFit) {
+        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
             //按高度最大等比缩放的宽度还没到边，说明视频的高度方向已经充满了屏幕，让高度使用最大值，宽度等比缩放，左右留黑边即可
             if (aspectWidth < viewWidth) {
                 targetWidth = aspectWidth;
@@ -64,7 +64,7 @@
                 targetWidth = viewWidth;
                 targetHeight = aspectHeight;
             }
-        } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
             //按高度最大等比缩放的宽度超过屏幕了，说明视频已经完全充满了屏幕；就让高度使用最大值，宽度等比缩放
             if (aspectWidth > viewWidth) {
                 targetWidth = aspectWidth;
@@ -81,12 +81,12 @@
     }
 }
 
-- (void)setContentMode:(MRViewContentMode)contentMode
+- (void)setContentMode:(MR0x141ContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MRViewContentMode)contentMode
+- (MR0x141ContentMode)contentMode
 {
     return _contentMode;
 }

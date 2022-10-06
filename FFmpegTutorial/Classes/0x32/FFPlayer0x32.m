@@ -14,9 +14,8 @@
 #import "FFAudioResample.h"
 #import "MRDispatch.h"
 #import "FFPacketQueue.h"
-#import "MRConvertUtil.h"
 #import "MR0x32VideoFrameQueue.h"
-#import "MR0x32VideoRenderer.h"
+#import "MRVideoRenderer.h"
 #import "MRAbstractLogger.h"
 
 //视频宽；单位像素
@@ -573,15 +572,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (void)displayVideoFrame:(AVFrame *)frame
 {
-    @autoreleasepool {
-        CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
-        CMSampleBufferRef sample = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
-        CFRetain(sample);
-        mr_sync_main_queue(^{
-            [[self _videoRender] displaySampleBuffer:sample];
-            CFRelease(sample);
-        });
-    }
+    [[self _videoRender] displayAVFrame:frame];
 }
 
 - (void)performErrorResultOnMainThread
@@ -613,15 +604,15 @@ static int decode_interrupt_cb(void *ctx)
     return (int)[_videoFrameQueue size];
 }
 
-- (MR0x32VideoRenderer *)_videoRender
+- (MRVideoRenderer *)_videoRender
 {
-    return (MR0x32VideoRenderer *)_videoRender;
+    return (MRVideoRenderer *)_videoRender;
 }
 
-- (UIView<MR0x32VideoRendererProtocol> *)videoRender
+- (UIView<MRVideoRendererProtocol> *)videoRender
 {
     if (!_videoRender) {
-        MR0x32VideoRenderer * videoRender = [[MR0x32VideoRenderer alloc] init];
+        MRVideoRenderer * videoRender = [[MRVideoRenderer alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;

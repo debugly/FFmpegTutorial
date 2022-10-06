@@ -12,8 +12,8 @@
 #import <AVFoundation/AVUtilities.h>
 #import <GLKit/GLKit.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MROpenGLHelper.h"
-#import "MROpenGLCompiler.h"
+#import "MR0x141OpenGLHelper.h"
+#import "MR0x141OpenGLCompiler.h"
 
 // Uniform index.
 enum
@@ -36,11 +36,11 @@ enum
     GLint _uniforms[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
-    MRViewContentMode _contentMode;
+    MR0x141ContentMode _contentMode;
     CGRect _layerBounds;
 }
 
-@property MROpenGLCompiler * openglCompiler;;
+@property MR0x141OpenGLCompiler * openglCompiler;;
 
 @end
 
@@ -115,7 +115,7 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"1_sampler2D.fsh"];
+        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"1_sampler2D.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
@@ -162,12 +162,12 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MRViewContentMode)contentMode
+- (void)setContentMode:(MR0x141ContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MRViewContentMode)contentMode
+- (MR0x141ContentMode)contentMode
 {
     return _contentMode;
 }
@@ -197,14 +197,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MRViewContentModeScaleAspectFit || _contentMode == MRViewContentModeScaleAspectFill) {
+    if (_contentMode == MR0x141ContentModeScaleAspectFit || _contentMode == MR0x141ContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MRViewContentModeScaleAspectFit) {
+        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -213,7 +213,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MRViewContentModeScaleAspectFill) {
+        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;

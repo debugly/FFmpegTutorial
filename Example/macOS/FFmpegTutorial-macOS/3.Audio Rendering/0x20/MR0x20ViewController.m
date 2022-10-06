@@ -264,11 +264,11 @@
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleToFill];
+        [self.videoRenderer setContentMode:MR0x141ContentModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFill];
+        [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MRViewContentModeScaleAspectFit];
+        [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFit];
     }
 }
 

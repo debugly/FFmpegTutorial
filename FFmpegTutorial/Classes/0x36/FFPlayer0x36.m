@@ -17,8 +17,7 @@
 #import "FFAudioResample.h"
 #import "MRDispatch.h"
 #import "FFPacketQueue.h"
-#import "MRConvertUtil.h"
-#import "MR0x36VideoRenderer.h"
+#import "MRVideoRenderer.h"
 #import "MR0x36AudioRenderer.h"
 #import "FFFrameQueue.h"
 #import "FFSyncClock0x36.h"
@@ -583,15 +582,7 @@ static int decode_interrupt_cb(void *ctx)
         return;
     }
     
-    @autoreleasepool {
-        CVPixelBufferRef pixelBuffer = [MRConvertUtil pixelBufferFromAVFrame:vp.frame opt:NULL];
-        CMSampleBufferRef sample = [MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:pixelBuffer];
-        CFRetain(sample);
-        mr_sync_main_queue(^{
-            [[self _videoRender] displaySampleBuffer:sample];
-            CFRelease(sample);
-        });
-    }
+    [[self _videoRender] displayAVFrame:vp.frame];
 }
 
 - (double)vp_duration:(FFFrameItem *)p1 current:(FFFrameItem *)p2
@@ -968,15 +959,15 @@ static int decode_interrupt_cb(void *ctx)
     return [_audioRender name];
 }
 
-- (MR0x36VideoRenderer *)_videoRender
+- (MRVideoRenderer *)_videoRender
 {
-    return (MR0x36VideoRenderer *)_videoRender;
+    return (MRVideoRenderer *)_videoRender;
 }
 
 - (UIView *)videoRender
 {
     if (!_videoRender) {
-        id videoRender = [[MR0x36VideoRenderer alloc] init];
+        id videoRender = [[MRVideoRenderer alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;
