@@ -14,7 +14,7 @@
 #import "FFAudioResample.h"
 #import "MRDispatch.h"
 #import "FFPacketQueue.h"
-#import "MR0x33VideoFrameQueue.h"
+#import "FFVideoFrameQueue.h"
 #import "MRVideoRenderer.h"
 #import "MR0x33AudioRenderer.h"
 #import "FFAudioFrameQueue.h"
@@ -42,7 +42,7 @@ kFFPlayer0x33InfoKey kFFPlayer0x33Height = @"kFFPlayer0x33Height";
     
     FFPacketQueue *_packetQueue;
     
-    MR0x33VideoFrameQueue *_videoFrameQueue;
+    FFVideoFrameQueue *_videoFrameQueue;
     FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
     MR0x33AudioRenderer *_audioRender;
@@ -347,7 +347,10 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    _videoFrameQueue = [[MR0x33VideoFrameQueue alloc] init];
+    _videoFrameQueue = [[FFVideoFrameQueue alloc] init];
+    _videoFrameQueue.streamTimeBase = av_q2d(_videoDecoder.stream->time_base);
+    _videoFrameQueue.averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
+    
     _audioFrameQueue = [[FFAudioFrameQueue alloc] init];
     
     mr_sync_main_queue(^{
@@ -567,18 +570,19 @@ static int decode_interrupt_cb(void *ctx)
 {
     while (!_abort_request) {
         NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-        [_videoFrameQueue asyncDeQueue:^(AVFrame * _Nullable frame) {
-            if (frame) {
-                [self displayVideoFrame:frame];
-            } else {
-                NSLog(@"has no video frame to display.");
-            }
-        }];
+        FFFrameItem *item = [_videoFrameQueue peek];
+        if (item) {
+            [self displayVideoFrame:item.frame];
+        } else {
+            NSLog(@"has no video frame to display.");
+        }
+
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-        int remained = 33 - (end - begin) * 1000;
+        int remained = item.duration - (end - begin) * 1000;
         if (remained > 0) {
             mr_msleep(remained);
         }
+        [_videoFrameQueue pop];
     }
 }
 
@@ -705,7 +709,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (int)videoFrameQueueSize
 {
-    return (int)[_videoFrameQueue size];
+    return (int)[_videoFrameQueue count];
 }
 
 - (int)audioFrameQueueSize

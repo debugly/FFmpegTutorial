@@ -19,7 +19,7 @@
 #import "MR0x31VideoRenderer.h"
 #import "MR0x31AudioRenderer.h"
 #import "FFAudioFrameQueue.h"
-#import "MR0x31VideoFrameQueue.h"
+#import "FFVideoFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
@@ -48,7 +48,7 @@
 //音频渲染
 @property (nonatomic,strong) MR0x31AudioRenderer * audioRender;
 @property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
-@property (atomic,strong) MR0x31VideoFrameQueue *videoFrameQueue;
+@property (atomic,strong) FFVideoFrameQueue *videoFrameQueue;
 @end
 
 @implementation MR0x31ViewController
@@ -131,7 +131,7 @@
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.audioFrameQueue count]] forKey:@"a-frame-q"];
     
-    [self.hud setHudValue:[NSString stringWithFormat:@"%lu",[self.videoFrameQueue size]] forKey:@"v-frame-q"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.videoFrameQueue count]] forKey:@"v-frame-q"];
     
     [self.hud setHudValue:self.audioRender.name forKey:@"a-renderer"];
 }
@@ -147,13 +147,13 @@
         tickCount = 0;
     }
     
-    [self.videoFrameQueue asyncDeQueue:^(AVFrame * _Nullable frame) {
-        if (frame) {
-            [self displayVideoFrame:frame];
-        } else {
-            NSLog(@"has no video frame to display.");
-        }
-    }];
+    FFFrameItem *item = [_videoFrameQueue peek];
+    if (item) {
+        [self displayVideoFrame:item.frame];
+        [_videoFrameQueue pop];
+    } else {
+        NSLog(@"has no video frame to display.");
+    }
 }
 
 - (void)parseURL:(NSString *)url
@@ -194,7 +194,7 @@
         
         self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
-        self.videoFrameQueue = [[MR0x31VideoFrameQueue alloc] init];
+        self.videoFrameQueue = [[FFVideoFrameQueue alloc] init];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.indicatorView stopAnimation:nil];

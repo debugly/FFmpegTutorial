@@ -14,7 +14,7 @@
 #import "FFAudioResample.h"
 #import "MRDispatch.h"
 #import "FFPacketQueue.h"
-#import "MR0x32VideoFrameQueue.h"
+#import "FFVideoFrameQueue.h"
 #import "MRVideoRenderer.h"
 #import "MRAbstractLogger.h"
 
@@ -37,7 +37,7 @@ kFFPlayer0x32InfoKey kFFPlayer0x32Height = @"kFFPlayer0x32Height";
     
     FFPacketQueue *_packetQueue;
     
-    MR0x32VideoFrameQueue *_videoFrameQueue;
+    FFVideoFrameQueue *_videoFrameQueue;
     //视频尺寸
     CGSize _videoSize;
     AVFormatContext * _formatCtx;
@@ -328,7 +328,9 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
     
-    _videoFrameQueue = [[MR0x32VideoFrameQueue alloc] init];
+    _videoFrameQueue = [[FFVideoFrameQueue alloc] init];
+    _videoFrameQueue.streamTimeBase = av_q2d(_videoDecoder.stream->time_base);
+    _videoFrameQueue.averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
     
     mr_sync_main_queue(^{
         if (self.onStreamOpened) {
@@ -547,18 +549,19 @@ static int decode_interrupt_cb(void *ctx)
 {
     while (!_abort_request) {
         NSTimeInterval begin = CFAbsoluteTimeGetCurrent();
-        [_videoFrameQueue asyncDeQueue:^(AVFrame * _Nullable frame) {
-            if (frame) {
-                [self displayVideoFrame:frame];
-            } else {
-                NSLog(@"has no video frame to display.");
-            }
-        }];
+        FFFrameItem *item = [_videoFrameQueue peek];
+        if (item) {
+            [self displayVideoFrame:item.frame];
+        } else {
+            NSLog(@"has no video frame to display.");
+        }
+
         NSTimeInterval end = CFAbsoluteTimeGetCurrent();
-        int remained = 33 - (end - begin) * 1000;
+        int remained = item.duration - (end - begin) * 1000;
         if (remained > 0) {
             mr_msleep(remained);
         }
+        [_videoFrameQueue pop];
     }
 }
 
@@ -601,7 +604,7 @@ static int decode_interrupt_cb(void *ctx)
 
 - (int)videoFrameQueueSize
 {
-    return (int)[_videoFrameQueue size];
+    return (int)[_videoFrameQueue count];
 }
 
 - (MRVideoRenderer *)_videoRender

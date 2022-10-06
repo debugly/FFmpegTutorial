@@ -20,6 +20,7 @@
 #import "MRVideoRenderer.h"
 #import "MR0x35AudioRenderer.h"
 #import "FFAudioFrameQueue.h"
+#import "FFVideoFrameQueue.h"
 #import "FFSyncClock0x35.h"
 #import "MRAbstractLogger.h"
 
@@ -47,7 +48,7 @@ kFFPlayer0x35InfoKey kFFPlayer0x35Duration = @"kFFPlayer0x35Duration";
     
     FFPacketQueue *_packetQueue;
     
-    FFFrameQueue *_videoFrameQueue;
+    FFVideoFrameQueue *_videoFrameQueue;
     FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
     MR0x35AudioRenderer *_audioRender;
@@ -359,7 +360,10 @@ static int decode_interrupt_cb(void *ctx)
         }
     }
 
-    _videoFrameQueue = [[FFFrameQueue alloc] init];
+    _videoFrameQueue = [[FFVideoFrameQueue alloc] init];
+    _videoFrameQueue.streamTimeBase = av_q2d(_videoDecoder.stream->time_base);
+    _videoFrameQueue.averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
+    
     _audioFrameQueue = [[FFAudioFrameQueue alloc] init];
     _videoClk = [[FFSyncClock0x35 alloc] init];
     _audioClk = [[FFSyncClock0x35 alloc] init];
@@ -611,7 +615,7 @@ static int decode_interrupt_cb(void *ctx)
         if (!_audioClk.eof) {
             double master_time = [_audioClk getClock];
             
-            for (;;) {
+            for (;![_videoFrameQueue isCanceled];) {
                 //当前帧
                 FFFrameItem *vp = [_videoFrameQueue peek];
                 FFFrameItem *nextvp = [_videoFrameQueue peekNext];
@@ -667,15 +671,7 @@ static int decode_interrupt_cb(void *ctx)
     
     self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
     
-    FFFrameItem *item = [[FFFrameItem alloc] initWithAVFrame:frame];
-    
-    if (frame->pts != AV_NOPTS_VALUE) {
-        item.pts = frame->pts * av_q2d(_videoDecoder.stream->time_base);
-    }
-    
-    item.duration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
-    
-    [_videoFrameQueue push:item];
+    [_videoFrameQueue enQueue:frame];
 }
 
 #pragma - mark Audio
@@ -784,20 +780,12 @@ static int decode_interrupt_cb(void *ctx)
 
 - (float)audioPosition
 {
-    FFFrameItem *item = [_audioFrameQueue peek];
-    if (!item) {
-        item = [_audioFrameQueue peekLast];
-    }
-    return 1.0 * item.pts;
+    return (float)[_audioFrameQueue clock];
 }
 
 - (float)videoPosition
 {
-    FFFrameItem *item = [_videoFrameQueue peek];
-    if (!item) {
-        item = [_videoFrameQueue peekLast];
-    }
-    return 1.0 * item.pts;
+    return (float)[_videoFrameQueue clock];
 }
 
 - (void)load

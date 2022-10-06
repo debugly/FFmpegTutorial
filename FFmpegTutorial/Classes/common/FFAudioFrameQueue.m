@@ -73,7 +73,7 @@
 {
     FFFrameItem *item = [self peek];
     if (!item) {
-        return 0.0;
+        return [self peekLast].pts;
     }
     
     AVFrame *frame = item.frame;
