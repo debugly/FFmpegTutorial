@@ -16,7 +16,7 @@
 #import "FFPacketQueue.h"
 #import "FFPlayerHeader.h"
 #import "MRVideoRenderer.h"
-#import "MR0x34AudioRenderer.h"
+#import "MRAudioRenderer.h"
 #import "FFAudioFrameQueue.h"
 #import "FFVideoFrameQueue.h"
 #import "MRAbstractLogger.h"
@@ -48,7 +48,7 @@ kFFPlayer0x34InfoKey kFFPlayer0x34Duration = @"kFFPlayer0x34Duration";
     FFVideoFrameQueue *_videoFrameQueue;
     FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
-    MR0x34AudioRenderer *_audioRender;
+    MRAudioRenderer *_audioRender;
     
     //视频尺寸
     CGSize _videoSize;
@@ -643,7 +643,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)setupAudioRender
 {
     //这里指定了优先使用AudioQueue，当遇到不支持的格式时，自动使用AudioUnit
-    MR0x34AudioRenderer *audioRender = [[MR0x34AudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
+    MRAudioRenderer *audioRender = [[MRAudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
     __weakSelf__
     [audioRender onFetchSamples:^UInt32(uint8_t * _Nonnull *buffer, UInt32 bufferSize) {
         __strongSelf__

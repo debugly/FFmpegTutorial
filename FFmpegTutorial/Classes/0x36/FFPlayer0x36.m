@@ -18,7 +18,7 @@
 #import "MRDispatch.h"
 #import "FFPacketQueue.h"
 #import "MRVideoRenderer.h"
-#import "MR0x36AudioRenderer.h"
+#import "MRAudioRenderer.h"
 #import "FFAudioFrameQueue.h"
 #import "FFVideoFrameQueue.h"
 #import "FFSyncClock0x36.h"
@@ -51,7 +51,7 @@ kFFPlayer0x36InfoKey kFFPlayer0x36Duration = @"kFFPlayer0x36Duration";
     FFVideoFrameQueue *_videoFrameQueue;
     FFAudioFrameQueue *_audioFrameQueue;
     //音频渲染
-    MR0x36AudioRenderer *_audioRender;
+    MRAudioRenderer *_audioRender;
     
     FFSyncClock0x36 *_audioClk;
     FFSyncClock0x36 *_videoClk;
@@ -738,7 +738,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)setupAudioRender
 {
     //这里指定了优先使用AudioQueue，当遇到不支持的格式时，自动使用AudioUnit
-    MR0x36AudioRenderer *audioRender = [[MR0x36AudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
+    MRAudioRenderer *audioRender = [[MRAudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
     __weakSelf__
     [audioRender onFetchSamples:^UInt32(uint8_t * _Nonnull *buffer, UInt32 bufferSize) {
         __strongSelf__

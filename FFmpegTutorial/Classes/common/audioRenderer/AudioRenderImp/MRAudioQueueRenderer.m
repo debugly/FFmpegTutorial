@@ -1,18 +1,18 @@
 //
-//  MR0x36AudioQueueRenderer.m
+//  MRAudioQueueRenderer.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/26.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/7.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x36AudioQueueRenderer.h"
+#import "MRAudioQueueRenderer.h"
 #import <AVFoundation/AVFoundation.h>
 
 #define QUEUE_BUFFER_SIZE 3
 #define MIN_SIZE_PER_FRAME 4096
 
-@interface MR0x36AudioQueueRenderer ()
+@interface MRAudioQueueRenderer ()
 {
     AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
 }
@@ -25,7 +25,7 @@
 
 @end
 
-@implementation MR0x36AudioQueueRenderer
+@implementation MRAudioQueueRenderer
 
 - (void)dealloc
 {
@@ -101,7 +101,7 @@ static void MRAudioQueueOutputCallback(
                                  AudioQueueRef           inAQ,
                                  AudioQueueBufferRef     inBuffer)
 {
-    MR0x36AudioQueueRenderer *am = (__bridge MR0x36AudioQueueRenderer *)inUserData;
+    MRAudioQueueRenderer *am = (__bridge MRAudioQueueRenderer *)inUserData;
     [am renderFramesToBuffer:inBuffer queue:inAQ];
 }
 

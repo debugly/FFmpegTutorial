@@ -1,15 +1,15 @@
 //
-//  MR0x33AudioUnitRenderer.m
+//  MRAudioUnitRenderer.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/26.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/7.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x33AudioUnitRenderer.h"
+#import "MRAudioUnitRenderer.h"
 #import <AVFoundation/AVFoundation.h>
 
-@interface MR0x33AudioUnitRenderer ()
+@interface MRAudioUnitRenderer ()
 
 @property (nonatomic, copy) MRFetchSamples fetchBlock;
 //音频渲染
@@ -18,7 +18,7 @@
 
 @end
 
-@implementation MR0x33AudioUnitRenderer
+@implementation MRAudioUnitRenderer
 
 - (void)dealloc
 {
@@ -173,7 +173,7 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
         bufferSize = audioBuffer.mDataByteSize;
     }
     
-    MR0x33AudioUnitRenderer *am = (__bridge MR0x33AudioUnitRenderer *)inRefCon;
+    MRAudioUnitRenderer *am = (__bridge MRAudioUnitRenderer *)inRefCon;
     [am fillBuffers:buffer byteSize:bufferSize];
     return noErr;
 }

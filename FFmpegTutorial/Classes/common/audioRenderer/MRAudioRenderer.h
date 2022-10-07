@@ -1,9 +1,9 @@
 //
-//  MR0x33AudioRenderer.h
+//  MRAudioRenderer.h
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2021/9/26.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Created by qianlongxu on 2022/10/7.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 // 音频渲染器，内部根据音频采样深度自动和数据组织格式
 // 自动选择 AudioUnit 或者 AudioQueue;
@@ -15,7 +15,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 typedef UInt32(^MRFetchSamples)(uint8_t* _Nonnull buffer[_Nullable 2],UInt32 bufferSize);
 
-@interface MR0x33AudioRenderer : NSObject
+@interface MRAudioRenderer : NSObject
 
 //采用audio queue？默认NO
 @property (nonatomic, assign, readonly) BOOL preferredAudioQueue;
