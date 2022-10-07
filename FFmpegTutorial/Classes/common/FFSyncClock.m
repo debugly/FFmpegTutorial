@@ -1,13 +1,13 @@
 //
-//  FFSyncClock0x35.m
+//  FFSyncClock.m
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2022/8/1.
 //
 
-#import "FFSyncClock0x35.h"
+#import "FFSyncClock.h"
 
-@implementation FFSyncClock0x35
+@implementation FFSyncClock
 
 - (void)setClock:(double)pts
 {

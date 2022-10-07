@@ -1,5 +1,5 @@
 //
-//  FFSyncClock0x35.h
+//  FFSyncClock.h
 //  FFmpegTutorial
 //
 //  Created by qianlongxu on 2022/8/1.
@@ -9,7 +9,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface FFSyncClock0x35 : NSObject
+@interface FFSyncClock : NSObject
 
 @property (nonatomic, copy) NSString *name;
 @property (nonatomic, assign) double pts;

@@ -21,7 +21,7 @@
 #import "MRAudioRenderer.h"
 #import "FFAudioFrameQueue.h"
 #import "FFVideoFrameQueue.h"
-#import "FFSyncClock0x35.h"
+#import "FFSyncClock.h"
 #import "MRAbstractLogger.h"
 
 //视频宽；单位像素
@@ -53,8 +53,8 @@ kFFPlayer0x35InfoKey kFFPlayer0x35Duration = @"kFFPlayer0x35Duration";
     //音频渲染
     MRAudioRenderer *_audioRender;
     
-    FFSyncClock0x35 *_audioClk;
-    FFSyncClock0x35 *_videoClk;
+    FFSyncClock *_audioClk;
+    FFSyncClock *_videoClk;
     //视频尺寸
     CGSize _videoSize;
     AVFormatContext * _formatCtx;
@@ -365,8 +365,8 @@ static int decode_interrupt_cb(void *ctx)
     _videoFrameQueue.averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
     
     _audioFrameQueue = [[FFAudioFrameQueue alloc] init];
-    _videoClk = [[FFSyncClock0x35 alloc] init];
-    _audioClk = [[FFSyncClock0x35 alloc] init];
+    _videoClk = [[FFSyncClock alloc] init];
+    _audioClk = [[FFSyncClock alloc] init];
     
     _duration = 1.0 * formatCtx->duration / AV_TIME_BASE;
     [dumpDic setObject:@(_duration) forKey:kFFPlayer0x35Duration];
