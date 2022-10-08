@@ -6,19 +6,19 @@
 //
 
 #import "FFTPlayer0x33.h"
-#import "MRThread.h"
+#import "FFTThread.h"
 #include <libavutil/pixdesc.h>
 #include <libavformat/avformat.h>
 #import "FFTDecoder.h"
 #import "FFTVideoScale.h"
 #import "FFTAudioResample.h"
-#import "MRDispatch.h"
+#import "FFTDispatch.h"
 #import "FFTPacketQueue.h"
 #import "FFTVideoFrameQueue.h"
-#import "MRVideoRenderer.h"
-#import "MRAudioRenderer.h"
+#import "FFTVideoRenderer.h"
+#import "FFTAudioRenderer.h"
 #import "FFTAudioFrameQueue.h"
-#import "MRAbstractLogger.h"
+#import "FFTAbstractLogger.h"
 
 //视频宽；单位像素
 kFFTPlayer0x33InfoKey kFFTPlayer0x33Width = @"kFFTPlayer0x33Width";
@@ -45,7 +45,7 @@ kFFTPlayer0x33InfoKey kFFTPlayer0x33Height = @"kFFTPlayer0x33Height";
     FFTVideoFrameQueue *_videoFrameQueue;
     FFTAudioFrameQueue *_audioFrameQueue;
     //音频渲染
-    MRAudioRenderer *_audioRender;
+    FFTAudioRenderer *_audioRender;
     
     //视频尺寸
     CGSize _videoSize;
@@ -59,9 +59,9 @@ kFFTPlayer0x33InfoKey kFFTPlayer0x33Height = @"kFFTPlayer0x33Height";
 }
 
 //读包线程
-@property (nonatomic, strong) MRThread *readThread;
-@property (nonatomic, strong) MRThread *decoderThread;
-@property (nonatomic, strong) MRThread *videoThread;
+@property (nonatomic, strong) FFTThread *readThread;
+@property (nonatomic, strong) FFTThread *decoderThread;
+@property (nonatomic, strong) FFTThread *videoThread;
 
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -132,13 +132,13 @@ static int decode_interrupt_cb(void *ctx)
     
     _packetQueue = [[FFTPacketQueue alloc] init];
     
-    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
+    self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
     
-    self.decoderThread = [[MRThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
+    self.decoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
     self.decoderThread.name = @"mr-decoder";
     
-    self.videoThread = [[MRThread alloc] initWithTarget:self selector:@selector(videoThreadFunc) object:nil];
+    self.videoThread = [[FFTThread alloc] initWithTarget:self selector:@selector(videoThreadFunc) object:nil];
     self.videoThread.name = @"mr-v-display";
 }
 
@@ -636,7 +636,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)setupAudioRender
 {
     //这里指定了优先使用AudioQueue，当遇到不支持的格式时，自动使用AudioUnit
-    MRAudioRenderer *audioRender = [[MRAudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
+    FFTAudioRenderer *audioRender = [[FFTAudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
     __weakSelf__
     [audioRender onFetchSamples:^UInt32(uint8_t * _Nonnull *buffer, UInt32 bufferSize) {
         __strongSelf__
@@ -722,15 +722,15 @@ static int decode_interrupt_cb(void *ctx)
     return [_audioRender name];
 }
 
-- (MRVideoRenderer *)_videoRender
+- (FFTVideoRenderer *)_videoRender
 {
-    return (MRVideoRenderer *)_videoRender;
+    return (FFTVideoRenderer *)_videoRender;
 }
 
-- (UIView<MRVideoRendererProtocol> *)videoRender
+- (UIView<FFTVideoRendererProtocol> *)videoRender
 {
     if (!_videoRender) {
-        MRVideoRenderer *videoRender = [[MRVideoRenderer alloc] init];
+        FFTVideoRenderer *videoRender = [[FFTVideoRenderer alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;

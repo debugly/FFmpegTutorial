@@ -6,16 +6,16 @@
 //
 
 #import "FFTPlayer0x31.h"
-#import "MRThread.h"
+#import "FFTThread.h"
 #include <libavutil/pixdesc.h>
 #include <libavformat/avformat.h>
 #include <libavformat/avformat.h>
 #import "FFTDecoder.h"
 #import "FFTVideoScale.h"
 #import "FFTAudioResample.h"
-#import "MRDispatch.h"
+#import "FFTDispatch.h"
 #import "FFTPacketQueue.h"
-#import "MRAbstractLogger.h"
+#import "FFTAbstractLogger.h"
 
 //视频宽；单位像素
 kFFTPlayer0x31InfoKey kFFTPlayer0x31Width = @"kFFTPlayer0x31Width";
@@ -42,8 +42,8 @@ kFFTPlayer0x31InfoKey kFFTPlayer0x31Height = @"kFFTPlayer0x31Height";
 }
 
 //读包线程
-@property (nonatomic, strong) MRThread *readThread;
-@property (nonatomic, strong) MRThread *decoderThread;
+@property (nonatomic, strong) FFTThread *readThread;
+@property (nonatomic, strong) FFTThread *decoderThread;
 
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -101,10 +101,10 @@ static int decode_interrupt_cb(void *ctx)
     }
     _packetQueue = [[FFTPacketQueue alloc] init];
     
-    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
+    self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
     
-    self.decoderThread = [[MRThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
+    self.decoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
     self.decoderThread.name = @"mr-decoder";
 }
 

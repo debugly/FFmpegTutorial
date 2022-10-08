@@ -8,7 +8,7 @@
 
 #import "MR0x50ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x50.h>
-#import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/FFTDispatch.h>
 #import "MR0x50VideoRenderer.h"
 
 @interface MR0x50ViewController ()<FFTPlayer0x50Delegate>

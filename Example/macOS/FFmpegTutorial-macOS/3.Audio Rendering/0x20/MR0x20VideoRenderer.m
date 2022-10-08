@@ -18,7 +18,7 @@
 #import "renderer_pixfmt.h"
 #import "MR0x141OpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
+#import <FFmpegTutorial/FFTConvertUtil.h>
 
 // Uniform index.
 enum
@@ -431,7 +431,7 @@ enum
             
             CGLFlushDrawable([[self openGLContext] CGLContextObj]);
             
-            NSImage *img = [MRConvertUtil snapshotFBO:_colorTexture size:picSize];
+            NSImage *img = [FFTConvertUtil snapshotFBO:_colorTexture size:picSize];
             
             // Bind the default FBO to render to the screen.
             NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];

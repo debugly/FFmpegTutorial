@@ -6,15 +6,15 @@
 //
 
 #import "FFTPlayer0x02.h"
-#import "MRThread.h"
-#import "MRDispatch.h"
-#import "MRAbstractLogger.h"
+#import "FFTThread.h"
+#import "FFTDispatch.h"
+#import "FFTAbstractLogger.h"
 #include <libavutil/pixdesc.h>
 #include <libavformat/avformat.h>
 
 @interface FFTPlayer0x02 ()
 //读包线程
-@property (nonatomic, strong) MRThread *readThread;
+@property (nonatomic, strong) FFTThread *readThread;
 @property (nonatomic, copy) void (^completionBlock)(NSError * _Nullable, NSString * _Nullable);
 
 @end
@@ -49,7 +49,7 @@
     
     
     __weak __typeof(self)weakSelf = self;
-    self.readThread = [[MRThread alloc] initWithBlock:^{
+    self.readThread = [[FFTThread alloc] initWithBlock:^{
         [weakSelf openStreamFunc];
     }];
     

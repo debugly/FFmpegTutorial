@@ -8,7 +8,7 @@
 
 #import "MR0x20ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x20.h>
-#import <FFmpegTutorial/MRHudControl.h>
+#import <FFmpegTutorial/FFTHudControl.h>
 #import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
@@ -32,7 +32,7 @@
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x20VideoRenderer *videoRenderer;
 
-@property (strong) MRHudControl *hud;
+@property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
 @property (copy) NSString *videoPixelInfo;
 @property (copy) NSString *audioSamplelInfo;
@@ -218,7 +218,7 @@
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
     
-    self.hud = [[MRHudControl alloc] init];
+    self.hud = [[FFTHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
     [self.view addSubview:hudView];
     CGRect rect = self.view.bounds;

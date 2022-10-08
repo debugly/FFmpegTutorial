@@ -6,15 +6,15 @@
 //
 
 #import "FFTPlayer0x50.h"
-#import "MRThread.h"
-#import "MRConvertUtil.h"
-#import "MRDispatch.h"
+#import "FFTThread.h"
+#import "FFTConvertUtil.h"
+#import "FFTDispatch.h"
 #import <CoreVideo/CVPixelBufferPool.h>
 
 @interface FFTPlayer0x50 ()
 
 //渲染线程
-@property (nonatomic, strong) MRThread *rendererThread;
+@property (nonatomic, strong) FFTThread *rendererThread;
 //PixelBuffer池可提升效率
 @property (assign, nonatomic) CVPixelBufferPoolRef pixelBufferPool;
 @property (atomic, assign) int abort_request;
@@ -51,7 +51,7 @@
 
 - (void)prepareRendererThread
 {
-    self.rendererThread = [[MRThread alloc] initWithTarget:self selector:@selector(rendererThreadFunc) object:nil];
+    self.rendererThread = [[FFTThread alloc] initWithTarget:self selector:@selector(rendererThreadFunc) object:nil];
     self.rendererThread.name = @"mr-renderer";
 }
 
@@ -83,23 +83,23 @@
                                 barNum += op;
                             }
                         }
-                        sample = [MRConvertUtil grayColorBarPixelBuffer:self.videoSize.width h:self.videoSize.height barNum:barNum opt:self.pixelBufferPool];
+                        sample = [FFTConvertUtil grayColorBarPixelBuffer:self.videoSize.width h:self.videoSize.height barNum:barNum opt:self.pixelBufferPool];
                     }
                         break;
                     case FFTPlayer0x50VideoSnowType:
                     {
-                        sample = [MRConvertUtil snowPixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
+                        sample = [FFTConvertUtil snowPixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
                     }
                         break;
                     case FFTPlayer0x50Video3ballType:
                     {
-                        sample = [MRConvertUtil ball3PixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
+                        sample = [FFTConvertUtil ball3PixelBuffer:self.videoSize.width h:self.videoSize.height opt:self.pixelBufferPool];
                     }
                         break;
                 }
                 
                 if (sample) {
-                    [self.delegate reveiveFrameToRenderer:[MRConvertUtil cmSampleBufferRefFromCVPixelBufferRef:sample]];
+                    [self.delegate reveiveFrameToRenderer:[FFTConvertUtil cmSampleBufferRefFromCVPixelBufferRef:sample]];
                 }
             }
         }

@@ -9,9 +9,9 @@
 #import "FFTDecoder0x06.h"
 #include <libavutil/pixdesc.h>
 #include <libavformat/avformat.h>
-#import "MRThread.h"
-#import "MRDispatch.h"
-#import "MRAbstractLogger.h"
+#import "FFTThread.h"
+#import "FFTDispatch.h"
+#import "FFTAbstractLogger.h"
 
 @interface  FFTPlayer0x06 ()<FFTDecoderDelegate0x06>
 {
@@ -25,7 +25,7 @@
 }
 
 //读包线程
-@property (nonatomic, strong) MRThread *readThread;
+@property (nonatomic, strong) FFTThread *readThread;
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
 @property (atomic, assign, readwrite) int videoPktCount;
@@ -72,7 +72,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     
-    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
+    self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
 }
 

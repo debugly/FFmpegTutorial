@@ -8,9 +8,9 @@
 
 #import "MR0x157ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
-#import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/FFTHudControl.h>
+#import <FFmpegTutorial/FFTConvertUtil.h>
+#import <FFmpegTutorial/FFTDispatch.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "NSFileManager+Sandbox.h"
 #import "MR0x157VideoRenderer.h"
@@ -24,7 +24,7 @@
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x157VideoRenderer *videoRenderer;
 
-@property (strong) MRHudControl *hud;
+@property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
 @property (copy) NSString *videoPixelInfo;
 
@@ -106,7 +106,7 @@
         self.hud = nil;
     }
     
-    self.hud = [[MRHudControl alloc] init];
+    self.hud = [[FFTHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
     [self.videoRenderer addSubview:hudView];
     CGRect rect = self.videoRenderer.bounds;

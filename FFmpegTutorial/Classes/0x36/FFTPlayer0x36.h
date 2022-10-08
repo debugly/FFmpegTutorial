@@ -7,8 +7,8 @@
 
 #import <Foundation/Foundation.h>
 #import "FFTPlayerHeader.h"
-#import "MRPlatform.h"
-#import "MRVideoRendererProtocol.h"
+#import "FFTPlatform.h"
+#import "FFTVideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -62,7 +62,7 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) void(^onReadPkt)(int a,int v);
 @property (nonatomic, copy) void(^onEnd)(NSError *);
 //lazy getter
-@property (nonatomic, strong, nullable) UIView<MRVideoRendererProtocol> *videoRender;
+@property (nonatomic, strong, nullable) UIView<FFTVideoRendererProtocol> *videoRender;
 
 //读包
 - (void)load;

@@ -7,7 +7,7 @@
 //
 
 #import "MR0x02ViewController.h"
-#import <FFmpegTutorial/MRThread.h>
+#import <FFmpegTutorial/FFTThread.h>
 #import "MRDragView.h"
 #import "MRUtil.h"
 
@@ -36,7 +36,7 @@
     if ([arr count] == 0) {
         return;
     }
-    MRThread *t = [arr lastObject];;
+    FFTThread *t = [arr lastObject];;
     [t cancel];
     [t join];
     [arr removeLastObject];
@@ -66,7 +66,7 @@
     static int count = 0;
     for (int i = 0; i < 100; i++) {
         int n = count++;
-        MRThread *t = [[MRThread alloc] initWithBlock:^{
+        FFTThread *t = [[FFTThread alloc] initWithBlock:^{
             while (![[NSThread currentThread] isCancelled]) {
                 int s = 1 + arc4random() % 10;
                 usleep(1000 * s);

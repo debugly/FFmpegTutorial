@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.5.16'
+  s.version          = '0.5.17'
   s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
   为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
@@ -28,7 +28,7 @@ Pod::Spec.new do |s|
     ss.public_header_files = [
       'FFmpegTutorial/Classes/common/*.h',
       'FFmpegTutorial/Classes/common/hud/*.h',
-      'FFmpegTutorial/Classes/common/videoRenderer/mac/MRVideoRendererProtocol.h'
+      'FFmpegTutorial/Classes/common/videoRenderer/mac/FFTVideoRendererProtocol.h'
     ]
     ss.private_header_files = 'FFmpegTutorial/Classes/common/headers/private/*.h'
     ss.osx.exclude_files = 'FFmpegTutorial/Classes/common/hud/ios/*.*'
@@ -38,7 +38,7 @@ Pod::Spec.new do |s|
   s.subspec '0x01' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/0x01/*.{h,m}'
     ss.public_header_files = 'FFmpegTutorial/Classes/0x01/*.h'
-    ss.ios.exclude_files = 'FFmpegTutorial/Classes/0x01/OpenGLVersionHelper.{h,m}'
+    ss.ios.exclude_files = 'FFmpegTutorial/Classes/0x01/FFTOpenGLVersionHelper.{h,m}'
   end
   
   s.subspec '0x02' do |ss|

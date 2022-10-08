@@ -8,7 +8,7 @@
 
 #import "MR0x01ViewController.h"
 #import <FFmpegTutorial/FFTVersionHelper.h>
-#import <FFmpegTutorial/OpenGLVersionHelper.h>
+#import <FFmpegTutorial/FFTOpenGLVersionHelper.h>
 
 @interface MR0x01ViewController ()
 
@@ -24,12 +24,12 @@
     
     __block NSString *info = [FFTVersionHelper ffmpegAllInfo];
     
-    [OpenGLVersionHelper prepareOpenGLContext:^{
-        info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:NO]];
+    [FFTOpenGLVersionHelper prepareOpenGLContext:^{
+        info = [info stringByAppendingString:[FFTOpenGLVersionHelper openglAllInfo:NO]];
     } forLegacy:NO];
     
-    [OpenGLVersionHelper prepareOpenGLContext:^{
-        info = [info stringByAppendingString:[OpenGLVersionHelper openglAllInfo:YES]];
+    [FFTOpenGLVersionHelper prepareOpenGLContext:^{
+        info = [info stringByAppendingString:[FFTOpenGLVersionHelper openglAllInfo:YES]];
     } forLegacy:YES];
     
     self.textView.string = info;

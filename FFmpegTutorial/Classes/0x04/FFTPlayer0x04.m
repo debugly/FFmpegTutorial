@@ -6,15 +6,15 @@
 //
 
 #import "FFTPlayer0x04.h"
-#import "MRThread.h"
-#import "MRAbstractLogger.h"
-#import "MRDispatch.h"
+#import "FFTThread.h"
+#import "FFTAbstractLogger.h"
+#import "FFTDispatch.h"
 #include <libavformat/avformat.h>
 
 @interface FFTPlayer0x04 ()
 
 //读包线程
-@property (nonatomic, strong) MRThread *readThread;
+@property (nonatomic, strong) FFTThread *readThread;
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
 @property (atomic, assign, readwrite) int videoPktCount;
@@ -59,7 +59,7 @@ static int decode_interrupt_cb(void *ctx)
     }
     
     
-    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
+    self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
 }
 

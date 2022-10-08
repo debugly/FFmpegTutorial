@@ -8,9 +8,9 @@
 
 #import "MR0x36ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x36.h>
-#import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/FFTHudControl.h>
+#import <FFmpegTutorial/FFTConvertUtil.h>
+#import <FFmpegTutorial/FFTDispatch.h>
 #import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
@@ -25,7 +25,7 @@
 @property (weak) IBOutlet NSView *videoRendererContainer;
 @property (weak) IBOutlet NSButton *playBtn;
 
-@property (strong) MRHudControl *hud;
+@property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
 @property (nonatomic,assign) int sampleRate;
 @property (nonatomic,assign) MRPixelFormat videoFmt;
@@ -60,7 +60,7 @@
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
-    self.hud = [[MRHudControl alloc] init];
+    self.hud = [[FFTHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
     [self.view addSubview:hudView];
     CGRect rect = self.view.bounds;

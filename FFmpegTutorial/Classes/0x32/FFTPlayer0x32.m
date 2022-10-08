@@ -6,17 +6,17 @@
 //
 
 #import "FFTPlayer0x32.h"
-#import "MRThread.h"
+#import "FFTThread.h"
 #include <libavutil/pixdesc.h>
 #include <libavformat/avformat.h>
 #import "FFTDecoder.h"
 #import "FFTVideoScale.h"
 #import "FFTAudioResample.h"
-#import "MRDispatch.h"
+#import "FFTDispatch.h"
 #import "FFTPacketQueue.h"
 #import "FFTVideoFrameQueue.h"
-#import "MRVideoRenderer.h"
-#import "MRAbstractLogger.h"
+#import "FFTVideoRenderer.h"
+#import "FFTAbstractLogger.h"
 
 //视频宽；单位像素
 kFFTPlayer0x32InfoKey kFFTPlayer0x32Width = @"kFFTPlayer0x32Width";
@@ -46,9 +46,9 @@ kFFTPlayer0x32InfoKey kFFTPlayer0x32Height = @"kFFTPlayer0x32Height";
 }
 
 //读包线程
-@property (nonatomic, strong) MRThread *readThread;
-@property (nonatomic, strong) MRThread *decoderThread;
-@property (nonatomic, strong) MRThread *videoThread;
+@property (nonatomic, strong) FFTThread *readThread;
+@property (nonatomic, strong) FFTThread *decoderThread;
+@property (nonatomic, strong) FFTThread *videoThread;
 
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -113,13 +113,13 @@ static int decode_interrupt_cb(void *ctx)
     
     _packetQueue = [[FFTPacketQueue alloc] init];
     
-    self.readThread = [[MRThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
+    self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
     
-    self.decoderThread = [[MRThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
+    self.decoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
     self.decoderThread.name = @"mr-decoder";
     
-    self.videoThread = [[MRThread alloc] initWithTarget:self selector:@selector(videoThreadFunc) object:nil];
+    self.videoThread = [[FFTThread alloc] initWithTarget:self selector:@selector(videoThreadFunc) object:nil];
     self.videoThread.name = @"mr-v-display";
 }
 
@@ -607,15 +607,15 @@ static int decode_interrupt_cb(void *ctx)
     return (int)[_videoFrameQueue count];
 }
 
-- (MRVideoRenderer *)_videoRender
+- (FFTVideoRenderer *)_videoRender
 {
-    return (MRVideoRenderer *)_videoRender;
+    return (FFTVideoRenderer *)_videoRender;
 }
 
-- (UIView<MRVideoRendererProtocol> *)videoRender
+- (UIView<FFTVideoRendererProtocol> *)videoRender
 {
     if (!_videoRender) {
-        MRVideoRenderer * videoRender = [[MRVideoRenderer alloc] init];
+        FFTVideoRenderer * videoRender = [[FFTVideoRenderer alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;

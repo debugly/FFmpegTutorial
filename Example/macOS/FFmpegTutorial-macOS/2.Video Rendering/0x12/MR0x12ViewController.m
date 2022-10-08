@@ -8,9 +8,9 @@
 
 #import "MR0x12ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
-#import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/FFTHudControl.h>
+#import <FFmpegTutorial/FFTConvertUtil.h>
+#import <FFmpegTutorial/FFTDispatch.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x12VideoRenderer.h"
 #import "MRRWeakProxy.h"
@@ -22,7 +22,7 @@
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x12VideoRenderer *videoRenderer;
 
-@property (strong) MRHudControl *hud;
+@property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
 @property (copy) NSString *videoPixelInfo;
 
@@ -88,7 +88,7 @@
     const char *fmt_str = av_pixel_fmt_to_string(frame->format);
     self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
 
-    CGImageRef cgImage = [MRConvertUtil cgImageFromRGBFrame:frame];
+    CGImageRef cgImage = [FFTConvertUtil cgImageFromRGBFrame:frame];
     size_t width = CGImageGetWidth(cgImage);
     size_t height = CGImageGetHeight(cgImage);
     
@@ -109,7 +109,7 @@
         self.hud = nil;
     }
     
-    self.hud = [[MRHudControl alloc] init];
+    self.hud = [[FFTHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
     [self.videoRenderer addSubview:hudView];
     CGRect rect = self.videoRenderer.bounds;
