@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 
 NS_ASSUME_NONNULL_BEGIN
 typedef UInt32(^MRFetchSamples)(uint8_t* _Nonnull buffer[_Nullable 2],UInt32 bufferSize);

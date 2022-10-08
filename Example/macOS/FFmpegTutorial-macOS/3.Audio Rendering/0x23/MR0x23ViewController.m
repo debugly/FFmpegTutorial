@@ -7,9 +7,9 @@
 //
 
 #import "MR0x23ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x20.h>
+#import <FFmpegTutorial/FFTPlayer0x20.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "MR0x20VideoRenderer.h"
@@ -17,7 +17,7 @@
 #import "MRUtil.h"
 #import <AudioUnit/AudioUnit.h>
 #import <AudioToolbox/AudioToolbox.h>
-#import "FFAudioFrameQueue.h"
+#import "FFTAudioFrameQueue.h"
 
 #define QUEUE_BUFFER_SIZE 3
 #define MIN_SIZE_PER_FRAME 4096
@@ -35,7 +35,7 @@
     AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
 }
 
-@property (strong) FFPlayer0x20 *player;
+@property (strong) FFTPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x20VideoRenderer *videoRenderer;
@@ -50,7 +50,7 @@
 
 //音频渲染
 @property (nonatomic,assign) AudioQueueRef audioQueue;
-@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFTAudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -148,7 +148,7 @@
     [self close_all_file];
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
+    FFTPlayer0x20 *player = [[FFTPlayer0x20 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormat  = _videoFmt;
     player.supportedSampleRate   = _sampleRate;
@@ -162,10 +162,10 @@
         NSLog(@"%@",info);
         NSLog(@"----------------------");
         
-        int width  = [info[kFFPlayer0x20Width] intValue];
-        int height = [info[kFFPlayer0x20Height] intValue];
+        int width  = [info[kFFTPlayer0x20Width] intValue];
+        int height = [info[kFFTPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
-        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{

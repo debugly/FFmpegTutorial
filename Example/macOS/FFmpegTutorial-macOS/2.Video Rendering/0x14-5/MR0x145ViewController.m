@@ -7,7 +7,7 @@
 //
 
 #import "MR0x145ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
+#import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x145VideoRenderer.h"
@@ -15,7 +15,7 @@
 
 @interface MR0x145ViewController ()
 
-@property (strong) FFPlayer0x10 *player;
+@property (strong) FFTPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x145VideoRenderer *videoRenderer;
@@ -116,7 +116,7 @@
     
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_UYVY422;
     

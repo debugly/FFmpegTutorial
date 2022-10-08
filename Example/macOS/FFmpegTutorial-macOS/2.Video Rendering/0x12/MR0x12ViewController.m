@@ -7,7 +7,7 @@
 //
 
 #import "MR0x12ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
+#import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
@@ -17,7 +17,7 @@
 
 @interface MR0x12ViewController ()
 
-@property (strong) FFPlayer0x10 *player;
+@property (strong) FFTPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x12VideoRenderer *videoRenderer;
@@ -121,7 +121,7 @@
     
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;
     

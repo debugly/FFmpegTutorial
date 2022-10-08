@@ -7,7 +7,7 @@
 //
 
 #import "MR0x157ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
+#import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
@@ -19,7 +19,7 @@
 
 @interface MR0x157ViewController ()
 
-@property (strong) FFPlayer0x10 *player;
+@property (strong) FFTPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x157VideoRenderer *videoRenderer;
@@ -118,15 +118,15 @@
     
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     
     __weakSelf__
     player.onVideoOpened = ^(NSDictionary * _Nonnull info) {
         __strongSelf__
-        int width  = [info[kFFPlayer0x10Width] intValue];
-        int height = [info[kFFPlayer0x10Height] intValue];
+        int width  = [info[kFFTPlayer0x10Width] intValue];
+        int height = [info[kFFTPlayer0x10Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");

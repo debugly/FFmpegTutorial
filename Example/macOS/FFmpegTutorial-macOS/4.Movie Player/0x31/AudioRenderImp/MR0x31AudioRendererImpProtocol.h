@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

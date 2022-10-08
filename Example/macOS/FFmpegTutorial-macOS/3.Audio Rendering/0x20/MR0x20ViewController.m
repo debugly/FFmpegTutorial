@@ -7,9 +7,9 @@
 //
 
 #import "MR0x20ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x20.h>
+#import <FFmpegTutorial/FFTPlayer0x20.h>
 #import <FFmpegTutorial/MRHudControl.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "MR0x20VideoRenderer.h"
@@ -27,7 +27,7 @@
 #endif
 }
 
-@property (strong) FFPlayer0x20 *player;
+@property (strong) FFTPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x20VideoRenderer *videoRenderer;
@@ -166,7 +166,7 @@
     [self close_all_file];
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x20 *player = [[FFPlayer0x20 alloc] init];
+    FFTPlayer0x20 *player = [[FFTPlayer0x20 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormat  = _videoFmt;
     player.supportedSampleRate   = _sampleRate;
@@ -175,8 +175,8 @@
     __weakSelf__
     player.onStreamOpened = ^(NSDictionary * _Nonnull info) {
         __strongSelf__
-        int width  = [info[kFFPlayer0x20Width] intValue];
-        int height = [info[kFFPlayer0x20Height] intValue];
+        int width  = [info[kFFTPlayer0x20Width] intValue];
+        int height = [info[kFFTPlayer0x20Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");

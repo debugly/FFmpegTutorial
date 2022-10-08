@@ -7,11 +7,11 @@
 //
 
 #import "MR0x34ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x34.h>
+#import <FFmpegTutorial/FFTPlayer0x34.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
@@ -19,7 +19,7 @@
 
 @interface MR0x34ViewController ()
 
-@property (strong) FFPlayer0x34 *player;
+@property (strong) FFTPlayer0x34 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet NSView *videoRendererContainer;
@@ -131,7 +131,7 @@
 
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x34 *player = [[FFPlayer0x34 alloc] init];
+    FFTPlayer0x34 *player = [[FFTPlayer0x34 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormat  = _videoFmt;
     player.supportedSampleRate   = _sampleRate;

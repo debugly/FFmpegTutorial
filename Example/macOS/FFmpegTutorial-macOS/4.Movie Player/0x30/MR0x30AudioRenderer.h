@@ -10,7 +10,7 @@
 // 可以将 preferredAudioQueue 设置为 YES，择优先选择 AudioQueue
 
 #import <Foundation/Foundation.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 
 NS_ASSUME_NONNULL_BEGIN
 

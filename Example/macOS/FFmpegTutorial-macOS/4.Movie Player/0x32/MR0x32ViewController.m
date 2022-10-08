@@ -7,17 +7,17 @@
 //
 
 #import "MR0x32ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x32.h>
+#import <FFmpegTutorial/FFTPlayer0x32.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 #import "MR0x32AudioRenderer.h"
-#import "FFAudioFrameQueue.h"
+#import "FFTAudioFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
@@ -30,7 +30,7 @@
 #endif
 }
 
-@property (strong) FFPlayer0x32 *player;
+@property (strong) FFTPlayer0x32 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet NSView *videoRendererContainer;
@@ -44,7 +44,7 @@
 
 //音频渲染
 @property (nonatomic,strong) MR0x32AudioRenderer * audioRender;
-@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFTAudioFrameQueue *audioFrameQueue;
 
 @end
 
@@ -153,7 +153,7 @@
     [self close_all_file];
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x32 *player = [[FFPlayer0x32 alloc] init];
+    FFTPlayer0x32 *player = [[FFTPlayer0x32 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormat  = _videoFmt;
     player.supportedSampleRate   = _sampleRate;
@@ -171,7 +171,7 @@
         self.player.videoRender.frame = [self.videoRendererContainer bounds];
         self.player.videoRender.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
         
-        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
         
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放

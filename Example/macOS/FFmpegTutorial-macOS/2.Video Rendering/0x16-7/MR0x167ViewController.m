@@ -7,7 +7,7 @@
 //
 
 #import "MR0x167ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
+#import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x167VideoRenderer.h"
@@ -17,7 +17,7 @@
 
 @interface MR0x167ViewController ()
 
-@property (strong) FFPlayer0x10 *player;
+@property (strong) FFTPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x167VideoRenderer *videoRenderer;
@@ -117,15 +117,15 @@
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     
     __weakSelf__
     player.onVideoOpened = ^(NSDictionary * _Nonnull info) {
         __strongSelf__
-        int width  = [info[kFFPlayer0x10Width] intValue];
-        int height = [info[kFFPlayer0x10Height] intValue];
+        int width  = [info[kFFTPlayer0x10Width] intValue];
+        int height = [info[kFFTPlayer0x10Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");

@@ -7,19 +7,19 @@
 //
 
 #import "MR0x31ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x31.h>
+#import <FFmpegTutorial/FFTPlayer0x31.h>
 #import <FFmpegTutorial/MRHudControl.h>
 #import <FFmpegTutorial/MRConvertUtil.h>
 #import <FFmpegTutorial/MRDispatch.h>
-#import <FFmpegTutorial/FFPlayerHeader.h>
+#import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 #import "MR0x31VideoRenderer.h"
 #import "MR0x31AudioRenderer.h"
-#import "FFAudioFrameQueue.h"
-#import "FFVideoFrameQueue.h"
+#import "FFTAudioFrameQueue.h"
+#import "FFTVideoFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
@@ -32,7 +32,7 @@
 #endif
 }
 
-@property (strong) FFPlayer0x31 *player;
+@property (strong) FFTPlayer0x31 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet MR0x31VideoRenderer *videoRenderer;
@@ -47,8 +47,8 @@
 
 //音频渲染
 @property (nonatomic,strong) MR0x31AudioRenderer * audioRender;
-@property (atomic,strong) FFAudioFrameQueue *audioFrameQueue;
-@property (atomic,strong) FFVideoFrameQueue *videoFrameQueue;
+@property (atomic,strong) FFTAudioFrameQueue *audioFrameQueue;
+@property (atomic,strong) FFTVideoFrameQueue *videoFrameQueue;
 @end
 
 @implementation MR0x31ViewController
@@ -174,7 +174,7 @@
     [self close_all_file];
     [self.indicatorView startAnimation:nil];
     
-    FFPlayer0x31 *player = [[FFPlayer0x31 alloc] init];
+    FFTPlayer0x31 *player = [[FFTPlayer0x31 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormat  = _videoFmt;
     player.supportedSampleRate   = _sampleRate;
@@ -188,13 +188,13 @@
         NSLog(@"%@",info);
         NSLog(@"----------------------");
         
-        int width  = [info[kFFPlayer0x31Width] intValue];
-        int height = [info[kFFPlayer0x31Height] intValue];
+        int width  = [info[kFFTPlayer0x31Width] intValue];
+        int height = [info[kFFTPlayer0x31Height] intValue];
         self.videoRenderer.videoSize = CGSizeMake(width, height);
         
-        self.audioFrameQueue = [[FFAudioFrameQueue alloc] init];
+        self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
-        self.videoFrameQueue = [[FFVideoFrameQueue alloc] init];
+        self.videoFrameQueue = [[FFTVideoFrameQueue alloc] init];
 #warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self.indicatorView stopAnimation:nil];

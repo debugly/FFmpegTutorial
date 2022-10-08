@@ -7,11 +7,11 @@
 //
 
 #import "MR0x05ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x05.h>
+#import <FFmpegTutorial/FFTPlayer0x05.h>
 
 @interface MR0x05ViewController ()
 
-@property (strong) FFPlayer0x05 *player;
+@property (strong) FFTPlayer0x05 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property int audioPktCount;
 @property int videoPktCount;
@@ -34,7 +34,7 @@
     self.audioFrameCount = 0;
     self.videoFrameCount = 0;
     
-    FFPlayer0x05 *player = [[FFPlayer0x05 alloc] init];
+    FFTPlayer0x05 *player = [[FFTPlayer0x05 alloc] init];
     player.contentPath = url;
 
     __weakSelf__

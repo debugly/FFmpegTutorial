@@ -7,13 +7,13 @@
 //
 
 #import "MR0x50ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x50.h>
+#import <FFmpegTutorial/FFTPlayer0x50.h>
 #import <FFmpegTutorial/MRDispatch.h>
 #import "MR0x50VideoRenderer.h"
 
-@interface MR0x50ViewController ()<FFPlayer0x50Delegate>
+@interface MR0x50ViewController ()<FFTPlayer0x50Delegate>
 
-@property (strong) FFPlayer0x50 *player;
+@property (strong) FFTPlayer0x50 *player;
 @property (weak) IBOutlet MR0x50VideoRenderer *videoRenderer;
 
 @end
@@ -44,8 +44,8 @@
         self.player = nil;
     }
     
-    FFPlayer0x50 *player = [[FFPlayer0x50 alloc] init];
-    player.videoType = FFPlayer0x50Video3ballType;
+    FFTPlayer0x50 *player = [[FFTPlayer0x50 alloc] init];
+    player.videoType = FFTPlayer0x50Video3ballType;
     __weakSelf__
     [player onError:^{
         __strongSelf__
