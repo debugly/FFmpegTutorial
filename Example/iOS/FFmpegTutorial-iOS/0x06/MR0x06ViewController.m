@@ -7,8 +7,8 @@
 //
 
 #import "MR0x06ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x06.h>
-#import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/FFTPlayer0x06.h>
+#import <FFmpegTutorial/FFTDispatch.h>
 
 @interface MR0x06ViewController ()
 
@@ -19,7 +19,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *audioFrameLb;
 @property (weak, nonatomic) IBOutlet UILabel *videoFrameLb;
 
-@property (strong) FFPlayer0x06 *player;
+@property (strong) FFTPlayer0x06 *player;
 
 @end
 
@@ -42,7 +42,7 @@
         [self.player asyncStop];
     }
     
-    FFPlayer0x06 *player = [[FFPlayer0x06 alloc] init];
+    FFTPlayer0x06 *player = [[FFTPlayer0x06 alloc] init];
     player.contentPath = url;
     
     __weakSelf__

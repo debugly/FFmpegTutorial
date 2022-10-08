@@ -7,8 +7,8 @@
 //
 
 #import "MR0x10ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
-#import <FFmpegTutorial/MRDispatch.h>
+#import <FFmpegTutorial/FFTPlayer0x10.h>
+#import <FFmpegTutorial/FFTDispatch.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 
 @interface MR0x10ViewController ()
@@ -21,7 +21,7 @@
 @property (weak, nonatomic) IBOutlet UILabel *videoFrameLb;
 @property (weak, nonatomic) IBOutlet UILabel *infoLb;
 
-@property (strong) FFPlayer0x10 *player;
+@property (strong) FFTPlayer0x10 *player;
 
 @end
 
@@ -49,7 +49,7 @@
         [self.player asyncStop];
     }
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_RGBA;// |
     //    MR_PIX_FMT_MASK_NV12 |

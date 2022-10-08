@@ -10,7 +10,7 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <AVFoundation/AVUtilities.h>
-#import "MROpenGLHelper.h"
+#import "MR0x141OpenGLHelper.h"
 
 // Uniform index.
 enum

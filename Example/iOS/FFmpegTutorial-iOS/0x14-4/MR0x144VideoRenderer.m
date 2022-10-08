@@ -10,8 +10,8 @@
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <AVFoundation/AVUtilities.h>
-#import "MROpenGLHelper.h"
-#import "MROpenGLCompiler.h"
+#import "MR0x141OpenGLHelper.h"
+#import "MR0x141OpenGLCompiler.h"
 
 // Uniform index.
 enum
@@ -52,7 +52,7 @@ enum
     GLuint _colorBufferHandle;
 }
 
-@property MROpenGLCompiler * openglCompiler;
+@property MR0x141OpenGLCompiler * openglCompiler;
 
 @end
 
@@ -93,7 +93,7 @@ enum
     [EAGLContext setCurrentContext:_context];
     
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"3_sampler2D.fsh"];
+        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"3_sampler2D.fsh"];
 
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.

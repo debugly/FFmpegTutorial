@@ -1,22 +1,22 @@
 //
-//  MROpenGLCompiler.m
+//  MR0x141OpenGLCompiler.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/8/2.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MROpenGLCompiler.h"
+#import "MR0x141OpenGLCompiler.h"
 #import <OpenGLES/ES2/gl.h>
-#import "MROpenGLHelper.h"
+#import "MR0x141OpenGLHelper.h"
 
-@interface MROpenGLCompiler ()
+@interface MR0x141OpenGLCompiler ()
 
 @property uint32_t program;
 
 @end
 
-@implementation MROpenGLCompiler
+@implementation MR0x141OpenGLCompiler
 
 - (void)dealloc
 {

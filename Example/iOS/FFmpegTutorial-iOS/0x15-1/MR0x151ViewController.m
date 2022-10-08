@@ -7,10 +7,10 @@
 //
 
 #import "MR0x151ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x10.h>
-#import <FFmpegTutorial/MRDispatch.h>
-#import <FFmpegTutorial/MRConvertUtil.h>
-#import <FFmpegTutorial/MRHudControl.h>
+#import <FFmpegTutorial/FFTPlayer0x10.h>
+#import <FFmpegTutorial/FFTDispatch.h>
+#import <FFmpegTutorial/FFTConvertUtil.h>
+#import <FFmpegTutorial/FFTHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x151VideoRenderer.h"
 #import "MRRWeakProxy.h"
@@ -26,8 +26,8 @@
 @property (weak, nonatomic) IBOutlet UILabel *videoFrameLb;
 @property (weak, nonatomic) IBOutlet UILabel *infoLb;
 
-@property (strong) FFPlayer0x10 *player;
-@property (strong) MRHudControl *hud;
+@property (strong) FFTPlayer0x10 *player;
+@property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
 
 @end
@@ -81,7 +81,7 @@
     self.input.text = KTestVideoURL1;
     [self resetUI];
     
-    self.hud = [[MRHudControl alloc] init];
+    self.hud = [[FFTHudControl alloc] init];
     UIView *hudView = [self.hud contentView];
     
     [self.view addSubview:hudView];
@@ -108,7 +108,7 @@
         [self.player asyncStop];
     }
     
-    FFPlayer0x10 *player = [[FFPlayer0x10 alloc] init];
+    FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
     
@@ -136,7 +136,7 @@
         __strongSelf__
             //video
             if (type == 1) {
-                CVPixelBufferRef pixelBuff = [MRConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
+                CVPixelBufferRef pixelBuff = [FFTConvertUtil pixelBufferFromAVFrame:frame opt:NULL];
                 CVPixelBufferRetain(pixelBuff);
                 mr_msleep(40);
                 mr_async_main_queue(^{

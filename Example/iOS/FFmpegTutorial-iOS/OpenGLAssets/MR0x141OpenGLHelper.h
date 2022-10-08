@@ -1,15 +1,15 @@
 //
-//  MROpenGLHelper.h
+//  MR0x141OpenGLHelper.h
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/30.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#ifndef MROpenGLHelper_h
-#define MROpenGLHelper_h
+#ifndef MR0x141OpenGLHelper_h
+#define MR0x141OpenGLHelper_h
 
-#include <stdio.h>
+#import <stdio.h>
 #import <OpenGLES/ES2/gl.h>
 
 void MR_checkGLError(const char* op);
@@ -45,4 +45,4 @@ extern const float kColorConversion709[9];
 // BT.601 full range (ref: http://www.equasys.de/colorconversion.html)
 extern const float kColorConversion601FullRange[9];
 
-#endif /* MROpenGLHelper_h */
+#endif /* MR0x141OpenGLHelper_h */

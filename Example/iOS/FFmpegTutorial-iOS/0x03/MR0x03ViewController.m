@@ -7,7 +7,7 @@
 //
 
 #import "MR0x03ViewController.h"
-#import <FFmpegTutorial/FFPlayer0x02.h>
+#import <FFmpegTutorial/FFTPlayer0x02.h>
 
 @interface MR0x03ViewController ()
 
@@ -15,7 +15,7 @@
 @property (weak, nonatomic) IBOutlet UITextView *textView;
 @property (weak, nonatomic) IBOutlet UIActivityIndicatorView *indicator;
 
-@property (strong) FFPlayer0x02 *player;
+@property (strong) FFTPlayer0x02 *player;
 
 @end
 
@@ -34,7 +34,7 @@
         [self.player asyncStop];
     }
     
-    FFPlayer0x02 *player = [[FFPlayer0x02 alloc] init];
+    FFTPlayer0x02 *player = [[FFTPlayer0x02 alloc] init];
     player.contentPath = url;
     [player prepareToPlay];
     __weakSelf__

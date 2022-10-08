@@ -7,7 +7,7 @@
 //
 
 #import "MR0x01ViewController.h"
-#import <FFmpegTutorial/FFVersionHelper.h>
+#import <FFmpegTutorial/FFTVersionHelper.h>
 
 @interface MR0x01ViewController ()
 
@@ -21,7 +21,7 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
-    self.textView.text = [FFVersionHelper ffmpegAllInfo];
+    self.textView.text = [FFTVersionHelper ffmpegAllInfo];
 }
 
 - (BOOL)shouldAutorotate

@@ -1,5 +1,5 @@
 //
-//  MROpenGLCompiler.h
+//  MR0x141OpenGLCompiler.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/8/2.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MROpenGLCompiler : NSObject
+@interface MR0x141OpenGLCompiler : NSObject
 
 @property (copy) NSString *vshName;
 @property (copy) NSString *fshName;
