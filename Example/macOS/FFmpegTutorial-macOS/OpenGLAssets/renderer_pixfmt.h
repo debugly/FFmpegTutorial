@@ -16,8 +16,8 @@
 
 #import <CoreVideo/CVPixelBuffer.h>
 #import <AVFoundation/AVCaptureVideoDataOutput.h>
-#include <OpenGL/gl.h>
-#include <OpenGL/gl3ext.h>
+#import <OpenGL/gl.h>
+#import <OpenGL/gl3ext.h>
 
 #if TARGET_OS_OSX
     #define OpenGLTextureCacheRef   CVOpenGLTextureCacheRef

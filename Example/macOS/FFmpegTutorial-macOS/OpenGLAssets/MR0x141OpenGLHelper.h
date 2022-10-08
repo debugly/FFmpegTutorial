@@ -9,7 +9,7 @@
 #ifndef MR0x141OpenGLHelper_h
 #define MR0x141OpenGLHelper_h
 
-#include <stdio.h>
+#import <stdio.h>
 #import <OpenGL/gl.h>
 
 void MR_checkGLError(const char* op);

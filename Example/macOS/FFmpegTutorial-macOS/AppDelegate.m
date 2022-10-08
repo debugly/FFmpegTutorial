@@ -8,7 +8,7 @@
 #import "AppDelegate.h"
 #import "NSNavigationController.h"
 #import "RootViewController.h"
-#include "renderer_pixfmt.h"
+#import "renderer_pixfmt.h"
 
 @interface AppDelegate ()
 

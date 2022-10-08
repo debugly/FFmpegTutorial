@@ -9,7 +9,7 @@
 #ifndef FFTOpenGLHelper_h
 #define FFTOpenGLHelper_h
 
-#include <stdio.h>
+#import <stdio.h>
 #import <OpenGL/gl.h>
 
 void MR_checkGLError(const char* op);
