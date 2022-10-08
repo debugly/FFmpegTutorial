@@ -6,9 +6,9 @@
 //
 
 #import "FFTVideoScale.h"
-#include <libswscale/swscale.h>
-#include <libavutil/imgutils.h>
-#include <libavutil/frame.h>
+#import <libswscale/swscale.h>
+#import <libavutil/imgutils.h>
+#import <libavutil/frame.h>
 
 @interface FFTVideoScale()
 

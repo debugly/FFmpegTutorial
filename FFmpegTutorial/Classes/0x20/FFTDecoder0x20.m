@@ -6,7 +6,7 @@
 //
 
 #import "FFTDecoder0x20.h"
-#include <libavcodec/avcodec.h>
+#import <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 
 @interface FFTDecoder0x20()

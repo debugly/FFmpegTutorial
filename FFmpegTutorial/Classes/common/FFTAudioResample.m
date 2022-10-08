@@ -6,8 +6,8 @@
 //
 
 #import "FFTAudioResample.h"
-#include <libswresample/swresample.h>
-#include <libavutil/samplefmt.h>
+#import <libswresample/swresample.h>
+#import <libavutil/samplefmt.h>
 
 @interface FFTAudioResample()
 

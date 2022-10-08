@@ -9,8 +9,8 @@
 #import "FFTThread.h"
 #import "FFTDispatch.h"
 #import "FFTAbstractLogger.h"
-#include <libavutil/pixdesc.h>
-#include <libavformat/avformat.h>
+#import <libavutil/pixdesc.h>
+#import <libavformat/avformat.h>
 
 @interface FFTPlayer0x02 ()
 //读包线程

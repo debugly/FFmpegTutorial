@@ -6,8 +6,8 @@
 //
 
 #import "FFTPlayer0x10.h"
-#include <libavutil/pixdesc.h>
-#include <libavformat/avformat.h>
+#import <libavutil/pixdesc.h>
+#import <libavformat/avformat.h>
 #import "FFTDecoder0x10.h"
 #import "FFTVideoScale.h"
 #import "FFTThread.h"

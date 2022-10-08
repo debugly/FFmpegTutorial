@@ -9,7 +9,7 @@
 // 通过代理衔接输入输出
 
 #import "FFTDecoder.h"
-#include <libavcodec/avcodec.h>
+#import <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>
 
 @interface FFTDecoder()

@@ -9,7 +9,7 @@
 #import "FFTThread.h"
 #import "FFTAbstractLogger.h"
 #import "FFTDispatch.h"
-#include <libavformat/avformat.h>
+#import <libavformat/avformat.h>
 
 @interface FFTPlayer0x04 ()
 

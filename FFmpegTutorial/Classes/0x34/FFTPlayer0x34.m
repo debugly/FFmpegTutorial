@@ -7,8 +7,8 @@
 
 #import "FFTPlayer0x34.h"
 #import "FFTThread.h"
-#include <libavutil/pixdesc.h>
-#include <libavformat/avformat.h>
+#import <libavutil/pixdesc.h>
+#import <libavformat/avformat.h>
 #import "FFTDecoder.h"
 #import "FFTVideoScale.h"
 #import "FFTAudioResample.h"

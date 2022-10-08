@@ -6,13 +6,13 @@
 //
 
 #import "FFTVersionHelper.h"
-#include <libavutil/version.h>
-#include <libavcodec/version.h>
-#include <libavformat/version.h>
-#include <libavdevice/version.h>
-#include <libavfilter/version.h>
-#include <libswscale/version.h>
-#include <libswresample/version.h>
+#import <libavutil/version.h>
+#import <libavcodec/version.h>
+#import <libavformat/version.h>
+#import <libavdevice/version.h>
+#import <libavfilter/version.h>
+#import <libswscale/version.h>
+#import <libswresample/version.h>
 
 #import <libavcodec/avcodec.h>
 #import <libavformat/avformat.h>

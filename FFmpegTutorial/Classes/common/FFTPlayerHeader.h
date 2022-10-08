@@ -10,8 +10,8 @@
 #define FFTPlayerHeader_h
 
 #import <Foundation/Foundation.h>
-#include <stdbool.h>
-#include <unistd.h>
+#import <stdbool.h>
+#import <unistd.h>
 
 #define PRINT_DEALLOC_ON 1
 #if PRINT_DEALLOC_ON
