@@ -14,17 +14,11 @@
 		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
 		6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* MRAppDelegate.m */; };
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
-		6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F5AF195388D20070C39A /* XCTest.framework */; };
-		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
-		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
-		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
-		DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */; };
 		DDBFF18D28CA371A00AFCE44 /* MR0x01ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF18C28CA371A00AFCE44 /* MR0x01ViewController.xib */; };
 		DDBFF19128CB7F2E00AFCE44 /* MR0x02ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFF19028CB7F2E00AFCE44 /* MR0x02ViewController.m */; };
 		DDBFF19328CB802600AFCE44 /* MR0x02ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF19228CB802600AFCE44 /* MR0x02ViewController.xib */; };
@@ -76,16 +70,6 @@
 		DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDFA39A524B872DB005C6430 /* MR0x01ViewController.m */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXContainerItemProxy section */
-		6003F5B3195388D20070C39A /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 6003F582195388D10070C39A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 6003F589195388D20070C39A;
-			remoteInfo = FFmpegTutotial;
-		};
-/* End PBXContainerItemProxy section */
-
 /* Begin PBXFileReference section */
 		6003F58A195388D20070C39A /* FFmpegTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpegTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -98,14 +82,9 @@
 		6003F59C195388D20070C39A /* MRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRAppDelegate.h; sourceTree = "<group>"; };
 		6003F59D195388D20070C39A /* MRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRAppDelegate.m; sourceTree = "<group>"; };
 		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
-		6003F5AE195388D20070C39A /* FFmpegTutorial_Tests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FFmpegTutorial_Tests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
-		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
-		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
-		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = Main.storyboard; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD2EADF4244C923600B057DE /* MRNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRNavigationController.h; sourceTree = "<group>"; };
@@ -113,7 +92,6 @@
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
-		DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PerformanceWrapper.swift; sourceTree = "<group>"; };
 		DDBFF18C28CA371A00AFCE44 /* MR0x01ViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MR0x01ViewController.xib; sourceTree = "<group>"; };
 		DDBFF18F28CB7F2E00AFCE44 /* MR0x02ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x02ViewController.h; sourceTree = "<group>"; };
 		DDBFF19028CB7F2E00AFCE44 /* MR0x02ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x02ViewController.m; sourceTree = "<group>"; };
@@ -206,16 +184,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AB195388D20070C39A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6003F5B0195388D20070C39A /* XCTest.framework in Frameworks */,
-				6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */,
-				6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -223,7 +191,6 @@
 			isa = PBXGroup;
 			children = (
 				6003F593195388D20070C39A /* FFmpegTutorial-iOS */,
-				6003F5B5195388D20070C39A /* Tests */,
 				6003F58C195388D20070C39A /* Frameworks */,
 				6003F58B195388D20070C39A /* Products */,
 				CF60E7891F87B97CC29DD34F /* Pods */,
@@ -234,7 +201,6 @@
 			isa = PBXGroup;
 			children = (
 				6003F58A195388D20070C39A /* FFmpegTutorial.app */,
-				6003F5AE195388D20070C39A /* FFmpegTutorial_Tests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -254,36 +220,12 @@
 		6003F593195388D20070C39A /* FFmpegTutorial-iOS */ = {
 			isa = PBXGroup;
 			children = (
-				DDFA39A424B872DB005C6430 /* 0x01 */,
-				DDBFF18E28CB7F2E00AFCE44 /* 0x02 */,
-				DDBFF19528CB863900AFCE44 /* 0x03 */,
-				DDBFF19B28CDB93200AFCE44 /* 0x04 */,
-				DDBFF1A128CDBFC000AFCE44 /* 0x05 */,
-				DDBFF1A728CDC26500AFCE44 /* 0x06 */,
-				DDBFF1AD28CDC47200AFCE44 /* 0x10 */,
-				DDBFF1B328CDC7D500AFCE44 /* 0x11 */,
-				DDBFF1BC28CDE09800AFCE44 /* 0x12 */,
-				DDBFF1C528CDE32400AFCE44 /* 0x13 */,
-				DDBFF1CE28CDE7C900AFCE44 /* 0x14 */,
-				DDF9224328E6EC5500F29C1A /* 0x14-1 */,
-				DDF9227E28E7F6BC00F29C1A /* 0x14-2 */,
-				DDF9228428E7F6BC00F29C1A /* 0x14-3 */,
-				DDF9228A28E7F6BD00F29C1A /* 0x14-4 */,
-				DDF9227528E73D6400F29C1A /* 0x15-1 */,
-				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
-				6003F5A8195388D20070C39A /* Images.xcassets */,
-				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
-				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F59C195388D20070C39A /* MRAppDelegate.h */,
 				6003F59D195388D20070C39A /* MRAppDelegate.m */,
-				DD2EADF4244C923600B057DE /* MRNavigationController.h */,
-				DD2EADF5244C923600B057DE /* MRNavigationController.m */,
-				DD2EADF7244C9CE500B057DE /* MRTableViewController.h */,
-				DD2EADF8244C9CE500B057DE /* MRTableViewController.m */,
-				DDF9BFF9259DC06A00B1D3EC /* MRRWeakProxy.h */,
-				DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */,
+				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
+				DD4CCBE928F1A6770047F238 /* 2.Video Rendering */,
+				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
 				DDF9224228E6EB7800F29C1A /* OpenGLAssets */,
-				DD5BA15D248893A20093D46C /* PerformanceWrapper.swift */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			path = "FFmpegTutorial-iOS";
@@ -292,29 +234,16 @@
 		6003F594195388D20070C39A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				DD4CCBEB28F1A6F20047F238 /* MRUtil */,
+				DD4CCBEA28F1A6DF0047F238 /* NavigationController */,
+				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
+				6003F5A8195388D20070C39A /* Images.xcassets */,
+				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
+				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
 				6003F595195388D20070C39A /* FFmpegTutorial-iOS.plist */,
 				6003F596195388D20070C39A /* InfoPlist.strings */,
 				6003F599195388D20070C39A /* main.m */,
 				6003F59B195388D20070C39A /* FFmpegTutorial-iOS.pch */,
-			);
-			name = "Supporting Files";
-			sourceTree = "<group>";
-		};
-		6003F5B5195388D20070C39A /* Tests */ = {
-			isa = PBXGroup;
-			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
-				6003F5B6195388D20070C39A /* Supporting Files */,
-			);
-			path = Tests;
-			sourceTree = "<group>";
-		};
-		6003F5B6195388D20070C39A /* Supporting Files */ = {
-			isa = PBXGroup;
-			children = (
-				6003F5B7195388D20070C39A /* Tests-Info.plist */,
-				6003F5B8195388D20070C39A /* InfoPlist.strings */,
-				606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -326,6 +255,63 @@
 				8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */,
 			);
 			path = Pods;
+			sourceTree = "<group>";
+		};
+		DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */ = {
+			isa = PBXGroup;
+			children = (
+				DDFA39A424B872DB005C6430 /* 0x01 */,
+				DDBFF18E28CB7F2E00AFCE44 /* 0x02 */,
+				DDBFF19528CB863900AFCE44 /* 0x03 */,
+				DDBFF19B28CDB93200AFCE44 /* 0x04 */,
+				DDBFF1A128CDBFC000AFCE44 /* 0x05 */,
+				DDBFF1A728CDC26500AFCE44 /* 0x06 */,
+			);
+			path = "1.The Basis Of AV";
+			sourceTree = "<group>";
+		};
+		DD4CCBE928F1A6770047F238 /* 2.Video Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFF1AD28CDC47200AFCE44 /* 0x10 */,
+				DDBFF1B328CDC7D500AFCE44 /* 0x11 */,
+				DDBFF1BC28CDE09800AFCE44 /* 0x12 */,
+				DDBFF1C528CDE32400AFCE44 /* 0x13 */,
+				DDBFF1CE28CDE7C900AFCE44 /* 0x14 */,
+				DDF9224328E6EC5500F29C1A /* 0x14-1 */,
+				DDF9227E28E7F6BC00F29C1A /* 0x14-2 */,
+				DDF9228428E7F6BC00F29C1A /* 0x14-3 */,
+				DDF9228A28E7F6BD00F29C1A /* 0x14-4 */,
+				DDF9227528E73D6400F29C1A /* 0x15-1 */,
+			);
+			path = "2.Video Rendering";
+			sourceTree = "<group>";
+		};
+		DD4CCBEA28F1A6DF0047F238 /* NavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				DD2EADF4244C923600B057DE /* MRNavigationController.h */,
+				DD2EADF5244C923600B057DE /* MRNavigationController.m */,
+			);
+			path = NavigationController;
+			sourceTree = "<group>";
+		};
+		DD4CCBEB28F1A6F20047F238 /* MRUtil */ = {
+			isa = PBXGroup;
+			children = (
+				DDF9BFF9259DC06A00B1D3EC /* MRRWeakProxy.h */,
+				DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */,
+			);
+			path = MRUtil;
+			sourceTree = "<group>";
+		};
+		DD4CCBEC28F1A72B0047F238 /* RootViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DD2EADF7244C9CE500B057DE /* MRTableViewController.h */,
+				DD2EADF8244C9CE500B057DE /* MRTableViewController.m */,
+			);
+			path = RootViewController;
 			sourceTree = "<group>";
 		};
 		DDBFF18E28CB7F2E00AFCE44 /* 0x02 */ = {
@@ -541,7 +527,6 @@
 				6003F586195388D20070C39A /* Sources */,
 				6003F587195388D20070C39A /* Frameworks */,
 				6003F588195388D20070C39A /* Resources */,
-				9DC55D770A040BFDBFE2DB4B /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -551,24 +536,6 @@
 			productName = FFmpegTutotial;
 			productReference = 6003F58A195388D20070C39A /* FFmpegTutorial.app */;
 			productType = "com.apple.product-type.application";
-		};
-		6003F5AD195388D20070C39A /* FFmpegTutorial_Tests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "FFmpegTutorial_Tests" */;
-			buildPhases = (
-				6003F5AA195388D20070C39A /* Sources */,
-				6003F5AB195388D20070C39A /* Frameworks */,
-				6003F5AC195388D20070C39A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				6003F5B4195388D20070C39A /* PBXTargetDependency */,
-			);
-			name = FFmpegTutorial_Tests;
-			productName = FFmpegTutotialTests;
-			productReference = 6003F5AE195388D20070C39A /* FFmpegTutorial_Tests.xctest */;
-			productType = "com.apple.product-type.bundle.unit-test";
 		};
 /* End PBXNativeTarget section */
 
@@ -583,9 +550,6 @@
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = 96C96H28CU;
 						LastSwiftMigration = 1150;
-					};
-					6003F5AD195388D20070C39A = {
-						TestTargetID = 6003F589195388D20070C39A;
 					};
 				};
 			};
@@ -603,7 +567,6 @@
 			projectRoot = "";
 			targets = (
 				6003F589195388D20070C39A /* FFmpegTutorial-iOS */,
-				6003F5AD195388D20070C39A /* FFmpegTutorial_Tests */,
 			);
 		};
 /* End PBXProject section */
@@ -641,35 +604,9 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AC195388D20070C39A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		9DC55D770A040BFDBFE2DB4B /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/GDPerformanceView-Swift/GDPerformanceView_Swift.framework",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/GDPerformanceView_Swift.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		DAB51AB967C109123D75BF1C /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -724,7 +661,6 @@
 				DDFA39DB24B872DC005C6430 /* MR0x01ViewController.m in Sources */,
 				DDBFF1C328CDE09900AFCE44 /* MR0x12ViewController.m in Sources */,
 				DDF9229028E7F6BD00F29C1A /* MR0x142ViewController.m in Sources */,
-				DD5BA15E248893A20093D46C /* PerformanceWrapper.swift in Sources */,
 				DDBFF1D928CDE7C900AFCE44 /* MR0x14ViewController.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
@@ -735,37 +671,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6003F5AA195388D20070C39A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
-
-/* Begin PBXTargetDependency section */
-		6003F5B4195388D20070C39A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 6003F589195388D20070C39A /* FFmpegTutorial-iOS */;
-			targetProxy = 6003F5B3195388D20070C39A /* PBXContainerItemProxy */;
-		};
-/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		6003F596195388D20070C39A /* InfoPlist.strings */ = {
 			isa = PBXVariantGroup;
 			children = (
 				6003F597195388D20070C39A /* en */,
-			);
-			name = InfoPlist.strings;
-			sourceTree = "<group>";
-		};
-		6003F5B8195388D20070C39A /* InfoPlist.strings */ = {
-			isa = PBXVariantGroup;
-			children = (
-				6003F5B9195388D20070C39A /* en */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
@@ -928,52 +840,6 @@
 			};
 			name = Release;
 		};
-		6003F5C3195388D20070C39A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				GCC_PREPROCESSOR_DEFINITIONS = (
-					"DEBUG=1",
-					"$(inherited)",
-				);
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FFmpegTutotial_Example.app/FFmpegTutotial_Example";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Debug;
-		};
-		6003F5C4195388D20070C39A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				BUNDLE_LOADER = "$(TEST_HOST)";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(PLATFORM_DIR)/Developer/Library/Frameworks",
-					"$(inherited)",
-					"$(DEVELOPER_FRAMEWORKS_DIR)",
-				);
-				GCC_PRECOMPILE_PREFIX_HEADER = YES;
-				GCC_PREFIX_HEADER = "Tests/Tests-Prefix.pch";
-				INFOPLIST_FILE = "Tests/Tests-Info.plist";
-				PRODUCT_BUNDLE_IDENTIFIER = "org.cocoapods.demo.${PRODUCT_NAME:rfc1034identifier}";
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_VERSION = 4.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/FFmpegTutotial_Example.app/FFmpegTutotial_Example";
-				WRAPPER_EXTENSION = xctest;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -991,15 +857,6 @@
 			buildConfigurations = (
 				6003F5C0195388D20070C39A /* Debug */,
 				6003F5C1195388D20070C39A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		6003F5C2195388D20070C39A /* Build configuration list for PBXNativeTarget "FFmpegTutorial_Tests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				6003F5C3195388D20070C39A /* Debug */,
-				6003F5C4195388D20070C39A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

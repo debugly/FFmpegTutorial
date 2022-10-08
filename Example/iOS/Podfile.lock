@@ -1,58 +1,57 @@
 PODS:
-  - FFmpegTutorial (0.5.17):
-    - FFmpegTutorial/0x01 (= 0.5.17)
-    - FFmpegTutorial/0x02 (= 0.5.17)
-    - FFmpegTutorial/0x03 (= 0.5.17)
-    - FFmpegTutorial/0x04 (= 0.5.17)
-    - FFmpegTutorial/0x05 (= 0.5.17)
-    - FFmpegTutorial/0x06 (= 0.5.17)
-    - FFmpegTutorial/0x10 (= 0.5.17)
-    - FFmpegTutorial/0x20 (= 0.5.17)
-    - FFmpegTutorial/0x30 (= 0.5.17)
-    - FFmpegTutorial/0x31 (= 0.5.17)
-    - FFmpegTutorial/0x32 (= 0.5.17)
-    - FFmpegTutorial/0x33 (= 0.5.17)
-    - FFmpegTutorial/0x34 (= 0.5.17)
-    - FFmpegTutorial/0x35 (= 0.5.17)
-    - FFmpegTutorial/0x36 (= 0.5.17)
-    - FFmpegTutorial/0x50 (= 0.5.17)
-    - FFmpegTutorial/common (= 0.5.17)
+  - FFmpegTutorial (0.5.18):
+    - FFmpegTutorial/0x01 (= 0.5.18)
+    - FFmpegTutorial/0x02 (= 0.5.18)
+    - FFmpegTutorial/0x03 (= 0.5.18)
+    - FFmpegTutorial/0x04 (= 0.5.18)
+    - FFmpegTutorial/0x05 (= 0.5.18)
+    - FFmpegTutorial/0x06 (= 0.5.18)
+    - FFmpegTutorial/0x10 (= 0.5.18)
+    - FFmpegTutorial/0x20 (= 0.5.18)
+    - FFmpegTutorial/0x30 (= 0.5.18)
+    - FFmpegTutorial/0x31 (= 0.5.18)
+    - FFmpegTutorial/0x32 (= 0.5.18)
+    - FFmpegTutorial/0x33 (= 0.5.18)
+    - FFmpegTutorial/0x34 (= 0.5.18)
+    - FFmpegTutorial/0x35 (= 0.5.18)
+    - FFmpegTutorial/0x36 (= 0.5.18)
+    - FFmpegTutorial/0x50 (= 0.5.18)
+    - FFmpegTutorial/common (= 0.5.18)
     - MRFFmpegPod
-  - FFmpegTutorial/0x01 (0.5.17):
+  - FFmpegTutorial/0x01 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x02 (0.5.17):
+  - FFmpegTutorial/0x02 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x03 (0.5.17):
+  - FFmpegTutorial/0x03 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x04 (0.5.17):
+  - FFmpegTutorial/0x04 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x05 (0.5.17):
+  - FFmpegTutorial/0x05 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x06 (0.5.17):
+  - FFmpegTutorial/0x06 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x10 (0.5.17):
+  - FFmpegTutorial/0x10 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x20 (0.5.17):
+  - FFmpegTutorial/0x20 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x30 (0.5.17):
+  - FFmpegTutorial/0x30 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x31 (0.5.17):
+  - FFmpegTutorial/0x31 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x32 (0.5.17):
+  - FFmpegTutorial/0x32 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x33 (0.5.17):
+  - FFmpegTutorial/0x33 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x34 (0.5.17):
+  - FFmpegTutorial/0x34 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x35 (0.5.17):
+  - FFmpegTutorial/0x35 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x36 (0.5.17):
+  - FFmpegTutorial/0x36 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/0x50 (0.5.17):
+  - FFmpegTutorial/0x50 (0.5.18):
     - MRFFmpegPod
-  - FFmpegTutorial/common (0.5.17):
+  - FFmpegTutorial/common (0.5.18):
     - MRFFmpegPod
-  - GDPerformanceView-Swift (2.1.1)
   - MRFFmpegPod (4.4):
     - MRFFmpegPod/libavcodec (= 4.4)
     - MRFFmpegPod/libavdevice (= 4.4)
@@ -80,13 +79,8 @@ PODS:
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
-  - GDPerformanceView-Swift
   - MRFFmpegPod (from `https://ifoxdev.hd.sohu.com/ffpods/20210913/MRFFmpegPod-iOS-4.4-openssl.podspec`)
   - MROpenSSLPod (from `https://ifoxdev.hd.sohu.com/ffpods/20210913/MROpenSSLPod-iOS-1.1.1l.podspec`)
-
-SPEC REPOS:
-  trunk:
-    - GDPerformanceView-Swift
 
 EXTERNAL SOURCES:
   FFmpegTutorial:
@@ -97,11 +91,10 @@ EXTERNAL SOURCES:
     :podspec: https://ifoxdev.hd.sohu.com/ffpods/20210913/MROpenSSLPod-iOS-1.1.1l.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: 53971cd9e174dc22a3dc60d3e18abc4c89ea31a9
-  GDPerformanceView-Swift: 22d964fe40b19e3d914dba2586237d064de8fd77
+  FFmpegTutorial: c84ae294bfb190ea432400e8f92b08741d4fd664
   MRFFmpegPod: 9ecbeeeb5c5a579d2ce815ffbafc3ae8eaa71e6f
   MROpenSSLPod: 68f2651fbd0a52d84414bae99cda46fb8ff733e7
 
-PODFILE CHECKSUM: 7758a5239560aaa0f898f77c373b8d154754ed18
+PODFILE CHECKSUM: cb84031e3ef97e4cfcc818d585b642e286d7abf3
 
 COCOAPODS: 1.11.2
