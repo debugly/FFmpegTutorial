@@ -42,8 +42,6 @@ open FFmpegTutorial-macOS.xcworkspace
 
 ![](md/imgs/macos-snapshot-3.png)
 
-![](md/imgs/macos-snapshot-4.png)
-
 # Introduction
 
 为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，因此我把编译好的 FFmpeg 库也做成了 Pod 库，编译 FFmpeg 等库的脚本在这里开源 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod)。

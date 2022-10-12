@@ -12,7 +12,6 @@
 typedef NS_ENUM(NSUInteger, FFPlayer0x40VideoType) {
     FFPlayer0x40VideoSnowType,
     FFPlayer0x40VideoGrayType,
-    FFPlayer0x40Video3ballType,
 };
 
 NS_ASSUME_NONNULL_BEGIN
