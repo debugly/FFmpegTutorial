@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+    <dependencies>
+        <deployment identifier="macosx"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <customObject id="-2" userLabel="File's Owner" customClass="MR0x144ViewController">
+            <connections>
+                <outlet property="indicatorView" destination="A8v-NC-bh6" id="vrp-86-BMn"/>
+                <outlet property="inputField" destination="X45-WW-lE6" id="vzy-yO-Yvh"/>
+                <outlet property="videoRenderer" destination="xd5-Jb-nAf" id="6qt-Ci-VVA"/>
+                <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
+            </connections>
+        </customObject>
+        <customObject id="-1" userLabel="First Responder" customClass="FirstResponder"/>
+        <customObject id="-3" userLabel="Application" customClass="NSObject"/>
+        <customView id="Hz6-mo-xeY">
+            <rect key="frame" x="0.0" y="0.0" width="672" height="272"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
+            <subviews>
+                <stackView distribution="fill" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NMB-98-nYq">
+                    <rect key="frame" x="0.0" y="232" width="672" height="40"/>
+                    <subviews>
+                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wch-5O-bYT">
+                            <rect key="frame" x="8" y="12" width="68" height="16"/>
+                            <textFieldCell key="cell" lineBreakMode="clipping" title="视频地址：" id="MXO-pd-vL2">
+                                <font key="font" metaFont="system"/>
+                                <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <textField verticalHuggingPriority="750" horizontalCompressionResistancePriority="749" translatesAutoresizingMaskIntoConstraints="NO" id="X45-WW-lE6">
+                            <rect key="frame" x="84" y="10" width="379" height="21"/>
+                            <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="JaS-Je-Vlq">
+                                <font key="font" usesAppearanceFont="YES"/>
+                                <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>
+                                <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                            </textFieldCell>
+                        </textField>
+                        <button verticalHuggingPriority="750" horizontalCompressionResistancePriority="1000" translatesAutoresizingMaskIntoConstraints="NO" id="4Hh-br-Haq">
+                            <rect key="frame" x="466" y="3" width="61" height="32"/>
+                            <buttonCell key="cell" type="push" title="播放" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="phx-Xg-pvd">
+                                <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="system"/>
+                            </buttonCell>
+                            <connections>
+                                <action selector="go:" target="-2" id="gpZ-YI-9b1"/>
+                            </connections>
+                        </button>
+                        <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ohP-6S-w0k">
+                            <rect key="frame" x="527" y="6" width="139" height="25"/>
+                            <popUpButtonCell key="cell" type="push" title="Scale To Fill" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="yzr-ff-CJ4" id="xpv-0r-RZn">
+                                <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
+                                <font key="font" metaFont="menu"/>
+                                <menu key="menu" id="pHB-9l-x1W">
+                                    <items>
+                                        <menuItem title="Scale To Fill" state="on" tag="1" id="yzr-ff-CJ4">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Scale Aspect Fill" tag="2" id="vBl-ui-Ch5">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                        <menuItem title="Scale Aspect Fit" tag="3" id="6gx-HZ-piu">
+                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                        </menuItem>
+                                    </items>
+                                </menu>
+                            </popUpButtonCell>
+                            <connections>
+                                <action selector="onSelectedVideMode:" target="-2" id="6Es-xu-eKz"/>
+                            </connections>
+                        </popUpButton>
+                    </subviews>
+                    <edgeInsets key="edgeInsets" left="10" right="10" top="0.0" bottom="0.0"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="40" id="S7N-k0-4rO"/>
+                    </constraints>
+                    <visibilityPriorities>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                        <integer value="1000"/>
+                    </visibilityPriorities>
+                    <customSpacing>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                        <real value="3.4028234663852886e+38"/>
+                    </customSpacing>
+                </stackView>
+                <customView translatesAutoresizingMaskIntoConstraints="NO" id="xd5-Jb-nAf" customClass="MR0x144VideoRenderer">
+                    <rect key="frame" x="0.0" y="0.0" width="672" height="232"/>
+                </customView>
+                <progressIndicator maxValue="100" displayedWhenStopped="NO" indeterminate="YES" style="spinning" translatesAutoresizingMaskIntoConstraints="NO" id="A8v-NC-bh6">
+                    <rect key="frame" x="320" y="120" width="32" height="32"/>
+                </progressIndicator>
+            </subviews>
+            <constraints>
+                <constraint firstAttribute="trailing" secondItem="xd5-Jb-nAf" secondAttribute="trailing" id="45u-vN-MBV"/>
+                <constraint firstItem="A8v-NC-bh6" firstAttribute="centerY" secondItem="Hz6-mo-xeY" secondAttribute="centerY" id="776-j1-rIJ"/>
+                <constraint firstAttribute="bottom" secondItem="xd5-Jb-nAf" secondAttribute="bottom" id="EHJ-7A-BDf"/>
+                <constraint firstItem="NMB-98-nYq" firstAttribute="top" secondItem="Hz6-mo-xeY" secondAttribute="top" id="lSY-pC-5K3"/>
+                <constraint firstItem="xd5-Jb-nAf" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="mn5-G9-TL9"/>
+                <constraint firstItem="NMB-98-nYq" firstAttribute="leading" secondItem="Hz6-mo-xeY" secondAttribute="leading" id="nw6-pz-Ip7"/>
+                <constraint firstItem="A8v-NC-bh6" firstAttribute="centerX" secondItem="Hz6-mo-xeY" secondAttribute="centerX" id="rfw-6M-es0"/>
+                <constraint firstItem="xd5-Jb-nAf" firstAttribute="top" secondItem="NMB-98-nYq" secondAttribute="bottom" id="sgV-ll-ZtW"/>
+                <constraint firstAttribute="trailing" secondItem="NMB-98-nYq" secondAttribute="trailing" id="yDU-gp-9m5"/>
+            </constraints>
+            <point key="canvasLocation" x="-131" y="120"/>
+        </customView>
+    </objects>
+</document>

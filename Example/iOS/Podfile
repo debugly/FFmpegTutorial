@@ -5,7 +5,6 @@ FF_VER='4.4'
 OpenSSL_VER='1.1.1l'
 
 target 'FFmpegTutorial-iOS' do
-  pod 'GDPerformanceView-Swift'
   pod 'FFmpegTutorial', :path => '../../'
   puts "will install MRFFmpeg#{FF_VER}"
   pod 'MROpenSSLPod',  :podspec => "https://ifoxdev.hd.sohu.com/ffpods/20210913/MROpenSSLPod-iOS-#{OpenSSL_VER}.podspec"
