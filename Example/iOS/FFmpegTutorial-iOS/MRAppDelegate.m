@@ -7,7 +7,7 @@
 //
 
 #import "MRAppDelegate.h"
-#import "FFmpegTutorial-Swift.h"
+//#import "FFmpegTutorial-Swift.h"
 
 @interface MRAppDelegate ()
 
