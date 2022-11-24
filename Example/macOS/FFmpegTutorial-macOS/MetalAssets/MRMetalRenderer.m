@@ -15,6 +15,7 @@
 // uses these types as inputs to the shaders.
 #import "MRMetalShaderTypes.h"
 #import "MRMetalBGRAPipeline.h"
+#import "MRMetalNV12Pipeline.h"
 
 @interface MRMetalRenderer ()
 
@@ -85,6 +86,8 @@
     OSType type = CVPixelBufferGetPixelFormatType(pixelBuffer);
     if (type == kCVPixelFormatType_32BGRA) {
         self.metalPipeline = [MRMetalBGRAPipeline new];
+    } else if (type == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange || type ==  kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
+        self.metalPipeline = [MRMetalNV12Pipeline new];
     } else {
         NSAssert(NO, @"no suopport pixel:%d",type);
     }
