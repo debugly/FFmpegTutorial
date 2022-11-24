@@ -16,6 +16,7 @@
 #import "MRMetalShaderTypes.h"
 #import "MRMetalBGRAPipeline.h"
 #import "MRMetalNV12Pipeline.h"
+#import "MRMetalNV21Pipeline.h"
 
 @interface MRMetalRenderer ()
 
@@ -93,6 +94,14 @@
     }
 }
 
+- (void)setupNV21PipelineIfNeed
+{
+    if (self.metalPipeline) {
+        return;
+    }
+    self.metalPipeline = [MRMetalNV21Pipeline new];
+}
+
 /// Called whenever the view needs to render a frame.
 - (void)drawInMTKView:(nonnull MTKView *)view
 {
@@ -139,6 +148,18 @@
             CVPixelBufferRelease(self.pixelBuffer);
         }
         [self setupPipelineIfNeed:pixelBuffer];
+        self.pixelBuffer = pixelBuffer;
+    });
+}
+
+- (void)displayNV21:(CVPixelBufferRef)pixelBuffer
+{
+    CVPixelBufferRetain(pixelBuffer);
+    dispatch_async(dispatch_get_main_queue(), ^{
+        if (self.pixelBuffer) {
+            CVPixelBufferRelease(self.pixelBuffer);
+        }
+        [self setupNV21PipelineIfNeed];
         self.pixelBuffer = pixelBuffer;
     });
 }

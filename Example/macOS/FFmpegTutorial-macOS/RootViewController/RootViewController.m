@@ -246,6 +246,11 @@
             @"detail":@"使用 Metal 渲染 NV12 视频桢",
             @"class":@"MR0x172ViewController",
         },
+        @{
+            @"title":@"0x17-3",
+            @"detail":@"使用 Metal 渲染 NV21 视频桢",
+            @"class":@"MR0x173ViewController",
+        },
         },
         @{
             @"title":@"三、音频渲染",
