@@ -10,8 +10,6 @@
 #import <QuartzCore/QuartzCore.h>
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
-#import <MRFFmpegPod/libavutil/frame.h>
-#import <FFmpegTutorial/FFTConvertUtil.h>
 #import "MRMetalShaderTypes.h"
 #import "MRMetalRenderer.h"
 
@@ -19,7 +17,6 @@
 {
     CGRect _layerBounds;
     MR0x141ContentMode _contentMode;
-    CVPixelBufferPoolRef _pixelBufferPoolRef;
     MRMetalRenderer * _renderer;
     CGSize _normalizedSize;
 }
@@ -27,11 +24,6 @@
 @end
 
 @implementation MR0x171VideoRenderer
-
-- (void)dealloc
-{
-    CVPixelBufferPoolRelease(_pixelBufferPoolRef);
-}
 
 - (void)_setup
 {
@@ -77,10 +69,10 @@
     return _contentMode;
 }
 
-- (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
+- (CGSize)computeNormalizedSize:(CVPixelBufferRef)img
 {
-    int frameWidth = frame->width;
-    int frameHeight = frame->height;
+    int frameWidth = (int)CVPixelBufferGetWidth(img);
+    int frameHeight = (int)CVPixelBufferGetHeight(img);
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
@@ -115,31 +107,29 @@
     return normalizedSamplingSize;
 }
 
-- (CVPixelBufferRef)createCVPixelBufferFromAVFrame:(AVFrame *)frame
+- (void)displayPixelBuffer:(CVPixelBufferRef)img
 {
-    if(!_pixelBufferPoolRef) {
-        _pixelBufferPoolRef = [FFTConvertUtil createPixelBufferPoolWithAVFrame:frame];
-    }
-    return [FFTConvertUtil pixelBufferFromAVFrame:frame opt:_pixelBufferPoolRef];
-}
-
-- (void)displayAVFrame:(AVFrame *)frame
-{
-    CGSize normalizedSize = [self computeNormalizedSize:frame];
+    CGSize normalizedSize = [self computeNormalizedSize:img];
     if ((int)(_normalizedSize.width * 1000) != (int)(normalizedSize.width * 1000) || (int)(_normalizedSize.height * 1000) != (int)(normalizedSize.height * 1000)) {
         _normalizedSize = normalizedSize;
         [_renderer updateVertexWithxRatio:_normalizedSize.width yRatio:_normalizedSize.height];
     }
 
-    CVPixelBufferRef img = [self createCVPixelBufferFromAVFrame:frame];
     if (img) {
-        if (frame->format == AV_PIX_FMT_NV21) {
-            [_renderer displayNV21:img];
-        } else {
-            [_renderer display:img];
-        }
-        
-        CVPixelBufferRelease(img);
+        [_renderer display:img];
+    }
+}
+
+- (void)displayNV21PixelBuffer:(CVPixelBufferRef)img
+{
+    CGSize normalizedSize = [self computeNormalizedSize:img];
+    if ((int)(_normalizedSize.width * 1000) != (int)(normalizedSize.width * 1000) || (int)(_normalizedSize.height * 1000) != (int)(normalizedSize.height * 1000)) {
+        _normalizedSize = normalizedSize;
+        [_renderer updateVertexWithxRatio:_normalizedSize.width yRatio:_normalizedSize.height];
+    }
+
+    if (img) {
+        [_renderer displayNV21:img];
     }
 }
 

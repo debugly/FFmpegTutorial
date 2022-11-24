@@ -10,12 +10,12 @@
 #import "MR0x141VideoRendererProtocol.h"
 #import <MetalKit/MetalKit.h>
 
-typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
 @interface MR0x171VideoRenderer : MTKView <MR0x141VideoRendererProtocol>
 
-- (void)displayAVFrame:(AVFrame *)frame;
+- (void)displayPixelBuffer:(CVPixelBufferRef)img;
+- (void)displayNV21PixelBuffer:(CVPixelBufferRef)img;
 - (NSImage *)snapshot;
 
 @end

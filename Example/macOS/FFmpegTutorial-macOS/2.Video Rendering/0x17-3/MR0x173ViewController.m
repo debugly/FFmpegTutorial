@@ -9,6 +9,7 @@
 #import "MR0x173ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
+#import <FFmpegTutorial/FFTConvertUtil.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MR0x171VideoRenderer.h"
 #import "MRRWeakProxy.h"
@@ -16,6 +17,9 @@
 #import "MRUtil.h"
 
 @interface MR0x173ViewController ()
+{
+    CVPixelBufferPoolRef _pixelBufferPoolRef;
+}
 
 @property (strong) FFTPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
@@ -41,6 +45,7 @@
         [_player asyncStop];
         _player = nil;
     }
+    CVPixelBufferPoolRelease(_pixelBufferPoolRef);
 }
 
 - (void)prepareTickTimerIfNeed
@@ -88,11 +93,23 @@
     }
 }
 
+- (CVPixelBufferRef)createCVPixelBufferFromAVFrame:(AVFrame *)frame
+{
+    if(!_pixelBufferPoolRef) {
+        _pixelBufferPoolRef = [FFTConvertUtil createPixelBufferPoolWithAVFrame:frame];
+    }
+    return [FFTConvertUtil pixelBufferFromAVFrame:frame opt:_pixelBufferPoolRef];
+}
+
 - (void)displayVideoFrame:(AVFrame *)frame
 {
     const char *fmt_str = av_pixel_fmt_to_string(frame->format);
     self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
-    [self.videoRenderer displayAVFrame:frame];
+    CVPixelBufferRef img = [self createCVPixelBufferFromAVFrame:frame];
+    if (img) {
+        [self.videoRenderer displayNV21PixelBuffer:img];
+        CVPixelBufferRelease(img);
+    }
 }
 
 - (void)parseURL:(NSString *)url

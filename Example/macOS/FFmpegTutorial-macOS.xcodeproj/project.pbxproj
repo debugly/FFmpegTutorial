@@ -702,8 +702,8 @@
 			isa = PBXGroup;
 			children = (
 				DD900F9F292F5BAB00CECDE4 /* MR0x175ViewController.h */,
-				DD900FA0292F5BAB00CECDE4 /* MR0x175ViewController.xib */,
 				DD900FA1292F5BAB00CECDE4 /* MR0x175ViewController.m */,
+				DD900FA0292F5BAB00CECDE4 /* MR0x175ViewController.xib */,
 			);
 			name = "0x17-5";
 			path = "FFmpegTutorial-macOS/2.Video Rendering/0x17-5";
@@ -712,8 +712,8 @@
 		DD900FA4292F711200CECDE4 /* 0x17-6 */ = {
 			isa = PBXGroup;
 			children = (
-				DD900FA5292F711200CECDE4 /* MR0x176ViewController.m */,
 				DD900FA6292F711200CECDE4 /* MR0x176ViewController.h */,
+				DD900FA5292F711200CECDE4 /* MR0x176ViewController.m */,
 				DD900FA7292F711200CECDE4 /* MR0x176ViewController.xib */,
 			);
 			name = "0x17-6";
@@ -724,8 +724,8 @@
 			isa = PBXGroup;
 			children = (
 				DD900FAB292F716400CECDE4 /* MR0x174ViewController.h */,
-				DD900FAC292F716400CECDE4 /* MR0x174ViewController.xib */,
 				DD900FAD292F716400CECDE4 /* MR0x174ViewController.m */,
+				DD900FAC292F716400CECDE4 /* MR0x174ViewController.xib */,
 			);
 			name = "0x17-4";
 			path = "FFmpegTutorial-macOS/2.Video Rendering/0x17-4";
