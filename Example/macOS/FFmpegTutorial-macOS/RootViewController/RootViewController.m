@@ -256,6 +256,10 @@
             @"detail":@"使用 Metal 渲染 UYVY422 视频桢",
             @"class":@"MR0x175ViewController",
         },
+        @{
+            @"title":@"0x17-6",
+            @"detail":@"使用 Metal 渲染 YUYV422 视频桢",
+            @"class":@"MR0x176ViewController",
         },
         @{
             @"title":@"三、音频渲染",
