@@ -11,7 +11,7 @@
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x171VideoRenderer.h"
+#import "MR0x174VideoRenderer.h"
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
@@ -23,7 +23,7 @@
 @property (strong) FFTPlayer0x10 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x171VideoRenderer *videoRenderer;
+@property (weak) IBOutlet MR0x174VideoRenderer *videoRenderer;
 
 @property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -106,6 +106,7 @@
     self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
     CVPixelBufferRef img = [self createCVPixelBufferFromAVFrame:frame];
     if (img) {
+//        [self.videoRenderer displayAVFrame:frame];
         [self.videoRenderer displayPixelBuffer:img];
         CVPixelBufferRelease(img);
     }
