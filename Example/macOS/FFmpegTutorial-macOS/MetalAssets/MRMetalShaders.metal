@@ -93,3 +93,22 @@ fragment float4 nv21FragmentShader(RasterizerData input [[stage_in]],
         
     return float4(rgb, 1.0);
 }
+
+/// @brief uyvy422 fragment shader
+/// @param stage_in表示这个数据来自光栅化。（光栅化是顶点处理之后的步骤，业务层无法修改）
+/// @param texture表明是纹理数据，MRFragmentTextureIndexTextureY 是索引
+/// @param buffer表明是缓存数据，MRFragmentInputIndexMatrix是索引
+fragment float4 uyvy422FragmentShader(RasterizerData input [[stage_in]],
+               texture2d<float> textureY [[ texture(MRFragmentTextureIndexTextureY) ]],
+               constant MRConvertMatrix *convertMatrix [[ buffer(MRFragmentInputIndexMatrix) ]])
+{
+    // sampler是采样器
+    constexpr sampler textureSampler (mag_filter::linear,
+                                      min_filter::linear);
+
+    float3 tc = textureY.sample(textureSampler, input.textureCoordinate).rgb;
+    float3 yuv = float3(tc.g, tc.b, tc.r);
+    float3 rgb = convertMatrix->matrix * (yuv + convertMatrix->offset);
+
+    return float4(rgb, 1.0);
+}

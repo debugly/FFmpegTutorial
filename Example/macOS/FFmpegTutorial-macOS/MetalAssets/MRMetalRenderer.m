@@ -17,6 +17,7 @@
 #import "MRMetalBGRAPipeline.h"
 #import "MRMetalNV12Pipeline.h"
 #import "MRMetalNV21Pipeline.h"
+#import "MRMetalUYVY422Pipeline.h"
 
 @interface MRMetalRenderer ()
 
@@ -89,6 +90,8 @@
         self.metalPipeline = [MRMetalBGRAPipeline new];
     } else if (type == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange || type ==  kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
         self.metalPipeline = [MRMetalNV12Pipeline new];
+    } else if (type == kCVPixelFormatType_422YpCbCr8) {
+        self.metalPipeline = [MRMetalUYVY422Pipeline new];
     } else {
         NSAssert(NO, @"no suopport pixel:%d",type);
     }
