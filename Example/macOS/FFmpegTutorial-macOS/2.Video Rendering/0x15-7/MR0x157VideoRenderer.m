@@ -340,6 +340,7 @@ enum
 
 - (void)displayAVFrame:(AVFrame *)frame
 {
+    av_frame_unref(_lastFrame);
     av_frame_ref(_lastFrame, frame);
     
     [[self openGLContext] makeCurrentContext];
