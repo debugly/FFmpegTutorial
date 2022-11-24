@@ -17,6 +17,7 @@
 #import "MRMetalBGRAPipeline.h"
 #import "MRMetalNV12Pipeline.h"
 #import "MRMetalNV21Pipeline.h"
+#import "MRMetalYUV420PPipeline.h"
 #import "MRMetalUYVY422Pipeline.h"
 #import "MRMetalYUYV422Pipeline.h"
 
@@ -91,6 +92,8 @@
         self.metalPipeline = [MRMetalBGRAPipeline new];
     } else if (type == kCVPixelFormatType_420YpCbCr8BiPlanarFullRange || type ==  kCVPixelFormatType_420YpCbCr8BiPlanarVideoRange) {
         self.metalPipeline = [MRMetalNV12Pipeline new];
+    } else if (type == kCVPixelFormatType_420YpCbCr8PlanarFullRange || type ==  kCVPixelFormatType_420YpCbCr8Planar) {
+        self.metalPipeline = [MRMetalYUV420PPipeline new];
     } else if (type == kCVPixelFormatType_422YpCbCr8) {
         self.metalPipeline = [MRMetalUYVY422Pipeline new];
     } else if (type == kCVPixelFormatType_422YpCbCr8FullRange || type == kCVPixelFormatType_422YpCbCr8_yuvs) {

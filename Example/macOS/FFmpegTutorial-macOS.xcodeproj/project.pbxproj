@@ -51,6 +51,8 @@
 		DD900FA3292F5BAB00CECDE4 /* MR0x175ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900FA1292F5BAB00CECDE4 /* MR0x175ViewController.m */; };
 		DD900FA8292F711200CECDE4 /* MR0x176ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900FA5292F711200CECDE4 /* MR0x176ViewController.m */; };
 		DD900FA9292F711200CECDE4 /* MR0x176ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD900FA7292F711200CECDE4 /* MR0x176ViewController.xib */; };
+		DD900FAE292F716400CECDE4 /* MR0x174ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD900FAC292F716400CECDE4 /* MR0x174ViewController.xib */; };
+		DD900FAF292F716400CECDE4 /* MR0x174ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900FAD292F716400CECDE4 /* MR0x174ViewController.m */; };
 		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
 		DD91F29126AC082C00B96334 /* 2_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */; };
 		DD91F29226AC082C00B96334 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28E26AC082C00B96334 /* README.md */; };
@@ -281,6 +283,9 @@
 		DD900FA5292F711200CECDE4 /* MR0x176ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x176ViewController.m; sourceTree = "<group>"; };
 		DD900FA6292F711200CECDE4 /* MR0x176ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x176ViewController.h; sourceTree = "<group>"; };
 		DD900FA7292F711200CECDE4 /* MR0x176ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x176ViewController.xib; sourceTree = "<group>"; };
+		DD900FAB292F716400CECDE4 /* MR0x174ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x174ViewController.h; sourceTree = "<group>"; };
+		DD900FAC292F716400CECDE4 /* MR0x174ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x174ViewController.xib; sourceTree = "<group>"; };
+		DD900FAD292F716400CECDE4 /* MR0x174ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x174ViewController.m; sourceTree = "<group>"; };
 		DD91F143268CC78A00B96334 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F28E26AC082C00B96334 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -715,6 +720,17 @@
 			path = "FFmpegTutorial-macOS/2.Video Rendering/0x17-6";
 			sourceTree = SOURCE_ROOT;
 		};
+		DD900FAA292F716400CECDE4 /* 0x17-4 */ = {
+			isa = PBXGroup;
+			children = (
+				DD900FAB292F716400CECDE4 /* MR0x174ViewController.h */,
+				DD900FAC292F716400CECDE4 /* MR0x174ViewController.xib */,
+				DD900FAD292F716400CECDE4 /* MR0x174ViewController.m */,
+			);
+			name = "0x17-4";
+			path = "FFmpegTutorial-macOS/2.Video Rendering/0x17-4";
+			sourceTree = SOURCE_ROOT;
+		};
 		DD91F28B26AC081200B96334 /* OpenGLAssets */ = {
 			isa = PBXGroup;
 			children = (
@@ -1059,6 +1075,7 @@
 				DD900F52292E454A00CECDE4 /* 0x17-1 */,
 				DD900F92292F5A3D00CECDE4 /* 0x17-2 */,
 				DD900F98292F5AC200CECDE4 /* 0x17-3 */,
+				DD900FAA292F716400CECDE4 /* 0x17-4 */,
 				DD900F9E292F5BAB00CECDE4 /* 0x17-5 */,
 				DD900FA4292F711200CECDE4 /* 0x17-6 */,
 			);
@@ -1546,6 +1563,7 @@
 				DDBFF17528B521A700AFCE44 /* 1_sampler2D_v3.fsh in Resources */,
 				DDF923FB28EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh in Resources */,
 				DDF9239328EC4A5F00F29C1A /* MR0x10ViewController.xib in Resources */,
+				DD900FAE292F716400CECDE4 /* MR0x174ViewController.xib in Resources */,
 				DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */,
 				DDF923AD28EC4A5F00F29C1A /* MR0x152ViewController.xib in Resources */,
 				DD900F9D292F5AC200CECDE4 /* MR0x173ViewController.xib in Resources */,
@@ -1656,6 +1674,7 @@
 				DDF923BA28EC4A5F00F29C1A /* MR0x146VideoRenderer.m in Sources */,
 				DDF9239828EC4A5F00F29C1A /* MR0x144ViewController.m in Sources */,
 				DDF9239F28EC4A5F00F29C1A /* MR0x142VideoRenderer.m in Sources */,
+				DD900FAF292F716400CECDE4 /* MR0x174ViewController.m in Sources */,
 				DDF599012882EA3C0079D26E /* MR0x31AudioRenderer.m in Sources */,
 				DDF9238C28EC4A5F00F29C1A /* MR0x157ViewController.m in Sources */,
 				DD900F74292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m in Sources */,

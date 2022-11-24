@@ -252,6 +252,11 @@
             @"class":@"MR0x173ViewController",
         },
         @{
+            @"title":@"0x17-4",
+            @"detail":@"TODO使用 Metal 渲染 YUV420P 视频桢",
+            @"class":@"MR0x174ViewController",
+        },
+        @{
             @"title":@"0x17-5",
             @"detail":@"使用 Metal 渲染 UYVY422 视频桢",
             @"class":@"MR0x175ViewController",
