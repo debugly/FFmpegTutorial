@@ -289,6 +289,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     }
     const int linesize = 32;//FFmpeg 解码数据对齐是32，这里期望CVPixelBuffer也能使用32对齐，但实际来看却是64！
     NSMutableDictionary*attributes = [NSMutableDictionary dictionary];
+    [attributes setObject:@(YES) forKey:(NSString*)kCVPixelBufferMetalCompatibilityKey];
     [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
     [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
     [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
@@ -297,9 +298,11 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     return attributes;
 }
 
-+ (CVPixelBufferPoolRef _Nullable)createCVPixelBufferPoolRef:(const int)format w:(const int)w h:(const int)h fullRange:(const bool)fullRange
+//video-range (luma=[16,235] chroma=[16,240])
+//full-range  (luma=[0,255]  chroma=[1,255])
++ (CVPixelBufferPoolRef _Nullable)createPixelBufferPoolWithAVFrame:(AVFrame *)frame
 {
-    NSDictionary * attributes = [self _prepareCVPixelBufferAttibutes:format fullRange:fullRange h:h w:w];
+    NSDictionary * attributes = [self _prepareCVPixelBufferAttibutes:frame->format fullRange:frame->color_range != AVCOL_RANGE_MPEG h:frame->height w:frame->width];
     if (!attributes) {
         return NULL;
     }
@@ -309,7 +312,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         NSLog(@"CVPixelBufferPoolCreate Failed");
         return NULL;
     } else {
-        return (CVPixelBufferPoolRef)CFAutorelease((const void *)pixelBufferPool);
+        return pixelBufferPool;
     }
 }
 
@@ -391,17 +394,16 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                 因为存在上面分析的对齐不相等问题，所以只能一行一行的处理，不能直接使用 memcpy 简单处理！
              */
             /*
-            for (; height > 0; height--) {
-                bzero(dest, dst_linesize);
-                memcpy(dest, src, MIN(src_linesize, dst_linesize));
-                src  += src_linesize;
-                dest += dst_linesize;
-            }
-            
+             for (; height > 0; height--) {
+                 bzero(dst, dst_linesize);
+                 memcpy(dst, src, bytewidth);
+                 src += src_linesize;
+                 dst += dst_linesize;
+             }
             后来偶然间找到了 av_image_copy_plane 这个方法，其内部实现就是上面的按行 copy。
             */
         }
-        return (CVPixelBufferRef)CFAutorelease(pixelBuffer);
+        return pixelBuffer;
     } else {
         return NULL;
     }

@@ -31,6 +31,18 @@
 		DD7ABB75287B0D3100622984 /* MR0x22ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7ABB70287B0D3100622984 /* MR0x22ViewController.xib */; };
 		DD7D80A426BAED3300D968F3 /* MR0x141OpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7D80A326BAED3300D968F3 /* MR0x141OpenGLCompiler.m */; };
 		DD7D80A726C1687F00D968F3 /* 1_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */; };
+		DD900F46292CFA2F00CECDE4 /* MRMetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = DD900F42292CFA2F00CECDE4 /* MRMetalShaders.metal */; };
+		DD900F47292CFA2F00CECDE4 /* MRMetalRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F43292CFA2F00CECDE4 /* MRMetalRenderer.m */; };
+		DD900F5B292E454A00CECDE4 /* MR0x171VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F53292E454A00CECDE4 /* MR0x171VideoRenderer.m */; };
+		DD900F5C292E454A00CECDE4 /* MR0x171ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F54292E454A00CECDE4 /* MR0x171ViewController.m */; };
+		DD900F5D292E454A00CECDE4 /* MR0x171ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD900F55292E454A00CECDE4 /* MR0x171ViewController.xib */; };
+		DD900F62292E531A00CECDE4 /* MRMetalNV12Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F61292E531A00CECDE4 /* MRMetalNV12Pipeline.m */; };
+		DD900F65292E536700CECDE4 /* MRMetalBasePipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F64292E536700CECDE4 /* MRMetalBasePipeline.m */; };
+		DD900F68292E56A200CECDE4 /* MRMetalBGRAPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F67292E56A200CECDE4 /* MRMetalBGRAPipeline.m */; };
+		DD900F74292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F73292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m */; };
+		DD900F7D292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F7C292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m */; };
+		DD900F8E292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F8D292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m */; };
+		DD900F91292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD900F90292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m */; };
 		DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD91F143268CC78A00B96334 /* AVFoundation.framework */; };
 		DD91F29126AC082C00B96334 /* 2_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */; };
 		DD91F29226AC082C00B96334 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28E26AC082C00B96334 /* README.md */; };
@@ -226,6 +238,29 @@
 		DD7D80A226BAED3300D968F3 /* MR0x141OpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLCompiler.h; sourceTree = "<group>"; };
 		DD7D80A326BAED3300D968F3 /* MR0x141OpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLCompiler.m; sourceTree = "<group>"; };
 		DD7D80A626C1687F00D968F3 /* 1_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_Rect.fsh; sourceTree = "<group>"; };
+		DD900F42292CFA2F00CECDE4 /* MRMetalShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MRMetalShaders.metal; sourceTree = "<group>"; };
+		DD900F43292CFA2F00CECDE4 /* MRMetalRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalRenderer.m; sourceTree = "<group>"; };
+		DD900F44292CFA2F00CECDE4 /* MRMetalShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalShaderTypes.h; sourceTree = "<group>"; };
+		DD900F45292CFA2F00CECDE4 /* MRMetalRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalRenderer.h; sourceTree = "<group>"; };
+		DD900F53292E454A00CECDE4 /* MR0x171VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x171VideoRenderer.m; sourceTree = "<group>"; };
+		DD900F54292E454A00CECDE4 /* MR0x171ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x171ViewController.m; sourceTree = "<group>"; };
+		DD900F55292E454A00CECDE4 /* MR0x171ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x171ViewController.xib; sourceTree = "<group>"; };
+		DD900F56292E454A00CECDE4 /* MR0x171ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x171ViewController.h; sourceTree = "<group>"; };
+		DD900F57292E454A00CECDE4 /* MR0x171VideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x171VideoRenderer.h; sourceTree = "<group>"; };
+		DD900F60292E531A00CECDE4 /* MRMetalNV12Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalNV12Pipeline.h; sourceTree = "<group>"; };
+		DD900F61292E531A00CECDE4 /* MRMetalNV12Pipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalNV12Pipeline.m; sourceTree = "<group>"; };
+		DD900F63292E536700CECDE4 /* MRMetalBasePipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalBasePipeline.h; sourceTree = "<group>"; };
+		DD900F64292E536700CECDE4 /* MRMetalBasePipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalBasePipeline.m; sourceTree = "<group>"; };
+		DD900F66292E56A200CECDE4 /* MRMetalBGRAPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalBGRAPipeline.h; sourceTree = "<group>"; };
+		DD900F67292E56A200CECDE4 /* MRMetalBGRAPipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalBGRAPipeline.m; sourceTree = "<group>"; };
+		DD900F72292E7A9A00CECDE4 /* MRMetalNV21Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalNV21Pipeline.h; sourceTree = "<group>"; };
+		DD900F73292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalNV21Pipeline.m; sourceTree = "<group>"; };
+		DD900F7B292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalYUV420PPipeline.h; sourceTree = "<group>"; };
+		DD900F7C292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalYUV420PPipeline.m; sourceTree = "<group>"; };
+		DD900F8C292F194B00CECDE4 /* MRMetalUYVY422Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalUYVY422Pipeline.h; sourceTree = "<group>"; };
+		DD900F8D292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalUYVY422Pipeline.m; sourceTree = "<group>"; };
+		DD900F8F292F249C00CECDE4 /* MRMetalYUYV422Pipeline.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalYUYV422Pipeline.h; sourceTree = "<group>"; };
+		DD900F90292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalYUYV422Pipeline.m; sourceTree = "<group>"; };
 		DD91F143268CC78A00B96334 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F28E26AC082C00B96334 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -578,6 +613,44 @@
 			path = 0x22;
 			sourceTree = "<group>";
 		};
+		DD900F39292C6B6200CECDE4 /* MetalAssets */ = {
+			isa = PBXGroup;
+			children = (
+				DD900F45292CFA2F00CECDE4 /* MRMetalRenderer.h */,
+				DD900F43292CFA2F00CECDE4 /* MRMetalRenderer.m */,
+				DD900F63292E536700CECDE4 /* MRMetalBasePipeline.h */,
+				DD900F64292E536700CECDE4 /* MRMetalBasePipeline.m */,
+				DD900F66292E56A200CECDE4 /* MRMetalBGRAPipeline.h */,
+				DD900F67292E56A200CECDE4 /* MRMetalBGRAPipeline.m */,
+				DD900F60292E531A00CECDE4 /* MRMetalNV12Pipeline.h */,
+				DD900F61292E531A00CECDE4 /* MRMetalNV12Pipeline.m */,
+				DD900F72292E7A9A00CECDE4 /* MRMetalNV21Pipeline.h */,
+				DD900F73292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m */,
+				DD900F7B292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.h */,
+				DD900F7C292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m */,
+				DD900F8C292F194B00CECDE4 /* MRMetalUYVY422Pipeline.h */,
+				DD900F8D292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m */,
+				DD900F8F292F249C00CECDE4 /* MRMetalYUYV422Pipeline.h */,
+				DD900F90292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m */,
+				DD900F42292CFA2F00CECDE4 /* MRMetalShaders.metal */,
+				DD900F44292CFA2F00CECDE4 /* MRMetalShaderTypes.h */,
+			);
+			name = MetalAssets;
+			path = "FFmpegTutorial-macOS/MetalAssets";
+			sourceTree = SOURCE_ROOT;
+		};
+		DD900F52292E454A00CECDE4 /* 0x17-1 */ = {
+			isa = PBXGroup;
+			children = (
+				DD900F57292E454A00CECDE4 /* MR0x171VideoRenderer.h */,
+				DD900F53292E454A00CECDE4 /* MR0x171VideoRenderer.m */,
+				DD900F56292E454A00CECDE4 /* MR0x171ViewController.h */,
+				DD900F54292E454A00CECDE4 /* MR0x171ViewController.m */,
+				DD900F55292E454A00CECDE4 /* MR0x171ViewController.xib */,
+			);
+			path = "0x17-1";
+			sourceTree = "<group>";
+		};
 		DD91F28B26AC081200B96334 /* OpenGLAssets */ = {
 			isa = PBXGroup;
 			children = (
@@ -919,6 +992,7 @@
 				DDF923CE28EC5A2A00F29C1A /* 0x16-5 */,
 				DDF923C828EC5A2A00F29C1A /* 0x16-6 */,
 				DD4CCBD228ED6C7A0047F238 /* 0x16-7 */,
+				DD900F52292E454A00CECDE4 /* 0x17-1 */,
 			);
 			path = "2.Video Rendering";
 			sourceTree = "<group>";
@@ -962,9 +1036,9 @@
 		DDF9233228EC4A5F00F29C1A /* 0x10 */ = {
 			isa = PBXGroup;
 			children = (
-				DDF9233328EC4A5F00F29C1A /* MR0x10ViewController.xib */,
-				DDF9233428EC4A5F00F29C1A /* MR0x10ViewController.m */,
 				DDF9233528EC4A5F00F29C1A /* MR0x10ViewController.h */,
+				DDF9233428EC4A5F00F29C1A /* MR0x10ViewController.m */,
+				DDF9233328EC4A5F00F29C1A /* MR0x10ViewController.xib */,
 			);
 			path = 0x10;
 			sourceTree = "<group>";
@@ -1272,6 +1346,7 @@
 				DDF923C028EC4A9B00F29C1A /* 4.Movie Player */,
 				DDF923C128EC4AB400F29C1A /* 5.Have Fun */,
 				DD97E83525720E3000B93F9F /* RootViewController */,
+				DD900F39292C6B6200CECDE4 /* MetalAssets */,
 				DD91F28B26AC081200B96334 /* OpenGLAssets */,
 				DD4CCBDB28EEC80E0047F238 /* Support Files */,
 			);
@@ -1362,6 +1437,7 @@
 				DDF9239528EC4A5F00F29C1A /* MR0x11ViewController.xib in Resources */,
 				DDF59928288ED5D30079D26E /* MR0x34ViewController.xib in Resources */,
 				DDF923B028EC4A5F00F29C1A /* MR0x14ViewController.xib in Resources */,
+				DD900F5D292E454A00CECDE4 /* MR0x171ViewController.xib in Resources */,
 				DDF922E128E9675A00F29C1A /* 2_sampler2D_v3.fsh in Resources */,
 				DDF922AD28E947FA00F29C1A /* 2_sampler2D.fsh in Resources */,
 				DDF923F628EC5A2A00F29C1A /* MR0x164ViewController.xib in Resources */,
@@ -1442,6 +1518,7 @@
 			files = (
 				C960C926287BC9D8005365CA /* MR0x23ViewController.m in Sources */,
 				DDF598CF288056480079D26E /* MR0x24AudioRenderer.m in Sources */,
+				DD900F68292E56A200CECDE4 /* MRMetalBGRAPipeline.m in Sources */,
 				DDF9239128EC4A5F00F29C1A /* MR0x156VideoRenderer.m in Sources */,
 				DDF923B728EC4A5F00F29C1A /* MR0x12ViewController.m in Sources */,
 				DDF923B528EC4A5F00F29C1A /* MR0x13ViewController.m in Sources */,
@@ -1451,6 +1528,7 @@
 				DDAD7FEB27FF3EBE00E947BB /* MR0x02ViewController.m in Sources */,
 				DDE855352871CA490006B140 /* MR0x20VideoRenderer.m in Sources */,
 				DDF9239628EC4A5F00F29C1A /* MR0x11ViewController.m in Sources */,
+				DD900F7D292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m in Sources */,
 				DDF5991828883D3C0079D26E /* MR0x32AudioUnitRenderer.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
 				DDE855362871CA490006B140 /* MR0x20ViewController.m in Sources */,
@@ -1476,6 +1554,8 @@
 				DDF923AF28EC4A5F00F29C1A /* MR0x152VideoRenderer.m in Sources */,
 				DDF923F428EC5A2A00F29C1A /* MR0x162ViewController.m in Sources */,
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
+				DD900F5C292E454A00CECDE4 /* MR0x171ViewController.m in Sources */,
+				DD900F62292E531A00CECDE4 /* MRMetalNV12Pipeline.m in Sources */,
 				DDF598FF2882EA3C0079D26E /* MR0x31AudioUnitRenderer.m in Sources */,
 				DDF5991B28883D3C0079D26E /* MR0x32AudioRenderer.m in Sources */,
 				DD4CCBD928ED6C7A0047F238 /* MR0x167VideoRenderer.m in Sources */,
@@ -1489,11 +1569,13 @@
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DDF598CA288056480079D26E /* MR0x24ViewController.m in Sources */,
 				DDF923B428EC4A5F00F29C1A /* MR0x13VideoRenderer.m in Sources */,
+				DD900F47292CFA2F00CECDE4 /* MRMetalRenderer.m in Sources */,
 				DDF598CC288056480079D26E /* MR0x24AudioQueueRenderer.m in Sources */,
 				DDF598CD288056480079D26E /* MR0x24AudioUnitRenderer.m in Sources */,
 				DDF9239228EC4A5F00F29C1A /* MR0x156ViewController.m in Sources */,
 				DDF923E928EC5A2A00F29C1A /* MR0x166VideoRenderer.m in Sources */,
 				DDF598FE2882EA3C0079D26E /* MR0x31AudioQueueRenderer.m in Sources */,
+				DD900F65292E536700CECDE4 /* MRMetalBasePipeline.m in Sources */,
 				DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */,
 				DDF5992128884D280079D26E /* MR0x33ViewController.m in Sources */,
 				DDF923BA28EC4A5F00F29C1A /* MR0x146VideoRenderer.m in Sources */,
@@ -1501,6 +1583,7 @@
 				DDF9239F28EC4A5F00F29C1A /* MR0x142VideoRenderer.m in Sources */,
 				DDF599012882EA3C0079D26E /* MR0x31AudioRenderer.m in Sources */,
 				DDF9238C28EC4A5F00F29C1A /* MR0x157ViewController.m in Sources */,
+				DD900F74292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m in Sources */,
 				DDF923F528EC5A2A00F29C1A /* MR0x164VideoRenderer.m in Sources */,
 				DDF923EC28EC5A2A00F29C1A /* MR0x165VideoRenderer.m in Sources */,
 				DD7D80A426BAED3300D968F3 /* MR0x141OpenGLCompiler.m in Sources */,
@@ -1511,16 +1594,20 @@
 				DD56CB072867FBBD0046C28A /* MR0x06ViewController.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
+				DD900F5B292E454A00CECDE4 /* MR0x171VideoRenderer.m in Sources */,
 				DDF923B128EC4A5F00F29C1A /* MR0x14VideoRenderer.m in Sources */,
 				DDF599022882EA3C0079D26E /* MR0x31ViewController.m in Sources */,
 				DD4CCBDA28ED6C7A0047F238 /* MR0x167ViewController.m in Sources */,
 				DD56CB0228674FA00046C28A /* MR0x05ViewController.m in Sources */,
+				DD900F46292CFA2F00CECDE4 /* MRMetalShaders.metal in Sources */,
+				DD900F8E292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m in Sources */,
 				DDF923EF28EC5A2A00F29C1A /* MR0x161VideoRenderer.m in Sources */,
 				DDBFF18528CA300700AFCE44 /* MR0x50VideoRenderer.m in Sources */,
 				DDF923AE28EC4A5F00F29C1A /* MR0x152ViewController.m in Sources */,
 				DDF5992D288EE7970079D26E /* MR0x35ViewController.m in Sources */,
 				DDF9239728EC4A5F00F29C1A /* MR0x11VideoRenderer.m in Sources */,
 				DDF923A528EC4A5F00F29C1A /* MR0x153ViewController.m in Sources */,
+				DD900F91292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m in Sources */,
 				DDF923A728EC4A5F00F29C1A /* MR0x154ViewController.m in Sources */,
 				DD56CAFB28670F460046C28A /* MR0x04ViewController.m in Sources */,
 				DDF923E828EC5A2A00F29C1A /* MR0x163ViewController.m in Sources */,

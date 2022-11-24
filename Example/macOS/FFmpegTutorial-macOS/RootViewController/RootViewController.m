@@ -237,9 +237,10 @@
             @"class":@"MR0x167ViewController",
         },
         @{
-            @"title":@"0x17",
-            @"detail":@"TODO:使用 Metal 渲染视频桢",
-            @"class":@"",
+            @"title":@"0x17-1",
+            @"detail":@"使用 Metal 渲染 BGRA 视频桢",
+            @"class":@"MR0x171ViewController",
+        },
         },
         @{
             @"title":@"三、音频渲染",

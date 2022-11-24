@@ -28,12 +28,8 @@ AVFrame to CGImage，pixel fmt support [RGB555BE/RGB555LE/RGB24/ARGB/0RGB/RGBA/R
 + (CIImage* )ciImageFromRGB32orBGR32Frame:(AVFrame*)frame;
 
 
-/// create CVPixelBufferPool
-/// @param format AVPixelFormat
-/// @param w picture width
-/// @param h picture height
-/// @param fullRange video-range (luma=[16,235] chroma=[16,240])、full-range (luma=[0,255] chroma=[1,255]).
-+ (CVPixelBufferPoolRef _Nullable)createCVPixelBufferPoolRef:(const int)format w:(const int)w h:(const int)h fullRange:(const bool)fullRange;
+/// create CVPixelBufferPool 
++ (CVPixelBufferPoolRef _Nullable)createPixelBufferPoolWithAVFrame:(AVFrame *)frame;
 
 /**
 AVFrame to CVPixelBuffer，pixel fmt support [RGB24/ARGB/0RGB/BGRA/BGR0/NV12/NV21]
