@@ -39,6 +39,17 @@ vertex RasterizerData vertexShader(uint vertexID [[vertex_id]],
     return out;
 }
 
+//支持mvp矩阵
+vertex RasterizerData mvpShader(uint vertexID [[vertex_id]],
+             constant MRVertex *vertices [[buffer(MRVertexInputIndexVertices)]],
+             constant MRMVPMatrix &mvp   [[buffer(MRVertexInputIndexMVP)]])
+{
+    RasterizerData out;
+    out.clipSpacePosition = mvp.modelMatrix * vertices[vertexID].position;
+    out.textureCoordinate = vertices[vertexID].textureCoordinate;
+    return out;
+}
+
 /// @brief bgra fragment shader
 /// @param stage_in表示这个数据来自光栅化。（光栅化是顶点处理之后的步骤，业务层无法修改）
 /// @param texture表明是纹理数据，MRFragmentTextureIndexTextureY 是索引

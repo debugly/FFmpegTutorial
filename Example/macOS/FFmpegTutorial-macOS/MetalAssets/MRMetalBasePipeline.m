@@ -13,6 +13,7 @@
 // The render pipeline generated from the vertex and fragment shaders in the .metal shader file.
 @property (nonatomic, strong) id<MTLRenderPipelineState> pipelineState;
 @property (nonatomic, strong) id<MTLBuffer> vertices;
+@property (nonatomic, strong) id<MTLBuffer> mvp;
 @property (nonatomic, assign) NSUInteger numVertices;
 @property (nonatomic, assign) CGPoint vertexRatio;
 
@@ -82,7 +83,7 @@
     NSString *fragmentName = [self fragmentFuctionName];
     // Load all the shader files with a .metal file extension in the project.
     id<MTLLibrary> defaultLibrary = [device newDefaultLibrary];
-    id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"vertexShader"];
+    id<MTLFunction> vertexFunction = [defaultLibrary newFunctionWithName:@"mvpShader"];
     NSAssert(vertexFunction, @"can't find Vertex Function:vertexShader");
     id<MTLFunction> fragmentFunction = [defaultLibrary newFunctionWithName:fragmentName];
     NSAssert(vertexFunction, @"can't find Fragment Function:%@",fragmentName);
@@ -138,6 +139,11 @@
     self.numVertices = sizeof(quadVertices) / sizeof(MRVertex); // 顶点个数
 }
 
+- (void)updateMVP:(id<MTLBuffer>)mvp
+{
+    self.mvp = mvp;
+}
+
 - (void)uploadTextureWithEncoder:(id<MTLRenderCommandEncoder>)encoder
                           buffer:(CVPixelBufferRef)pixelBuffer
                     textureCache:(CVMetalTextureCacheRef)textureCache
@@ -150,6 +156,13 @@
                       offset:0
                      atIndex:MRVertexInputIndexVertices]; // 设置顶点缓存
  
+    if (self.mvp) {
+        // Pass in the parameter data.
+        [encoder setVertexBuffer:self.mvp
+                          offset:0
+                         atIndex:MRVertexInputIndexMVP]; // 设置模型矩阵
+    }
+    
     if (!self.pipelineState) {
         self.pipelineState = [[self class] createPipelineState:device
                                               colorPixelFormat:colorPixelFormat];

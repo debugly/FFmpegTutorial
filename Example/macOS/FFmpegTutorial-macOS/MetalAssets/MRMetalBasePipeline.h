@@ -25,6 +25,8 @@ NS_ASSUME_NONNULL_BEGIN
 - (void)updateVertexRatio:(CGPoint)ratio
                    device:(id<MTLDevice>)device;
 
+- (void)updateMVP:(id<MTLBuffer>)mvp;
+
 //subclass override!
 - (void)uploadTextureWithEncoder:(id<MTLRenderCommandEncoder>)encoder
                           buffer:(CVPixelBufferRef)pixelBuffer

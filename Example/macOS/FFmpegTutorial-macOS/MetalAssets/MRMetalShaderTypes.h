@@ -15,7 +15,8 @@
 // match Metal API buffer set calls.
 typedef enum MRVertexInputIndex
 {
-    MRVertexInputIndexVertices     = 0,
+    MRVertexInputIndexVertices  = 0,
+    MRVertexInputIndexMVP       = 1,
 } MRVertexInputIndex;
 
 //  This structure defines the layout of vertices sent to the vertex
@@ -27,6 +28,11 @@ typedef struct
     vector_float4 position;
     vector_float2 textureCoordinate;
 } MRVertex;
+
+typedef struct
+{
+    matrix_float4x4 modelMatrix;
+} MRMVPMatrix;
 
 typedef struct {
     matrix_float3x3 matrix;

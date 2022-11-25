@@ -10,6 +10,7 @@
 @import MetalKit;
 
 #import "MRMetalRenderer.h"
+#import "AAPLMathUtilities.h"
 
 // Header shared between C code here, which executes Metal API commands, and .metal files, which
 // uses these types as inputs to the shaders.
@@ -26,6 +27,7 @@
 @property (atomic, assign) CVPixelBufferRef pixelBuffer;
 @property (atomic, assign) CGPoint ratio;
 @property (nonatomic, strong) __kindof MRMetalBasePipeline *metalPipeline;
+@property (nonatomic, strong) id<MTLBuffer> mvp;
 
 @end
 
@@ -41,6 +43,11 @@
     vector_uint2 _viewportSize;
     
     CVMetalTextureCacheRef _metalTextureCache;
+    /// Metal resources and parameters for the sample animation.
+    matrix_float4x4 _projectionMatrix;
+    /// These are the view and projection transforms.
+    matrix_float4x4 _viewMatrix;
+    matrix_float4x4 _viewProjectionMatrix;
 }
 
 - (void)dealloc
@@ -69,6 +76,13 @@
         }
         // Create the command queue
         _commandQueue = [_device newCommandQueue]; // CommandQueue是渲染指令队列，保证渲染指令有序地提交到GPU
+        //设置模型矩阵，逆时针旋转 90 度。
+        _viewMatrix = matrix4x4_rotation(2 * 3.14 * 90 / 360, 0.0, 0.0, 1.0);
+        
+        MRMVPMatrix mvp = {_viewMatrix};
+        self.mvp = [_device newBufferWithBytes:&mvp
+                                        length:sizeof(MRMVPMatrix)
+                                       options:MTLResourceStorageModeShared];
     }
     return self;
 }
@@ -131,6 +145,7 @@
         CVPixelBufferRef pixelBuffer = CVPixelBufferRetain(self.pixelBuffer);
         
         if (pixelBuffer) {
+            [self.metalPipeline updateMVP:self.mvp];
             [self.metalPipeline updateVertexRatio:self.ratio device:_device];
             //upload textures
             [self.metalPipeline uploadTextureWithEncoder:renderEncoder
