@@ -99,7 +99,7 @@
                 }
                 
                 if (sample) {
-                    [self.delegate reveiveFrameToRenderer:[FFTConvertUtil cmSampleBufferRefFromCVPixelBufferRef:sample]];
+                    [self.delegate reveiveFrameToRenderer:[FFTConvertUtil createSampleBufferRefFromCVPixelBufferRef:sample]];
                 }
             }
         }

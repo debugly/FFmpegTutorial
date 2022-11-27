@@ -93,9 +93,10 @@ typedef UITableView HudContentView;
     } else {
         data = [self.hudDataArray objectAtIndex:[index unsignedIntegerValue]];
     }
-
-    data.value = value;
-    [self.tableView reloadData];
+    if (![data.value isEqualToString:value]) {
+        data.value = value;
+        [self.tableView reloadData];
+    }
 }
 
 - (NSDictionary *)allHudItem

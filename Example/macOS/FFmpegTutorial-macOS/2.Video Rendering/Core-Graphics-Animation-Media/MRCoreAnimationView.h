@@ -1,5 +1,5 @@
 //
-//  MR0x12VideoRenderer.h
+//  MRCoreAnimationView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/9.
@@ -7,9 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
+#import "MRGAMVideoRendererProtocol.h"
+
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x12VideoRenderer : NSImageView
+@interface MRCoreAnimationView : NSImageView <MRGAMVideoRendererProtocol>
 
 @end
 

@@ -30,7 +30,6 @@
 
 - (void)reveiveFrameToRenderer:(CMSampleBufferRef)sampleBuffer
 {
-    CFRetain(sampleBuffer);
     mr_sync_main_queue(^{
         [self.videoRenderer enqueueSampleBuffer:sampleBuffer];
         CFRelease(sampleBuffer);

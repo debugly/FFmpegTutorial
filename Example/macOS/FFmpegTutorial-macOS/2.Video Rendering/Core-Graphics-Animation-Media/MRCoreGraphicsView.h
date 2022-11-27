@@ -1,5 +1,5 @@
 //
-//  MR0x11VideoRenderer.h
+//  MRCoreGraphicsView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/8.
@@ -8,13 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreGraphics/CGImage.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRGAMVideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x11VideoRenderer : NSView<MR0x141VideoRendererProtocol>
-
-- (void)dispalyCGImage:(CGImageRef)img;
+@interface MRCoreGraphicsView : NSView<MRGAMVideoRendererProtocol>
 
 @end
 

@@ -1,18 +1,24 @@
 //
-//  MR0x11VideoRenderer.m
+//  MRCoreGraphicsView.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/8.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x11VideoRenderer.h"
+#import "MRCoreGraphicsView.h"
+#import <FFmpegTutorial/FFTConvertUtil.h>
+#import <FFmpegTutorial/FFTDispatch.h>
+#import <MRFFmpegPod/libavutil/frame.h>
 
-@implementation MR0x11VideoRenderer
+@interface MRCoreGraphicsView ()
 {
     CGImageRef _img;
-    MR0x141ContentMode _contentMode;
+    MRGAMContentMode _contentMode;
 }
+@end
+
+@implementation MRCoreGraphicsView
 
 - (void)dealloc
 {
@@ -22,7 +28,7 @@
     }
 }
 
-- (void)dispalyCGImage:(CGImageRef)img
+- (void)displayCGImage:(CGImageRef)img
 {
     if (img) {
         if (_img) {
@@ -35,6 +41,15 @@
     [self setNeedsDisplay:YES];
 }
 
+- (void)displayAVFrame:(AVFrame *)frame
+{
+    CGImageRef cgImage = [FFTConvertUtil createImageFromRGBFrame:frame];
+    mr_sync_main_queue(^{
+        [self displayCGImage:cgImage];
+        CGImageRelease(cgImage);
+    });
+}
+                       
 - (void)drawRect:(CGRect)rect
 {
     [[NSColor blackColor] setFill];
@@ -55,7 +70,7 @@
         CGFloat targetWidth = viewWidth;
         CGFloat targetHeight = viewHeight;
         
-        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
+        if (_contentMode == MRGAMContentModeScaleAspectFit) {
             //按高度最大等比缩放的宽度还没到边，说明视频的高度方向已经充满了屏幕，让高度使用最大值，宽度等比缩放，左右留黑边即可
             if (aspectWidth < viewWidth) {
                 targetWidth = aspectWidth;
@@ -64,7 +79,7 @@
                 targetWidth = viewWidth;
                 targetHeight = aspectHeight;
             }
-        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
+        } else if (_contentMode == MRGAMContentModeScaleAspectFill) {
             //按高度最大等比缩放的宽度超过屏幕了，说明视频已经完全充满了屏幕；就让高度使用最大值，宽度等比缩放
             if (aspectWidth > viewWidth) {
                 targetWidth = aspectWidth;
@@ -81,12 +96,12 @@
     }
 }
 
-- (void)setContentMode:(MR0x141ContentMode)contentMode
+- (void)setContentMode:(MRGAMContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MR0x141ContentMode)contentMode
+- (MRGAMContentMode)contentMode
 {
     return _contentMode;
 }

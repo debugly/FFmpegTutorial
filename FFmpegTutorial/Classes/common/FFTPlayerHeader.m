@@ -136,10 +136,8 @@ MRPixelFormat AVPixelFormat2MR (enum AVPixelFormat avpf){
             return MR_PIX_FMT_0RGB;
         case AV_PIX_FMT_RGB0:
             return MR_PIX_FMT_RGB0;
-        case AV_PIX_FMT_RGB555LE:
-            return MR_PIX_FMT_RGB555LE;
-        case AV_PIX_FMT_RGB555BE:
-            return MR_PIX_FMT_RGB555BE;
+        case AV_PIX_FMT_RGB555:
+            return MR_PIX_FMT_RGB555;
         case AV_PIX_FMT_BGR0:
             return MR_PIX_FMT_BGR0;
         case AV_PIX_FMT_BGRA:
@@ -185,10 +183,8 @@ enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
             return AV_PIX_FMT_RGBA;
         case MR_PIX_FMT_ARGB:
             return AV_PIX_FMT_ARGB;
-        case MR_PIX_FMT_RGB555LE:
-            return AV_PIX_FMT_RGB555LE;
-        case MR_PIX_FMT_RGB555BE:
-            return AV_PIX_FMT_RGB555BE;
+        case MR_PIX_FMT_RGB555:
+            return AV_PIX_FMT_RGB555;
         case MR_PIX_FMT_BGR0:
             return AV_PIX_FMT_BGR0;
         case MR_PIX_FMT_BGRA:

@@ -1,5 +1,5 @@
 //
-//  MR0x13VideoRenderer.h
+//  MRCoreMediaView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
@@ -8,13 +8,12 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreMedia/CMSampleBuffer.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRGAMVideoRendererProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x13VideoRenderer : NSView<MR0x141VideoRendererProtocol>
+@interface MRCoreMediaView : NSView<MRGAMVideoRendererProtocol>
 
-- (void)enqueueSampleBuffer:(CMSampleBufferRef)buffer;
 - (void)cleanScreen;
 
 @end

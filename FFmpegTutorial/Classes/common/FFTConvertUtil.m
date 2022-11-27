@@ -117,7 +117,7 @@ CGImageRef _CreateCGImageFromBitMap(void *pixels, size_t w, size_t h, size_t bpc
     if (bitmapContext) {
         CGImageRef cgImage = CGBitmapContextCreateImage(bitmapContext);
         if (cgImage) {
-            return (CGImageRef)CFAutorelease(cgImage);
+            return cgImage;
         }
     }
     return NULL;
@@ -148,13 +148,13 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
         CGDataProviderRelease(provider);
         CGColorSpaceRelease(colorSpace);
         if (cgImage) {
-            return (CGImageRef)CFAutorelease(cgImage);
+            return cgImage;
         }
     }
     return NULL;
 }
 
-+ (CGImageRef _Nullable)cgImageFromRGBFrame:(AVFrame*)frame
++ (CGImageRef _Nullable)createImageFromRGBFrame:(AVFrame*)frame
 {
 //    https://stackoverflow.com/questions/1579631/converting-rgb-data-into-a-bitmap-in-objective-c-cocoa
     //https://developer.apple.com/library/archive/documentation/GraphicsImaging/Conceptual/drawingwithquartz2d/dq_context/dq_context.html#//apple_ref/doc/uid/TP30001066-CH203-BCIBHHBB
@@ -163,11 +163,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     int bpp = 0;
     CGBitmapInfo bitMapInfo = 0;
     
-    if (frame->format == AV_PIX_FMT_RGB555BE) {
-        bpc = 5;
-        bpp = 16;
-        bitMapInfo = kCGBitmapByteOrder16Big | kCGImageAlphaNoneSkipFirst;
-    } else if (frame->format == AV_PIX_FMT_RGB555LE) {
+    if (frame->format == AV_PIX_FMT_RGB555) {
         bpc = 5;
         bpp = 16;
         bitMapInfo = kCGBitmapByteOrder16Little | kCGImageAlphaNoneSkipFirst;
@@ -198,7 +194,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 //        bitMapInfo = kCGBitmapByteOrderDefault | kCGImageAlphaPremultipliedLast;
 //    }
     else {
-        NSAssert(NO, @"not support [%d] Pixel format,use RGB555BE/RGB555LE/RGBA/ARGB/0RGB/RGB24 please!",frame->format);
+        NSAssert(NO, @"not support [%d] Pixel format,use RGB555/RGBA/RGB0/ARGB/0RGB/RGB24 please!",frame->format);
         return NULL;
     }
     
@@ -415,7 +411,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     }
 }
 
-+ (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer
++ (CMSampleBufferRef)createSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer
 {
     if (pixelBuffer) {
         //获取视频信息
@@ -432,7 +428,7 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
                 CFArrayRef attachments = CMSampleBufferGetSampleAttachmentsArray(sampleBuffer, YES);
                 CFMutableDictionaryRef dict = (CFMutableDictionaryRef)CFArrayGetValueAtIndex(attachments, 0);
                 CFDictionarySetValue(dict, kCMSampleAttachmentKey_DisplayImmediately, kCFBooleanTrue);
-                return (CMSampleBufferRef)CFAutorelease(sampleBuffer);
+                return sampleBuffer;
             } else {
                 CFRelease(videoInfo);
                 NSAssert(NO, @"Can't create CMSampleBuffer from image buffer!");

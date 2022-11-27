@@ -39,7 +39,6 @@
         NSTextField *titleLb = [self createLabel];
         NSTextField *detailLB = [self createLabel];
         detailLB.alignment = NSTextAlignmentRight;
-        
         [self addSubview:titleLb];
         [self addSubview:detailLB];
         
@@ -65,7 +64,12 @@
     self.detailLb.stringValue = title;
 }
 
-- (void)layout
+- (void)prepareForReuse
+{
+    self.detailLb.font = [NSFont systemFontOfSize:14];
+}
+
+- (void)drawRect:(NSRect)dirtyRect
 {
     CGRect frameRect = self.bounds;
     CGFloat padding = 6;
@@ -90,6 +94,10 @@
         NSRect rect = self.bounds;
         rect.size.width = maxX - minX;
         CGSize labelSize = [self.detailLb sizeThatFits:rect.size];
+        if (labelSize.height > rect.size.height) {
+            self.detailLb.font = [NSFont systemFontOfSize:self.detailLb.font.pointSize/2.0];
+            labelSize = [self.detailLb sizeThatFits:rect.size];
+        }
         rect.origin.x = minX;
         rect.origin.y = (height - labelSize.height)/2.0;
         rect.size.height = labelSize.height;

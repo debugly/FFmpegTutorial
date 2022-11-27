@@ -19,7 +19,7 @@ NS_ASSUME_NONNULL_BEGIN
 /**
 AVFrame to CGImage，pixel fmt support [RGB555BE/RGB555LE/RGB24/ARGB/0RGB/RGBA/RGB0]
 */
-+ (CGImageRef _Nullable)cgImageFromRGBFrame:(AVFrame*)frame;
++ (CGImageRef _Nullable)createImageFromRGBFrame:(AVFrame*)frame;
 
 /**
  AVFrame to CIImage，pixel fmt support [ARGB/0RGB/RGBA/RGB0/ABGR/0BGR/BGRA/BGR0]
@@ -38,7 +38,7 @@ AVFrame to CVPixelBuffer，pixel fmt support [RGB24/ARGB/0RGB/BGRA/BGR0/NV12/NV2
 */
 + (CVPixelBufferRef _Nullable)pixelBufferFromAVFrame:(AVFrame*)frame opt:(CVPixelBufferPoolRef _Nullable)poolRef;
 
-+ (CMSampleBufferRef)cmSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;
++ (CMSampleBufferRef)createSampleBufferRefFromCVPixelBufferRef:(CVPixelBufferRef)pixelBuffer;
 
 #if TARGET_OS_IOS
 ///截取原视频画面
