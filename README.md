@@ -85,17 +85,8 @@ open FFmpegTutorial-macOS.xcworkspace
 
 二、视频渲染
 
-- 0x10:封装视频缩放类，方便转出指定的像素格式
-- 0x11:使用 Core Graphics 渲染视频帧
-- 0x12:使用 Core Image 渲染视频帧
-- 0x13:使用 Core Media 渲染视频帧
-- 0x14:使用 OpenGL 渲染 BGRA 视频帧
-  - 0x14-1:抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑
-  - 0x14-2:渲染 NV12
-  - 0x14-3:渲染 NV21
-  - 0x14-4:渲染 YUV420P
-  - 0x14-5:渲染 UYVY422（Mac Only）
-  - 0x14-6:渲染 YUYV422（Mac Only）
+- Core API:使用 Core Graphics/Core Image/Core Media 渲染视频帧
+- Legacy OpenGL: 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
 - 0x15:使用 OpenGL 3.2 / ES3 渲染视频帧
   - 0x15-1:渲染 BGRA 视频桢
   - 0x15-2:渲染 NV12

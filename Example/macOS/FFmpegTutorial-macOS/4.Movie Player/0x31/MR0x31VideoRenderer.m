@@ -15,7 +15,7 @@
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
-#import "MR0x141OpenGLCompiler.h"
+#import "MRLegacyOpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 #import <FFmpegTutorial/FFTConvertUtil.h>
 
@@ -56,7 +56,7 @@ enum
     GLuint _colorTexture;
 }
 
-@property MR0x141OpenGLCompiler * openglCompiler;
+@property MRLegacyOpenGLCompiler * openglCompiler;
 
 @end
 
@@ -124,7 +124,7 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_Rect_v3.fsh"];
+        self.openglCompiler = [[MRLegacyOpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.

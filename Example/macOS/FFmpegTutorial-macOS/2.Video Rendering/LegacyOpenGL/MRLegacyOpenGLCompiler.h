@@ -1,5 +1,5 @@
 //
-//  MR0x141OpenGLCompiler.h
+//  MRLegacyOpenGLCompiler.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/8/2.
@@ -7,11 +7,11 @@
 //
 
 #import <Foundation/Foundation.h>
-#import "MR0x141OpenGLHelper.h"
+#import "MRLegacyOpenGLHelper.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x141OpenGLCompiler : NSObject
+@interface MRLegacyOpenGLCompiler : NSObject
 
 @property (copy) NSString *vshName;
 @property (copy) NSString *fshName;

@@ -1,5 +1,5 @@
 //
-//  MR0x143VideoRenderer.h
+//  MRLegacyNV21View.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/8/2.
@@ -7,13 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRLegacyOpenGLVideoRendererProtocol.h"
 
 typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x143VideoRenderer : NSOpenGLView<MR0x141VideoRendererProtocol>
+@interface MRLegacyNV21View : NSOpenGLView<MRLegacyOpenGLVideoRendererProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
 

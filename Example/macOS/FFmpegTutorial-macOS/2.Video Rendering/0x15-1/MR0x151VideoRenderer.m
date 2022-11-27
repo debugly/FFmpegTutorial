@@ -15,7 +15,7 @@
 #import <AVFoundation/AVUtilities.h>
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
-#import "MR0x141OpenGLCompiler.h"
+#import "MRLegacyOpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
 
 // Uniform index.
@@ -45,7 +45,7 @@ enum
     GLuint _vao;
 }
 
-@property MR0x141OpenGLCompiler * openglCompiler;
+@property MRLegacyOpenGLCompiler * openglCompiler;
 
 @end
 
@@ -110,7 +110,7 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_v3.fsh"];
+        self.openglCompiler = [[MRLegacyOpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"1_sampler2D_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.

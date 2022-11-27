@@ -1,13 +1,13 @@
 //
-//  MR0x141OpenGLHelper.h
+//  MRLegacyOpenGLHelper.h
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/9/30.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#ifndef MR0x141OpenGLHelper_h
-#define MR0x141OpenGLHelper_h
+#ifndef MRLegacyOpenGLHelper_h
+#define MRLegacyOpenGLHelper_h
 
 #import <stdio.h>
 #import <OpenGL/gl.h>
@@ -47,4 +47,4 @@ extern const float kColorConversion601FullRange[9];
 // for yuv422. (ref https://gist.github.com/roxlu/5795504)
 extern const float kColorConversionYUV422[9];
 
-#endif /* MR0x141OpenGLHelper_h */
+#endif /* MRLegacyOpenGLHelper_h */

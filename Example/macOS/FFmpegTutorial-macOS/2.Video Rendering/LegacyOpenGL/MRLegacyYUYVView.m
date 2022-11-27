@@ -1,25 +1,24 @@
 //
-//  MR0x142VideoRenderer.m
+//  MRLegacyYUYVView.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x142VideoRenderer.h"
+#import "MRLegacyYUYVView.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/glext.h>
 #import <AVFoundation/AVUtilities.h>
 #import <GLKit/GLKit.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x141OpenGLHelper.h"
-#import "MR0x141OpenGLCompiler.h"
+#import "MRLegacyOpenGLHelper.h"
+#import "MRLegacyOpenGLCompiler.h"
 
 // Uniform index.
 enum
 {
     UNIFORM_0,
-    UNIFORM_1,
     NUM_UNIFORMS
 };
 
@@ -31,54 +30,66 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x142VideoRenderer ()
+
+@interface MRLegacyYUYVView ()
 {
-    //color conversion matrix uniform
-    GLint _ccmUniform;
     GLint _uniforms[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
-    MR0x141ContentMode _contentMode;
+    MRLGLContentMode _contentMode;
     CGRect _layerBounds;
 }
 
-@property MR0x141OpenGLCompiler * openglCompiler;;
+@property MRLegacyOpenGLCompiler * openglCompiler;;
 
 @end
 
-@implementation MR0x142VideoRenderer
+@implementation MRLegacyYUYVView
 
 - (void)dealloc
 {
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
+- (void)setup {
+    NSOpenGLPixelFormatAttribute attrs[] =
+    {
+        NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, 24,
+        0
+    };
+    NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    
+    if (!pf)
+    {
+        NSLog(@"No OpenGL pixel format");
+    }
+    
+    NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
+    
+    [self setPixelFormat:pf];
+    [self setOpenGLContext:context];
+    [self setWantsBestResolutionOpenGLSurface:YES];
+    
+    [self drawInitBackgroundColor];
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
-        NSOpenGLPixelFormatAttribute attrs[] =
-        {
-            NSOpenGLPFAAccelerated,
-            NSOpenGLPFANoRecovery,
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize, 24,
-            0
-        };
-        NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-        
-        if (!pf)
-        {
-            NSLog(@"No OpenGL pixel format");
-        }
-        
-        NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
-        
-        [self setPixelFormat:pf];
-        [self setOpenGLContext:context];
-        [self setWantsBestResolutionOpenGLSurface:YES];
-        
-        [self drawInitBackgroundColor];
+        [self setup];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        [self setup];
     }
     return self;
 }
@@ -117,13 +128,12 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"2_sampler2D.fsh"];
+        self.openglCompiler = [[MRLegacyOpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"1_sampler2D.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
-            _uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
-            _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
+            
             _attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
         }
@@ -144,6 +154,8 @@ enum
     [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
     
     [self setupOpenGLProgram];
+    [self.openglCompiler active];
+    [self.openglCompiler active];
     
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
@@ -165,47 +177,31 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MR0x141ContentMode)contentMode
+- (void)setContentMode:(MRLGLContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MR0x141ContentMode)contentMode
+- (MRLGLContentMode)contentMode
 {
     return _contentMode;
 }
 
 - (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
 {
-    //for y plane
-    {
-        //设置纹理和采样器的对应关系
-        glUniform1i(_uniforms[UNIFORM_0], 0);
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, _textures[0]);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE, frame->width, frame->height, 0, GL_LUMINANCE, GL_UNSIGNED_BYTE, frame->data[0]);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    }
+    //设置纹理和采样器的对应关系
+    glUniform1i(_uniforms[UNIFORM_0], 0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, _textures[0]);
+    //internalformat 必须是 GL_RGBA，与创建 OpenGL 上下文指定的格式一样；
+    //format 是当前数据的格式，可以是 GL_BGRA 也可以是 GL_RGBA，根据实际情况；但 CVPixelBufferRef 是不支持 RGBA 的；
+    //这里指定好格式后，将会自动转换好对应关系，shader 无需做额外处理。
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame->width, frame->height, 0, GL_YCBCR_422_APPLE, GL_UNSIGNED_SHORT_8_8_REV_APPLE, frame->data[0]);
     
-    //for uv plane
-    {
-        //设置纹理和采样器的对应关系
-        glUniform1i(_uniforms[UNIFORM_1], 1);
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, _textures[1]);
-        
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_LUMINANCE_ALPHA, frame->width/2, frame->height/2, 0, GL_LUMINANCE_ALPHA, GL_UNSIGNED_BYTE, frame->data[1]);
-        
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-        glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    }
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 }
 
 - (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
@@ -215,14 +211,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MR0x141ContentModeScaleAspectFit || _contentMode == MR0x141ContentModeScaleAspectFill) {
+    if (_contentMode == MRLGLContentModeScaleAspectFit || _contentMode == MRLGLContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
+        if (_contentMode == MRLGLContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -231,7 +227,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
+        } else if (_contentMode == MRLGLContentModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;
@@ -255,13 +251,8 @@ enum
     glClear(GL_COLOR_BUFFER_BIT);
     
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    [self.openglCompiler active];
     
     [self uploadFrameToTexture:frame];
-    
-    glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
-    
-    // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = [self computeNormalizedSize:frame];
     
     /*
@@ -278,7 +269,6 @@ enum
     // 更新顶点数据
     glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
     glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
-   
     GLfloat quadTextureData[] = { // 坐标不对可能导致画面显示方向不对
         0, 1,
         1, 1,

@@ -1,19 +1,19 @@
 //
-//  MR0x144VideoRenderer.m
+//  MRLegacyYUV420PView.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x144VideoRenderer.h"
+#import "MRLegacyYUV420PView.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/glext.h>
 #import <AVFoundation/AVUtilities.h>
 #import <GLKit/GLKit.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x141OpenGLHelper.h"
-#import "MR0x141OpenGLCompiler.h"
+#import "MRLegacyOpenGLHelper.h"
+#import "MRLegacyOpenGLCompiler.h"
 
 // Uniform index.
 enum
@@ -32,54 +32,67 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x144VideoRenderer ()
+@interface MRLegacyYUV420PView ()
 {
     //color conversion matrix uniform
     GLint _ccmUniform;
     GLint _uniforms[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
-    MR0x141ContentMode _contentMode;
+    MRLGLContentMode _contentMode;
     CGRect _layerBounds;
 }
 
-@property MR0x141OpenGLCompiler * openglCompiler;;
+@property MRLegacyOpenGLCompiler * openglCompiler;;
 
 @end
 
-@implementation MR0x144VideoRenderer
+@implementation MRLegacyYUV420PView
 
 - (void)dealloc
 {
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
+- (void)setup {
+    NSOpenGLPixelFormatAttribute attrs[] =
+    {
+        NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, 24,
+        0
+    };
+    NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    
+    if (!pf)
+    {
+        NSLog(@"No OpenGL pixel format");
+    }
+    
+    NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
+    
+    [self setPixelFormat:pf];
+    [self setOpenGLContext:context];
+    [self setWantsBestResolutionOpenGLSurface:YES];
+    
+    [self drawInitBackgroundColor];
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
-        NSOpenGLPixelFormatAttribute attrs[] =
-        {
-            NSOpenGLPFAAccelerated,
-            NSOpenGLPFANoRecovery,
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize, 24,
-            0
-        };
-        NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-        
-        if (!pf)
-        {
-            NSLog(@"No OpenGL pixel format");
-        }
-        
-        NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
-        
-        [self setPixelFormat:pf];
-        [self setOpenGLContext:context];
-        [self setWantsBestResolutionOpenGLSurface:YES];
-        
-        [self drawInitBackgroundColor];
+        [self setup];
+    }
+    return self;
+}
+
+- (instancetype)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        [self setup];
     }
     return self;
 }
@@ -118,7 +131,7 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MR0x141OpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"3_sampler2D.fsh"];
+        self.openglCompiler = [[MRLegacyOpenGLCompiler alloc] initWithvshName:@"common.vsh" fshName:@"3_sampler2D.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
@@ -146,7 +159,7 @@ enum
     [[self openGLContext] setValues:&swapInt forParameter:NSOpenGLCPSwapInterval];
     
     [self setupOpenGLProgram];
-    
+    [self.openglCompiler active];
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
     glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
@@ -167,12 +180,12 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MR0x141ContentMode)contentMode
+- (void)setContentMode:(MRLGLContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MR0x141ContentMode)contentMode
+- (MRLGLContentMode)contentMode
 {
     return _contentMode;
 }
@@ -232,14 +245,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MR0x141ContentModeScaleAspectFit || _contentMode == MR0x141ContentModeScaleAspectFill) {
+    if (_contentMode == MRLGLContentModeScaleAspectFit || _contentMode == MRLGLContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
+        if (_contentMode == MRLGLContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -248,7 +261,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
+        } else if (_contentMode == MRLGLContentModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;
@@ -270,14 +283,13 @@ enum
     
     glClearColor(0.0,0.0,0.0,0.0);
     glClear(GL_COLOR_BUFFER_BIT);
-    
+    VerifyGL(;);
     glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    [self.openglCompiler active];
-    
+    VerifyGL(;);
     [self uploadFrameToTexture:frame];
     
     glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
-    
+    VerifyGL(;);
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = [self computeNormalizedSize:frame];
     
@@ -296,6 +308,8 @@ enum
     glVertexAttribPointer(_attributers[ATTRIB_VERTEX], 2, GL_FLOAT, 0, 0, quadVertexData);
     glEnableVertexAttribArray(_attributers[ATTRIB_VERTEX]);
    
+    VerifyGL(;);
+    
     GLfloat quadTextureData[] = { // 坐标不对可能导致画面显示方向不对
         0, 1,
         1, 1,
