@@ -237,34 +237,9 @@
             @"class":@"MR0x167ViewController",
         },
         @{
-            @"title":@"0x17-1",
-            @"detail":@"使用 Metal 渲染 BGRA 视频桢",
-            @"class":@"MR0x171ViewController",
-        },
-        @{
-            @"title":@"0x17-2",
-            @"detail":@"使用 Metal 渲染 NV12 视频桢",
-            @"class":@"MR0x172ViewController",
-        },
-        @{
-            @"title":@"0x17-3",
-            @"detail":@"使用 Metal 渲染 NV21 视频桢",
-            @"class":@"MR0x173ViewController",
-        },
-        @{
-            @"title":@"0x17-4",
-            @"detail":@"使用 Metal 渲染 YUV420P 视频桢",
-            @"class":@"MR0x174ViewController",
-        },
-        @{
-            @"title":@"0x17-5",
-            @"detail":@"使用 Metal 渲染 UYVY422 视频桢",
-            @"class":@"MR0x175ViewController",
-        },
-        @{
-            @"title":@"0x17-6",
-            @"detail":@"使用 Metal 渲染 YUYV422 视频桢",
-            @"class":@"MR0x176ViewController",
+            @"title":@"Metal 系列",
+            @"detail":@"渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢",
+            @"class":@"MRMetalViewController",
         },
         @{
             @"title":@"三、音频渲染",

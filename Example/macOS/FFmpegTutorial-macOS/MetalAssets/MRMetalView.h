@@ -1,5 +1,5 @@
 //
-//  MR0x171VideoRenderer.h
+//  MRMetalView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/11/22.
@@ -12,7 +12,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x171VideoRenderer : MTKView <MR0x141VideoRendererProtocol>
+@interface MRMetalView : MTKView <MR0x141VideoRendererProtocol>
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)img;
 - (void)displayNV21PixelBuffer:(CVPixelBufferRef)img;

@@ -27,6 +27,7 @@ AVFrame to CGImage，pixel fmt support [RGB555BE/RGB555LE/RGB24/ARGB/0RGB/RGBA/R
  */
 + (CIImage* )ciImageFromRGB32orBGR32Frame:(AVFrame*)frame;
 
++ (int)cvpixelFormatTypeWithAVFrame:(AVFrame *)frame;
 
 /// create CVPixelBufferPool 
 + (CVPixelBufferPoolRef _Nullable)createPixelBufferPoolWithAVFrame:(AVFrame *)frame;

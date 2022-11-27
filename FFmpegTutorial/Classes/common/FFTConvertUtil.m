@@ -252,8 +252,16 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     return ciImage;
 }
 
-+ (NSDictionary* _Nullable)_prepareCVPixelBufferAttibutes:(const int)format fullRange:(const bool)fullRange h:(const int)h w:(const int)w
++ (int)cvpixelFormatTypeWithAVFrame:(AVFrame *)frame
 {
+    const int format = frame->format;
+    //AVCOL_RANGE_MPEG对应tv，AVCOL_RANGE_JPEG对应pc
+    //Y′ values are conventionally shifted and scaled to the range [16, 235] (referred to as studio swing or "TV levels") rather than using the full range of [0, 255] (referred to as full swing or "PC levels").
+    //https://en.wikipedia.org/wiki/YUV#Numerical_approximations
+    
+    //video-range (luma=[16,235] chroma=[16,240])
+    //full-range  (luma=[0,255]  chroma=[1,255])
+    const bool fullRange = frame->color_range != AVCOL_RANGE_MPEG;
     //CoreVideo does not provide support for all of these formats; this list just defines their names.
     int pixelFormatType = 0;
     
@@ -285,24 +293,31 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
 //    }
     else {
         NSAssert(NO,@"unsupported pixel format!");
+    }
+    return pixelFormatType;
+}
+
++ (NSDictionary* _Nullable)_prepareCVPixelBufferAttibutes:(AVFrame *)frame
+{
+    int pixelFormatType = [self cvpixelFormatTypeWithAVFrame:frame];
+    if (pixelFormatType == 0) {
         return nil;
     }
+
     const int linesize = 32;//FFmpeg 解码数据对齐是32，这里期望CVPixelBuffer也能使用32对齐，但实际来看却是64！
     NSMutableDictionary*attributes = [NSMutableDictionary dictionary];
     [attributes setObject:@(YES) forKey:(NSString*)kCVPixelBufferMetalCompatibilityKey];
     [attributes setObject:@(pixelFormatType) forKey:(NSString*)kCVPixelBufferPixelFormatTypeKey];
-    [attributes setObject:[NSNumber numberWithInt:w] forKey: (NSString*)kCVPixelBufferWidthKey];
-    [attributes setObject:[NSNumber numberWithInt:h] forKey: (NSString*)kCVPixelBufferHeightKey];
+    [attributes setObject:[NSNumber numberWithInt:frame->width] forKey: (NSString*)kCVPixelBufferWidthKey];
+    [attributes setObject:[NSNumber numberWithInt:frame->height] forKey: (NSString*)kCVPixelBufferHeightKey];
     [attributes setObject:@(linesize) forKey:(NSString*)kCVPixelBufferBytesPerRowAlignmentKey];
     [attributes setObject:[NSDictionary dictionary] forKey:(NSString*)kCVPixelBufferIOSurfacePropertiesKey];
     return attributes;
 }
 
-//video-range (luma=[16,235] chroma=[16,240])
-//full-range  (luma=[0,255]  chroma=[1,255])
 + (CVPixelBufferPoolRef _Nullable)createPixelBufferPoolWithAVFrame:(AVFrame *)frame
 {
-    NSDictionary * attributes = [self _prepareCVPixelBufferAttibutes:frame->format fullRange:frame->color_range != AVCOL_RANGE_MPEG h:frame->height w:frame->width];
+    NSDictionary * attributes = [self _prepareCVPixelBufferAttibutes:frame];
     if (!attributes) {
         return NULL;
     }
@@ -326,27 +341,18 @@ CGImageRef _CreateCGImage(void *pixels,size_t w, size_t h, size_t bpc, size_t bp
     CVPixelBufferRef pixelBuffer = NULL;
     CVReturn result = kCVReturnError;
     
-    const int w = frame->width;
-    const int h = frame->height;
-    const int format = frame->format;
-    
     if (poolRef) {
         result = CVPixelBufferPoolCreatePixelBuffer(NULL, poolRef, &pixelBuffer);
     } else {
-        //AVCOL_RANGE_MPEG对应tv，AVCOL_RANGE_JPEG对应pc
-        //Y′ values are conventionally shifted and scaled to the range [16, 235] (referred to as studio swing or "TV levels") rather than using the full range of [0, 255] (referred to as full swing or "PC levels").
-        //https://en.wikipedia.org/wiki/YUV#Numerical_approximations
-        
-        const bool fullRange = frame->color_range != AVCOL_RANGE_MPEG;
-        NSDictionary * attributes = [self _prepareCVPixelBufferAttibutes:format fullRange:fullRange h:h w:w];
+        NSDictionary * attributes = [self _prepareCVPixelBufferAttibutes:frame];
         if (!attributes) {
             return NULL;
         }
         const int pixelFormatType = [attributes[(NSString*)kCVPixelBufferPixelFormatTypeKey] intValue];
         
         result = CVPixelBufferCreate(kCFAllocatorDefault,
-                                     w,
-                                     h,
+                                     frame->width,
+                                     frame->height,
                                      pixelFormatType,
                                      (__bridge CFDictionaryRef)(attributes),
                                      &pixelBuffer);

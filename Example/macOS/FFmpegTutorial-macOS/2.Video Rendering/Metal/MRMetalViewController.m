@@ -1,30 +1,33 @@
 //
-//  MR0x172ViewController.m
+//  MRMetalViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/11/22.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x172ViewController.h"
+#import "MRMetalViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x171VideoRenderer.h"
+#import "MRMetalView.h"
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 
-@interface MR0x172ViewController ()
+@interface MRMetalViewController ()
 {
     CVPixelBufferPoolRef _pixelBufferPoolRef;
+    MRPixelFormatMask _pixelFormat;
 }
 
 @property (strong) FFTPlayer0x10 *player;
+@property (weak) MRMetalView *videoRenderer;
+
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x171VideoRenderer *videoRenderer;
+@property (weak) IBOutlet NSView *playbackView;
 
 @property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -32,7 +35,7 @@
 
 @end
 
-@implementation MR0x172ViewController
+@implementation MRMetalViewController
 
 - (void)dealloc
 {
@@ -46,6 +49,7 @@
         _player = nil;
     }
     CVPixelBufferPoolRelease(_pixelBufferPoolRef);
+    _pixelBufferPoolRef = NULL;
 }
 
 - (void)prepareTickTimerIfNeed
@@ -95,7 +99,19 @@
 
 - (CVPixelBufferRef)createCVPixelBufferFromAVFrame:(AVFrame *)frame
 {
-    if(!_pixelBufferPoolRef) {
+    if (_pixelBufferPoolRef) {
+        NSDictionary *attributes = (__bridge NSDictionary *)CVPixelBufferPoolGetPixelBufferAttributes(_pixelBufferPoolRef);
+        int _width = [[attributes objectForKey:(NSString*)kCVPixelBufferWidthKey] intValue];
+        int _height = [[attributes objectForKey:(NSString*)kCVPixelBufferHeightKey] intValue];
+        int _format = [[attributes objectForKey:(NSString*)kCVPixelBufferPixelFormatTypeKey] intValue];
+        
+        if (frame->width != _width || frame->height != _height || [FFTConvertUtil cvpixelFormatTypeWithAVFrame:frame] != _format) {
+            CVPixelBufferPoolRelease(_pixelBufferPoolRef);
+            _pixelBufferPoolRef = NULL;
+        }
+    }
+    
+    if (!_pixelBufferPoolRef) {
         _pixelBufferPoolRef = [FFTConvertUtil createPixelBufferPoolWithAVFrame:frame];
     }
     return [FFTConvertUtil pixelBufferFromAVFrame:frame opt:_pixelBufferPoolRef];
@@ -107,7 +123,11 @@
     self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
     CVPixelBufferRef img = [self createCVPixelBufferFromAVFrame:frame];
     if (img) {
-        [self.videoRenderer displayPixelBuffer:img];
+        if (frame->format == AV_PIX_FMT_NV21) {
+            [self.videoRenderer displayNV21PixelBuffer:img];
+        } else {
+            [self.videoRenderer displayPixelBuffer:img];
+        }
         CVPixelBufferRelease(img);
     }
 }
@@ -117,11 +137,21 @@
     if (self.player) {
         [self.player asyncStop];
         self.player = nil;
+        
         [self.timer invalidate];
         self.timer = nil;
+        
         [self.hud destroyContentView];
         self.hud = nil;
+        
+        [self.videoRenderer removeFromSuperview];
+        self.videoRenderer = nil;
     }
+    
+    MRMetalView *videoRenderer = [[MRMetalView alloc] initWithFrame:self.playbackView.bounds];
+    [self.playbackView addSubview:videoRenderer];
+    videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    self.videoRenderer = videoRenderer;
     
     self.hud = [[FFTHudControl alloc] init];
     NSView *hudView = [self.hud contentView];
@@ -132,23 +162,28 @@
     rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    [self.indicatorView startAnimation:nil];
     
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
+    player.supportedPixelFormats = _pixelFormat;
     
     __weakSelf__
-    player.onVideoOpened = ^(NSDictionary * _Nonnull info) {
+    player.onVideoOpened = ^(FFTPlayer0x10 *player, NSDictionary * _Nonnull info) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");
         NSLog(@"%@",info);
         NSLog(@"----------------------");
     };
     
-    player.onError = ^(NSError * _Nonnull e) {
+    player.onError = ^(FFTPlayer0x10 *player, NSError * _Nonnull e) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
         self.player = nil;
@@ -156,14 +191,17 @@
         self.timer = nil;
     };
     
-    player.onDecoderFrame = ^(int type, int serial, AVFrame * _Nonnull frame) {
+    player.onDecoderFrame = ^(FFTPlayer0x10 *player, int type, int serial, AVFrame * _Nonnull frame) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         //video
         if (type == 1) {
-            mr_msleep(40);
             @autoreleasepool {
                 [self displayVideoFrame:frame];
             }
+            mr_msleep(40);
         }
         //audio
         else if (type == 2) {
@@ -172,13 +210,16 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    
     [self prepareTickTimerIfNeed];
+    [self.indicatorView startAnimation:nil];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
+    _pixelFormat = MR_PIX_FMT_MASK_BGRA;
 }
 
 #pragma - mark actions
@@ -223,6 +264,27 @@
     } else if (item.tag == 3) {
         [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFit];
     }
+}
+
+- (IBAction)onSelectPixelFormat:(NSPopUpButton *)sender
+{
+    NSMenuItem *item = [sender selectedItem];
+    
+    if (item.tag == 1) {
+        _pixelFormat = MR_PIX_FMT_MASK_BGRA;
+    } else if (item.tag == 2) {
+        _pixelFormat = MR_PIX_FMT_MASK_NV12;
+    } else if (item.tag == 3) {
+        _pixelFormat = MR_PIX_FMT_MASK_NV21;
+    } else if (item.tag == 4) {
+        _pixelFormat = MR_PIX_FMT_MASK_YUV420P;
+    } else if (item.tag == 5) {
+        _pixelFormat = MR_PIX_FMT_MASK_UYVY422;
+    } else if (item.tag == 6) {
+        _pixelFormat = MR_PIX_FMT_MASK_YUYV422;
+    }
+    
+    [self go:nil];
 }
 
 @end
