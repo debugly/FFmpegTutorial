@@ -36,11 +36,11 @@ FOUNDATION_EXPORT kFFTPlayer0x10InfoKey kFFTPlayer0x10Height;
 ///期望的像素格式
 @property (nonatomic, assign) MRPixelFormatMask supportedPixelFormats;
 
-@property (nonatomic, copy) void(^onVideoOpened)(NSDictionary *info);
-@property (nonatomic, copy) void(^onReadPkt)(int a,int v);
+@property (nonatomic, copy) void(^onVideoOpened)(FFTPlayer0x10 *player,NSDictionary *info);
+@property (nonatomic, copy) void(^onReadPkt)(FFTPlayer0x10 *player,int a,int v);
 //type: 1->video;2->audio;
-@property (nonatomic, copy) void(^onDecoderFrame)(int type,int serial,AVFrame *frame);
-@property (nonatomic, copy) void(^onError)(NSError *);
+@property (nonatomic, copy) void(^onDecoderFrame)(FFTPlayer0x10 *player,int type,int serial,AVFrame *frame);
+@property (nonatomic, copy) void(^onError)(FFTPlayer0x10 *player,NSError *);
 
 ///准备
 - (void)prepareToPlay;

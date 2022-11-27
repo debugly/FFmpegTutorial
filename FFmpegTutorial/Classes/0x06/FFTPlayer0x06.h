@@ -25,9 +25,9 @@ NS_ASSUME_NONNULL_BEGIN
 ///记录解码后的音频桢总数
 @property (atomic, assign, readonly) int audioFrameCount;
 
-@property (nonatomic, copy) void(^onReadPkt)(int a,int v);
-@property (nonatomic, copy) void(^onDecoderFrame)(int a,int v);
-@property (nonatomic, copy) void(^onError)(NSError *);
+@property (nonatomic, copy) void(^onReadPkt)(FFTPlayer0x06 *player,int a,int v);
+@property (nonatomic, copy) void(^onDecoderFrame)(FFTPlayer0x06 *player,int a,int v);
+@property (nonatomic, copy) void(^onError)(FFTPlayer0x06 *player,NSError *);
 
 ///准备
 - (void)prepareToPlay;

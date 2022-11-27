@@ -42,19 +42,19 @@
     player.contentPath = url;
 
     __weakSelf__
-    player.onError = ^(NSError *err){
+    player.onError = ^(FFTPlayer0x06 *player,NSError *err){
         NSLog(@"%@",err);
         __strongSelf__
         self.player = nil;
     };
     
-    player.onReadPkt = ^(int a,int v){
+    player.onReadPkt = ^(FFTPlayer0x06 *player,int a,int v){
         __strongSelf__
         self.audioPktCount = a;
         self.videoPktCount = v;
     };
     
-    player.onDecoderFrame = ^(int a, int v) {
+    player.onDecoderFrame = ^(FFTPlayer0x06 *player,int a, int v) {
         __strongSelf__
         self.audioFrameCount = a;
         self.videoFrameCount = v;

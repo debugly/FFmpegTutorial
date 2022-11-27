@@ -121,7 +121,7 @@
     player.supportedPixelFormats = MR_PIX_FMT_MASK_BGRA;
     
     __weakSelf__
-    player.onError = ^(NSError * _Nonnull e) {
+    player.onError = ^(FFTPlayer0x10 *player, NSError * _Nonnull e) {
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
@@ -130,7 +130,7 @@
         self.timer = nil;
     };
     
-    player.onDecoderFrame = ^(int type, int serial, AVFrame * _Nonnull frame) {
+    player.onDecoderFrame = ^(FFTPlayer0x10 *player, int type, int serial, AVFrame * _Nonnull frame) {
         __strongSelf__
         //video
         if (type == 1) {

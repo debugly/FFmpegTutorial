@@ -21,7 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (atomic, assign, readonly) int videoPktCount;
 ///记录读到的音频包总数
 @property (atomic, assign, readonly) int audioPktCount;
-@property (nonatomic, copy) void(^onReadPkt)(int a,int v);
+@property (nonatomic, copy) void(^onReadPkt)(FFTPlayer0x04 *player,int a,int v);
 ///准备
 - (void)prepareToPlay;
 ///读包

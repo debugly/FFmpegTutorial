@@ -49,19 +49,19 @@
 //    MR_PIX_FMT_MASK_BGRA;
     ;
     __weakSelf__
-    player.onError = ^(NSError *err){
+    player.onError = ^(FFTPlayer0x10 *player,NSError *err){
         NSLog(@"%@",err);
         __strongSelf__
         self.player = nil;
     };
     
-    player.onReadPkt = ^(int a,int v){
+    player.onReadPkt = ^(FFTPlayer0x10 *player,int a,int v){
         __strongSelf__
         self.audioPktCount = a;
         self.videoPktCount = v;
     };
     
-    player.onDecoderFrame = ^(int type,int serial,AVFrame *frame) {
+    player.onDecoderFrame = ^(FFTPlayer0x10 *player,int type,int serial,AVFrame *frame) {
         __strongSelf__
         //video
         if (type == 1) {

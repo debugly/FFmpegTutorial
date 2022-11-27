@@ -203,7 +203,7 @@ static int decode_interrupt_cb(void *ctx)
                     break;
             }
             if (self.onReadPkt) {
-                self.onReadPkt(self.audioPktCount,self.videoPktCount);
+                self.onReadPkt(self,self.audioPktCount,self.videoPktCount);
             }
         }
     }
@@ -362,7 +362,7 @@ static int decode_interrupt_cb(void *ctx)
         //audio queue 不能跨线程，不可以在子线程创建，主线程play。audio unit 可以
         [self setupAudioRender];
         if (self.onStreamOpened) {
-            self.onStreamOpened(dumpDic);
+            self.onStreamOpened(self,dumpDic);
         }
     });
     
@@ -863,7 +863,7 @@ static int decode_interrupt_cb(void *ctx)
 {
     mr_sync_main_queue(^{
         if (self.onEnd) {
-            self.onEnd(self.error);
+            self.onEnd(self,self.error);
         }
     });
 }
@@ -877,7 +877,7 @@ static int decode_interrupt_cb(void *ctx)
             av_log(NULL, AV_LOG_INFO, "stream is eof\n");
             self.error = nil;
             if (self.onEnd) {
-                self.onEnd(self.error);
+                self.onEnd(self,self.error);
             }
         }
     });

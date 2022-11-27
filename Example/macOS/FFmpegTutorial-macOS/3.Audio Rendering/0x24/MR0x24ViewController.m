@@ -153,7 +153,7 @@
     player.supportedSampleFormat = _audioFmt;
     
     __weakSelf__
-    player.onStreamOpened = ^(NSDictionary * _Nonnull info) {
+    player.onStreamOpened = ^(FFTPlayer0x20 *player,NSDictionary * _Nonnull info) {
         __strongSelf__
         
         NSLog(@"---SteamInfo-------------------");
@@ -174,7 +174,7 @@
         });
     };
     
-    player.onError = ^(NSError * _Nonnull e) {
+    player.onError = ^(FFTPlayer0x20 *player, NSError * _Nonnull e) {
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
@@ -183,7 +183,7 @@
         self.timer = nil;
     };
     
-    player.onDecoderFrame = ^(int type, int serial, AVFrame * _Nonnull frame) {
+    player.onDecoderFrame = ^(FFTPlayer0x20 *player, int type, int serial, AVFrame * _Nonnull frame) {
         __strongSelf__
         //video
         if (type == 1) {

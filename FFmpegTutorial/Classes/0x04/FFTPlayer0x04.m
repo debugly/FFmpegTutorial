@@ -116,7 +116,7 @@ static int decode_interrupt_cb(void *ctx)
             av_packet_unref(pkt);
             
             if (self.onReadPkt) {
-                self.onReadPkt(self.audioPktCount,self.videoPktCount);
+                self.onReadPkt(self,self.audioPktCount,self.videoPktCount);
             }
         }
     }

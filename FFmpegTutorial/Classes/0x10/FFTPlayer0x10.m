@@ -79,7 +79,6 @@ static int decode_interrupt_cb(void *ctx)
         NSAssert(NO, @"不允许重复创建");
     }
     
-    
     self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
 }
@@ -173,7 +172,7 @@ static int decode_interrupt_cb(void *ctx)
             av_packet_unref(pkt);
             
             if (self.onReadPkt) {
-                self.onReadPkt(self.audioPktCount,self.videoPktCount);
+                self.onReadPkt(self,self.audioPktCount,self.videoPktCount);
             }
         }
     }
@@ -314,7 +313,7 @@ static int decode_interrupt_cb(void *ctx)
     
     mr_sync_main_queue(^{
         if (self.onVideoOpened) {
-            self.onVideoOpened(dumpDic);
+            self.onVideoOpened(self,dumpDic);
         }
     });
     
@@ -383,7 +382,7 @@ static int decode_interrupt_cb(void *ctx)
     if (decoder == _audioDecoder) {
         self.audioFrameCount++;
         if (self.onDecoderFrame) {
-            self.onDecoderFrame(2,self.audioFrameCount,frame);
+            self.onDecoderFrame(self,2,self.audioFrameCount,frame);
         }
     } else if (decoder == _videoDecoder) {
         AVFrame *outP = nil;
@@ -399,7 +398,7 @@ static int decode_interrupt_cb(void *ctx)
         
         self.videoFrameCount++;
         if (self.onDecoderFrame) {
-            self.onDecoderFrame(1,self.videoFrameCount,outP);
+            self.onDecoderFrame(self,1,self.videoFrameCount,outP);
         }
     }
 }
@@ -408,7 +407,7 @@ static int decode_interrupt_cb(void *ctx)
 {
     mr_sync_main_queue(^{
         if (self.onError) {
-            self.onError(self.error);
+            self.onError(self,self.error);
         }
     });
 }

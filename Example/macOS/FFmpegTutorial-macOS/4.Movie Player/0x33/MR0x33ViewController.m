@@ -133,7 +133,7 @@
     player.supportedSampleFormat = _audioFmt;
     
     __weakSelf__
-    player.onStreamOpened = ^(NSDictionary * _Nonnull info) {
+    player.onStreamOpened = ^(FFTPlayer0x33 *player,NSDictionary * _Nonnull info) {
         __strongSelf__
         
         NSLog(@"---SteamInfo-------------------");
@@ -153,7 +153,7 @@
         });
     };
     
-    player.onError = ^(NSError * _Nonnull e) {
+    player.onError = ^(FFTPlayer0x33 *player, NSError * _Nonnull e) {
         __strongSelf__
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];

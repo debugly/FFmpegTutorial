@@ -45,11 +45,11 @@ typedef struct AVFrame AVFrame;
 ///期望的音频采样率，比如 44100;不指定时使用音频的采样率
 @property (nonatomic, assign) int supportedSampleRate;
 
-@property (nonatomic, copy) void(^onStreamOpened)(NSDictionary *info);
-@property (nonatomic, copy) void(^onReadPkt)(int a,int v);
+@property (nonatomic, copy) void(^onStreamOpened)(FFTPlayer0x32 *player,NSDictionary *info);
+@property (nonatomic, copy) void(^onReadPkt)(FFTPlayer0x32 *player,int a,int v);
 //audio only;
-@property (nonatomic, copy) void(^onDecoderAudioFrame)(int serial,AVFrame *frame);
-@property (nonatomic, copy) void(^onError)(NSError *);
+@property (nonatomic, copy) void(^onDecoderAudioFrame)(FFTPlayer0x32 *player,int serial,AVFrame *frame);
+@property (nonatomic, copy) void(^onError)(FFTPlayer0x32 *player,NSError *err);
 //lazy getter
 @property (nonatomic, strong) UIView<FFTVideoRendererProtocol> *videoRender;
 ///准备

@@ -172,7 +172,7 @@ static int decode_interrupt_cb(void *ctx)
             if (got_frame > 0) {
                 self.videoFrameCount += got_frame;
                 if (self.onDecoderFrame) {
-                    self.onDecoderFrame(self.audioFrameCount,self.videoFrameCount);
+                    self.onDecoderFrame(self,self.audioFrameCount,self.videoFrameCount);
                 }
             }
         }
@@ -186,7 +186,7 @@ static int decode_interrupt_cb(void *ctx)
             if (got_frame > 0) {
                 self.audioFrameCount += got_frame;
                 if (self.onDecoderFrame) {
-                    self.onDecoderFrame(self.audioFrameCount,self.videoFrameCount);
+                    self.onDecoderFrame(self,self.audioFrameCount,self.videoFrameCount);
                 }
             }
         }
@@ -244,7 +244,7 @@ static int decode_interrupt_cb(void *ctx)
             av_packet_unref(pkt);
             
             if (self.onReadPkt) {
-                self.onReadPkt(self.audioPktCount,self.videoPktCount);
+                self.onReadPkt(self,self.audioPktCount,self.videoPktCount);
             }
         }
     }

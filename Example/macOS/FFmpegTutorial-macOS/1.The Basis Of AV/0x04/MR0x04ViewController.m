@@ -42,7 +42,7 @@
         self.player = nil;
     }];
     
-    player.onReadPkt = ^(int a,int v){
+    player.onReadPkt = ^(FFTPlayer0x04 *player,int a,int v){
         __strongSelf__
         self.audioPktCount = a;
         self.videoPktCount = v;

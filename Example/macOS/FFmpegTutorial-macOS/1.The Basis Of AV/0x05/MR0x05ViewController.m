@@ -43,13 +43,13 @@
         self.player = nil;
     }];
     
-    player.onReadPkt = ^(int a,int v){
+    player.onReadPkt = ^(FFTPlayer0x05 *player,int a,int v){
         __strongSelf__
         self.audioPktCount = a;
         self.videoPktCount = v;
     };
     
-    player.onDecoderFrame = ^(int a, int v) {
+    player.onDecoderFrame = ^(FFTPlayer0x05 *player,int a, int v) {
         __strongSelf__
         self.audioFrameCount = a;
         self.videoFrameCount = v;

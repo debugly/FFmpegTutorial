@@ -171,7 +171,7 @@ static int decode_interrupt_cb(void *ctx)
                     break;
             }
             if (self.onReadPkt) {
-                self.onReadPkt(self.audioPktCount,self.videoPktCount);
+                self.onReadPkt(self,self.audioPktCount,self.videoPktCount);
             }
         }
     }
@@ -314,7 +314,7 @@ static int decode_interrupt_cb(void *ctx)
     
     mr_sync_main_queue(^{
         if (self.onStreamOpened) {
-            self.onStreamOpened(dumpDic);
+            self.onStreamOpened(self,dumpDic);
         }
     });
     
@@ -503,7 +503,7 @@ static int decode_interrupt_cb(void *ctx)
         
         self.audioFrameCount++;
         if (self.onDecoderFrame) {
-            self.onDecoderFrame(2, self.audioFrameCount, audioFrame);
+            self.onDecoderFrame(self,2, self.audioFrameCount, audioFrame);
         }
     } else if (decoder == _videoDecoder) {
         AVFrame *videoFrame = nil;
@@ -519,7 +519,7 @@ static int decode_interrupt_cb(void *ctx)
         
         self.videoFrameCount++;
         if (self.onDecoderFrame) {
-            self.onDecoderFrame(1, self.videoFrameCount, videoFrame);
+            self.onDecoderFrame(self,1, self.videoFrameCount, videoFrame);
         }
     }
 }
@@ -528,7 +528,7 @@ static int decode_interrupt_cb(void *ctx)
 {
     mr_sync_main_queue(^{
         if (self.onError) {
-            self.onError(self.error);
+            self.onError(self,self.error);
         }
     });
 }
