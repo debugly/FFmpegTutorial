@@ -1,5 +1,5 @@
 //
-//  MR0x167VideoRenderer.h
+//  MRModernGLNV21RectView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/19.
@@ -7,17 +7,14 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRModernGLRectViewProtocol.h"
 
 typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x167VideoRenderer : NSOpenGLView<MR0x141VideoRendererProtocol>
-//画面原始尺寸；
-@property (assign) CGSize videoSize;
+@interface MRModernGLNV21RectView : NSOpenGLView<MRModernGLRectViewProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
-- (NSImage *)snapshot;
 
 @end
 

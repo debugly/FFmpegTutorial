@@ -117,25 +117,6 @@
         self.timer = nil;
     }
     
-    if (!self.videoRenderer) {
-        MRCoreAnimationView *videoRenderer = [[MRCoreAnimationView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-    }
-    
-    if (!self.hud) {
-        self.hud = [[FFTHudControl alloc] init];
-        NSView *hudView = [self.hud contentView];
-        [self.view addSubview:hudView];
-        CGRect rect = self.videoRenderer.bounds;
-        CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-        rect.size.width = MIN(screenWidth / 5.0, 150);
-        rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-        [hudView setFrame:rect];
-        hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    }
-    
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = _pixelFormat;
@@ -220,8 +201,20 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hud = [[FFTHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.view addSubview:hudView];
+    CGRect rect = self.playbackView.bounds;
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+    
     self.inputField.stringValue = KTestVideoURL1;
-    [self setupCoreAnimationPixelFormats];
+    
+    [self prepareCoreAnimationView];
 }
 
 #pragma - mark actions
@@ -235,33 +228,63 @@
     }
 }
 
+- (BOOL)prepareRendererWidthClass:(Class)clazz
+{
+    if (self.videoRenderer && [self.videoRenderer isKindOfClass:clazz]) {
+        return NO;
+    }
+    [self.videoRenderer removeFromSuperview];
+    self.videoRenderer = nil;
+    
+    NSView<MRGAMViewProtocol> *videoRenderer = [[clazz alloc] initWithFrame:self.playbackView.bounds];
+    [self.playbackView addSubview:videoRenderer];
+    videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    self.videoRenderer = videoRenderer;
+    return YES;
+}
+
+- (BOOL)prepareCoreAnimationView
+{
+    if ([self prepareRendererWidthClass:[MRCoreAnimationView class]]) {
+        [self setupCoreAnimationPixelFormats];
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)prepareCoreGraphicsView
+{
+    if ([self prepareRendererWidthClass:[MRCoreGraphicsView class]]) {
+        [self setupCoreGraphicsPixelFormats];
+        return YES;
+    }
+    return NO;
+}
+
+- (BOOL)prepareCoreMediaView
+{
+    if ([self prepareRendererWidthClass:[MRCoreMediaView class]]) {
+        [self setupCoreMediaPixelFormats];
+        return YES;
+    }
+    return NO;
+}
+
 - (IBAction)onSelectedVideoRenderer:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
-        
+    BOOL created = NO;
     if (item.tag == 1) {
-        [self.videoRenderer removeFromSuperview];
-        MRCoreAnimationView *videoRenderer = [[MRCoreAnimationView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-        [self setupCoreAnimationPixelFormats];
+        created = [self prepareCoreAnimationView];
     } else if (item.tag == 2) {
-        [self.videoRenderer removeFromSuperview];
-        MRCoreGraphicsView *videoRenderer = [[MRCoreGraphicsView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-        [self setupCoreGraphicsPixelFormats];
+        created = [self prepareCoreGraphicsView];
     } else if (item.tag == 3) {
-        [self.videoRenderer removeFromSuperview];
-        MRCoreMediaView *videoRenderer = [[MRCoreMediaView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-        [self setupCoreMediaPixelFormats];
+        created = [self prepareCoreMediaView];
     }
-    [self go:nil];
+    
+    if (created) {
+        [self go:nil];
+    }
 }
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
@@ -280,8 +303,10 @@
 - (IBAction)onSelectPixelFormat:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
-    _pixelFormat = (MRPixelFormatMask)item.tag;
-    [self go:nil];
+    if (_pixelFormat != (MRPixelFormatMask)item.tag) {
+        _pixelFormat = (MRPixelFormatMask)item.tag;
+        [self go:nil];
+    }
 }
 
 @end

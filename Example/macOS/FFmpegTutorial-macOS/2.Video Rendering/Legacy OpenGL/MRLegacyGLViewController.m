@@ -118,18 +118,6 @@
         self.timer = nil;
     }
     
-    if (!self.hud) {
-        self.hud = [[FFTHudControl alloc] init];
-        NSView *hudView = [self.hud contentView];
-        [self.view addSubview:hudView];
-        CGRect rect = self.videoRenderer.bounds;
-        CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-        rect.size.width = MIN(screenWidth / 5.0, 150);
-        rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-        [hudView setFrame:rect];
-        hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    }
-    
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = _pixelFormat;
@@ -182,8 +170,11 @@
     [self.indicatorView startAnimation:nil];
 }
 
-- (void)prepareGLView:(Class)clazz
+- (void)prepareGLViewWidthClass:(Class)clazz
 {
+    if (self.videoRenderer && [self.videoRenderer isKindOfClass:clazz]) {
+        return;
+    }
     [self.videoRenderer removeFromSuperview];
     self.videoRenderer = nil;
     
@@ -193,47 +184,42 @@
     self.videoRenderer = videoRenderer;
 }
 
-- (void)prepareBGRAGLView
+- (void)prepareGLViewIfNeed
 {
-    _pixelFormat = MR_PIX_FMT_MASK_BGRA;
-    [self prepareGLView:[MRLegacyGLBGRAView class]];
-}
-
-- (void)prepareNV12GLView
-{
-    _pixelFormat = MR_PIX_FMT_MASK_NV12;
-    [self prepareGLView:[MRLegacyGLNV12View class]];
-}
-
-- (void)prepareNV21GLView
-{
-    _pixelFormat = MR_PIX_FMT_MASK_NV21;
-    [self prepareGLView:[MRLegacyGLNV21View class]];
-}
-
-- (void)prepareYUYVGLView
-{
-    _pixelFormat = MR_PIX_FMT_MASK_YUYV422;
-    [self prepareGLView:[MRLegacyGLYUYVView class]];
-}
-
-- (void)prepareUYVYGLView
-{
-    _pixelFormat = MR_PIX_FMT_MASK_UYVY422;
-    [self prepareGLView:[MRLegacyGLUYVYView class]];
-}
-
-- (void)prepareYUV420PGLView
-{
-    _pixelFormat = MR_PIX_FMT_MASK_YUV420P;
-    [self prepareGLView:[MRLegacyGLYUV420PView class]];
+    Class clazz = NULL;
+    if (_pixelFormat == MR_PIX_FMT_MASK_BGRA) {
+        clazz = [MRLegacyGLBGRAView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_NV12) {
+        clazz = [MRLegacyGLNV12View class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21) {
+        clazz = [MRLegacyGLNV21View class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_YUV420P) {
+        clazz = [MRLegacyGLYUV420PView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_UYVY422) {
+        clazz = [MRLegacyGLUYVYView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_YUYV422) {
+        clazz = [MRLegacyGLYUYVView class];
+    }
+    [self prepareGLViewWidthClass:clazz];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hud = [[FFTHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.view addSubview:hudView];
+    CGRect rect = self.playbackView.bounds;
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+    
     self.inputField.stringValue = KTestVideoURL1;
-    [self prepareBGRAGLView];
+    _pixelFormat = MR_PIX_FMT_MASK_BGRA;
+    [self prepareGLViewIfNeed];
 }
 
 #pragma - mark actions
@@ -283,22 +269,26 @@
 - (IBAction)onSelectPixelFormat:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
-    
+    MRPixelFormatMask pixelFormat = 0;
     if (item.tag == 1) {
-        [self prepareBGRAGLView];
+        pixelFormat = MR_PIX_FMT_MASK_BGRA;
     } else if (item.tag == 2) {
-        [self prepareNV12GLView];
+        pixelFormat = MR_PIX_FMT_MASK_NV12;
     } else if (item.tag == 3) {
-        [self prepareNV21GLView];
+        pixelFormat = MR_PIX_FMT_MASK_NV21;
     } else if (item.tag == 4) {
-        [self prepareYUV420PGLView];
+        pixelFormat = MR_PIX_FMT_MASK_YUV420P;
     } else if (item.tag == 5) {
-        [self prepareUYVYGLView];
+        pixelFormat = MR_PIX_FMT_MASK_UYVY422;
     } else if (item.tag == 6) {
-        [self prepareYUYVGLView];
+        pixelFormat = MR_PIX_FMT_MASK_YUYV422;
     }
     
-    [self go:nil];
+    if (pixelFormat != _pixelFormat) {
+        _pixelFormat = pixelFormat;
+        [self prepareGLViewIfNeed];
+        [self go:nil];
+    }
 }
 
 @end

@@ -1,26 +1,37 @@
 //
-//  MR0x167ViewController.m
+//  MRModernGLRectViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/1/19.
+//  Created by qianlongxu on 2022/11/28.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x167ViewController.h"
+#import "MRModernGLRectViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MR0x167VideoRenderer.h"
+#import "MRModernGLBGRARectView.h"
+#import "MRModernGLNV12RectView.h"
+#import "MRModernGLNV21RectView.h"
+#import "MRModernGLYUYVRectView.h"
+#import "MRModernGLUYVYRectView.h"
+#import "MRModernGLYUV420PRectView.h"
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"
 
-@interface MR0x167ViewController ()
+@interface MRModernGLRectViewController ()
+{
+    CVPixelBufferPoolRef _pixelBufferPoolRef;
+    MRPixelFormatMask _pixelFormat;
+}
 
 @property (strong) FFTPlayer0x10 *player;
+@property (weak) NSView<MRModernGLRectViewProtocol> *videoRenderer;
+
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x167VideoRenderer *videoRenderer;
+@property (weak) IBOutlet NSView *playbackView;
 
 @property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -28,7 +39,7 @@
 
 @end
 
-@implementation MR0x167ViewController
+@implementation MRModernGLRectViewController
 
 - (void)dealloc
 {
@@ -41,6 +52,8 @@
         [_player asyncStop];
         _player = nil;
     }
+    CVPixelBufferPoolRelease(_pixelBufferPoolRef);
+    _pixelBufferPoolRef = NULL;
 }
 
 - (void)prepareTickTimerIfNeed
@@ -100,33 +113,23 @@
     if (self.player) {
         [self.player asyncStop];
         self.player = nil;
+        
         [self.timer invalidate];
         self.timer = nil;
-        [self.hud destroyContentView];
-        self.hud = nil;
     }
-    
-    self.hud = [[FFTHudControl alloc] init];
-    NSView *hudView = [self.hud contentView];
-    [self.videoRenderer addSubview:hudView];
-    CGRect rect = self.videoRenderer.bounds;
-    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-    rect.size.width = MIN(screenWidth / 5.0, 150);
-    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-    [hudView setFrame:rect];
-    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    [self.indicatorView startAnimation:nil];
     
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormats = MR_PIX_FMT_MASK_NV12;
+    player.supportedPixelFormats = _pixelFormat;
     
     __weakSelf__
     player.onVideoOpened = ^(FFTPlayer0x10 *player, NSDictionary * _Nonnull info) {
         __strongSelf__
-        int width  = [info[kFFTPlayer0x10Width] intValue];
-        int height = [info[kFFTPlayer0x10Height] intValue];
-        self.videoRenderer.videoSize = CGSizeMake(width, height);
+        if (player != self.player) {
+            return;
+        }
+        //上一次 glview 完全销毁后，再创建
+        [self prepareGLViewIfNeed];
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");
         NSLog(@"%@",info);
@@ -135,6 +138,9 @@
     
     player.onError = ^(FFTPlayer0x10 *player, NSError * _Nonnull e) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
         self.player = nil;
@@ -144,12 +150,15 @@
     
     player.onDecoderFrame = ^(FFTPlayer0x10 *player, int type, int serial, AVFrame * _Nonnull frame) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         //video
         if (type == 1) {
-            mr_msleep(40);
             @autoreleasepool {
                 [self displayVideoFrame:frame];
             }
+            mr_msleep(40);
         }
         //audio
         else if (type == 2) {
@@ -158,13 +167,60 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    
     [self prepareTickTimerIfNeed];
+    [self.indicatorView startAnimation:nil];
+}
+
+- (void)prepareGLViewWidthClass:(Class)clazz
+{
+    if (self.videoRenderer && [self.videoRenderer isKindOfClass:clazz]) {
+        return;
+    }
+    [self.videoRenderer removeFromSuperview];
+    self.videoRenderer = nil;
+    
+    NSView<MRModernGLRectViewProtocol> *videoRenderer = [[clazz alloc] initWithFrame:self.playbackView.bounds];
+    [self.playbackView addSubview:videoRenderer];
+    videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    self.videoRenderer = videoRenderer;
+}
+
+- (void)prepareGLViewIfNeed
+{
+    Class clazz = NULL;
+    if (_pixelFormat == MR_PIX_FMT_MASK_BGRA) {
+        clazz = [MRModernGLBGRARectView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_NV12) {
+        clazz = [MRModernGLNV12RectView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21) {
+        clazz = [MRModernGLNV21RectView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_YUV420P) {
+        clazz = [MRModernGLYUV420PRectView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_UYVY422) {
+        clazz = [MRModernGLUYVYRectView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_YUYV422) {
+        clazz = [MRModernGLYUYVRectView class];
+    }
+    [self prepareGLViewWidthClass:clazz];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hud = [[FFTHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.view addSubview:hudView];
+    CGRect rect = self.playbackView.bounds;
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+    
     self.inputField.stringValue = KTestVideoURL1;
+    _pixelFormat = MR_PIX_FMT_MASK_BGRA;
 }
 
 #pragma - mark actions
@@ -183,7 +239,7 @@
     if (!self.player) {
         return;
     }
-    NSImage *img = [self.videoRenderer snapshot];
+    NSImage *img = nil;//[self.videoRenderer snapshot];
     if (!img) {
         return;
     }
@@ -203,11 +259,37 @@
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MR0x141ContentModeScaleToFill];
+        [self.videoRenderer setContentMode:MRMGLRContentModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFill];
+        [self.videoRenderer setContentMode:MRMGLRContentModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFit];
+        [self.videoRenderer setContentMode:MRMGLRContentModeScaleAspectFit];
+    }
+}
+
+- (IBAction)onSelectPixelFormat:(NSPopUpButton *)sender
+{
+    NSMenuItem *item = [sender selectedItem];
+    MRPixelFormatMask pixelFormat = 0;
+    if (item.tag == 1) {
+        pixelFormat = MR_PIX_FMT_MASK_BGRA;
+    } else if (item.tag == 2) {
+        pixelFormat = MR_PIX_FMT_MASK_NV12;
+    } else if (item.tag == 3) {
+        pixelFormat = MR_PIX_FMT_MASK_NV21;
+    } else if (item.tag == 4) {
+        pixelFormat = MR_PIX_FMT_MASK_YUV420P;
+    } else if (item.tag == 5) {
+        pixelFormat = MR_PIX_FMT_MASK_UYVY422;
+    } else if (item.tag == 6) {
+        pixelFormat = MR_PIX_FMT_MASK_YUYV422;
+    }
+    
+    if (pixelFormat != _pixelFormat) {
+        _pixelFormat = pixelFormat;
+        [self.videoRenderer removeFromSuperview];
+        self.videoRenderer = nil;
+        [self go:nil];
     }
 }
 

@@ -118,18 +118,6 @@
         self.timer = nil;
     }
     
-    if (!self.hud) {
-        self.hud = [[FFTHudControl alloc] init];
-        NSView *hudView = [self.hud contentView];
-        [self.view addSubview:hudView];
-        CGRect rect = self.videoRenderer.bounds;
-        CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-        rect.size.width = MIN(screenWidth / 5.0, 150);
-        rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-        [hudView setFrame:rect];
-        hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
-    }
-    
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = _pixelFormat;
@@ -220,6 +208,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hud = [[FFTHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.view addSubview:hudView];
+    CGRect rect = self.playbackView.bounds;
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+    
     self.inputField.stringValue = KTestVideoURL1;
     _pixelFormat = MR_PIX_FMT_MASK_BGRA;
 }

@@ -1,12 +1,12 @@
 //
-//  MR0x167VideoRenderer.m
+//  MRModernGLNV12RectView.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x167VideoRenderer.h"
+#import "MRModernGLNV12RectView.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -17,7 +17,6 @@
 #import <GLKit/GLKit.h>
 #import "MROpenGLCompiler.h"
 #import <MRFFmpegPod/libavutil/frame.h>
-#import <FFmpegTutorial/FFTConvertUtil.h>
 
 // Uniform index.
 enum
@@ -35,7 +34,7 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x167VideoRenderer ()
+@interface MRModernGLNV12RectView ()
 {
     //color conversion matrix uniform
     GLint _ccmUniform;
@@ -44,69 +43,74 @@ enum
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
-    MR0x141ContentMode _contentMode;
+    MRMGLRContentMode _contentMode;
     /// 顶点对象
     GLuint _vbo;
     GLuint _vao;
-    
-    AVFrame * _lastFrame;
-    
-    CGSize _fboTextureSize;
-    GLuint _fbo;
-    GLuint _colorTexture;
 }
 
 @property MROpenGLCompiler * openglCompiler;
 
 @end
 
-@implementation MR0x167VideoRenderer
+@implementation MRModernGLNV12RectView
 
 - (void)dealloc
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
-    [self destroyFBO];
-    av_frame_free(&_lastFrame);
+}
+
+- (void)setup
+{
+    NSOpenGLPixelFormatAttribute attrs[] =
+    {
+        NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, 24,
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+        0
+    };
+    NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    
+    if (!pf)
+    {
+        NSLog(@"No OpenGL pixel format");
+    }
+    
+    NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
+    
+#if defined(DEBUG)
+    // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
+    // This will make it much more obvious where and when such a function call is made so
+    // that we can remove such calls.
+    // Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
+    // but it would be more difficult to see where that function was called.
+    CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
+#endif
+    [self setPixelFormat:pf];
+    [self setOpenGLContext:context];
+    [self setWantsBestResolutionOpenGLSurface:YES];
+    
+    [self drawInitBackgroundColor];
+}
+
+- (instancetype)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        [self setup];
+    }
+    return self;
 }
 
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
-        NSOpenGLPixelFormatAttribute attrs[] =
-        {
-            NSOpenGLPFAAccelerated,
-            NSOpenGLPFANoRecovery,
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize, 24,
-            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-            0
-        };
-        NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-        
-        if (!pf)
-        {
-            NSLog(@"No OpenGL pixel format");
-        }
-        
-        NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
-        
-    #if defined(DEBUG)
-        // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
-        // This will make it much more obvious where and when such a function call is made so
-        // that we can remove such calls.
-        // Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
-        // but it would be more difficult to see where that function was called.
-        CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
-    #endif
-        [self setPixelFormat:pf];
-        [self setOpenGLContext:context];
-        [self setWantsBestResolutionOpenGLSurface:YES];
-        
-        [self drawInitBackgroundColor];
-        _lastFrame = av_frame_alloc();
+        [self setup];
     }
     return self;
 }
@@ -135,7 +139,7 @@ enum
             
             _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            _attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
             _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
             glGenVertexArrays(1, &_vao);
@@ -203,12 +207,12 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MR0x141ContentMode)contentMode
+- (void)setContentMode:(MRMGLRContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MR0x141ContentMode)contentMode
+- (MRMGLRContentMode)contentMode
 {
     return _contentMode;
 }
@@ -260,14 +264,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MR0x141ContentModeScaleAspectFit || _contentMode == MR0x141ContentModeScaleAspectFill) {
+    if (_contentMode == MRMGLRContentModeScaleAspectFit || _contentMode == MRMGLRContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
+        if (_contentMode == MRMGLRContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -276,7 +280,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
+        } else if (_contentMode == MRMGLRContentModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;
@@ -331,8 +335,15 @@ enum
     glVertexAttribPointer(_attributers[ATTRIB_TEXCOORD], 2, GL_FLOAT, GL_FALSE, 0, (void*)(8 * sizeof(float)));
 }
 
-- (void)drawFrame:(AVFrame * _Nonnull)frame
+- (void)displayAVFrame:(AVFrame *)frame
 {
+    [[self openGLContext] makeCurrentContext];
+    CGLLockContext([[self openGLContext] CGLContextObj]);
+    
+    [self.openglCompiler active];
+    glClearColor(0.0,0.0,0.0,0.0);
+    glClear(GL_COLOR_BUFFER_BIT);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
     glUniformMatrix3fv(_ccmUniform, 1, GL_FALSE, kColorConversion709);
     VerifyGL(;);
     
@@ -344,116 +355,10 @@ enum
     VerifyGL(;);
     
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-    VerifyGL(;)
-}
-
-- (void)displayAVFrame:(AVFrame *)frame
-{
-    av_frame_unref(_lastFrame);
-    av_frame_ref(_lastFrame, frame);
-    
-    [[self openGLContext] makeCurrentContext];
-    CGLLockContext([[self openGLContext] CGLContextObj]);
-    
-    [self.openglCompiler active];
-    glClearColor(0.0,0.0,0.0,0.0);
-    glClear(GL_COLOR_BUFFER_BIT);
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    
-    [self drawFrame:frame];
+    VerifyGL(;);
     
     CGLFlushDrawable([[self openGLContext] CGLContextObj]);
     CGLUnlockContext([[self openGLContext] CGLContextObj]);
-}
-
-- (void)destroyFBO
-{
-    glDeleteFramebuffers(1, &_fbo);
-    glDeleteFramebuffers(1, &_colorTexture);
-    _fboTextureSize = CGSizeZero;
-}
-
-// Create texture and framebuffer objects to render and snapshot.
-- (BOOL)prepareFBOIfNeed:(CGSize)size
-{
-    if (CGSizeEqualToSize(CGSizeZero, size)) {
-        return NO;
-    }
-    
-    if (CGSizeEqualToSize(_fboTextureSize, size)) {
-        return YES;
-    } else {
-        [self destroyFBO];
-    }
-    
-    // Create a texture object that you apply to the model.
-    glGenTextures(1, &_colorTexture);
-    glBindTexture(GL_TEXTURE_2D, _colorTexture);
-
-    // Set up filter and wrap modes for the texture object.
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-
-    // Mipmap generation is not accelerated on iOS, so you can't enable trilinear filtering.
-#if TARGET_IOS
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-#else
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-#endif
-
-    // Allocate a texture image to which you can render to. Pass `NULL` for the data parameter
-    // becuase you don't need to load image data. You generate the image by rendering to the texture.
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA,
-                 size.width, size.height, 0,
-                 GL_RGBA, GL_UNSIGNED_BYTE, NULL);
-
-    glGenFramebuffers(1, &_fbo);
-    glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _colorTexture, 0);
-
-    if (glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE) {
-        _fboTextureSize = size;
-        return YES;
-    } else {
-    #if DEBUG
-        NSAssert(NO, @"Failed to make complete framebuffer object %x.",  glCheckFramebufferStatus(GL_FRAMEBUFFER));
-    #endif
-        return NO;
-    }
-}
-
-- (NSImage *)snapshot
-{
-    if (_lastFrame) {
-        CGSize picSize = self.videoSize;
-        if ([self prepareFBOIfNeed:picSize]) {
-            [[self openGLContext] makeCurrentContext];
-            CGLLockContext([[self openGLContext] CGLContextObj]);
-            
-            // Bind the snapshot FBO and render the scene.
-            glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-            glViewport(0, 0, picSize.width, picSize.height);
-            // Bind the texture that you previously render to (i.e. the snapshot texture).
-            glBindTexture(GL_TEXTURE_2D, _colorTexture);
-            
-            [self drawFrame:_lastFrame];
-            
-            CGLFlushDrawable([[self openGLContext] CGLContextObj]);
-            
-            NSImage *img = [FFTConvertUtil snapshotFBO:_colorTexture size:picSize];
-            
-            // Bind the default FBO to render to the screen.
-            NSSize pixelSize = [self convertSizeToBacking:self.bounds.size];
-            glViewport(0, 0, pixelSize.width, pixelSize.height);
-            glBindFramebuffer(GL_FRAMEBUFFER, 0);
-            
-            CGLUnlockContext([[self openGLContext] CGLContextObj]);
-            
-            return img;
-        }
-    }
-    return nil;
 }
 
 @end

@@ -1,12 +1,12 @@
 //
-//  MR0x162VideoRenderer.m
+//  MRModernGLYUV420PRectView.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/19.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x162VideoRenderer.h"
+#import "MRModernGLYUV420PRectView.h"
 #import <OpenGL/gl.h>
 #import <OpenGL/gl3.h>
 #import <OpenGL/glext.h>
@@ -23,6 +23,7 @@ enum
 {
     UNIFORM_0,
     UNIFORM_1,
+    UNIFORM_2,
     NUM_UNIFORMS
 };
 
@@ -34,7 +35,7 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MR0x162VideoRenderer ()
+@interface MRModernGLYUV420PRectView ()
 {
     //color conversion matrix uniform
     GLint _ccmUniform;
@@ -43,7 +44,7 @@ enum
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
-    MR0x141ContentMode _contentMode;
+    MRMGLRContentMode _contentMode;
     /// 顶点对象
     GLuint _vbo;
     GLuint _vao;
@@ -53,7 +54,7 @@ enum
 
 @end
 
-@implementation MR0x162VideoRenderer
+@implementation MRModernGLYUV420PRectView
 
 - (void)dealloc
 {
@@ -62,41 +63,55 @@ enum
     glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
+- (void)setup
+{
+    NSOpenGLPixelFormatAttribute attrs[] =
+    {
+        NSOpenGLPFAAccelerated,
+        NSOpenGLPFANoRecovery,
+        NSOpenGLPFADoubleBuffer,
+        NSOpenGLPFADepthSize, 24,
+        NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
+        0
+    };
+    NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
+    
+    if (!pf)
+    {
+        NSLog(@"No OpenGL pixel format");
+    }
+    
+    NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
+    
+#if defined(DEBUG)
+    // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
+    // This will make it much more obvious where and when such a function call is made so
+    // that we can remove such calls.
+    // Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
+    // but it would be more difficult to see where that function was called.
+    CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
+#endif
+    [self setPixelFormat:pf];
+    [self setOpenGLContext:context];
+    [self setWantsBestResolutionOpenGLSurface:YES];
+    
+    [self drawInitBackgroundColor];
+}
+
+- (instancetype)initWithFrame:(NSRect)frameRect
+{
+    self = [super initWithFrame:frameRect];
+    if (self) {
+        [self setup];
+    }
+    return self;
+}
+
 - (instancetype)initWithCoder:(NSCoder *)coder
 {
     self = [super initWithCoder:coder];
     if (self) {
-        NSOpenGLPixelFormatAttribute attrs[] =
-        {
-            NSOpenGLPFAAccelerated,
-            NSOpenGLPFANoRecovery,
-            NSOpenGLPFADoubleBuffer,
-            NSOpenGLPFADepthSize, 24,
-            NSOpenGLPFAOpenGLProfile, NSOpenGLProfileVersion3_2Core,
-            0
-        };
-        NSOpenGLPixelFormat *pf = [[NSOpenGLPixelFormat alloc] initWithAttributes:attrs];
-        
-        if (!pf)
-        {
-            NSLog(@"No OpenGL pixel format");
-        }
-        
-        NSOpenGLContext* context = [[NSOpenGLContext alloc] initWithFormat:pf shareContext:nil];
-        
-    #if defined(DEBUG)
-        // When we're using a CoreProfile context, crash if we call a legacy OpenGL function
-        // This will make it much more obvious where and when such a function call is made so
-        // that we can remove such calls.
-        // Without this we'd simply get GL_INVALID_OPERATION error for calling legacy functions
-        // but it would be more difficult to see where that function was called.
-        CGLEnable([context CGLContextObj], kCGLCECrashOnRemovedFunctions);
-    #endif
-        [self setPixelFormat:pf];
-        [self setOpenGLContext:context];
-        [self setWantsBestResolutionOpenGLSurface:YES];
-        
-        [self drawInitBackgroundColor];
+        [self setup];
     }
     return self;
 }
@@ -114,18 +129,20 @@ enum
 - (void)setupOpenGLProgram
 {
     if (!self.openglCompiler) {
-        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"2_sampler2D_Rect_v3.fsh"];
+        self.openglCompiler = [[MROpenGLCompiler alloc] initWithvshName:@"common_v3.vsh" fshName:@"3_sampler2D_Rect_v3.fsh"];
         
         if ([self.openglCompiler compileIfNeed]) {
             // Get uniform locations.
             _uniforms[UNIFORM_0] = [self.openglCompiler getUniformLocation:"Sampler0"];
             _uniforms[UNIFORM_1] = [self.openglCompiler getUniformLocation:"Sampler1"];
+            _uniforms[UNIFORM_2] = [self.openglCompiler getUniformLocation:"Sampler2"];
             _textureDimensions[UNIFORM_0] = [self.openglCompiler getUniformLocation:"textureDimension0"];
             _textureDimensions[UNIFORM_1] = [self.openglCompiler getUniformLocation:"textureDimension1"];
+            _textureDimensions[UNIFORM_2] = [self.openglCompiler getUniformLocation:"textureDimension2"];
             
             _ccmUniform = [self.openglCompiler getUniformLocation:"colorConversionMatrix"];
             
-            _attributers[ATTRIB_VERTEX] = [self.openglCompiler getAttribLocation:"position"];
+            _attributers[ATTRIB_VERTEX]   = [self.openglCompiler getAttribLocation:"position"];
             _attributers[ATTRIB_TEXCOORD] = [self.openglCompiler getAttribLocation:"texCoord"];
             
             glGenVertexArrays(1, &_vao);
@@ -193,12 +210,12 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MR0x141ContentMode)contentMode
+- (void)setContentMode:(MRMGLRContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MR0x141ContentMode)contentMode
+- (MRMGLRContentMode)contentMode
 {
     return _contentMode;
 }
@@ -223,17 +240,17 @@ enum
         glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
     VerifyGL(;);
-    //for uv plane
+    //for u plane
     {
         //设置纹理和采样器的对应关系
         glUniform1i(_uniforms[UNIFORM_1], 1);
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_RECTANGLE, _textures[1]);
+        
         //设置矩形纹理尺寸
         glUniform2f(_textureDimensions[UNIFORM_1], frame->width/2, frame->height/2);
-        
         //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE_ALPHA
-        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RG, frame->width/2, frame->height/2, 0, GL_RG, GL_UNSIGNED_BYTE, frame->data[1]);
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RED, frame->width/2, frame->height/2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[1]);
         VerifyGL(;);
         glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -241,6 +258,23 @@ enum
         glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     }
     VerifyGL(;);
+    //for v plane
+    {
+        //设置纹理和采样器的对应关系
+        glUniform1i(_uniforms[UNIFORM_2], 2);
+        glActiveTexture(GL_TEXTURE2);
+        glBindTexture(GL_TEXTURE_RECTANGLE, _textures[2]);
+        
+        //设置矩形纹理尺寸
+        glUniform2f(_textureDimensions[UNIFORM_2], frame->width/2, frame->height/2);
+        //opengl 3 error: GL_INVALID_ENUM GL_LUMINANCE_ALPHA
+        glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RED, frame->width/2, frame->height/2, 0, GL_RED, GL_UNSIGNED_BYTE, frame->data[2]);
+        VerifyGL(;);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_RECTANGLE, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+        glTexParameterf(GL_TEXTURE_RECTANGLE, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    }
 }
 
 - (CGSize)computeNormalizedSize:(AVFrame * _Nonnull)frame
@@ -250,14 +284,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MR0x141ContentModeScaleAspectFit || _contentMode == MR0x141ContentModeScaleAspectFill) {
+    if (_contentMode == MRMGLRContentModeScaleAspectFit || _contentMode == MRMGLRContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MR0x141ContentModeScaleAspectFit) {
+        if (_contentMode == MRMGLRContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -266,7 +300,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MR0x141ContentModeScaleAspectFill) {
+        } else if (_contentMode == MRMGLRContentModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;

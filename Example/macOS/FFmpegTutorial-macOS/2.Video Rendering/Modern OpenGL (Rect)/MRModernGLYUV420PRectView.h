@@ -1,5 +1,5 @@
 //
-//  MR0x164VideoRenderer.h
+//  MRModernGLYUV420PRectView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2022/1/19.
@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRModernGLRectViewProtocol.h"
 
 typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x164VideoRenderer : NSOpenGLView<MR0x141VideoRendererProtocol>
+@interface MRModernGLYUV420PRectView : NSOpenGLView<MRModernGLRectViewProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
 
