@@ -1,5 +1,5 @@
 //
-//  MR0x02ViewController.h
+//  MRCustomThreadViewController.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/4/15.
@@ -11,7 +11,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x02ViewController : NSViewController
+@interface MRCustomThreadViewController : NSViewController
 
 @end
 

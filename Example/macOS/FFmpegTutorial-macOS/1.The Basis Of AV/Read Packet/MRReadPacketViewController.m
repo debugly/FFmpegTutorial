@@ -1,26 +1,24 @@
 //
-//  MR0x06ViewController.m
+//  MRReadPacketViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/4/15.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x06ViewController.h"
-#import <FFmpegTutorial/FFTPlayer0x06.h>
+#import "MRReadPacketViewController.h"
+#import <FFmpegTutorial/FFTPlayer0x04.h>
 
-@interface MR0x06ViewController ()
+@interface MRReadPacketViewController ()
 
-@property (strong) FFTPlayer0x06 *player;
+@property (strong) FFTPlayer0x04 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property int audioPktCount;
 @property int videoPktCount;
-@property int audioFrameCount;
-@property int videoFrameCount;
 
 @end
 
-@implementation MR0x06ViewController
+@implementation MRReadPacketViewController
 
 - (void)dealloc
 {
@@ -35,29 +33,19 @@
     self.audioPktCount = 0;
     self.videoPktCount = 0;
     
-    self.audioFrameCount = 0;
-    self.videoFrameCount = 0;
-    
-    FFTPlayer0x06 *player = [[FFTPlayer0x06 alloc] init];
+    FFTPlayer0x04 *player = [[FFTPlayer0x04 alloc] init];
     player.contentPath = url;
 
     __weakSelf__
-    player.onError = ^(FFTPlayer0x06 *player,NSError *err){
-        NSLog(@"%@",err);
+    [player onError:^{
         __strongSelf__
         self.player = nil;
-    };
+    }];
     
-    player.onReadPkt = ^(FFTPlayer0x06 *player,int a,int v){
+    player.onReadPkt = ^(FFTPlayer0x04 *player,int a,int v){
         __strongSelf__
         self.audioPktCount = a;
         self.videoPktCount = v;
-    };
-    
-    player.onDecoderFrame = ^(FFTPlayer0x06 *player,int a, int v) {
-        __strongSelf__
-        self.audioFrameCount = a;
-        self.videoFrameCount = v;
     };
     
     [player prepareToPlay];
@@ -81,6 +69,7 @@
         _player = nil;
     }
 }
+
 #pragma - mark actions
 
 - (IBAction)go:(NSButton *)sender

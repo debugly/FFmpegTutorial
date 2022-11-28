@@ -1,15 +1,15 @@
 //
-//  MR0x05ViewController.m
+//  MRDecodePacketViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/4/15.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x05ViewController.h"
+#import "MRDecodePacketViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x05.h>
 
-@interface MR0x05ViewController ()
+@interface MRDecodePacketViewController ()
 
 @property (strong) FFTPlayer0x05 *player;
 @property (weak) IBOutlet NSTextField *inputField;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation MR0x05ViewController
+@implementation MRDecodePacketViewController
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {

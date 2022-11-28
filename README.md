@@ -46,57 +46,28 @@ open FFmpegTutorial-macOS.xcworkspace
 
 为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，因此我把编译好的 FFmpeg 库也做成了 Pod 库，编译 FFmpeg 等库的脚本在这里开源 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod)。
 
-教程提供了 iOS 和 macOS 的上层调用示例，开发语言为 Objective-C，工程目录结构如下:
-
-```
-├── Example
-│   ├── iOS //iOS 示例工程
-│   │   ├── FFmpegTutorial-iOS
-│   │   ├── FFmpegTutorial-iOS.xcodeproj
-│   │   ├── FFmpegTutorial-iOS.xcworkspace
-│   │   ...
-│   └── macOS //macOS 示例工程
-│       ├── FFmpegTutorial-macOS
-│       ├── FFmpegTutorial-macOS.xcodeproj
-│       ├── FFmpegTutorial-macOS.xcworkspace
-│       ...
-├── FFmpegTutorial //对 FFmpeg 的封装
-│   └── Classes
-│       ├── 0x01  //查看编译时配置信息、支持的协议、版本号
-│       ├── ...
-│       └── common //通用类
-├── FFmpegTutorial.podspec
-└── md  //教程配套文档        
-```
+教程提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发。
 
 # FFmpegTutorial
 
-教程共分为六个部分，其中第六部分是独立的仓库:
+教程共分为六个部分。
 
 一、音视频基础
 
-- 0x00:FFmpeg简介及编译方法
-- 0x01:查看编译时配置信息、支持的协议、版本号;OpengGL信息
-- 0x02:封装 NSThread，方便后续调用
-- 0x03:查看音视频流信息
-- 0x04:读取音视频包
-- 0x05:音视频解码
-- 0x06:抽取解码类，封装解码逻辑
+- OpenGL Version:查看编译时配置信息、支持的协议、版本号;OpengGL信息
+- Custom Thread:封装 NSThread，方便后续调用
+- Movie Prober:查看音视频流信息
+- Read Packet:读取音视频包
+- Decode Packet:音视频解码
+- Custom Decoder:抽取解码类，封装解码逻辑
 
 二、视频渲染
 
 - Core API:使用 Core Graphics/Core Image/Core Media 渲染视频帧
-- Legacy OpenGL: 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
-- Modern OpenGL: 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
-- 0x16:使用 OpenGL 3.2 + 矩形纹理 渲染视频帧（Mac Only）
-  - 0x16-1:使用矩形纹理渲染 BGRA 视频桢
-  - 0x16-2:使用矩形纹理渲染 NV12 视频桢
-  - 0x16-3:使用矩形纹理渲染 NV21 视频桢
-  - 0x16-4:使用矩形纹理渲染 YUV420P 视频桢
-  - 0x16-5:使用矩形纹理渲染 UYVY422 视频桢
-  - 0x16-6:使用矩形纹理渲染 YUYV422 视频桢
-  - 0x16-7:使用矩形纹理渲染 NV12 视频桢+截屏
-- metal:使用 Metal 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢（Mac Only）
+- Legacy OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
+- Modern OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
+- Modern OpenGL(Rectangle Texture):渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
+- Metal:渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
 
 三、音频渲染
 

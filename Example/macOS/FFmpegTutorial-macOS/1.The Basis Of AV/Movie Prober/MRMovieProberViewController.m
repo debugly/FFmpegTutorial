@@ -1,17 +1,17 @@
 //
-//  MR0x03ViewController.m
+//  MRMovieProberViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/4/15.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x03ViewController.h"
+#import "MRMovieProberViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x02.h>
 #import "MRDragView.h"
 #import "MRUtil.h"
 
-@interface MR0x03ViewController ()<MRDragViewDelegate>
+@interface MRMovieProberViewController ()<MRDragViewDelegate>
 
 @property (strong) FFTPlayer0x02 *player;
 @property (weak) IBOutlet NSTextField *inputField;
@@ -21,7 +21,7 @@
 
 @end
 
-@implementation MR0x03ViewController
+@implementation MRMovieProberViewController
 
 - (void)dealloc
 {

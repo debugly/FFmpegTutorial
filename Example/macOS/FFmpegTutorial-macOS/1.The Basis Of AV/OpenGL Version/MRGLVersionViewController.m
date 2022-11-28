@@ -1,22 +1,22 @@
 //
-//  MR0x01ViewController.m
+//  MRGLVersionViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/4/14.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x01ViewController.h"
+#import "MRGLVersionViewController.h"
 #import <FFmpegTutorial/FFTVersionHelper.h>
 #import <FFmpegTutorial/FFTOpenGLVersionHelper.h>
 
-@interface MR0x01ViewController ()
+@interface MRGLVersionViewController ()
 
 @property (unsafe_unretained) IBOutlet NSTextView *textView;
 
 @end
 
-@implementation MR0x01ViewController
+@implementation MRGLVersionViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];

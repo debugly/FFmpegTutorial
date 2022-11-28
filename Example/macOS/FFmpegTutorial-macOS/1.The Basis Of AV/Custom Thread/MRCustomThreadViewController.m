@@ -1,17 +1,17 @@
 //
-//  MR0x02ViewController.m
+//  MRCustomThreadViewController.m
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/4/15.
 //  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x02ViewController.h"
+#import "MRCustomThreadViewController.h"
 #import <FFmpegTutorial/FFTThread.h>
 #import "MRDragView.h"
 #import "MRUtil.h"
 
-@interface MR0x02ViewController ()
+@interface MRCustomThreadViewController ()
 {
     NSMutableArray* _msg_buff;
 }
@@ -22,7 +22,7 @@
 
 @end
 
-@implementation MR0x02ViewController
+@implementation MRCustomThreadViewController
 
 - (void)viewDidLoad
 {
