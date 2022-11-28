@@ -1,5 +1,5 @@
 //
-//  MRCoreMediaView.h
+//  MRLegacyGLBGRAView.h
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/11.
@@ -7,14 +7,15 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import <CoreMedia/CMSampleBuffer.h>
-#import "MRGAMViewProtocol.h"
+#import "MRLegacyGLViewProtocol.h"
+
+typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRCoreMediaView : NSView<MRGAMViewProtocol>
+@interface MRLegacyGLBGRAView : NSOpenGLView<MRLegacyGLViewProtocol>
 
-- (void)cleanScreen;
+- (void)displayAVFrame:(AVFrame *)frame;
 
 @end
 

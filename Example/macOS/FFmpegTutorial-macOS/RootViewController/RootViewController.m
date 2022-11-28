@@ -112,49 +112,19 @@
             @"isSection":@(YES)
         },
         @{
-            @"title":@"Core API",
-            @"detail":@"使用 Core Animation/Core Graphics/Core Media 渲染视频桢",
+            @"title":@"Core Animation/Core Graphics/Core Media",
+            @"detail":@"渲染 xRGBx / xRGBx / NV12,YUYV,UYVY 视频桢",
             @"class":@"MRGAMViewController",
         },
         @{
             @"title":@"Legacy OpenGL",
-            @"detail":@"使用 OpenGL 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢",
-            @"class":@"MRLegacyOpenGLViewController",
+            @"detail":@"渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢",
+            @"class":@"MRLegacyGLViewController",
         },
         @{
-            @"title":@"0x15-1",
-            @"detail":@"使用 OpenGL 3.3 渲染 BGRA 视频桢",
-            @"class":@"MR0x151ViewController",
-        },
-        @{
-            @"title":@"0x15-2",
-            @"detail":@"使用 OpenGL 3.3 渲染 NV12 视频桢",
-            @"class":@"MR0x152ViewController",
-        },
-        @{
-            @"title":@"0x15-3",
-            @"detail":@"使用 OpenGL 3.3 渲染 NV21 视频桢",
-            @"class":@"MR0x153ViewController",
-        },
-        @{
-            @"title":@"0x15-4",
-            @"detail":@"使用 OpenGL 3.3 渲染 YUV420P 视频桢",
-            @"class":@"MR0x154ViewController",
-        },
-        @{
-            @"title":@"0x15-5",
-            @"detail":@"使用 OpenGL 3.3 渲染 UYVY422 视频桢",
-            @"class":@"MR0x155ViewController",
-        },
-        @{
-            @"title":@"0x15-6",
-            @"detail":@"使用 OpenGL 3.3 渲染 YUYV422 视频桢",
-            @"class":@"MR0x156ViewController",
-        },
-        @{
-            @"title":@"0x15-7",
-            @"detail":@"截屏：使用 FBO 离屏渲染",
-            @"class":@"MR0x157ViewController",
+            @"title":@"Modern OpenGL",
+            @"detail":@"渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢",
+            @"class":@"MRModernGLViewController",
         },
         @{
             @"title":@"0x16-1",
@@ -178,12 +148,12 @@
         },
         @{
             @"title":@"0x16-5",
-            @"detail":@"使用矩形纹理渲染 UYVY422 视频桢",
+            @"detail":@"使用矩形纹理渲染 UYVY 视频桢",
             @"class":@"MR0x165ViewController",
         },
         @{
             @"title":@"0x16-6",
-            @"detail":@"使用矩形纹理渲染 YUYV422 视频桢",
+            @"detail":@"使用矩形纹理渲染 YUYV 视频桢",
             @"class":@"MR0x166ViewController",
         },
         @{
@@ -193,7 +163,7 @@
         },
         @{
             @"title":@"Metal 系列",
-            @"detail":@"渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢",
+            @"detail":@"渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢",
             @"class":@"MRMetalViewController",
         },
         @{

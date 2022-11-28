@@ -87,14 +87,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - Core API:使用 Core Graphics/Core Image/Core Media 渲染视频帧
 - Legacy OpenGL: 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
-- 0x15:使用 OpenGL 3.2 / ES3 渲染视频帧
-  - 0x15-1:渲染 BGRA 视频桢
-  - 0x15-2:渲染 NV12
-  - 0x15-3:渲染 NV21
-  - 0x15-4:渲染 YUV420P
-  - 0x15-5:渲染 UYVY422（Mac Only）
-  - 0x15-6:渲染 YUYV422（Mac Only）
-  - 0x15-7:截屏：使用 FBO 离屏渲染（Mac Only）
+- Modern OpenGL: 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
 - 0x16:使用 OpenGL 3.2 + 矩形纹理 渲染视频帧（Mac Only）
   - 0x16-1:使用矩形纹理渲染 BGRA 视频桢
   - 0x16-2:使用矩形纹理渲染 NV12 视频桢

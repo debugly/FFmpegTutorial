@@ -1,33 +1,37 @@
 //
-//  MRGAMViewController.m
+//  MRModernGLViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/11/22.
+//  Created by qianlongxu on 2022/11/28.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MRGAMViewController.h"
+#import "MRModernGLViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MRCoreAnimationView.h"
-#import "MRCoreGraphicsView.h"
-#import "MRCoreMediaView.h"
+#import "MRModernGLBGRAView.h"
+#import "MRModernGLNV12View.h"
+#import "MRModernGLNV21View.h"
+#import "MRModernGLYUYVView.h"
+#import "MRModernGLUYVYView.h"
+#import "MRModernGLYUV420PView.h"
 #import "MRRWeakProxy.h"
+#import "NSFileManager+Sandbox.h"
+#import "MRUtil.h"
 
-@interface MRGAMViewController ()
+@interface MRModernGLViewController ()
 {
+    CVPixelBufferPoolRef _pixelBufferPoolRef;
     MRPixelFormatMask _pixelFormat;
 }
 
 @property (strong) FFTPlayer0x10 *player;
-
-@property (weak) NSView<MRGAMViewProtocol>* videoRenderer;
+@property (weak) NSView<MRModernGLViewProtocol> *videoRenderer;
 
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet NSView *playbackView;
-@property (weak) IBOutlet NSPopUpButton *formatPopup;
 
 @property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
@@ -35,7 +39,7 @@
 
 @end
 
-@implementation MRGAMViewController
+@implementation MRModernGLViewController
 
 - (void)dealloc
 {
@@ -48,6 +52,8 @@
         [_player asyncStop];
         _player = nil;
     }
+    CVPixelBufferPoolRelease(_pixelBufferPoolRef);
+    _pixelBufferPoolRef = NULL;
 }
 
 - (void)prepareTickTimerIfNeed
@@ -74,11 +80,6 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
-    
-    NSString *renderer = NSStringFromClass([self.videoRenderer class]);
-    renderer = [renderer stringByReplacingOccurrencesOfString:@"MR" withString:@""];
-    renderer = [renderer stringByReplacingOccurrencesOfString:@"View" withString:@""];
-    [self.hud setHudValue:renderer forKey:@"renderer"];
 }
 
 - (void)alert:(NSString *)msg
@@ -117,13 +118,6 @@
         self.timer = nil;
     }
     
-    if (!self.videoRenderer) {
-        MRCoreAnimationView *videoRenderer = [[MRCoreAnimationView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-    }
-    
     if (!self.hud) {
         self.hud = [[FFTHudControl alloc] init];
         NSView *hudView = [self.hud contentView];
@@ -146,6 +140,8 @@
         if (player != self.player) {
             return;
         }
+        //上一次 glview 完全销毁后，再创建
+        [self prepareGLViewIfNeed];
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");
         NSLog(@"%@",info);
@@ -188,40 +184,44 @@
     [self.indicatorView startAnimation:nil];
 }
 
-- (void)setupCoreAnimationPixelFormats
+- (void)prepareGLViewWidthClass:(Class)clazz
 {
-    [self.formatPopup removeAllItems];
-    [self.formatPopup addItemsWithTitles:@[@"RGBA",@"RGB0",@"ARGB",@"0RGB",@"RGB24",@"RGB555"]];
-    NSArray *tags = @[@(MR_PIX_FMT_MASK_RGBA),@(MR_PIX_FMT_MASK_RGB0),@(MR_PIX_FMT_MASK_ARGB),@(MR_PIX_FMT_MASK_0RGB),@(MR_PIX_FMT_MASK_RGB24),@(MR_PIX_FMT_MASK_RGB555)];
-    for (int i = 0; i< [[self.formatPopup itemArray] count]; i++) {
-        NSMenuItem * item = [self.formatPopup itemAtIndex:i];
-        item.tag = [tags[i] intValue];
+    if (self.videoRenderer && [self.videoRenderer isKindOfClass:clazz]) {
+        return;
     }
-    _pixelFormat = [[tags firstObject] intValue];
+    [self.videoRenderer removeFromSuperview];
+    self.videoRenderer = nil;
+    
+    NSView<MRModernGLViewProtocol> *videoRenderer = [[clazz alloc] initWithFrame:self.playbackView.bounds];
+    [self.playbackView addSubview:videoRenderer];
+    videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    self.videoRenderer = videoRenderer;
 }
 
-- (void)setupCoreGraphicsPixelFormats
+- (void)prepareGLViewIfNeed
 {
-    [self setupCoreAnimationPixelFormats];
-}
-
-- (void)setupCoreMediaPixelFormats
-{
-    [self.formatPopup removeAllItems];
-    [self.formatPopup addItemsWithTitles:@[@"BGRA",@"ARGB",@"NV12",@"YUYV",@"UYVY"]];
-    NSArray *tags = @[@(MR_PIX_FMT_MASK_BGRA),@(MR_PIX_FMT_MASK_ARGB),@(MR_PIX_FMT_MASK_NV12),@(MR_PIX_FMT_MASK_YUYV422),@(MR_PIX_FMT_MASK_UYVY422)];
-    for (int i = 0; i< [[self.formatPopup itemArray] count]; i++) {
-        NSMenuItem * item = [self.formatPopup itemAtIndex:i];
-        item.tag = [tags[i] intValue];
+    Class clazz = NULL;
+    if (_pixelFormat == MR_PIX_FMT_MASK_BGRA) {
+        clazz = [MRModernGLBGRAView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_NV12) {
+        clazz = [MRModernGLNV12View class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21) {
+        clazz = [MRModernGLNV21View class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_YUV420P) {
+        clazz = [MRModernGLYUV420PView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_UYVY422) {
+        clazz = [MRModernGLUYVYView class];
+    } else if (_pixelFormat == MR_PIX_FMT_MASK_YUYV422) {
+        clazz = [MRModernGLYUYVView class];
     }
-    _pixelFormat = [[tags firstObject] intValue];
+    [self prepareGLViewWidthClass:clazz];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.inputField.stringValue = KTestVideoURL1;
-    [self setupCoreAnimationPixelFormats];
+    _pixelFormat = MR_PIX_FMT_MASK_BGRA;
 }
 
 #pragma - mark actions
@@ -235,33 +235,24 @@
     }
 }
 
-- (IBAction)onSelectedVideoRenderer:(NSPopUpButton *)sender
+- (IBAction)onSaveSnapshot:(NSButton *)sender
 {
-    NSMenuItem *item = [sender selectedItem];
-        
-    if (item.tag == 1) {
-        [self.videoRenderer removeFromSuperview];
-        MRCoreAnimationView *videoRenderer = [[MRCoreAnimationView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-        [self setupCoreAnimationPixelFormats];
-    } else if (item.tag == 2) {
-        [self.videoRenderer removeFromSuperview];
-        MRCoreGraphicsView *videoRenderer = [[MRCoreGraphicsView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-        [self setupCoreGraphicsPixelFormats];
-    } else if (item.tag == 3) {
-        [self.videoRenderer removeFromSuperview];
-        MRCoreMediaView *videoRenderer = [[MRCoreMediaView alloc] initWithFrame:self.playbackView.bounds];
-        videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-        [self.playbackView addSubview:videoRenderer];
-        self.videoRenderer = videoRenderer;
-        [self setupCoreMediaPixelFormats];
+    if (!self.player) {
+        return;
     }
-    [self go:nil];
+    NSImage *img = nil;//[self.videoRenderer snapshot];
+    if (!img) {
+        return;
+    }
+    NSString *videoName = [[NSURL URLWithString:self.player.contentPath] lastPathComponent];
+    if ([videoName isEqualToString:@"/"]) {
+        videoName = @"未知";
+    }
+    NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
+    long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
+    NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
+    [MRUtil saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
+    NSLog(@"img:%@",filePath);
 }
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
@@ -269,19 +260,38 @@
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MRGAMContentModeScaleToFill];
+        [self.videoRenderer setContentMode:MRMGLContentModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MRGAMContentModeScaleAspectFill];
+        [self.videoRenderer setContentMode:MRMGLContentModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MRGAMContentModeScaleAspectFit];
+        [self.videoRenderer setContentMode:MRMGLContentModeScaleAspectFit];
     }
 }
 
 - (IBAction)onSelectPixelFormat:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
-    _pixelFormat = (MRPixelFormatMask)item.tag;
-    [self go:nil];
+    MRPixelFormatMask pixelFormat = 0;
+    if (item.tag == 1) {
+        pixelFormat = MR_PIX_FMT_MASK_BGRA;
+    } else if (item.tag == 2) {
+        pixelFormat = MR_PIX_FMT_MASK_NV12;
+    } else if (item.tag == 3) {
+        pixelFormat = MR_PIX_FMT_MASK_NV21;
+    } else if (item.tag == 4) {
+        pixelFormat = MR_PIX_FMT_MASK_YUV420P;
+    } else if (item.tag == 5) {
+        pixelFormat = MR_PIX_FMT_MASK_UYVY422;
+    } else if (item.tag == 6) {
+        pixelFormat = MR_PIX_FMT_MASK_YUYV422;
+    }
+    
+    if (pixelFormat != _pixelFormat) {
+        _pixelFormat = pixelFormat;
+        [self.videoRenderer removeFromSuperview];
+        self.videoRenderer = nil;
+        [self go:nil];
+    }
 }
 
 @end
