@@ -7,11 +7,11 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MRGAMViewProtocol.h"
+#import "MRVideoRenderingProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRCoreAnimationView : NSImageView <MRGAMViewProtocol>
+@interface MRCoreAnimationView : NSImageView <MRVideoRenderingProtocol>
 
 @end
 

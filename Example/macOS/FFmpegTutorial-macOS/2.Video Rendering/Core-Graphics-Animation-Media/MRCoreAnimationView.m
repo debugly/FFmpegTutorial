@@ -13,7 +13,7 @@
 
 @interface MRCoreAnimationView ()
 {
-    MRGAMContentMode _contentMode;
+    MRContentMode _contentMode;
 }
 @end
 
@@ -38,13 +38,13 @@
     });
 }
 
-- (MRGAMContentMode)contentMode
+- (MRContentMode)contentMode
 {
     return _contentMode;
 }
 
 
-- (void)setContentMode:(MRGAMContentMode)contentMode
+- (void)setContentMode:(MRContentMode)contentMode
 {
     _contentMode = contentMode;
 }

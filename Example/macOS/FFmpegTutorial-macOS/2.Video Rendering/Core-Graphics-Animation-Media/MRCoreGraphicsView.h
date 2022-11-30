@@ -8,11 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreGraphics/CGImage.h>
-#import "MRGAMViewProtocol.h"
+#import "MRVideoRenderingProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRCoreGraphicsView : NSView<MRGAMViewProtocol>
+@interface MRCoreGraphicsView : NSView<MRVideoRenderingProtocol>
 
 @end
 

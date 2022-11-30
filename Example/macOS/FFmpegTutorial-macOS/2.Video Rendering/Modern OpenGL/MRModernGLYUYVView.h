@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MRModernGLViewProtocol.h"
+#import "MRVideoRenderingProtocol.h"
 
 typedef struct AVFrame AVFrame;
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRModernGLYUYVView : NSOpenGLView<MRModernGLViewProtocol>
+@interface MRModernGLYUYVView : NSOpenGLView<MRVideoRenderingProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
 

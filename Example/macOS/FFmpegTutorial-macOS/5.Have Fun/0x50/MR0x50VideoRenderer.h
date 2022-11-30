@@ -8,11 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreMedia/CMSampleBuffer.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRVideoRenderingProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MR0x50VideoRenderer : NSView<MR0x141VideoRendererProtocol>
+@interface MR0x50VideoRenderer : NSView<MRVideoRenderingProtocol>
 
 - (void)enqueueSampleBuffer:(CMSampleBufferRef)buffer;
 - (void)cleanScreen;

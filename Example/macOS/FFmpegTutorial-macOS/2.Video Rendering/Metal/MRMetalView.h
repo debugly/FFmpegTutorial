@@ -7,12 +7,12 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MR0x141VideoRendererProtocol.h"
+#import "MRVideoRenderingV2Protocol.h"
 #import <MetalKit/MetalKit.h>
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRMetalView : MTKView <MR0x141VideoRendererProtocol>
+@interface MRMetalView : MTKView <MRVideoRenderingV2Protocol>
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)img;
 - (void)displayNV21PixelBuffer:(CVPixelBufferRef)img;

@@ -435,11 +435,11 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MR0x141ContentModeScaleToFill];
+        [self.videoRenderer setContentMode:MRContentModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFill];
+        [self.videoRenderer setContentMode:MRContentModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MR0x141ContentModeScaleAspectFit];
+        [self.videoRenderer setContentMode:MRContentModeScaleAspectFit];
     }
 }
 

@@ -180,7 +180,6 @@
 		DD4190122934661B00ADEFA7 /* 2_sampler2D_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_v3.fsh; sourceTree = "<group>"; };
 		DD4190132934661B00ADEFA7 /* MRModernGLYUYVView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLYUYVView.m; sourceTree = "<group>"; };
 		DD4190142934661B00ADEFA7 /* MRModernGLBGRAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLBGRAView.m; sourceTree = "<group>"; };
-		DD4190152934661B00ADEFA7 /* MRModernGLViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRModernGLViewProtocol.h; sourceTree = "<group>"; };
 		DD4190162934661B00ADEFA7 /* MRModernGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLViewController.m; sourceTree = "<group>"; };
 		DD4190172934661B00ADEFA7 /* common_v3.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_v3.vsh; sourceTree = "<group>"; };
 		DD4190182934661B00ADEFA7 /* MRModernGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRModernGLViewController.xib; sourceTree = "<group>"; };
@@ -223,6 +222,8 @@
 		DD4190572934B73600ADEFA7 /* MRModernGLBGRARectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLBGRARectView.m; sourceTree = "<group>"; };
 		DD4190582934B73600ADEFA7 /* MRModernGLYUYVRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLYUYVRectView.m; sourceTree = "<group>"; };
 		DD4190592934B73600ADEFA7 /* MRModernGLRectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLRectViewController.m; sourceTree = "<group>"; };
+		DD4190622935F38D00ADEFA7 /* MRVideoRenderingV2Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingV2Protocol.h; sourceTree = "<group>"; };
+		DD4190632935F3EF00ADEFA7 /* MRVideoRenderingBasicProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingBasicProtocol.h; sourceTree = "<group>"; };
 		DD56CAF828670F460046C28A /* MRReadPacketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRReadPacketViewController.h; sourceTree = "<group>"; };
 		DD56CAF928670F460046C28A /* MRReadPacketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRReadPacketViewController.m; sourceTree = "<group>"; };
 		DD56CAFA28670F460046C28A /* MRReadPacketViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRReadPacketViewController.xib; sourceTree = "<group>"; };
@@ -269,19 +270,17 @@
 		DD900FD32933168B00CECDE4 /* MRGAMViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRGAMViewController.xib; sourceTree = "<group>"; };
 		DD900FD42933168B00CECDE4 /* MRCoreMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreMediaView.h; sourceTree = "<group>"; };
 		DD900FD52933168B00CECDE4 /* MRCoreAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreAnimationView.m; sourceTree = "<group>"; };
-		DD900FDB29333BE700CECDE4 /* MRGAMViewProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRGAMViewProtocol.h; sourceTree = "<group>"; };
 		DD900FE0293352EE00CECDE4 /* MRLegacyGLBGRAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRLegacyGLBGRAView.m; sourceTree = "<group>"; };
 		DD900FE3293352EE00CECDE4 /* MRLegacyGLViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRLegacyGLViewController.xib; sourceTree = "<group>"; };
 		DD900FE4293352EE00CECDE4 /* MRLegacyGLViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRLegacyGLViewController.m; sourceTree = "<group>"; };
 		DD900FE7293352EE00CECDE4 /* MRLegacyGLBGRAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRLegacyGLBGRAView.h; sourceTree = "<group>"; };
 		DD900FED293352EE00CECDE4 /* MRLegacyGLViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRLegacyGLViewController.h; sourceTree = "<group>"; };
-		DD900FF6293353E700CECDE4 /* MRLegacyGLViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRLegacyGLViewProtocol.h; sourceTree = "<group>"; };
 		DD91F143268CC78A00B96334 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		DD91F28D26AC082C00B96334 /* 2_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD91F28E26AC082C00B96334 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		DD91F28F26AC082C00B96334 /* common.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common.vsh; sourceTree = "<group>"; };
 		DD91F29026AC082C00B96334 /* renderer_pixfmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer_pixfmt.h; sourceTree = "<group>"; };
-		DD91F30E26AEEDD900B96334 /* MR0x141VideoRendererProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x141VideoRendererProtocol.h; sourceTree = "<group>"; };
+		DD91F30E26AEEDD900B96334 /* MRVideoRenderingProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingProtocol.h; sourceTree = "<group>"; };
 		DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect.fsh; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
@@ -438,7 +437,6 @@
 				DD41901D2934661B00ADEFA7 /* MRModernGLYUV420PView.m */,
 				DD41901F2934661B00ADEFA7 /* MRModernGLYUYVView.h */,
 				DD4190132934661B00ADEFA7 /* MRModernGLYUYVView.m */,
-				DD4190152934661B00ADEFA7 /* MRModernGLViewProtocol.h */,
 				DD4190252934661B00ADEFA7 /* MRModernGLViewController.h */,
 				DD4190162934661B00ADEFA7 /* MRModernGLViewController.m */,
 				DD4190182934661B00ADEFA7 /* MRModernGLViewController.xib */,
@@ -547,7 +545,7 @@
 			path = 0x22;
 			sourceTree = "<group>";
 		};
-		DD900F39292C6B6200CECDE4 /* MetalAssets */ = {
+		DD900FB929321DAF00CECDE4 /* Metal */ = {
 			isa = PBXGroup;
 			children = (
 				DD900FC429321E2900CECDE4 /* MRMetalView.h */,
@@ -570,14 +568,6 @@
 				DD900F90292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m */,
 				DD900F42292CFA2F00CECDE4 /* MRMetalShaders.metal */,
 				DD900F44292CFA2F00CECDE4 /* MRMetalShaderTypes.h */,
-			);
-			name = MetalAssets;
-			path = "FFmpegTutorial-macOS/MetalAssets";
-			sourceTree = SOURCE_ROOT;
-		};
-		DD900FB929321DAF00CECDE4 /* Metal */ = {
-			isa = PBXGroup;
-			children = (
 				DD900FC229321E2900CECDE4 /* MRMetalViewController.h */,
 				DD900FC529321E2900CECDE4 /* MRMetalViewController.m */,
 				DD900FC329321E2900CECDE4 /* MRMetalViewController.xib */,
@@ -588,7 +578,6 @@
 		DD900FCC2933168B00CECDE4 /* Core-Graphics-Animation-Media */ = {
 			isa = PBXGroup;
 			children = (
-				DD900FDB29333BE700CECDE4 /* MRGAMViewProtocol.h */,
 				DD900FD02933168B00CECDE4 /* MRCoreAnimationView.h */,
 				DD900FD52933168B00CECDE4 /* MRCoreAnimationView.m */,
 				DD900FD22933168B00CECDE4 /* MRCoreGraphicsView.h */,
@@ -617,7 +606,6 @@
 				DD41903B293469E100ADEFA7 /* MRLegacyGLYUV420PView.m */,
 				DD41903D293469E100ADEFA7 /* MRLegacyGLYUYVView.h */,
 				DD419034293469E100ADEFA7 /* MRLegacyGLYUYVView.m */,
-				DD900FF6293353E700CECDE4 /* MRLegacyGLViewProtocol.h */,
 				DD900FED293352EE00CECDE4 /* MRLegacyGLViewController.h */,
 				DD900FE4293352EE00CECDE4 /* MRLegacyGLViewController.m */,
 				DD900FE3293352EE00CECDE4 /* MRLegacyGLViewController.xib */,
@@ -639,7 +627,6 @@
 				DD41900A293464DB00ADEFA7 /* MROpenGLHelper.m */,
 				DD91F28C26AC082C00B96334 /* Shaders */,
 				DD91F29026AC082C00B96334 /* renderer_pixfmt.h */,
-				DD91F30E26AEEDD900B96334 /* MR0x141VideoRendererProtocol.h */,
 			);
 			path = OpenGLAssets;
 			sourceTree = "<group>";
@@ -930,6 +917,9 @@
 		DDF9231F28EC4A5F00F29C1A /* 2.Video Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				DD4190632935F3EF00ADEFA7 /* MRVideoRenderingBasicProtocol.h */,
+				DD91F30E26AEEDD900B96334 /* MRVideoRenderingProtocol.h */,
+				DD4190622935F38D00ADEFA7 /* MRVideoRenderingV2Protocol.h */,
 				DD900FCC2933168B00CECDE4 /* Core-Graphics-Animation-Media */,
 				DD900FDE293352EE00CECDE4 /* Legacy OpenGL */,
 				DD41900F2934661B00ADEFA7 /* Modern OpenGL */,
@@ -1002,7 +992,6 @@
 				DDF923C028EC4A9B00F29C1A /* 4.Movie Player */,
 				DDF923C128EC4AB400F29C1A /* 5.Have Fun */,
 				DD97E83525720E3000B93F9F /* RootViewController */,
-				DD900F39292C6B6200CECDE4 /* MetalAssets */,
 				DD91F28B26AC081200B96334 /* OpenGLAssets */,
 				DD4CCBDB28EEC80E0047F238 /* Support Files */,
 			);

@@ -27,7 +27,7 @@
 }
 
 @property (strong) FFTPlayer0x10 *player;
-@property (weak) NSView<MRLegacyGLViewProtocol> *videoRenderer;
+@property (weak) NSView<MRVideoRenderingProtocol> *videoRenderer;
 
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
@@ -178,7 +178,7 @@
     [self.videoRenderer removeFromSuperview];
     self.videoRenderer = nil;
     
-    NSView<MRLegacyGLViewProtocol> *videoRenderer = [[clazz alloc] initWithFrame:self.playbackView.bounds];
+    NSView<MRVideoRenderingProtocol> *videoRenderer = [[clazz alloc] initWithFrame:self.playbackView.bounds];
     [self.playbackView addSubview:videoRenderer];
     videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     self.videoRenderer = videoRenderer;
@@ -258,11 +258,11 @@
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MRLGLContentModeScaleToFill];
+        [self.videoRenderer setContentMode:MRContentModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MRLGLContentModeScaleAspectFill];
+        [self.videoRenderer setContentMode:MRContentModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MRLGLContentModeScaleAspectFit];
+        [self.videoRenderer setContentMode:MRContentModeScaleAspectFit];
     }
 }
 

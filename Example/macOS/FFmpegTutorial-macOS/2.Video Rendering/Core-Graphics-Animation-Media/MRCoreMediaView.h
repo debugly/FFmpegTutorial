@@ -8,11 +8,11 @@
 
 #import <Cocoa/Cocoa.h>
 #import <CoreMedia/CMSampleBuffer.h>
-#import "MRGAMViewProtocol.h"
+#import "MRVideoRenderingProtocol.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRCoreMediaView : NSView<MRGAMViewProtocol>
+@interface MRCoreMediaView : NSView<MRVideoRenderingProtocol>
 
 - (void)cleanScreen;
 

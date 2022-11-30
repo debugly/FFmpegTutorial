@@ -7,13 +7,13 @@
 //
 
 #import <Cocoa/Cocoa.h>
-#import "MRLegacyGLViewProtocol.h"
+#import "MRVideoRenderingProtocol.h"
 
 typedef struct AVFrame AVFrame;
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRLegacyGLNV21View : NSOpenGLView<MRLegacyGLViewProtocol>
+@interface MRLegacyGLNV21View : NSOpenGLView<MRVideoRenderingProtocol>
 
 - (void)displayAVFrame:(AVFrame *)frame;
 

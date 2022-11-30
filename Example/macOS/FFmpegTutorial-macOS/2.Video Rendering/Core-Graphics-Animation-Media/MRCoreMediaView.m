@@ -15,7 +15,7 @@
 @interface MRCoreMediaView ()
 {
     CVPixelBufferPoolRef _pixelBufferPoolRef;
-    MRGAMContentMode _contentMode;
+    MRContentMode _contentMode;
 }
 @end
 
@@ -34,16 +34,16 @@
     return layer;
 }
 
-- (void)setContentMode:(MRGAMContentMode)contentMode
+- (void)setContentMode:(MRContentMode)contentMode
 {
     AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
     switch (contentMode) {
-        case MRGAMContentModeScaleAspectFill:
+        case MRContentModeScaleAspectFill:
         {
             layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         }
             break;
-        case MRGAMContentModeScaleAspectFit:
+        case MRContentModeScaleAspectFit:
         {
             layer.videoGravity = AVLayerVideoGravityResizeAspect;
         }
@@ -62,16 +62,16 @@
     [layer setFrame:oldFrame];
 }
 
-- (MRGAMContentMode)contentMode
+- (MRContentMode)contentMode
 {
     AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
     
     if ([AVLayerVideoGravityResizeAspect isEqualToString:layer.videoGravity]) {
-        return MRGAMContentModeScaleAspectFit;
+        return MRContentModeScaleAspectFit;
     } else if ([AVLayerVideoGravityResizeAspectFill isEqualToString:layer.videoGravity]){
-        return MRGAMContentModeScaleAspectFill;
+        return MRContentModeScaleAspectFill;
     } else {
-        return MRGAMContentModeScaleToFill;
+        return MRContentModeScaleToFill;
     }
 }
 

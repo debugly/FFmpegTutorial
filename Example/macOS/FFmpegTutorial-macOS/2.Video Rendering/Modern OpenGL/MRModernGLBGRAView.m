@@ -39,7 +39,7 @@ enum
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
-    MRMGLContentMode _contentMode;
+    MRContentMode _contentMode;
     /// 顶点对象
     GLuint _vbo;
     GLuint _vao;
@@ -197,12 +197,12 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MRMGLContentMode)contentMode
+- (void)setContentMode:(MRContentMode)contentMode
 {
     _contentMode = contentMode;
 }
 
-- (MRMGLContentMode)contentMode
+- (MRContentMode)contentMode
 {
     return _contentMode;
 }
@@ -232,14 +232,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MRMGLContentModeScaleAspectFit || _contentMode == MRMGLContentModeScaleAspectFill) {
+    if (_contentMode == MRContentModeScaleAspectFit || _contentMode == MRContentModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MRMGLContentModeScaleAspectFit) {
+        if (_contentMode == MRContentModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -248,7 +248,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MRMGLContentModeScaleAspectFill) {
+        } else if (_contentMode == MRContentModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;
