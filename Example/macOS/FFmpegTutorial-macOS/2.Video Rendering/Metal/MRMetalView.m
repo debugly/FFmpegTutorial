@@ -21,6 +21,7 @@
 #import "MRMetalYUV420PPipeline.h"
 #import "MRMetalUYVY422Pipeline.h"
 #import "MRMetalYUYV422Pipeline.h"
+#import "MRMetalOffscreenRendering.h"
 
 @interface MRMetalView ()
 {
@@ -42,6 +43,7 @@
 @property (nonatomic, strong) __kindof MRMetalBasePipeline *metalPipeline;
 @property (nonatomic, strong) id<MTLBuffer> mvp;
 @property (atomic, assign) CGPoint ratio;//vector
+@property (nonatomic, strong) MRMetalOffscreenRendering * offscreenRendering;
 
 @end
 
@@ -264,10 +266,53 @@
     [commandBuffer commit]; // 提交；
 }
 
-- (NSImage *)snapshot
+- (CGImageRef)snapshot
 {
-    //todo
-    return nil;
+    CVPixelBufferRef pixelBuffer = CVPixelBufferRetain(self.pixelBuffer);
+    if (!pixelBuffer) {
+        return nil;
+    }
+    
+    int width  = (int)CVPixelBufferGetWidth(pixelBuffer);
+    int height = (int)CVPixelBufferGetHeight(pixelBuffer);
+    
+    CGSize targetSize = CGSizeMake(width, height);
+    
+    if (![self.offscreenRendering canReuse:targetSize]) {
+        self.offscreenRendering = [MRMetalOffscreenRendering alloc];
+    }
+    
+    MTLRenderPassDescriptor * passDescriptor = [self.offscreenRendering offscreenRender:CGSizeMake(width, height) device:self.device];
+    if (!passDescriptor) {
+        return NULL;
+    }
+    
+    id<MTLCommandBuffer> commandBuffer = [_commandQueue commandBuffer];
+    
+    id<MTLRenderCommandEncoder> renderEncoder =
+        [commandBuffer renderCommandEncoderWithDescriptor:passDescriptor];
+    
+    if (!renderEncoder) {
+        return NULL;
+    }
+    
+    // Set the region of the drawable to draw into.
+    [renderEncoder setViewport:(MTLViewport){0.0, 0.0, targetSize.width, targetSize.height, -1.0, 1.0}];
+    
+    [self.metalPipeline updateMVP:self.mvp];
+    [self.metalPipeline updateVertexRatio:self.ratio device:self.device];
+    //upload textures
+    [self.metalPipeline uploadTextureWithEncoder:renderEncoder
+                                          buffer:pixelBuffer
+                                    textureCache:_metalTextureCache
+                                          device:self.device
+                                colorPixelFormat:self.colorPixelFormat];
+    
+    CVPixelBufferRelease(pixelBuffer);
+    [renderEncoder endEncoding];
+    [commandBuffer commit];
+    
+    return [self.offscreenRendering snapshot];
 }
 
 @end

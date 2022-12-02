@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
+		C940C23C2939E4FD00AC72FB /* MRMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */; };
 		C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */; };
 		C958F95E2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */; };
 		C958FAAD2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */; };
@@ -158,6 +159,8 @@
 /* Begin PBXFileReference section */
 		6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.debug.xcconfig"; sourceTree = "<group>"; };
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C940C23A2939E4FD00AC72FB /* MRMetalOffscreenRendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalOffscreenRendering.h; sourceTree = "<group>"; };
+		C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalOffscreenRendering.m; sourceTree = "<group>"; };
 		C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
 		C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
 		C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
@@ -571,6 +574,8 @@
 				DD900FC229321E2900CECDE4 /* MRMetalViewController.h */,
 				DD900FC529321E2900CECDE4 /* MRMetalViewController.m */,
 				DD900FC329321E2900CECDE4 /* MRMetalViewController.xib */,
+				C940C23A2939E4FD00AC72FB /* MRMetalOffscreenRendering.h */,
+				C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */,
 			);
 			path = Metal;
 			sourceTree = "<group>";
@@ -1185,6 +1190,7 @@
 				DD41902F2934661B00ADEFA7 /* MRModernGLYUV420PView.m in Sources */,
 				DDF598CC288056480079D26E /* MR0x24AudioQueueRenderer.m in Sources */,
 				DDF598CD288056480079D26E /* MR0x24AudioUnitRenderer.m in Sources */,
+				C940C23C2939E4FD00AC72FB /* MRMetalOffscreenRendering.m in Sources */,
 				DD41905F2934B73600ADEFA7 /* MRModernGLBGRARectView.m in Sources */,
 				DDF598FE2882EA3C0079D26E /* MR0x31AudioQueueRenderer.m in Sources */,
 				DD900F65292E536700CECDE4 /* MRMetalBasePipeline.m in Sources */,

@@ -238,7 +238,7 @@
     if (!self.player) {
         return;
     }
-    NSImage *img = [self.videoRenderer snapshot];
+    CGImageRef img = [self.videoRenderer snapshot];
     if (!img) {
         return;
     }
@@ -249,7 +249,7 @@
     NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
     long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
     NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
-    [MRUtil saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
+    [MRUtil saveImageToFile:img path:filePath];
     NSLog(@"img:%@",filePath);
 }
 

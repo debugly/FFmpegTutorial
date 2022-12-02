@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "MRVideoRenderingV2Protocol.h"
 #import <MetalKit/MetalKit.h>
+@import CoreGraphics;
 
 NS_ASSUME_NONNULL_BEGIN
 
@@ -16,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (void)displayPixelBuffer:(CVPixelBufferRef)img;
 - (void)displayNV21PixelBuffer:(CVPixelBufferRef)img;
-- (NSImage *)snapshot;
+- (CGImageRef)snapshot;
 
 @end
 
