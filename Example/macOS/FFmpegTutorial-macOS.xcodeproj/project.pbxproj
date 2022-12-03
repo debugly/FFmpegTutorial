@@ -81,6 +81,7 @@
 		DD91F29226AC082C00B96334 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28E26AC082C00B96334 /* README.md */; };
 		DD91F29326AC082C00B96334 /* common.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F28F26AC082C00B96334 /* common.vsh */; };
 		DD91F31C26B6E99800B96334 /* 3_sampler2D_Rect.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */; };
+		DD97CCF7293B5C1900797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCF5293B5C1900797F3B /* MRCrossPlatformUtil.m */; };
 		DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E82A256EA4D000B93F9F /* RootViewController.m */; };
 		DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E8322571458600B93F9F /* RootTableRowView.m */; };
 		DD97E83B25720F2A00B93F9F /* NSNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97E83A25720F2A00B93F9F /* NSNavigationController.m */; };
@@ -285,6 +286,8 @@
 		DD91F29026AC082C00B96334 /* renderer_pixfmt.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = renderer_pixfmt.h; sourceTree = "<group>"; };
 		DD91F30E26AEEDD900B96334 /* MRVideoRenderingProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingProtocol.h; sourceTree = "<group>"; };
 		DD91F31B26B6E99800B96334 /* 3_sampler2D_Rect.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect.fsh; sourceTree = "<group>"; };
+		DD97CCF5293B5C1900797F3B /* MRCrossPlatformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRCrossPlatformUtil.m; path = ../../Common/MRCrossPlatformUtil.m; sourceTree = "<group>"; };
+		DD97CCF6293B5C1900797F3B /* MRCrossPlatformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRCrossPlatformUtil.h; path = ../../Common/MRCrossPlatformUtil.h; sourceTree = "<group>"; };
 		DD97E829256EA4D000B93F9F /* RootViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootViewController.h; sourceTree = "<group>"; };
 		DD97E82A256EA4D000B93F9F /* RootViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = RootViewController.m; sourceTree = "<group>"; };
 		DD97E8312571458600B93F9F /* RootTableRowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = RootTableRowView.h; sourceTree = "<group>"; };
@@ -484,6 +487,8 @@
 		DD4CCBDB28EEC80E0047F238 /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				DD97CCF6293B5C1900797F3B /* MRCrossPlatformUtil.h */,
+				DD97CCF5293B5C1900797F3B /* MRCrossPlatformUtil.m */,
 				DDB73E912577DB9A0060EB57 /* DragView */,
 				DDB73F642577DDD10060EB57 /* MRUtil */,
 				DD97E8482572B05400B93F9F /* NSNavigationController */,
@@ -1228,6 +1233,7 @@
 				DDF5993328918E410079D26E /* MR0x36ViewController.m in Sources */,
 				DD7ABB74287B0D3100622984 /* MR0x22ViewController.m in Sources */,
 				DDBFF18628CA300700AFCE44 /* MR0x50ViewController.m in Sources */,
+				DD97CCF7293B5C1900797F3B /* MRCrossPlatformUtil.m in Sources */,
 				DDF5991728883D3C0079D26E /* MR0x32AudioQueueRenderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

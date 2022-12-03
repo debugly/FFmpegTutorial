@@ -29,34 +29,34 @@
         @"title":@"一、音视频基础",
         @"cells":@[
             @{
-                @"title":@"0x01",
+                @"title":@"OpenGL Version",
                 @"detail":@"FFmpeg编译配置和版本信息;OpengGL信息",
-                @"class":@"MR0x01ViewController",
+                @"class":@"MRGLVersionViewController",
             },
             @{
-                @"title":@"0x02",
+                @"title":@"Custom Thread",
                 @"detail":@"封装NSThread，方便后续调用",
-                @"class":@"MR0x02ViewController",
+                @"class":@"MRCustomThreadViewController",
             },
             @{
-                @"title":@"0x03",
+                @"title":@"Movie Prober",
                 @"detail":@"查看音视频流信息",
-                @"class":@"MR0x03ViewController",
+                @"class":@"MRMovieProberViewController",
             },
             @{
-                @"title":@"0x04",
+                @"title":@"Read Packet",
                 @"detail":@"读取音视频包",
-                @"class":@"MR0x04ViewController",
+                @"class":@"MRReadPacketViewController",
             },
             @{
-                @"title":@"0x05",
+                @"title":@"Decode Packet",
                 @"detail":@"音视频解码",
-                @"class":@"MR0x05ViewController",
+                @"class":@"MRDecodePacketViewController",
             },
             @{
-                @"title":@"0x06",
+                @"title":@"Custom Decoder",
                 @"detail":@"抽取解码类，封装解码逻辑",
-                @"class":@"MR0x06ViewController",
+                @"class":@"MRCustomDecoderViewController",
             }
         ]
     };
