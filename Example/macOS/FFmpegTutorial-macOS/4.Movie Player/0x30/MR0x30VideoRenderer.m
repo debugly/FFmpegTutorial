@@ -44,7 +44,7 @@ enum
     GLint _attributers[NUM_ATTRIBUTES];
     GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
-    MRContentMode _contentMode;
+    MRRenderingMode _renderingMode;
     /// 顶点对象
     GLuint _vbo;
     GLuint _vao;
@@ -203,14 +203,14 @@ enum
     [self resetViewPort];
 }
 
-- (void)setContentMode:(MRContentMode)contentMode
+- (void)setRenderingMode:(MRRenderingMode)renderingMode
 {
-    _contentMode = contentMode;
+    _renderingMode = renderingMode;
 }
 
-- (MRContentMode)contentMode
+- (MRRenderingMode)renderingMode
 {
-    return _contentMode;
+    return _renderingMode;
 }
 
 - (void)uploadFrameToTexture:(AVFrame * _Nonnull)frame
@@ -260,14 +260,14 @@ enum
     // Compute normalized quad coordinates to draw the frame into.
     CGSize normalizedSamplingSize = CGSizeMake(1.0, 1.0);
     
-    if (_contentMode == MRContentModeScaleAspectFit || _contentMode == MRContentModeScaleAspectFill) {
+    if (_renderingMode == MRRenderingModeScaleAspectFit || _renderingMode == MRRenderingModeScaleAspectFill) {
         // Set up the quad vertices with respect to the orientation and aspect ratio of the video.
         CGRect vertexSamplingRect = AVMakeRectWithAspectRatioInsideRect(CGSizeMake(frameWidth, frameHeight), _layerBounds);
         
         CGSize cropScaleAmount = CGSizeMake(vertexSamplingRect.size.width/_layerBounds.size.width, vertexSamplingRect.size.height/_layerBounds.size.height);
         
         // hold max
-        if (_contentMode == MRContentModeScaleAspectFit) {
+        if (_renderingMode == MRRenderingModeScaleAspectFit) {
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.width = 1.0;
                 normalizedSamplingSize.height = cropScaleAmount.height/cropScaleAmount.width;
@@ -276,7 +276,7 @@ enum
                 normalizedSamplingSize.height = 1.0;
                 normalizedSamplingSize.width = cropScaleAmount.width/cropScaleAmount.height;
             }
-        } else if (_contentMode == MRContentModeScaleAspectFill) {
+        } else if (_renderingMode == MRRenderingModeScaleAspectFill) {
             // hold min
             if (cropScaleAmount.width > cropScaleAmount.height) {
                 normalizedSamplingSize.height = 1.0;

@@ -212,7 +212,6 @@
 		DD41903D293469E100ADEFA7 /* MRLegacyGLYUYVView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRLegacyGLYUYVView.h; sourceTree = "<group>"; };
 		DD41904A2934B73600ADEFA7 /* MRModernGLYUV420PRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLYUV420PRectView.m; sourceTree = "<group>"; };
 		DD41904B2934B73600ADEFA7 /* MRModernGLNV21RectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLNV21RectView.m; sourceTree = "<group>"; };
-		DD41904C2934B73600ADEFA7 /* MRModernGLRectViewProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRModernGLRectViewProtocol.h; sourceTree = "<group>"; };
 		DD41904D2934B73600ADEFA7 /* MRModernGLNV12RectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLNV12RectView.m; sourceTree = "<group>"; };
 		DD41904E2934B73600ADEFA7 /* MRModernGLUYVYRectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRModernGLUYVYRectView.m; sourceTree = "<group>"; };
 		DD41904F2934B73600ADEFA7 /* MRModernGLRectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRModernGLRectViewController.h; sourceTree = "<group>"; };
@@ -468,7 +467,6 @@
 				DD41904F2934B73600ADEFA7 /* MRModernGLRectViewController.h */,
 				DD4190592934B73600ADEFA7 /* MRModernGLRectViewController.m */,
 				DD4190552934B73600ADEFA7 /* MRModernGLRectViewController.xib */,
-				DD41904C2934B73600ADEFA7 /* MRModernGLRectViewProtocol.h */,
 				DD4190562934B73600ADEFA7 /* MRModernGLUYVYRectView.h */,
 				DD41904E2934B73600ADEFA7 /* MRModernGLUYVYRectView.m */,
 				DD4190532934B73600ADEFA7 /* MRModernGLYUV420PRectView.h */,

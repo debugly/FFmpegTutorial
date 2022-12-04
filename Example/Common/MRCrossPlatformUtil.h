@@ -14,6 +14,7 @@
 
 #if TARGET_OS_OSX
 #import <Cocoa/Cocoa.h>
+CGContextRef __nullable UIGraphicsGetCurrentContext(void);
 #elif TARGET_OS_IPHONE
 #import <UIKit/UIKit.h>
 typedef UIViewController NSViewController;
@@ -21,6 +22,30 @@ typedef UITextView NSTextView;
 typedef UIButton NSButton;
 typedef UITextField NSTextField;
 typedef UIActivityIndicatorView NSProgressIndicator;
+typedef UIImageView NSImageView;
+typedef UIColor NSColor;
+typedef UIImage NSImage;
+typedef UIView NSView;
+typedef UIScreen NSScreen;
+
+#define NSViewWidthSizable  UIViewAutoresizingFlexibleWidth
+#define NSViewHeightSizable UIViewAutoresizingFlexibleHeight
+#define NSViewMinXMargin    UIViewAutoresizingFlexibleLeftMargin
+
+#define NSRectFill(rect) CGContextFillRect(UIGraphicsGetCurrentContext(), rect);
+
+@interface UIImage (_appkit)
+
+- (instancetype)initWithCGImage:(CGImageRef)cgImage size:(CGSize)size;
+
+@end
+
+@interface UIView (_appkit_)
+
+- (void)setWantsLayer:(BOOL)w;
+- (void)setNeedsDisplay:(BOOL)n;
+
+@end
 
 @interface UIActivityIndicatorView (_appkit_)
 
@@ -45,6 +70,12 @@ typedef UIActivityIndicatorView NSProgressIndicator;
 
 @end
 
+@interface MRSegmentedControl : UISegmentedControl
+
+- (void)insertSegmentWithTitle:(NSString *)title atIndex:(NSUInteger)segment animated:(BOOL)animated tag:(NSInteger)tag;
+- (NSInteger)tagForCurrentSelected;
+
+@end
 #endif
 
 @interface MRBaseViewController : NSViewController
@@ -52,6 +83,7 @@ typedef UIActivityIndicatorView NSProgressIndicator;
 #if TARGET_OS_IPHONE
 - (void)viewWillDisappear;
 #endif
+- (int)alert:(NSString *)title msg:(NSString *)msg;
 
 @end
 

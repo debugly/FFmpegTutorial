@@ -11,16 +11,16 @@
 NS_ASSUME_NONNULL_BEGIN
 
 typedef enum : NSUInteger {
-    MRViewContentModeScaleToFill,
-    MRViewContentModeScaleAspectFill,
-    MRViewContentModeScaleAspectFit
-} MRViewContentMode;
+    FFTRenderingModeScaleToFill,
+    FFTRenderingModeScaleAspectFill,
+    FFTRenderingModeScaleAspectFit
+} FFTRenderingMode;
 
 @protocol FFTVideoRendererProtocol <NSObject>
 
 @required;
-- (void)setContentMode:(MRViewContentMode)contentMode;
-- (MRViewContentMode)contentMode;
+- (void)setRenderingMode:(FFTRenderingMode)renderingMode;;
+- (FFTRenderingMode)renderingMode;
 
 @end
 

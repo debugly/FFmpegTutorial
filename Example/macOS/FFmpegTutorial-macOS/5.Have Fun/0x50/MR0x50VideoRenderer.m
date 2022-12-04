@@ -16,16 +16,16 @@
     return [[AVSampleBufferDisplayLayer alloc] init];
 }
 
-- (void)setContentMode:(MRContentMode)contentMode
+- (void)setRenderingMode:(MRRenderingMode)renderingMode
 {
     AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
-    switch (contentMode) {
-        case MRContentModeScaleAspectFill:
+    switch (renderingMode) {
+        case MRRenderingModeScaleAspectFill:
         {
             layer.videoGravity = AVLayerVideoGravityResizeAspectFill;
         }
             break;
-        case MRContentModeScaleAspectFit:
+        case MRRenderingModeScaleAspectFit:
         {
             layer.videoGravity = AVLayerVideoGravityResizeAspect;
         }
@@ -44,16 +44,16 @@
     [layer setFrame:oldFrame];
 }
 
-- (MRContentMode)contentMode
+- (MRRenderingMode)renderingMode
 {
     AVSampleBufferDisplayLayer *layer = (AVSampleBufferDisplayLayer *)[self layer];
     
     if ([AVLayerVideoGravityResizeAspect isEqualToString:layer.videoGravity]) {
-        return MRContentModeScaleAspectFit;
+        return MRRenderingModeScaleAspectFit;
     } else if ([AVLayerVideoGravityResizeAspectFill isEqualToString:layer.videoGravity]){
-        return MRContentModeScaleAspectFill;
+        return MRRenderingModeScaleAspectFill;
     } else {
-        return MRContentModeScaleToFill;
+        return MRRenderingModeScaleToFill;
     }
 }
 

@@ -65,24 +65,9 @@
         @"title":@"二、视频渲染",
         @"cells":@[
             @{
-                @"title":@"0x10",
-                @"detail":@"封装视频缩放类，方便转出指定的像素格式",
-                @"class":@"MR0x10ViewController",
-            },
-            @{
-                @"title":@"0x11",
-                @"detail":@"使用 Core Graphics 渲染视频桢",
-                @"class":@"MR0x11ViewController",
-            },
-            @{
-                @"title":@"0x12",
-                @"detail":@"使用 Core Animation 渲染视频桢",
-                @"class":@"MR0x12ViewController",
-            },
-            @{
-                @"title":@"0x13",
-                @"detail":@"使用 Core Media 渲染视频桢",
-                @"class":@"MR0x13ViewController",
+                @"title":@"Core Animation/Core Graphics/Core Media",
+                @"detail":@"渲染 xRGBx / xRGBx / NV12,YUYV,UYVY 视频桢",
+                @"class":@"MRGAMViewController",
             },
             @{
                 @"title":@"0x14",

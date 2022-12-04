@@ -408,11 +408,11 @@ static void MRAudioQueueOutputCallback(
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.videoRenderer setContentMode:MRContentModeScaleToFill];
+        [self.videoRenderer setRenderingMode:MRRenderingModeScaleToFill];
     } else if (item.tag == 2) {
-        [self.videoRenderer setContentMode:MRContentModeScaleAspectFill];
+        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFill];
     } else if (item.tag == 3) {
-        [self.videoRenderer setContentMode:MRContentModeScaleAspectFit];
+        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFit];
     }
 }
 

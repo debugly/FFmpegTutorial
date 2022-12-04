@@ -32,6 +32,11 @@
 		DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCFC293B7C4700797F3B /* MRReadPacketViewController-iOS.xib */; };
 		DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCFE293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib */; };
 		DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CD00293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib */; };
+		DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD5F293C53D500797F3B /* MRCoreMediaView.m */; };
+		DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD60293C53D500797F3B /* MRCoreGraphicsView.m */; };
+		DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD62293C53D500797F3B /* MRGAMViewController.m */; };
+		DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */; };
+		DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */; };
 		DDF9224128E6C9AC00F29C1A /* MR0x141OpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9224028E6C9AC00F29C1A /* MR0x141OpenGLHelper.m */; };
 		DDF9224E28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9224C28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m */; };
 		DDF9225228E6ECB700F29C1A /* 2_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9225028E6ECB700F29C1A /* 2_sampler2D.fsh */; };
@@ -84,6 +89,18 @@
 		DD97CCFC293B7C4700797F3B /* MRReadPacketViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRReadPacketViewController-iOS.xib"; sourceTree = "<group>"; };
 		DD97CCFE293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRDecodePacketViewController-iOS.xib"; sourceTree = "<group>"; };
 		DD97CD00293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRCustomDecoderViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CD44293C53D500797F3B /* MRVideoRenderingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingProtocol.h; sourceTree = "<group>"; };
+		DD97CD5B293C53D500797F3B /* MRVideoRenderingBasicProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingBasicProtocol.h; sourceTree = "<group>"; };
+		DD97CD5C293C53D500797F3B /* MRVideoRenderingV2Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingV2Protocol.h; sourceTree = "<group>"; };
+		DD97CD5E293C53D500797F3B /* MRGAMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGAMViewController.h; sourceTree = "<group>"; };
+		DD97CD5F293C53D500797F3B /* MRCoreMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreMediaView.m; sourceTree = "<group>"; };
+		DD97CD60293C53D500797F3B /* MRCoreGraphicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreGraphicsView.m; sourceTree = "<group>"; };
+		DD97CD61293C53D500797F3B /* MRCoreAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreAnimationView.h; sourceTree = "<group>"; };
+		DD97CD62293C53D500797F3B /* MRGAMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGAMViewController.m; sourceTree = "<group>"; };
+		DD97CD63293C53D500797F3B /* MRCoreGraphicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreGraphicsView.h; sourceTree = "<group>"; };
+		DD97CD65293C53D500797F3B /* MRCoreMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreMediaView.h; sourceTree = "<group>"; };
+		DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreAnimationView.m; sourceTree = "<group>"; };
+		DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGAMViewController-iOS.xib"; sourceTree = "<group>"; };
 		DDF9223F28E6C9AC00F29C1A /* MR0x141OpenGLHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLHelper.h; sourceTree = "<group>"; };
 		DDF9224028E6C9AC00F29C1A /* MR0x141OpenGLHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLHelper.m; sourceTree = "<group>"; };
 		DDF9224C28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLCompiler.m; sourceTree = "<group>"; };
@@ -149,6 +166,7 @@
 				6003F59C195388D20070C39A /* MRAppDelegate.h */,
 				6003F59D195388D20070C39A /* MRAppDelegate.m */,
 				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
+				DD97CD14293C53D500797F3B /* 2.Video Rendering */,
 				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
 				DDF9224228E6EB7800F29C1A /* OpenGLAssets */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -290,6 +308,34 @@
 			path = "../../../Common/1.The Basis Of AV/Decode Packet";
 			sourceTree = "<group>";
 		};
+		DD97CD14293C53D500797F3B /* 2.Video Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CD44293C53D500797F3B /* MRVideoRenderingProtocol.h */,
+				DD97CD5B293C53D500797F3B /* MRVideoRenderingBasicProtocol.h */,
+				DD97CD5C293C53D500797F3B /* MRVideoRenderingV2Protocol.h */,
+				DD97CD5D293C53D500797F3B /* Core-Graphics-Animation-Media */,
+			);
+			name = "2.Video Rendering";
+			path = "../../Common/2.Video Rendering";
+			sourceTree = "<group>";
+		};
+		DD97CD5D293C53D500797F3B /* Core-Graphics-Animation-Media */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CD61293C53D500797F3B /* MRCoreAnimationView.h */,
+				DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */,
+				DD97CD63293C53D500797F3B /* MRCoreGraphicsView.h */,
+				DD97CD60293C53D500797F3B /* MRCoreGraphicsView.m */,
+				DD97CD65293C53D500797F3B /* MRCoreMediaView.h */,
+				DD97CD5F293C53D500797F3B /* MRCoreMediaView.m */,
+				DD97CD5E293C53D500797F3B /* MRGAMViewController.h */,
+				DD97CD62293C53D500797F3B /* MRGAMViewController.m */,
+				DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */,
+			);
+			path = "Core-Graphics-Animation-Media";
+			sourceTree = "<group>";
+		};
 		DDF9224228E6EB7800F29C1A /* OpenGLAssets */ = {
 			isa = PBXGroup;
 			children = (
@@ -385,6 +431,7 @@
 				DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */,
 				DDF9225228E6ECB700F29C1A /* 2_sampler2D.fsh in Resources */,
 				DDF9225328E6ECB700F29C1A /* common.vsh in Resources */,
+				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
 				DDF9225E28E7184700F29C1A /* 3_sampler2D.fsh in Resources */,
@@ -425,14 +472,18 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */,
 				DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */,
 				DDF9224E28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m in Sources */,
 				DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DD97CCEE293B5BE900797F3B /* MRReadPacketViewController.m in Sources */,
 				DD97CCEF293B5BE900797F3B /* MRCustomThreadViewController.m in Sources */,
+				DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */,
 				DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */,
+				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
 				DDF9224128E6C9AC00F29C1A /* MR0x141OpenGLHelper.m in Sources */,
+				DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
 				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,

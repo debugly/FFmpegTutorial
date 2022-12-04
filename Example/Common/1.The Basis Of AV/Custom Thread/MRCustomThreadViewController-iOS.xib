@@ -21,12 +21,16 @@
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8Ja-Vd-6Kv">
-                    <rect key="frame" x="44" y="0.0" width="808" height="31"/>
+                    <rect key="frame" x="0.0" y="0.0" width="896" height="31"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="31" id="X4i-PJ-ILG"/>
                     </constraints>
                     <state key="normal" title="Button"/>
-                    <buttonConfiguration key="configuration" style="plain" title="Go"/>
+                    <buttonConfiguration key="configuration" style="plain" title="Go">
+                        <backgroundConfiguration key="background" cornerRadius="0.0">
+                            <color key="backgroundColor" red="0.7843137255" green="0.7843137255" blue="0.7843137255" alpha="0.93318342350000005" colorSpace="custom" customColorSpace="sRGB"/>
+                        </backgroundConfiguration>
+                    </buttonConfiguration>
                     <connections>
                         <action selector="go:" destination="-1" eventType="touchUpInside" id="1Z8-XY-rUW"/>
                     </connections>
@@ -43,10 +47,10 @@
             <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
                 <constraint firstItem="qHk-ya-Voe" firstAttribute="top" secondItem="8Ja-Vd-6Kv" secondAttribute="bottom" constant="8" symbolic="YES" id="1lH-6r-mah"/>
-                <constraint firstItem="arm-Tn-unu" firstAttribute="trailing" secondItem="8Ja-Vd-6Kv" secondAttribute="trailing" id="7QT-tk-Jmv"/>
+                <constraint firstAttribute="trailing" secondItem="8Ja-Vd-6Kv" secondAttribute="trailing" id="7QT-tk-Jmv"/>
                 <constraint firstItem="arm-Tn-unu" firstAttribute="trailing" secondItem="qHk-ya-Voe" secondAttribute="trailing" id="88f-AP-NOC"/>
                 <constraint firstItem="arm-Tn-unu" firstAttribute="bottom" secondItem="qHk-ya-Voe" secondAttribute="bottom" id="RkG-Ux-H3H"/>
-                <constraint firstItem="8Ja-Vd-6Kv" firstAttribute="leading" secondItem="arm-Tn-unu" secondAttribute="leading" id="X03-kE-Rdl"/>
+                <constraint firstItem="8Ja-Vd-6Kv" firstAttribute="leading" secondItem="4bK-Y2-UTN" secondAttribute="leading" id="X03-kE-Rdl"/>
                 <constraint firstItem="8Ja-Vd-6Kv" firstAttribute="top" secondItem="arm-Tn-unu" secondAttribute="top" id="dim-RA-Mce"/>
                 <constraint firstItem="qHk-ya-Voe" firstAttribute="leading" secondItem="arm-Tn-unu" secondAttribute="leading" id="jNN-gw-INc"/>
             </constraints>
