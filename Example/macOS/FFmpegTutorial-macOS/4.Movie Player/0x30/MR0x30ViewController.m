@@ -356,7 +356,7 @@
     NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
     long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
     NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
-    [MRUtil saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
+    [NSFileManager mr_saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
     NSLog(@"img:%@",filePath);
 }
 

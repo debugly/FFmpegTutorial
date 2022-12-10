@@ -64,10 +64,10 @@ open FFmpegTutorial-macOS.xcworkspace
 二、视频渲染
 
 - Core API:使用 Core Graphics/Core Image/Core Media 渲染视频帧
-- Legacy OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
-- Modern OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
-- Modern OpenGL(Rectangle Texture):渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
-- Metal:渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
+- Legacy OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
+- Modern OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
+- Modern OpenGL(Rectangle Texture):渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
+- Metal:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
 
 三、音频渲染
 

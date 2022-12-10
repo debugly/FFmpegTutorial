@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
 		C940C23C2939E4FD00AC72FB /* MRMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */; };
-		C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */; };
 		C958F95E2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */; };
 		C958FAAD2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */; };
 		C958FACD279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */; };
@@ -45,6 +44,8 @@
 		DD4190612934B73600ADEFA7 /* MRModernGLRectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4190592934B73600ADEFA7 /* MRModernGLRectViewController.m */; };
 		DD53138029443E2F00185AD5 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53137C29443E2E00185AD5 /* MROpenGLCompiler.m */; };
 		DD53138129443E2F00185AD5 /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53137F29443E2F00185AD5 /* MROpenGLHelper.m */; };
+		DD5313F02944B18900185AD5 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313EC2944B18900185AD5 /* MRRWeakProxy.m */; };
+		DD5313F12944B18900185AD5 /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313ED2944B18900185AD5 /* NSFileManager+Sandbox.m */; };
 		DD56CAFB28670F460046C28A /* MRReadPacketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56CAF928670F460046C28A /* MRReadPacketViewController.m */; };
 		DD56CAFC28670F460046C28A /* MRReadPacketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CAFA28670F460046C28A /* MRReadPacketViewController.xib */; };
 		DD56CB0128674FA00046C28A /* MRDecodePacketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CAFE28674FA00046C28A /* MRDecodePacketViewController.xib */; };
@@ -85,7 +86,6 @@
 		DDAD7FEB27FF3EBE00E947BB /* MRCustomThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAD7FE527FF3EBE00E947BB /* MRCustomThreadViewController.m */; };
 		DDAD7FEC27FF3EBE00E947BB /* MRMovieProberViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDAD7FE827FF3EBE00E947BB /* MRMovieProberViewController.xib */; };
 		DDAD7FED27FF3EBE00E947BB /* MRMovieProberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDAD7FE927FF3EBE00E947BB /* MRMovieProberViewController.m */; };
-		DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB144D226282E4100495754 /* MRRWeakProxy.m */; };
 		DDB73E942577DB9A0060EB57 /* MRDragView.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73E922577DB9A0060EB57 /* MRDragView.m */; };
 		DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DDB73F662577DDE60060EB57 /* MRUtil.m */; };
 		DDBFF17328B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDBFF17228B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh */; };
@@ -157,8 +157,6 @@
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		C940C23A2939E4FD00AC72FB /* MRMetalOffscreenRendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalOffscreenRendering.h; sourceTree = "<group>"; };
 		C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalOffscreenRendering.m; sourceTree = "<group>"; };
-		C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
-		C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
 		C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
 		C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
 		C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_Rect_v3.fsh; sourceTree = "<group>"; };
@@ -221,6 +219,10 @@
 		DD53137D29443E2E00185AD5 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MROpenGLCompiler.h; path = "../../../Common/2.Video Rendering/MROpenGLCompiler.h"; sourceTree = "<group>"; };
 		DD53137E29443E2E00185AD5 /* MROpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MROpenGLHelper.h; path = "../../../Common/2.Video Rendering/MROpenGLHelper.h"; sourceTree = "<group>"; };
 		DD53137F29443E2F00185AD5 /* MROpenGLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MROpenGLHelper.m; path = "../../../Common/2.Video Rendering/MROpenGLHelper.m"; sourceTree = "<group>"; };
+		DD5313EC2944B18900185AD5 /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRRWeakProxy.m; path = ../../../Common/Util/MRRWeakProxy.m; sourceTree = "<group>"; };
+		DD5313ED2944B18900185AD5 /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+Sandbox.m"; path = "../../../Common/Util/NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
+		DD5313EE2944B18900185AD5 /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+Sandbox.h"; path = "../../../Common/Util/NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
+		DD5313EF2944B18900185AD5 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRRWeakProxy.h; path = ../../../Common/Util/MRRWeakProxy.h; sourceTree = "<group>"; };
 		DD56CAF828670F460046C28A /* MRReadPacketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRReadPacketViewController.h; sourceTree = "<group>"; };
 		DD56CAF928670F460046C28A /* MRReadPacketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRReadPacketViewController.m; sourceTree = "<group>"; };
 		DD56CAFA28670F460046C28A /* MRReadPacketViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRReadPacketViewController.xib; sourceTree = "<group>"; };
@@ -289,8 +291,6 @@
 		DDAD7FE727FF3EBE00E947BB /* MRMovieProberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMovieProberViewController.h; sourceTree = "<group>"; };
 		DDAD7FE827FF3EBE00E947BB /* MRMovieProberViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRMovieProberViewController.xib; sourceTree = "<group>"; };
 		DDAD7FE927FF3EBE00E947BB /* MRMovieProberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMovieProberViewController.m; sourceTree = "<group>"; };
-		DDB144D126282E4100495754 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRRWeakProxy.h; sourceTree = "<group>"; };
-		DDB144D226282E4100495754 /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRRWeakProxy.m; sourceTree = "<group>"; };
 		DDB73E922577DB9A0060EB57 /* MRDragView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRDragView.m; sourceTree = "<group>"; };
 		DDB73E932577DB9A0060EB57 /* MRDragView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRDragView.h; sourceTree = "<group>"; };
 		DDB73F652577DDE60060EB57 /* MRUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRUtil.h; sourceTree = "<group>"; };
@@ -667,10 +667,10 @@
 		DDB73F642577DDD10060EB57 /* MRUtil */ = {
 			isa = PBXGroup;
 			children = (
-				DDB144D126282E4100495754 /* MRRWeakProxy.h */,
-				DDB144D226282E4100495754 /* MRRWeakProxy.m */,
-				C9580303279E43AC0058D64A /* NSFileManager+Sandbox.h */,
-				C9580302279E43AC0058D64A /* NSFileManager+Sandbox.m */,
+				DD5313EF2944B18900185AD5 /* MRRWeakProxy.h */,
+				DD5313EC2944B18900185AD5 /* MRRWeakProxy.m */,
+				DD5313EE2944B18900185AD5 /* NSFileManager+Sandbox.h */,
+				DD5313ED2944B18900185AD5 /* NSFileManager+Sandbox.m */,
 				DDB73F652577DDE60060EB57 /* MRUtil.h */,
 				DDB73F662577DDE60060EB57 /* MRUtil.m */,
 			);
@@ -1120,6 +1120,7 @@
 				DDAD7FEB27FF3EBE00E947BB /* MRCustomThreadViewController.m in Sources */,
 				DD419041293469E100ADEFA7 /* MRLegacyGLYUV420PView.m in Sources */,
 				DDE855352871CA490006B140 /* MR0x20VideoRenderer.m in Sources */,
+				DD5313F12944B18900185AD5 /* NSFileManager+Sandbox.m in Sources */,
 				DD900F7D292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m in Sources */,
 				DD41902E2934661B00ADEFA7 /* MRModernGLNV12View.m in Sources */,
 				DD53138029443E2F00185AD5 /* MROpenGLCompiler.m in Sources */,
@@ -1138,7 +1139,6 @@
 				DDF598FD2882EA3C0079D26E /* MR0x31VideoRenderer.m in Sources */,
 				DD900FD72933168B00CECDE4 /* MRCoreGraphicsView.m in Sources */,
 				DD41905B2934B73600ADEFA7 /* MRModernGLNV21RectView.m in Sources */,
-				DDB144D326282E4100495754 /* MRRWeakProxy.m in Sources */,
 				DD419042293469E100ADEFA7 /* MRLegacyGLNV21View.m in Sources */,
 				DD7ABB6C287A87D800622984 /* MR0x21ViewController.m in Sources */,
 				DD900FDA2933168B00CECDE4 /* MRCoreAnimationView.m in Sources */,
@@ -1171,6 +1171,7 @@
 				DDF59927288ED5D30079D26E /* MR0x34ViewController.m in Sources */,
 				DD56CB072867FBBD0046C28A /* MRCustomDecoderViewController.m in Sources */,
 				DD4190272934661B00ADEFA7 /* MRModernGLYUYVView.m in Sources */,
+				DD5313F02944B18900185AD5 /* MRRWeakProxy.m in Sources */,
 				DD97E8332571458600B93F9F /* RootTableRowView.m in Sources */,
 				DD97E82B256EA4D000B93F9F /* RootViewController.m in Sources */,
 				DD41902D2934661B00ADEFA7 /* MRModernGLNV21View.m in Sources */,
@@ -1188,7 +1189,6 @@
 				DD4190282934661B00ADEFA7 /* MRModernGLBGRAView.m in Sources */,
 				DD41905C2934B73600ADEFA7 /* MRModernGLNV12RectView.m in Sources */,
 				DDF598E528826AD70079D26E /* MR0x30ViewController.m in Sources */,
-				C9580304279E43AC0058D64A /* NSFileManager+Sandbox.m in Sources */,
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 				DDF5993328918E410079D26E /* MR0x36ViewController.m in Sources */,
 				DD7ABB74287B0D3100622984 /* MR0x22ViewController.m in Sources */,

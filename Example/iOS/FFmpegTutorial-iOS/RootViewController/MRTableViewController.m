@@ -66,17 +66,17 @@
         @"cells":@[
             @{
                 @"title":@"Core Animation/Core Graphics/Core Media",
-                @"detail":@"渲染 BGRx / RGBx / NV12,YUYV,UYVY 视频桢",
+                @"detail":@"渲染 BGRx/RGBx/NV12/YUYV/UYVY 视频桢",
                 @"class":@"MRGAMViewController",
             },
             @{
                 @"title":@"OpenGL ES2",
-                @"detail":@"渲染 BGRx / RGBx / NV12,NV21,YUV420P 视频桢",
+                @"detail":@"渲染 BGRx/RGBx/NV12/NV21/YUV420P 视频桢",
                 @"class":@"MRGLES2ViewController",
             },
             @{
                 @"title":@"OpenGL ES3",
-                @"detail":@"渲染 BGRx / RGBx / NV12,NV21,YUV420P 视频桢",
+                @"detail":@"渲染 BGRx/RGBx/NV12/NV21/YUV420P 视频桢",
                 @"class":@"MRGLES3ViewController",
             },
             @{

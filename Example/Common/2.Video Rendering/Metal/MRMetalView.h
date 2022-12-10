@@ -6,7 +6,6 @@
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
 #import "MRVideoRenderingV2Protocol.h"
 #import <MetalKit/MetalKit.h>
 @import CoreGraphics;

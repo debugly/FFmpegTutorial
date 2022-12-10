@@ -5,6 +5,7 @@
 //  Created by Matt Reach on 2019/11/5.
 //
 #import <Foundation/Foundation.h>
+#import <CoreGraphics/CGImage.h>
 
 NS_ASSUME_NONNULL_BEGIN
 @interface NSFileManager (Sandbox)
@@ -31,6 +32,8 @@ NS_ASSUME_NONNULL_BEGIN
 /// @return 完整的路径
 + (NSString * _Nullable)mr_DirWithType:(NSSearchPathDirectory)directory
           WithPathComponents:(NSArray<NSString *>*_Nullable)pathArr;
+
++ (BOOL)mr_saveImageToFile:(CGImageRef)img path:(NSString *)imgPath;
 
 @end
 NS_ASSUME_NONNULL_END

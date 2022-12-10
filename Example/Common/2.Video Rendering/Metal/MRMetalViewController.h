@@ -8,11 +8,11 @@
 //使用 Metal 渲染 BGRA/NV12/NV21/YUV420P/UYVY422/YUYV422 视频桢
 //在intel集成显卡上 YUV420P 视频桢显示异常，这是 metal 的bug
 
-#import <Cocoa/Cocoa.h>
+#import "MRCrossPlatformUtil.h"
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface MRMetalViewController : NSViewController
+@interface MRMetalViewController : MRBaseViewController
 
 @end
 

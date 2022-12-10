@@ -2,7 +2,7 @@
 //  MRMetalViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/11/22.
+//  Created by qianlongxu on 2022/12/10.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
@@ -14,7 +14,6 @@
 #import "MRMetalView.h"
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
-#import "MRUtil.h"
 
 @interface MRMetalViewController ()
 {
@@ -23,12 +22,16 @@
 }
 
 @property (strong) FFTPlayer0x10 *player;
-@property (weak) MRMetalView *videoRenderer;
 
+@property (weak) MRMetalView *videoRenderer;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
 @property (weak) IBOutlet NSView *playbackView;
-
+#if TARGET_OS_OSX
+@property (weak) IBOutlet NSPopUpButton *formatPopup;
+#else
+@property (weak, nonatomic) IBOutlet MRSegmentedControl *formatSegCtrl;
+#endif
 @property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
 @property (copy) NSString *videoPixelInfo;
@@ -48,8 +51,9 @@
         [_player asyncStop];
         _player = nil;
     }
+    
     CVPixelBufferPoolRelease(_pixelBufferPoolRef);
-    _pixelBufferPoolRef = NULL;
+        _pixelBufferPoolRef = NULL;
 }
 
 - (void)prepareTickTimerIfNeed
@@ -76,25 +80,16 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
+    
+    NSString *renderer = NSStringFromClass([self.videoRenderer class]);
+    renderer = [renderer stringByReplacingOccurrencesOfString:@"MR" withString:@""];
+    renderer = [renderer stringByReplacingOccurrencesOfString:@"View" withString:@""];
+    [self.hud setHudValue:renderer forKey:@"renderer"];
 }
 
 - (void)alert:(NSString *)msg
 {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"知道了"];
-    [alert setMessageText:@"错误提示"];
-    [alert setInformativeText:msg];
-    [alert setAlertStyle:NSInformationalAlertStyle];
-    NSModalResponse returnCode = [alert runModal];
-    
-    if (returnCode == NSAlertFirstButtonReturn)
-    {
-        //nothing todo
-    }
-    else if (returnCode == NSAlertSecondButtonReturn)
-    {
-        
-    }
+    [self alert:@"知道了" msg:msg];
 }
 
 - (CVPixelBufferRef)createCVPixelBufferFromAVFrame:(AVFrame *)frame
@@ -132,6 +127,17 @@
     }
 }
 
+- (void)prepareRendererView
+{
+    MRMetalView *videoRenderer = [[MRMetalView alloc] initWithFrame:self.playbackView.bounds];
+    [self.playbackView addSubview:videoRenderer];
+#if TARGET_OS_OSX
+    [self.playbackView addSubview:videoRenderer positioned:NSWindowBelow relativeTo:nil];
+#endif
+    videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
+    self.videoRenderer = videoRenderer;
+}
+
 - (void)parseURL:(NSString *)url
 {
     if (self.player) {
@@ -141,27 +147,9 @@
         [self.timer invalidate];
         self.timer = nil;
         
-        [self.hud destroyContentView];
-        self.hud = nil;
-        
         [self.videoRenderer removeFromSuperview];
         self.videoRenderer = nil;
     }
-    
-    MRMetalView *videoRenderer = [[MRMetalView alloc] initWithFrame:self.playbackView.bounds];
-    [self.playbackView addSubview:videoRenderer];
-    videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
-    self.videoRenderer = videoRenderer;
-    
-    self.hud = [[FFTHudControl alloc] init];
-    NSView *hudView = [self.hud contentView];
-    [self.videoRenderer addSubview:hudView];
-    CGRect rect = self.videoRenderer.bounds;
-    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-    rect.size.width = MIN(screenWidth / 5.0, 150);
-    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-    [hudView setFrame:rect];
-    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
     
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
@@ -173,6 +161,7 @@
         if (player != self.player) {
             return;
         }
+        [self prepareRendererView];
         [self.indicatorView stopAnimation:nil];
         NSLog(@"---VideoInfo-------------------");
         NSLog(@"%@",info);
@@ -218,9 +207,46 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    self.hud = [[FFTHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.playbackView addSubview:hudView];
+    hudView.layer.zPosition = 100;
+    CGRect rect = self.playbackView.bounds;
+#if TARGET_OS_IPHONE
+    rect.size.width = 300;
+#else
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.width = MIN(screenWidth / 5.0, 150);
+#endif
+    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    [hudView setFrame:rect];
+    
+    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+    
     self.inputField.stringValue = KTestVideoURL1;
+    
+#if TARGET_OS_IPHONE
+    [self setupPixelFormats];
+#else
     _pixelFormat = MR_PIX_FMT_MASK_BGRA;
+#endif
 }
+
+#if TARGET_OS_IPHONE
+- (void)setupPixelFormats
+{
+    NSArray *fmts = @[@"BGRA",@"BGR0",@"NV12",@"NV21",@"UYVY",@"YUYV",@"YUV420P"];
+    NSArray *tags = @[@(MR_PIX_FMT_MASK_BGRA),@(MR_PIX_FMT_MASK_BGR0),@(MR_PIX_FMT_MASK_NV12),@(MR_PIX_FMT_MASK_NV21),@(MR_PIX_FMT_MASK_UYVY422),@(MR_PIX_FMT_MASK_YUYV422),@(MR_PIX_FMT_MASK_YUV420P)];
+    [self.formatSegCtrl removeAllSegments];
+    for (int i = 0; i < [fmts count]; i++) {
+        NSString *title = fmts[i];
+        [self.formatSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
+    }
+    self.formatSegCtrl.selectedSegmentIndex = 0;
+    _pixelFormat = [[tags firstObject] intValue];
+}
+#endif
 
 #pragma - mark actions
 
@@ -249,10 +275,30 @@
     NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
     long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
     NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
-    [MRUtil saveImageToFile:img path:filePath];
+    [NSFileManager mr_saveImageToFile:img path:filePath];
     NSLog(@"img:%@",filePath);
 }
 
+- (void)doSelectedVideMode:(int)tag
+{
+    if (tag == 1) {
+        [self.videoRenderer setRenderingMode:MRRenderingModeScaleToFill];
+    } else if (tag == 2) {
+        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFill];
+    } else if (tag == 3) {
+        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFit];
+    }
+}
+
+- (void)doSelectPixelFormat:(MRPixelFormatMask)fmt
+{
+    if (_pixelFormat != fmt) {
+        _pixelFormat = fmt;
+        [self go:nil];
+    }
+}
+
+#if TARGET_OS_OSX
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
@@ -286,5 +332,17 @@
     
     [self go:nil];
 }
+
+#else
+- (IBAction)onSelectedVideMode:(MRSegmentedControl *)sender
+{
+    [self doSelectedVideMode:(int)[sender tagForCurrentSelected] + 1];
+}
+
+- (IBAction)onSelectPixelFormat:(MRSegmentedControl *)sender
+{
+    [self doSelectPixelFormat:(MRPixelFormatMask)[sender tagForCurrentSelected]];
+}
+#endif
 
 @end

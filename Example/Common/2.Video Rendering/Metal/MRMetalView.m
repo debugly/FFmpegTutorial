@@ -68,10 +68,8 @@
     }
     // Create the command queue
     _commandQueue = [self.device newCommandQueue]; // CommandQueue是渲染指令队列，保证渲染指令有序地提交到GPU
-    //设置模型矩阵，逆时针旋转 90 度。
-    
-#warning 随机旋转
-    int angle = arc4random() % 361;
+    //设置模型矩阵，可实现旋转。
+    int angle = 0;
     _viewMatrix = matrix4x4_rotation(2 * 3.14 * angle / 360, 0.0, 0.0, 1.0);
     
     MRMVPMatrix mvp = {_viewMatrix};
@@ -92,6 +90,10 @@
     return self;
 }
 
+#if TARGET_OS_IPHONE
+typedef CGRect NSRect;
+#endif
+
 - (instancetype)initWithFrame:(NSRect)frameRect
 {
     self = [super initWithFrame:frameRect];
@@ -101,11 +103,19 @@
     return self;
 }
 
+#if TARGET_OS_OSX
 - (void)layout
 {
     [super layout];
     _layerBounds = self.bounds;
 }
+#else
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    _layerBounds = self.bounds;
+}
+#endif
 
 - (void)setRenderingMode:(MRRenderingMode)renderingMode
 {
@@ -212,7 +222,11 @@
         }
         self.ratio = ratio;
         self.pixelBuffer = pixelBuffer;
+#if TARGET_OS_OSX
         [self setNeedsDisplay:YES];
+#else
+        [self setNeedsDisplay];
+#endif
     });
 }
 

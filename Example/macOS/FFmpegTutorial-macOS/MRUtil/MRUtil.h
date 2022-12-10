@@ -16,7 +16,6 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSDictionary *)makeBookmarkWithURL:(NSURL *)url;
 + (NSArray <NSDictionary *>*)scanFolderWithPath:(NSString *)dir filter:(NSArray<NSString *>*)types;
 + (CGImageRef)nsImage2cg:(NSImage *)src;
-+ (BOOL)saveImageToFile:(CGImageRef)img path:(NSString *)imgPath;
 
 @end
 
