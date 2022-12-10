@@ -32,6 +32,17 @@
 		DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */; };
 		DD5313A32944A4A900185AD5 /* MRGLES2NV21View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313A12944A4A900185AD5 /* MRGLES2NV21View.m */; };
 		DD5313A62944AA3100185AD5 /* MRGLES2YUV420PView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313A42944AA3100185AD5 /* MRGLES2YUV420PView.m */; };
+		DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313A92944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh */; };
+		DD5313B92944AD3400185AD5 /* 3_sampler2D_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313AA2944AD3400185AD5 /* 3_sampler2D_es3.fsh */; };
+		DD5313BA2944AD3400185AD5 /* MRGLES3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313AB2944AD3400185AD5 /* MRGLES3ViewController.m */; };
+		DD5313BB2944AD3400185AD5 /* 2_sampler2D_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313AD2944AD3400185AD5 /* 2_sampler2D_es3.fsh */; };
+		DD5313BC2944AD3400185AD5 /* 1_sampler2D_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313AE2944AD3400185AD5 /* 1_sampler2D_es3.fsh */; };
+		DD5313BD2944AD3400185AD5 /* MRGLES3NV21View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313AF2944AD3400185AD5 /* MRGLES3NV21View.m */; };
+		DD5313BE2944AD3400185AD5 /* MRGLES3ViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD5313B02944AD3400185AD5 /* MRGLES3ViewController-iOS.xib */; };
+		DD5313BF2944AD3400185AD5 /* MRGLES3YUV420PView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313B12944AD3400185AD5 /* MRGLES3YUV420PView.m */; };
+		DD5313C02944AD3400185AD5 /* MRGLES3RGBXView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313B22944AD3400185AD5 /* MRGLES3RGBXView.m */; };
+		DD5313C12944AD3400185AD5 /* MRGLES3NV12View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313B32944AD3400185AD5 /* MRGLES3NV12View.m */; };
+		DD5313C22944AD3400185AD5 /* common_es3.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313B72944AD3400185AD5 /* common_es3.vsh */; };
 		DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */; };
 		DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */; };
 		DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */; };
@@ -94,6 +105,22 @@
 		DD5313A22944A4A900185AD5 /* MRGLES2NV21View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2NV21View.h; sourceTree = "<group>"; };
 		DD5313A42944AA3100185AD5 /* MRGLES2YUV420PView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2YUV420PView.m; sourceTree = "<group>"; };
 		DD5313A52944AA3100185AD5 /* MRGLES2YUV420PView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2YUV420PView.h; sourceTree = "<group>"; };
+		DD5313A82944AD3400185AD5 /* MRGLES3RGBXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3RGBXView.h; sourceTree = "<group>"; };
+		DD5313A92944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_es3.fsh; sourceTree = "<group>"; };
+		DD5313AA2944AD3400185AD5 /* 3_sampler2D_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_es3.fsh; sourceTree = "<group>"; };
+		DD5313AB2944AD3400185AD5 /* MRGLES3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3ViewController.m; sourceTree = "<group>"; };
+		DD5313AC2944AD3400185AD5 /* MRGLES3NV12View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3NV12View.h; sourceTree = "<group>"; };
+		DD5313AD2944AD3400185AD5 /* 2_sampler2D_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_es3.fsh; sourceTree = "<group>"; };
+		DD5313AE2944AD3400185AD5 /* 1_sampler2D_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_es3.fsh; sourceTree = "<group>"; };
+		DD5313AF2944AD3400185AD5 /* MRGLES3NV21View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3NV21View.m; sourceTree = "<group>"; };
+		DD5313B02944AD3400185AD5 /* MRGLES3ViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGLES3ViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5313B12944AD3400185AD5 /* MRGLES3YUV420PView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3YUV420PView.m; sourceTree = "<group>"; };
+		DD5313B22944AD3400185AD5 /* MRGLES3RGBXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3RGBXView.m; sourceTree = "<group>"; };
+		DD5313B32944AD3400185AD5 /* MRGLES3NV12View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3NV12View.m; sourceTree = "<group>"; };
+		DD5313B42944AD3400185AD5 /* MRGLES3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3ViewController.h; sourceTree = "<group>"; };
+		DD5313B52944AD3400185AD5 /* MRGLES3NV21View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3NV21View.h; sourceTree = "<group>"; };
+		DD5313B62944AD3400185AD5 /* MRGLES3YUV420PView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3YUV420PView.h; sourceTree = "<group>"; };
+		DD5313B72944AD3400185AD5 /* common_es3.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_es3.vsh; sourceTree = "<group>"; };
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD97CCCC293B5BD400797F3B /* MRCrossPlatformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRCrossPlatformUtil.h; path = ../../Common/MRCrossPlatformUtil.h; sourceTree = "<group>"; };
 		DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRCrossPlatformUtil.m; path = ../../Common/MRCrossPlatformUtil.m; sourceTree = "<group>"; };
@@ -281,6 +308,29 @@
 			path = "OpenGL ES2";
 			sourceTree = "<group>";
 		};
+		DD5313A72944AD3400185AD5 /* OpenGL ES3 */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313AE2944AD3400185AD5 /* 1_sampler2D_es3.fsh */,
+				DD5313AD2944AD3400185AD5 /* 2_sampler2D_es3.fsh */,
+				DD5313A92944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh */,
+				DD5313AA2944AD3400185AD5 /* 3_sampler2D_es3.fsh */,
+				DD5313B72944AD3400185AD5 /* common_es3.vsh */,
+				DD5313AC2944AD3400185AD5 /* MRGLES3NV12View.h */,
+				DD5313B32944AD3400185AD5 /* MRGLES3NV12View.m */,
+				DD5313B52944AD3400185AD5 /* MRGLES3NV21View.h */,
+				DD5313AF2944AD3400185AD5 /* MRGLES3NV21View.m */,
+				DD5313A82944AD3400185AD5 /* MRGLES3RGBXView.h */,
+				DD5313B22944AD3400185AD5 /* MRGLES3RGBXView.m */,
+				DD5313B02944AD3400185AD5 /* MRGLES3ViewController-iOS.xib */,
+				DD5313B42944AD3400185AD5 /* MRGLES3ViewController.h */,
+				DD5313AB2944AD3400185AD5 /* MRGLES3ViewController.m */,
+				DD5313B62944AD3400185AD5 /* MRGLES3YUV420PView.h */,
+				DD5313B12944AD3400185AD5 /* MRGLES3YUV420PView.m */,
+			);
+			path = "OpenGL ES3";
+			sourceTree = "<group>";
+		};
 		DD97CCCF293B5BE900797F3B /* Movie Prober */ = {
 			isa = PBXGroup;
 			children = (
@@ -359,6 +409,7 @@
 				DD97CD5C293C53D500797F3B /* MRVideoRenderingV2Protocol.h */,
 				DD97CD5D293C53D500797F3B /* Core-Graphics-Animation-Media */,
 				DD53138229443F4400185AD5 /* OpenGL ES2 */,
+				DD5313A72944AD3400185AD5 /* OpenGL ES3 */,
 			);
 			name = "2.Video Rendering";
 			path = "../../Common/2.Video Rendering";
@@ -444,17 +495,23 @@
 				DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */,
+				DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */,
 				DD97CCEC293B5BE900797F3B /* MRGLVersionViewController-iOS.xib in Resources */,
 				DD97CCFB293B74C100797F3B /* MRMovieProberViewController-iOS.xib in Resources */,
 				DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */,
+				DD5313C22944AD3400185AD5 /* common_es3.vsh in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */,
 				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
 				DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */,
+				DD5313B92944AD3400185AD5 /* 3_sampler2D_es3.fsh in Resources */,
+				DD5313BB2944AD3400185AD5 /* 2_sampler2D_es3.fsh in Resources */,
 				DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */,
 				DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */,
+				DD5313BE2944AD3400185AD5 /* MRGLES3ViewController-iOS.xib in Resources */,
+				DD5313BC2944AD3400185AD5 /* 1_sampler2D_es3.fsh in Resources */,
 				DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */,
 				DD53139029443F4400185AD5 /* common_es2.vsh in Resources */,
 			);
@@ -494,6 +551,7 @@
 			files = (
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
 				DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */,
+				DD5313BD2944AD3400185AD5 /* MRGLES3NV21View.m in Sources */,
 				DD5313A32944A4A900185AD5 /* MRGLES2NV21View.m in Sources */,
 				DD5313A62944AA3100185AD5 /* MRGLES2YUV420PView.m in Sources */,
 				DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */,
@@ -506,15 +564,19 @@
 				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
 				DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */,
 				DD5313942944403B00185AD5 /* MRGLES2RGBXView.m in Sources */,
+				DD5313BA2944AD3400185AD5 /* MRGLES3ViewController.m in Sources */,
 				DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
+				DD5313C02944AD3400185AD5 /* MRGLES3RGBXView.m in Sources */,
+				DD5313BF2944AD3400185AD5 /* MRGLES3YUV420PView.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
 				DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */,
 				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */,
 				DD97CCF4293B5BE900797F3B /* MRDecodePacketViewController.m in Sources */,
+				DD5313C12944AD3400185AD5 /* MRGLES3NV12View.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

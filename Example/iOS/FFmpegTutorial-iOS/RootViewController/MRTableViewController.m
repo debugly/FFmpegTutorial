@@ -75,34 +75,14 @@
                 @"class":@"MRGLES2ViewController",
             },
             @{
-                @"title":@"0x15-1",
-                @"detail":@"使用 OpenGL ES3 渲染 NV12 视频桢",
-                @"class":@"MR0x151ViewController",
+                @"title":@"OpenGL ES3",
+                @"detail":@"渲染 BGRx / RGBx / NV12,NV21,YUV420P 视频桢",
+                @"class":@"MRGLES3ViewController",
             },
             @{
-                @"title":@"0x15-2",
-                @"detail":@"使用 OpenGL ES3 渲染 YUV420P 视频桢",
-                @"class":@"MR0x152ViewController",
-            },
-            @{
-                @"title":@"0x15-5",
-                @"detail":@"使用 OpenGL ES3 渲染 NV21 视频桢",
-                @"class":@"MR0x155ViewController",
-            },
-            @{
-                @"title":@"0x15-6",
-                @"detail":@"使用 OpenGL ES3 渲染 BGRA 视频桢",
-                @"class":@"MR0x156ViewController",
-            },
-            @{
-                @"title":@"0x16",
-                @"detail":@"使用 FBO 离屏渲染截图",
-                @"class":@"MR0x16ViewController",
-            },
-            @{
-                @"title":@"0x17",
-                @"detail":@"TODO:使用 Metal 渲染视频桢",
-                @"class":@"",
+                @"title":@"Metal",
+                @"detail":@"渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢",
+                @"class":@"MRMetalViewController",
             }
         ]
     };
