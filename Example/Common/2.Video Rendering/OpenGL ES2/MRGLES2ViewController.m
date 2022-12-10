@@ -12,6 +12,7 @@
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRGLES2BGRAView.h"
 #import "MRGLES2RGBAView.h"
+#import "MRGLES2NV12View.h"
 #import "MRRWeakProxy.h"
 
 @interface MRGLES2ViewController ()
@@ -234,7 +235,7 @@
     } else if (_pixelFormat == MR_PIX_FMT_MASK_RGBA || _pixelFormat == MR_PIX_FMT_MASK_RGB0)  {
         renderingClazz = [MRGLES2RGBAView class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV12)  {
-        
+        renderingClazz = [MRGLES2NV12View class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21)  {
         
     } else if (_pixelFormat == MR_PIX_FMT_MASK_YUV420P)  {
