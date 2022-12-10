@@ -8,7 +8,7 @@
 
 #ifndef MROpenGLHelper_h
 #define MROpenGLHelper_h
-
+#import <TargetConditionals.h>
 #import <stdio.h>
 #if TARGET_OS_OSX
 #import <OpenGL/gl.h>

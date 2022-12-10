@@ -150,9 +150,9 @@ enum
 
 - (void)dealloc
 {
-    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
     glDeleteFramebuffers(1, &_frameBufferHandle);
     glDeleteRenderbuffers(1, &_colorBufferHandle);
+    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
     VerifyGL(;);
 }
 

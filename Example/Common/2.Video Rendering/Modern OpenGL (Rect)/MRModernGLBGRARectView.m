@@ -38,7 +38,6 @@ enum
     GLint _uniforms[NUM_UNIFORMS];
     GLint _textureDimensions[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
-    GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
     MRRenderingMode _renderingMode;
     /// 顶点对象
@@ -56,7 +55,6 @@ enum
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
-    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)setup
@@ -137,8 +135,6 @@ enum
             glGenVertexArrays(1, &_vao);
             /// 创建顶点缓存对象
             glGenBuffers(1, &_vbo);
-            
-            glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
         }
     }
 }
@@ -180,8 +176,6 @@ enum
     [self setupOpenGLProgram];
     
     glDisable(GL_DEPTH_TEST);
-    //glEnable(GL_TEXTURE_RECTANGLE);
-    glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)prepareOpenGL
@@ -214,7 +208,6 @@ enum
     //设置纹理和采样器的对应关系
     glUniform1i(_uniforms[UNIFORM_0], 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_RECTANGLE, _textures[0]);
     //设置矩形纹理尺寸
     glUniform2f(_textureDimensions[UNIFORM_0], frame->width, frame->height);
     glTexImage2D(GL_TEXTURE_RECTANGLE, 0, GL_RGBA, frame->width, frame->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, frame->data[0]);

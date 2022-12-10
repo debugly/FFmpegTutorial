@@ -35,7 +35,6 @@ enum
 {
     GLint _uniforms[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
-    GLuint _textures[NUM_UNIFORMS];
     MRRenderingMode _renderingMode;
     CGRect _layerBounds;
 }
@@ -48,7 +47,7 @@ enum
 
 - (void)dealloc
 {
-    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
+    
 }
 
 - (void)setup {
@@ -158,7 +157,6 @@ enum
     
     glDisable(GL_DEPTH_TEST);
     glEnable(GL_TEXTURE_2D);
-    glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)prepareOpenGL
@@ -191,9 +189,8 @@ enum
     //设置纹理和采样器的对应关系
     glUniform1i(_uniforms[UNIFORM_0], 0);
     glActiveTexture(GL_TEXTURE0);
-    glBindTexture(GL_TEXTURE_2D, _textures[0]);
     //internalformat 必须是 GL_RGBA，与创建 OpenGL 上下文指定的格式一样；
-    //format 是当前数据的格式，可以是 GL_BGRA 也可以是 GL_RGBA，根据实际情况；但 CVPixelBufferRef 是不支持 RGBA 的；
+    //format 是当前数据的格式，可以是 GL_BGRA 也可以是 GL_RGBA，根据实际情况；
     //这里指定好格式后，将会自动转换好对应关系，shader 无需做额外处理。
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame->width, frame->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, frame->data[0]);
     

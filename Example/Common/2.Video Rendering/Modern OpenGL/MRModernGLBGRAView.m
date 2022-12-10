@@ -37,7 +37,6 @@ enum
 {
     GLint _uniforms[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
-    GLuint _textures[NUM_UNIFORMS];
     CGRect _layerBounds;
     MRRenderingMode _renderingMode;
     /// 顶点对象
@@ -55,7 +54,6 @@ enum
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
-    glDeleteTextures(sizeof(_textures)/sizeof(GLuint), _textures);
 }
 
 - (void)setup
@@ -136,8 +134,7 @@ enum
             glGenVertexArrays(1, &_vao);
             /// 创建顶点缓存对象
             glGenBuffers(1, &_vbo);
-            
-            glGenTextures(sizeof(_textures)/sizeof(GLuint), _textures);
+        
             glDisable(GL_DEPTH_TEST);
         }
     }
@@ -213,8 +210,6 @@ enum
     glUniform1i(_uniforms[UNIFORM_0], 0);
     VerifyGL(;);
     glActiveTexture(GL_TEXTURE0);
-    VerifyGL(;);
-    glBindTexture(GL_TEXTURE_2D, _textures[0]);
     VerifyGL(;);
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame->width, frame->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, frame->data[0]);
     VerifyGL(;);
