@@ -1,12 +1,12 @@
 //
-//  MRGLES2BGRAView.m
+//  MRGLES2RGBAView.m
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/12/10.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MRGLES2BGRAView.h"
+#import "MRGLES2RGBAView.h"
 #import <OpenGLES/ES2/gl.h>
 #import <OpenGLES/ES2/glext.h>
 #import <AVFoundation/AVUtilities.h>
@@ -29,7 +29,7 @@ enum
     NUM_ATTRIBUTES
 };
 
-@interface MRGLES2BGRAView ()
+@interface MRGLES2RGBAView ()
 {
     GLint _uniforms[NUM_UNIFORMS];
     GLint _attributers[NUM_ATTRIBUTES];
@@ -50,7 +50,7 @@ enum
 
 @end
 
-@implementation MRGLES2BGRAView
+@implementation MRGLES2RGBAView
 
 + (Class)layerClass
 {
@@ -169,7 +169,7 @@ enum
     //internalformat 必须是 GL_RGBA，与创建 OpenGL 上下文指定的格式一样；
     //format 是当前数据的格式，可以是 GL_BGRA 也可以是 GL_RGBA，根据实际情况；
     //这里指定好格式后，将会自动转换好对应关系，shader 无需做额外处理。
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame->width, frame->height, 0, GL_BGRA, GL_UNSIGNED_BYTE, frame->data[0]);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, frame->width, frame->height, 0, GL_RGBA, GL_UNSIGNED_BYTE, frame->data[0]);
     
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);

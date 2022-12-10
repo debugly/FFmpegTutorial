@@ -11,6 +11,7 @@
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRGLES2BGRAView.h"
+#import "MRGLES2RGBAView.h"
 #import "MRRWeakProxy.h"
 
 @interface MRGLES2ViewController ()
@@ -212,9 +213,9 @@
     if (self.videoRenderer && [self.videoRenderer isKindOfClass:clazz]) {
         return NO;
     }
+    //如果这里释放后，立马创建，会导致OpenGL错误：GL_INVALID_VALUE
     [self.videoRenderer removeFromSuperview];
     self.videoRenderer = nil;
-    
     NSView<MRVideoRenderingProtocol> *videoRenderer = [[clazz alloc] initWithFrame:self.playbackView.bounds];
     [self.playbackView addSubview:videoRenderer];
 #if TARGET_OS_OSX
@@ -231,7 +232,7 @@
     if (_pixelFormat == MR_PIX_FMT_MASK_BGRA || _pixelFormat == MR_PIX_FMT_MASK_BGR0)  {
         renderingClazz = [MRGLES2BGRAView class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_RGBA || _pixelFormat == MR_PIX_FMT_MASK_RGB0)  {
-        
+        renderingClazz = [MRGLES2RGBAView class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV12)  {
         
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21)  {
@@ -240,6 +241,9 @@
         
     }
     self.renderingClazz = renderingClazz;
+    //放在这里销毁的目的是避免和新renderer创建靠得太近，老的正在销毁时使用新的渲染会出错！
+    [self.videoRenderer removeFromSuperview];
+    self.videoRenderer = nil;
 }
 
 - (void)doSelectedVideMode:(int)tag

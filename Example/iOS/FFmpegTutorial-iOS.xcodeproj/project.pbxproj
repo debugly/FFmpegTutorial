@@ -29,6 +29,7 @@
 		DD5313942944403B00185AD5 /* MRGLES2BGRAView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */; };
 		DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313952944410500185AD5 /* MROpenGLHelper.m */; };
 		DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313962944410500185AD5 /* MROpenGLCompiler.m */; };
+		DD53139D2944862300185AD5 /* MRGLES2RGBAView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53139C2944862300185AD5 /* MRGLES2RGBAView.m */; };
 		DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */; };
 		DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */; };
 		DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */; };
@@ -85,6 +86,8 @@
 		DD5313962944410500185AD5 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
 		DD5313972944410600185AD5 /* MROpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLHelper.h; sourceTree = "<group>"; };
 		DD5313982944410600185AD5 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
+		DD53139B2944862300185AD5 /* MRGLES2RGBAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2RGBAView.h; sourceTree = "<group>"; };
+		DD53139C2944862300185AD5 /* MRGLES2RGBAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2RGBAView.m; sourceTree = "<group>"; };
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD97CCCC293B5BD400797F3B /* MRCrossPlatformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRCrossPlatformUtil.h; path = ../../Common/MRCrossPlatformUtil.h; sourceTree = "<group>"; };
 		DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRCrossPlatformUtil.m; path = ../../Common/MRCrossPlatformUtil.m; sourceTree = "<group>"; };
@@ -259,6 +262,8 @@
 				DD53138929443F4400185AD5 /* common_es2.vsh */,
 				DD5313932944403B00185AD5 /* MRGLES2BGRAView.h */,
 				DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */,
+				DD53139B2944862300185AD5 /* MRGLES2RGBAView.h */,
+				DD53139C2944862300185AD5 /* MRGLES2RGBAView.m */,
 				DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */,
 				DD53138829443F4400185AD5 /* MRGLES2ViewController.h */,
 				DD53138629443F4400185AD5 /* MRGLES2ViewController.m */,
@@ -494,6 +499,7 @@
 				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
 				DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */,
+				DD53139D2944862300185AD5 /* MRGLES2RGBAView.m in Sources */,
 				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DD97CCF4293B5BE900797F3B /* MRDecodePacketViewController.m in Sources */,
