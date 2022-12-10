@@ -71,7 +71,7 @@
             },
             @{
                 @"title":@"OpenGL ES2",
-                @"detail":@"渲染 BGRx / RGBx / NV12,YUYV,UYVY 视频桢",
+                @"detail":@"渲染 BGRx / RGBx / NV12,NV21,YUV420P 视频桢",
                 @"class":@"MRGLES2ViewController",
             },
             @{

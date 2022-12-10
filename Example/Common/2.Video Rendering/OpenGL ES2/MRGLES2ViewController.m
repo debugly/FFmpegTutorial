@@ -13,6 +13,7 @@
 #import "MRGLES2RGBXView.h"
 #import "MRGLES2NV12View.h"
 #import "MRGLES2NV21View.h"
+#import "MRGLES2YUV420PView.h"
 #import "MRRWeakProxy.h"
 
 @interface MRGLES2ViewController ()
@@ -186,8 +187,8 @@
 
 - (void)setupPixelFormats
 {
-    NSArray *fmts = @[@"BGRA",@"BGR0",@"RGBA",@"RGB0",@"NV12",@"NV21",@"YUYV",@"UYVY",@"YUV420P"];
-    NSArray *tags = @[@(MR_PIX_FMT_MASK_BGRA),@(MR_PIX_FMT_MASK_BGR0),@(MR_PIX_FMT_MASK_RGBA),@(MR_PIX_FMT_MASK_RGB0),@(MR_PIX_FMT_MASK_NV12),@(MR_PIX_FMT_MASK_NV21),@(MR_PIX_FMT_MASK_YUYV422),@(MR_PIX_FMT_MASK_UYVY422),@(MR_PIX_FMT_MASK_YUV420P)];
+    NSArray *fmts = @[@"BGRA",@"BGR0",@"RGBA",@"RGB0",@"NV12",@"NV21",@"YUV420P"];
+    NSArray *tags = @[@(MR_PIX_FMT_MASK_BGRA),@(MR_PIX_FMT_MASK_BGR0),@(MR_PIX_FMT_MASK_RGBA),@(MR_PIX_FMT_MASK_RGB0),@(MR_PIX_FMT_MASK_NV12),@(MR_PIX_FMT_MASK_NV21),@(MR_PIX_FMT_MASK_YUV420P)];
     [self.formatSegCtrl removeAllSegments];
     for (int i = 0; i < [fmts count]; i++) {
         NSString *title = fmts[i];
@@ -240,7 +241,9 @@
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21)  {
         renderingClazz = [MRGLES2NV21View class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_YUV420P)  {
-        
+        renderingClazz = [MRGLES2YUV420PView class];
+    } else {
+        NSAssert(NO, @"no matching renderer.");
     }
     self.renderingClazz = renderingClazz;
     //放在这里销毁的目的是避免和新renderer创建靠得太近，老的正在销毁时使用新的渲染会出错！
