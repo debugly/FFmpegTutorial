@@ -70,29 +70,9 @@
                 @"class":@"MRGAMViewController",
             },
             @{
-                @"title":@"0x14",
-                @"detail":@"使用 OpenGL 渲染 BGRA 视频桢",
-                @"class":@"MR0x14ViewController",
-            },
-            @{
-                @"title":@"0x14-1",
-                @"detail":@"抽取 OpenGLCompiler 类，封装 OpenGL Shader 相关逻辑",
-                @"class":@"MR0x141ViewController",
-            },
-            @{
-                @"title":@"0x14-2",
-                @"detail":@"使用 OpenGL 渲染 NV12 视频桢",
-                @"class":@"MR0x142ViewController",
-            },
-            @{
-                @"title":@"0x14-3",
-                @"detail":@"使用 OpenGL 渲染 NV21 视频桢",
-                @"class":@"MR0x143ViewController",
-            },
-            @{
-                @"title":@"0x14-4",
-                @"detail":@"使用 OpenGL 渲染 YUV420P 视频桢",
-                @"class":@"MR0x144ViewController",
+                @"title":@"OpenGL ES2",
+                @"detail":@"渲染 xRGBx / xRGBx / NV12,YUYV,UYVY 视频桢",
+                @"class":@"MRGLES2ViewController",
             },
             @{
                 @"title":@"0x15-1",

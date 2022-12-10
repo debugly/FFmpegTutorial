@@ -19,6 +19,16 @@
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
+		DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */; };
+		DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */; };
+		DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */; };
+		DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53138629443F4400185AD5 /* MRGLES2ViewController.m */; };
+		DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */; };
+		DD53139029443F4400185AD5 /* common_es2.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138929443F4400185AD5 /* common_es2.vsh */; };
+		DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */; };
+		DD5313942944403B00185AD5 /* MRGLES2BGRAView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */; };
+		DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313952944410500185AD5 /* MROpenGLHelper.m */; };
+		DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313962944410500185AD5 /* MROpenGLCompiler.m */; };
 		DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */; };
 		DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */; };
 		DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */; };
@@ -37,13 +47,6 @@
 		DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD62293C53D500797F3B /* MRGAMViewController.m */; };
 		DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */; };
 		DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */; };
-		DDF9224128E6C9AC00F29C1A /* MR0x141OpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9224028E6C9AC00F29C1A /* MR0x141OpenGLHelper.m */; };
-		DDF9224E28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9224C28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m */; };
-		DDF9225228E6ECB700F29C1A /* 2_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9225028E6ECB700F29C1A /* 2_sampler2D.fsh */; };
-		DDF9225328E6ECB700F29C1A /* common.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9225128E6ECB700F29C1A /* common.vsh */; };
-		DDF9225E28E7184700F29C1A /* 3_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9225D28E7184700F29C1A /* 3_sampler2D.fsh */; };
-		DDF9226928E7341800F29C1A /* 2_sampler2D_NV21.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9226828E7341800F29C1A /* 2_sampler2D_NV21.fsh */; };
-		DDF9227428E73BCA00F29C1A /* 1_sampler2D.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DDF9227328E73BCA00F29C1A /* 1_sampler2D.fsh */; };
 		DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */; };
 /* End PBXBuildFile section */
 
@@ -68,6 +71,20 @@
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
+		DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_es2.fsh; sourceTree = "<group>"; };
+		DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_es2.fsh; sourceTree = "<group>"; };
+		DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_es2.fsh; sourceTree = "<group>"; };
+		DD53138629443F4400185AD5 /* MRGLES2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2ViewController.m; sourceTree = "<group>"; };
+		DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_es2.fsh; sourceTree = "<group>"; };
+		DD53138829443F4400185AD5 /* MRGLES2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2ViewController.h; sourceTree = "<group>"; };
+		DD53138929443F4400185AD5 /* common_es2.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_es2.vsh; sourceTree = "<group>"; };
+		DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGLES2ViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2BGRAView.m; sourceTree = "<group>"; };
+		DD5313932944403B00185AD5 /* MRGLES2BGRAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2BGRAView.h; sourceTree = "<group>"; };
+		DD5313952944410500185AD5 /* MROpenGLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLHelper.m; sourceTree = "<group>"; };
+		DD5313962944410500185AD5 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
+		DD5313972944410600185AD5 /* MROpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLHelper.h; sourceTree = "<group>"; };
+		DD5313982944410600185AD5 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD97CCCC293B5BD400797F3B /* MRCrossPlatformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRCrossPlatformUtil.h; path = ../../Common/MRCrossPlatformUtil.h; sourceTree = "<group>"; };
 		DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRCrossPlatformUtil.m; path = ../../Common/MRCrossPlatformUtil.m; sourceTree = "<group>"; };
@@ -101,15 +118,6 @@
 		DD97CD65293C53D500797F3B /* MRCoreMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreMediaView.h; sourceTree = "<group>"; };
 		DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreAnimationView.m; sourceTree = "<group>"; };
 		DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGAMViewController-iOS.xib"; sourceTree = "<group>"; };
-		DDF9223F28E6C9AC00F29C1A /* MR0x141OpenGLHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLHelper.h; sourceTree = "<group>"; };
-		DDF9224028E6C9AC00F29C1A /* MR0x141OpenGLHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLHelper.m; sourceTree = "<group>"; };
-		DDF9224C28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x141OpenGLCompiler.m; sourceTree = "<group>"; };
-		DDF9224D28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x141OpenGLCompiler.h; sourceTree = "<group>"; };
-		DDF9225028E6ECB700F29C1A /* 2_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D.fsh; sourceTree = "<group>"; };
-		DDF9225128E6ECB700F29C1A /* common.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common.vsh; sourceTree = "<group>"; };
-		DDF9225D28E7184700F29C1A /* 3_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D.fsh; sourceTree = "<group>"; };
-		DDF9226828E7341800F29C1A /* 2_sampler2D_NV21.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21.fsh; sourceTree = "<group>"; };
-		DDF9227328E73BCA00F29C1A /* 1_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D.fsh; sourceTree = "<group>"; };
 		DDF9BFF8259DC06A00B1D3EC /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRRWeakProxy.m; sourceTree = "<group>"; };
 		DDF9BFF9259DC06A00B1D3EC /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRRWeakProxy.h; sourceTree = "<group>"; };
 		F51DF2E8EB7607DA7709BDF6 /* Pods-FFmpegTutorial-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.debug.xcconfig"; sourceTree = "<group>"; };
@@ -168,7 +176,6 @@
 				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
 				DD97CD14293C53D500797F3B /* 2.Video Rendering */,
 				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
-				DDF9224228E6EB7800F29C1A /* OpenGLAssets */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
 			path = "FFmpegTutorial-iOS";
@@ -242,6 +249,23 @@
 			path = RootViewController;
 			sourceTree = "<group>";
 		};
+		DD53138229443F4400185AD5 /* OpenGL ES2 */ = {
+			isa = PBXGroup;
+			children = (
+				DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */,
+				DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */,
+				DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */,
+				DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */,
+				DD53138929443F4400185AD5 /* common_es2.vsh */,
+				DD5313932944403B00185AD5 /* MRGLES2BGRAView.h */,
+				DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */,
+				DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */,
+				DD53138829443F4400185AD5 /* MRGLES2ViewController.h */,
+				DD53138629443F4400185AD5 /* MRGLES2ViewController.m */,
+			);
+			path = "OpenGL ES2";
+			sourceTree = "<group>";
+		};
 		DD97CCCF293B5BE900797F3B /* Movie Prober */ = {
 			isa = PBXGroup;
 			children = (
@@ -311,10 +335,15 @@
 		DD97CD14293C53D500797F3B /* 2.Video Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				DD5313982944410600185AD5 /* MROpenGLCompiler.h */,
+				DD5313962944410500185AD5 /* MROpenGLCompiler.m */,
+				DD5313972944410600185AD5 /* MROpenGLHelper.h */,
+				DD5313952944410500185AD5 /* MROpenGLHelper.m */,
 				DD97CD44293C53D500797F3B /* MRVideoRenderingProtocol.h */,
 				DD97CD5B293C53D500797F3B /* MRVideoRenderingBasicProtocol.h */,
 				DD97CD5C293C53D500797F3B /* MRVideoRenderingV2Protocol.h */,
 				DD97CD5D293C53D500797F3B /* Core-Graphics-Animation-Media */,
+				DD53138229443F4400185AD5 /* OpenGL ES2 */,
 			);
 			name = "2.Video Rendering";
 			path = "../../Common/2.Video Rendering";
@@ -334,30 +363,6 @@
 				DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */,
 			);
 			path = "Core-Graphics-Animation-Media";
-			sourceTree = "<group>";
-		};
-		DDF9224228E6EB7800F29C1A /* OpenGLAssets */ = {
-			isa = PBXGroup;
-			children = (
-				DDF9224F28E6ECB700F29C1A /* Shaders */,
-				DDF9224D28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.h */,
-				DDF9224C28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m */,
-				DDF9223F28E6C9AC00F29C1A /* MR0x141OpenGLHelper.h */,
-				DDF9224028E6C9AC00F29C1A /* MR0x141OpenGLHelper.m */,
-			);
-			path = OpenGLAssets;
-			sourceTree = "<group>";
-		};
-		DDF9224F28E6ECB700F29C1A /* Shaders */ = {
-			isa = PBXGroup;
-			children = (
-				DDF9227328E73BCA00F29C1A /* 1_sampler2D.fsh */,
-				DDF9226828E7341800F29C1A /* 2_sampler2D_NV21.fsh */,
-				DDF9225D28E7184700F29C1A /* 3_sampler2D.fsh */,
-				DDF9225028E6ECB700F29C1A /* 2_sampler2D.fsh */,
-				DDF9225128E6ECB700F29C1A /* common.vsh */,
-			);
-			path = Shaders;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -423,19 +428,20 @@
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
-				DDF9226928E7341800F29C1A /* 2_sampler2D_NV21.fsh in Resources */,
+				DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */,
 				DD97CCEC293B5BE900797F3B /* MRGLVersionViewController-iOS.xib in Resources */,
 				DD97CCFB293B74C100797F3B /* MRMovieProberViewController-iOS.xib in Resources */,
-				DDF9227428E73BCA00F29C1A /* 1_sampler2D.fsh in Resources */,
+				DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */,
-				DDF9225228E6ECB700F29C1A /* 2_sampler2D.fsh in Resources */,
-				DDF9225328E6ECB700F29C1A /* common.vsh in Resources */,
 				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
-				DDF9225E28E7184700F29C1A /* 3_sampler2D.fsh in Resources */,
 				DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */,
+				DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */,
+				DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */,
+				DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */,
+				DD53139029443F4400185AD5 /* common_es2.vsh in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -474,7 +480,6 @@
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
 				DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */,
 				DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */,
-				DDF9224E28E6EC9F00F29C1A /* MR0x141OpenGLCompiler.m in Sources */,
 				DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DD97CCEE293B5BE900797F3B /* MRReadPacketViewController.m in Sources */,
@@ -482,10 +487,13 @@
 				DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */,
 				DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */,
 				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
-				DDF9224128E6C9AC00F29C1A /* MR0x141OpenGLHelper.m in Sources */,
 				DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */,
+				DD5313942944403B00185AD5 /* MRGLES2BGRAView.m in Sources */,
+				DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
+				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
+				DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */,
 				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DD97CCF4293B5BE900797F3B /* MRDecodePacketViewController.m in Sources */,

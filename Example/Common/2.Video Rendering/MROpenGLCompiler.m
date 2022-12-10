@@ -7,7 +7,11 @@
 //
 
 #import "MROpenGLCompiler.h"
+#if TARGET_OS_OSX
 #import <OpenGL/gl.h>
+#else
+#import <OpenGLES/ES2/gl.h>
+#endif
 
 @interface MROpenGLCompiler ()
 

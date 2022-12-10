@@ -10,7 +10,11 @@
 #define MROpenGLHelper_h
 
 #import <stdio.h>
+#if TARGET_OS_OSX
 #import <OpenGL/gl.h>
+#else
+#import <OpenGLES/ES2/gl.h>
+#endif
 
 void MR_checkGLError(const char* op);
 const char * GetGLErrorString(GLenum error);
