@@ -10,8 +10,7 @@
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <MRFFmpegPod/libavutil/frame.h>
-#import "MRGLES2BGRAView.h"
-#import "MRGLES2RGBAView.h"
+#import "MRGLES2RGBXView.h"
 #import "MRGLES2NV12View.h"
 #import "MRGLES2NV21View.h"
 #import "MRRWeakProxy.h"
@@ -187,8 +186,8 @@
 
 - (void)setupPixelFormats
 {
-    NSArray *fmts = @[@"BGRA",@"BGR0",@"RGBA",@"RGB0",@"ARGB",@"0RGB",@"RGB24",@"RGB555",@"NV12",@"NV21",@"YUYV",@"UYVY",@"YUV420P"];
-    NSArray *tags = @[@(MR_PIX_FMT_MASK_BGRA),@(MR_PIX_FMT_MASK_BGR0),@(MR_PIX_FMT_MASK_RGBA),@(MR_PIX_FMT_MASK_RGB0),@(MR_PIX_FMT_MASK_ARGB),@(MR_PIX_FMT_MASK_0RGB),@(MR_PIX_FMT_MASK_RGB24),@(MR_PIX_FMT_MASK_RGB555),@(MR_PIX_FMT_MASK_NV12),@(MR_PIX_FMT_MASK_NV21),@(MR_PIX_FMT_MASK_YUYV422),@(MR_PIX_FMT_MASK_UYVY422),@(MR_PIX_FMT_MASK_YUV420P)];
+    NSArray *fmts = @[@"BGRA",@"BGR0",@"RGBA",@"RGB0",@"NV12",@"NV21",@"YUYV",@"UYVY",@"YUV420P"];
+    NSArray *tags = @[@(MR_PIX_FMT_MASK_BGRA),@(MR_PIX_FMT_MASK_BGR0),@(MR_PIX_FMT_MASK_RGBA),@(MR_PIX_FMT_MASK_RGB0),@(MR_PIX_FMT_MASK_NV12),@(MR_PIX_FMT_MASK_NV21),@(MR_PIX_FMT_MASK_YUYV422),@(MR_PIX_FMT_MASK_UYVY422),@(MR_PIX_FMT_MASK_YUV420P)];
     [self.formatSegCtrl removeAllSegments];
     for (int i = 0; i < [fmts count]; i++) {
         NSString *title = fmts[i];
@@ -231,10 +230,11 @@
 - (void)updateRenderingClazz
 {
     Class<MRVideoRenderingProtocol> renderingClazz = NULL;
-    if (_pixelFormat == MR_PIX_FMT_MASK_BGRA || _pixelFormat == MR_PIX_FMT_MASK_BGR0)  {
-        renderingClazz = [MRGLES2BGRAView class];
-    } else if (_pixelFormat == MR_PIX_FMT_MASK_RGBA || _pixelFormat == MR_PIX_FMT_MASK_RGB0)  {
-        renderingClazz = [MRGLES2RGBAView class];
+    if (_pixelFormat == MR_PIX_FMT_MASK_BGRA ||
+        _pixelFormat == MR_PIX_FMT_MASK_BGR0 ||
+        _pixelFormat == MR_PIX_FMT_MASK_RGBA ||
+        _pixelFormat == MR_PIX_FMT_MASK_RGB0)  {
+        renderingClazz = [MRGLES2RGBXView class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV12)  {
         renderingClazz = [MRGLES2NV12View class];
     } else if (_pixelFormat == MR_PIX_FMT_MASK_NV21)  {

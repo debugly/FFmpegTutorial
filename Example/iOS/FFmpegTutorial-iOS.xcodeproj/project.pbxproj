@@ -26,10 +26,9 @@
 		DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */; };
 		DD53139029443F4400185AD5 /* common_es2.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138929443F4400185AD5 /* common_es2.vsh */; };
 		DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */; };
-		DD5313942944403B00185AD5 /* MRGLES2BGRAView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */; };
+		DD5313942944403B00185AD5 /* MRGLES2RGBXView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313922944403B00185AD5 /* MRGLES2RGBXView.m */; };
 		DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313952944410500185AD5 /* MROpenGLHelper.m */; };
 		DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313962944410500185AD5 /* MROpenGLCompiler.m */; };
-		DD53139D2944862300185AD5 /* MRGLES2RGBAView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53139C2944862300185AD5 /* MRGLES2RGBAView.m */; };
 		DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */; };
 		DD5313A32944A4A900185AD5 /* MRGLES2NV21View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313A12944A4A900185AD5 /* MRGLES2NV21View.m */; };
 		DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */; };
@@ -82,14 +81,12 @@
 		DD53138829443F4400185AD5 /* MRGLES2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2ViewController.h; sourceTree = "<group>"; };
 		DD53138929443F4400185AD5 /* common_es2.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_es2.vsh; sourceTree = "<group>"; };
 		DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGLES2ViewController-iOS.xib"; sourceTree = "<group>"; };
-		DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2BGRAView.m; sourceTree = "<group>"; };
-		DD5313932944403B00185AD5 /* MRGLES2BGRAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2BGRAView.h; sourceTree = "<group>"; };
+		DD5313922944403B00185AD5 /* MRGLES2RGBXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2RGBXView.m; sourceTree = "<group>"; };
+		DD5313932944403B00185AD5 /* MRGLES2RGBXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2RGBXView.h; sourceTree = "<group>"; };
 		DD5313952944410500185AD5 /* MROpenGLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLHelper.m; sourceTree = "<group>"; };
 		DD5313962944410500185AD5 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
 		DD5313972944410600185AD5 /* MROpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLHelper.h; sourceTree = "<group>"; };
 		DD5313982944410600185AD5 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
-		DD53139B2944862300185AD5 /* MRGLES2RGBAView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2RGBAView.h; sourceTree = "<group>"; };
-		DD53139C2944862300185AD5 /* MRGLES2RGBAView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2RGBAView.m; sourceTree = "<group>"; };
 		DD53139E29448BC000185AD5 /* MRGLES2NV12View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2NV12View.h; sourceTree = "<group>"; };
 		DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2NV12View.m; sourceTree = "<group>"; };
 		DD5313A12944A4A900185AD5 /* MRGLES2NV21View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2NV21View.m; sourceTree = "<group>"; };
@@ -266,10 +263,8 @@
 				DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */,
 				DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */,
 				DD53138929443F4400185AD5 /* common_es2.vsh */,
-				DD5313932944403B00185AD5 /* MRGLES2BGRAView.h */,
-				DD5313922944403B00185AD5 /* MRGLES2BGRAView.m */,
-				DD53139B2944862300185AD5 /* MRGLES2RGBAView.h */,
-				DD53139C2944862300185AD5 /* MRGLES2RGBAView.m */,
+				DD5313932944403B00185AD5 /* MRGLES2RGBXView.h */,
+				DD5313922944403B00185AD5 /* MRGLES2RGBXView.m */,
 				DD53139E29448BC000185AD5 /* MRGLES2NV12View.h */,
 				DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */,
 				DD5313A22944A4A900185AD5 /* MRGLES2NV21View.h */,
@@ -504,13 +499,12 @@
 				DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */,
 				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
 				DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */,
-				DD5313942944403B00185AD5 /* MRGLES2BGRAView.m in Sources */,
+				DD5313942944403B00185AD5 /* MRGLES2RGBXView.m in Sources */,
 				DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
 				DDF9BFFA259DC06A00B1D3EC /* MRRWeakProxy.m in Sources */,
 				DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */,
-				DD53139D2944862300185AD5 /* MRGLES2RGBAView.m in Sources */,
 				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */,

@@ -1,5 +1,5 @@
 //
-//  MRGLES2RGBAView.h
+//  MRGLES2RGBXView.h
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/12/10.
@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "MRVideoRenderingProtocol.h"
 
-@interface MRGLES2RGBAView : UIView <MRVideoRenderingProtocol>
+@interface MRGLES2RGBXView : UIView <MRVideoRenderingProtocol>
 
 @end
