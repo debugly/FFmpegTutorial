@@ -8,7 +8,7 @@
 
 # Usage
 
-#### 1、运行 iOS 示例工程:
+## iOS 示例工程:
 
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
@@ -23,9 +23,7 @@ open FFmpegTutorial-iOS.xcworkspace
 
 ![](md/imgs/ios-snapshot-2.png)
 
-![](md/imgs/ios-snapshot-3.png)
-
-#### 2、运行 macOS 示例工程:
+## macOS 示例工程:
 
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
@@ -40,17 +38,11 @@ open FFmpegTutorial-macOS.xcworkspace
 
 ![](md/imgs/macos-snapshot-3.png)
 
-![](md/imgs/macos-snapshot-4.png)
-
-# Introduction
+## Introduction
 
 为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，因此我把编译好的 FFmpeg 库也做成了 Pod 库，编译 FFmpeg 等库的脚本在这里开源 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod)。
 
-教程提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发。
-
-# FFmpegTutorial
-
-教程共分为六个部分。
+教程共分为六个部分，提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发:
 
 一、音视频基础
 
@@ -64,16 +56,15 @@ open FFmpegTutorial-macOS.xcworkspace
 二、视频渲染
 
 - Core API:使用 Core Graphics/Core Image/Core Media 渲染视频帧
-- Legacy OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
-- Modern OpenGL:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
+- Legacy OpenGL/OpenGL ES2:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
+- Modern OpenGL/OpenGL ES3:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
 - Modern OpenGL(Rectangle Texture):渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
 - Metal:渲染 BGRA/NV12/NV21/YUV420P/UYVY/YUYV 视频桢
 
 三、音频渲染
 
 - AudioUnit:支持 S16,S16P,Float,FloatP 格式，采样率支持 44.1K,48K,96K,192K
-- 0x23:使用 AudioQueue 渲染音频桢（支持 S16、FLT）
-- 0x24:抽取 AudioRenderer 类，封装底层音频渲染逻辑
+- AudioQueue:支持 S16,Float格式，采样率支持 44.1K,48K,96K,192K
 
 四、封装播放器
 
@@ -100,7 +91,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - 高效视频抽帧器:[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)
 
-# Cross-Platform
+## Cross-Platform
 
 本教程的终极目标是写一款跨平台播放器，考虑到这是一项庞大的工程，本教程仅实现最基础的功能。
 
