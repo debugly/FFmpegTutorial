@@ -19,6 +19,8 @@
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
+		DD469DF3294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD469DEF294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib */; };
+		DD469DF5294621E8004F5F39 /* MRAudioQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD469DF2294621E8004F5F39 /* MRAudioQueueViewController.m */; };
 		DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */; };
 		DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */; };
 		DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */; };
@@ -102,6 +104,9 @@
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
 		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
+		DD469DEF294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioQueueViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD469DF0294621E8004F5F39 /* MRAudioQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioQueueViewController.h; sourceTree = "<group>"; };
+		DD469DF2294621E8004F5F39 /* MRAudioQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioQueueViewController.m; sourceTree = "<group>"; };
 		DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_es2.fsh; sourceTree = "<group>"; };
 		DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_es2.fsh; sourceTree = "<group>"; };
 		DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_es2.fsh; sourceTree = "<group>"; };
@@ -296,6 +301,16 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		DD469DEE294621E8004F5F39 /* AudioQueue */ = {
+			isa = PBXGroup;
+			children = (
+				DD469DEF294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib */,
+				DD469DF0294621E8004F5F39 /* MRAudioQueueViewController.h */,
+				DD469DF2294621E8004F5F39 /* MRAudioQueueViewController.m */,
+			);
+			path = AudioQueue;
+			sourceTree = "<group>";
+		};
 		DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */ = {
 			isa = PBXGroup;
 			children = (
@@ -420,6 +435,7 @@
 			isa = PBXGroup;
 			children = (
 				DD5314122945DDC600185AD5 /* AudioUnit */,
+				DD469DEE294621E8004F5F39 /* AudioQueue */,
 			);
 			name = "3.Audio Rendering";
 			path = "../../Common/3.Audio Rendering";
@@ -610,6 +626,7 @@
 				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
+				DD469DF3294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib in Resources */,
 				DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */,
 				DD5313B92944AD3400185AD5 /* 3_sampler2D_es3.fsh in Resources */,
 				DD5313BB2944AD3400185AD5 /* 2_sampler2D_es3.fsh in Resources */,
@@ -671,6 +688,7 @@
 				DD97CCEF293B5BE900797F3B /* MRCustomThreadViewController.m in Sources */,
 				DD5313F72944B2AF00185AD5 /* MRRWeakProxy.m in Sources */,
 				DD5313E52944AEBA00185AD5 /* MRMetalBGRAPipeline.m in Sources */,
+				DD469DF5294621E8004F5F39 /* MRAudioQueueViewController.m in Sources */,
 				DD5313E62944AEBA00185AD5 /* MRMetalNV21Pipeline.m in Sources */,
 				DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */,
 				DD5313DE2944AEBA00185AD5 /* MRMetalView.m in Sources */,

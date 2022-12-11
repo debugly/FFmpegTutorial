@@ -146,9 +146,9 @@
             @"class":@"MRAudioUnitViewController",
         },
         @{
-            @"title":@"0x23",
-            @"detail":@"使用 AudioQueue 渲染音频桢",
-            @"class":@"MR0x23ViewController",
+            @"title":@"AudioQueue",
+            @"detail":@"支持 S16,Float 格式，采样率为 44.1K,48K,96K,192K",
+            @"class":@"MRAudioQueueViewController",
         },
         @{
             @"title":@"0x24",

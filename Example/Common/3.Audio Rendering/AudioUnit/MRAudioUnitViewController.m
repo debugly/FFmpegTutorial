@@ -197,8 +197,8 @@
     
     self.inputField.stringValue = KTestVideoURL1;
     
-    [self setupSamepleRates];
-    [self setupSamepleFormats];
+    [self setupSampleRates];
+    [self setupSampleFormats];
 }
 
 #pragma - mark Audio
@@ -440,6 +440,40 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
     }
 }
 
+- (void)setupSampleFormats
+{
+#if TARGET_OS_IPHONE
+    NSArray *fmts = @[@"S16",@"S16P",@"Float",@"FloatP"];
+    NSArray *tags = @[@(MR_SAMPLE_FMT_S16),@(MR_SAMPLE_FMT_S16P),@(MR_SAMPLE_FMT_FLT),@(MR_SAMPLE_FMT_FLTP)];
+    [self.formatSegCtrl removeAllSegments];
+    for (int i = 0; i < [fmts count]; i++) {
+        NSString *title = fmts[i];
+        [self.formatSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
+    }
+    self.formatSegCtrl.selectedSegmentIndex = 0;
+    _audioFmt = [[tags firstObject] intValue];
+#else
+    _audioFmt = MR_SAMPLE_FMT_S16;
+#endif
+}
+
+- (void)setupSampleRates
+{
+#if TARGET_OS_IPHONE
+    NSArray *fmts = @[@"44100",@"48000",@"96000",@"192000"];
+    NSArray *tags = @[@(44100),@(48000),@(96000),@(192000)];
+    [self.rateSegCtrl removeAllSegments];
+    for (int i = 0; i < [fmts count]; i++) {
+        NSString *title = fmts[i];
+        [self.rateSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
+    }
+    self.rateSegCtrl.selectedSegmentIndex = 0;
+    _sampleRate = [[tags firstObject] intValue];
+#else
+    _sampleRate = 44100;
+#endif
+}
+
 #if TARGET_OS_OSX
 - (IBAction)onSelectAudioFmt:(NSPopUpButton *)sender
 {
@@ -474,40 +508,6 @@ static inline OSStatus MRRenderCallback(void *inRefCon,
 }
 
 #else
-
-- (void)setupSamepleFormats
-{
-#if TARGET_OS_IPHONE
-    NSArray *fmts = @[@"S16",@"S16P",@"Float",@"FloatP"];
-    NSArray *tags = @[@(MR_SAMPLE_FMT_S16),@(MR_SAMPLE_FMT_S16P),@(MR_SAMPLE_FMT_FLT),@(MR_SAMPLE_FMT_FLTP)];
-    [self.formatSegCtrl removeAllSegments];
-    for (int i = 0; i < [fmts count]; i++) {
-        NSString *title = fmts[i];
-        [self.formatSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
-    }
-    self.formatSegCtrl.selectedSegmentIndex = 0;
-    _audioFmt = [[tags firstObject] intValue];
-#else
-    _audioFmt = MR_SAMPLE_FMT_S16;
-#endif
-}
-
-- (void)setupSamepleRates
-{
-#if TARGET_OS_IPHONE
-    NSArray *fmts = @[@"44100",@"48000",@"96000",@"192000"];
-    NSArray *tags = @[@(44100),@(48000),@(96000),@(192000)];
-    [self.rateSegCtrl removeAllSegments];
-    for (int i = 0; i < [fmts count]; i++) {
-        NSString *title = fmts[i];
-        [self.rateSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
-    }
-    self.rateSegCtrl.selectedSegmentIndex = 0;
-    _sampleRate = [[tags firstObject] intValue];
-#else
-    _sampleRate = 44100;
-#endif
-}
 
 - (IBAction)onSelectAudioFormat:(MRSegmentedControl *)sender
 {

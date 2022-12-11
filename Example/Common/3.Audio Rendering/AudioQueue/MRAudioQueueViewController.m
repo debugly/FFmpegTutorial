@@ -1,70 +1,67 @@
 //
-//  MR0x23ViewController.m
+//  MRAudioQueueViewController.m
 //  FFmpegTutorial-macOS
 //
-//  Created by qianlongxu on 2022/7/13.
+//  Created by qianlongxu on 2022/12/11.
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import "MR0x23ViewController.h"
+#import "MRAudioQueueViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x20.h>
 #import <FFmpegTutorial/FFTHudControl.h>
-#import <FFmpegTutorial/FFTPlayerHeader.h>
+#import <FFmpegTutorial/FFTAudioFrameQueue.h>
 #import <MRFFmpegPod/libavutil/frame.h>
 #import "MRRWeakProxy.h"
-#import "MR0x20VideoRenderer.h"
-#import "NSFileManager+Sandbox.h"
-#import "MRUtil.h"
-#import <AudioUnit/AudioUnit.h>
+
 #import <AudioToolbox/AudioToolbox.h>
-#import "FFTAudioFrameQueue.h"
 
 #define QUEUE_BUFFER_SIZE 3
-#define MIN_SIZE_PER_FRAME 4096
-
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0
 
-@interface MR0x23ViewController ()
+
+@interface MRAudioQueueViewController ()
 {
 #if DEBUG_RECORD_PCM_TO_FILE
     FILE * file_pcm_l;
     FILE * file_pcm_r;
 #endif
-    AudioQueueBufferRef audioQueueBuffers[QUEUE_BUFFER_SIZE];
+    AudioQueueBufferRef _audioQueueBuffers[QUEUE_BUFFER_SIZE];
 }
 
 @property (strong) FFTPlayer0x20 *player;
 @property (weak) IBOutlet NSTextField *inputField;
 @property (weak) IBOutlet NSProgressIndicator *indicatorView;
-@property (weak) IBOutlet MR0x20VideoRenderer *videoRenderer;
-
+#if TARGET_OS_IPHONE
+@property (weak, nonatomic) IBOutlet MRSegmentedControl *formatSegCtrl;
+@property (weak, nonatomic) IBOutlet MRSegmentedControl *rateSegCtrl;
+#endif
 @property (strong) FFTHudControl *hud;
 @property (weak) NSTimer *timer;
-@property (copy) NSString *videoPixelInfo;
-@property (copy) NSString *audioSamplelInfo;
-@property (nonatomic,assign) int sampleRate;
-@property (nonatomic,assign) MRPixelFormat videoFmt;
-@property (nonatomic,assign) MRSampleFormat audioFmt;
-
+@property (copy) NSString *audioSampleInfo;
 //音频渲染
 @property (nonatomic,assign) AudioQueueRef audioQueue;
 @property (atomic,strong) FFTAudioFrameQueue *audioFrameQueue;
 
+@property (nonatomic,assign) int sampleRate;
+@property (nonatomic,assign) int audioFmt;
+
 @end
 
-@implementation MR0x23ViewController
+@implementation MRAudioQueueViewController
 
 - (void)_stop
 {
     [self.audioFrameQueue cancel];
     [self stopAudio];
-    
 #if DEBUG_RECORD_PCM_TO_FILE
     [self close_all_file];
 #endif
-    
+}
+
+- (void)dealloc
+{
     if (_timer) {
         [_timer invalidate];
         _timer = nil;
@@ -75,34 +72,7 @@
         _player = nil;
     }
     
-    [self.hud destroyContentView];
-    self.hud = nil;
-}
-
-- (void)dealloc
-{
     [self _stop];
-}
-
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-    self.inputField.stringValue = KTestVideoURL1;
-    
-    self.hud = [[FFTHudControl alloc] init];
-    NSView *hudView = [self.hud contentView];
-    [self.view addSubview:hudView];
-    CGRect rect = self.view.bounds;
-    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-    rect.size.width = MIN(screenWidth / 5.0, 240);
-    rect.size.height = CGRectGetHeight(self.view.bounds) - 210;
-    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
-    [hudView setFrame:rect];
-    hudView.autoresizingMask = NSViewMinXMargin | NSViewMaxYMargin;
-    
-    _sampleRate = 44100;
-    _videoFmt = MR_PIX_FMT_NV12;
-    _audioFmt = MR_SAMPLE_FMT_S16;
 }
 
 - (void)prepareTickTimerIfNeed
@@ -118,19 +88,22 @@
 
 - (void)onTimer:(NSTimer *)sender
 {
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
+    [self.indicatorView stopAnimation:nil];
     
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoFrameCount] forKey:@"v-frame"];
+    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioFrameCount] forKey:@"a-frame"];
     
     [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.audioPktCount] forKey:@"a-pack"];
 
-    [self.hud setHudValue:[NSString stringWithFormat:@"%02d",self.player.videoPktCount] forKey:@"v-pack"];
-    
-    [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.videoPixelInfo] forKey:@"v-pixel"];
-    
-    [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSamplelInfo] forKey:@"a-sample"];
-    
     [self.hud setHudValue:[NSString stringWithFormat:@"%d",[self.audioFrameQueue count]] forKey:@"a-frame-q"];
+   
+    [self.hud setHudValue:[NSString stringWithFormat:@"%@",self.audioSampleInfo] forKey:@"a-format"];
+    
+    [self.hud setHudValue:@"AudioQueue" forKey:@"renderer"];
+}
+
+- (void)alert:(NSString *)msg
+{
+    [self alert:@"知道了" msg:msg];
 }
 
 - (void)parseURL:(NSString *)url
@@ -138,45 +111,48 @@
     if (self.player) {
         [self.player asyncStop];
         self.player = nil;
+        
+        [self.timer invalidate];
+        self.timer = nil;
     }
+    
     [self.audioFrameQueue cancel];
     self.audioFrameQueue = nil;
     [self stopAudio];
-    [self.timer invalidate];
-    self.timer = nil;
-
     [self close_all_file];
-    [self.indicatorView startAnimation:nil];
     
     FFTPlayer0x20 *player = [[FFTPlayer0x20 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormat  = _videoFmt;
+    player.supportedPixelFormat  = MR_PIX_FMT_NV21;
     player.supportedSampleRate   = _sampleRate;
     player.supportedSampleFormat = _audioFmt;
     
     __weakSelf__
-    player.onStreamOpened = ^(FFTPlayer0x20 *player,NSDictionary * _Nonnull info) {
+    player.onStreamOpened = ^(FFTPlayer0x20 *player, NSDictionary * _Nonnull info) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         
-        NSLog(@"---SteamInfo-------------------");
-        NSLog(@"%@",info);
-        NSLog(@"----------------------");
-        
-        int width  = [info[kFFTPlayer0x20Width] intValue];
-        int height = [info[kFFTPlayer0x20Height] intValue];
-        self.videoRenderer.videoSize = CGSizeMake(width, height);
+        [self.indicatorView stopAnimation:nil];
         self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
-#warning AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
+        //AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
         dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
             [self prepareTickTimerIfNeed];
             [self.indicatorView stopAnimation:nil];
             [self playAudio];
         });
+        NSLog(@"---VideoInfo-------------------");
+        NSLog(@"%@",info);
+        NSLog(@"----------------------");
     };
     
     player.onError = ^(FFTPlayer0x20 *player, NSError * _Nonnull e) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         [self.indicatorView stopAnimation:nil];
         [self alert:[self.player.error localizedDescription]];
         self.player = nil;
@@ -186,12 +162,11 @@
     
     player.onDecoderFrame = ^(FFTPlayer0x20 *player, int type, int serial, AVFrame * _Nonnull frame) {
         __strongSelf__
+        if (player != self.player) {
+            return;
+        }
         //video
         if (type == 1) {
-            mr_msleep(20);
-            @autoreleasepool {
-                [self displayVideoFrame:frame];
-            }
         }
         //audio
         else if (type == 2) {
@@ -201,16 +176,35 @@
     [player prepareToPlay];
     [player play];
     self.player = player;
+    
+    [self prepareTickTimerIfNeed];
+    [self.indicatorView startAnimation:nil];
 }
 
-#pragma - mark Video
-
-- (void)displayVideoFrame:(AVFrame *)frame
+- (void)viewDidLoad
 {
-    const char *fmt_str = av_pixel_fmt_to_string(frame->format);
+    [super viewDidLoad];
     
-    self.videoPixelInfo = [NSString stringWithFormat:@"(%s)%dx%d",fmt_str,frame->width,frame->height];
-    [self.videoRenderer displayAVFrame:frame];
+    self.hud = [[FFTHudControl alloc] init];
+    NSView *hudView = [self.hud contentView];
+    [self.view addSubview:hudView];
+    hudView.layer.zPosition = 100;
+    CGRect rect = self.view.bounds;
+#if TARGET_OS_IPHONE
+    rect.origin.y = CGRectGetHeight(rect) - 100;
+    rect.size.height = 100;
+#else
+    CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
+    rect.size.height = MIN(screenWidth / 3.0, 210);
+#endif
+    [hudView setFrame:rect];
+    
+    hudView.autoresizingMask = NSViewWidthSizable;
+    
+    self.inputField.stringValue = KTestVideoURL1;
+    
+    [self setupSampleRates];
+    [self setupSampleFormats];
 }
 
 #pragma - mark Audio
@@ -219,7 +213,7 @@
 {
     BOOL full = YES;
     for(int i = 0; i < QUEUE_BUFFER_SIZE;i++){
-        AudioQueueBufferRef ref = self->audioQueueBuffers[i];
+        AudioQueueBufferRef ref = self->_audioQueueBuffers[i];
         UInt32 gotBytes = [self renderFramesToBuffer:ref queue:self.audioQueue];
         if (gotBytes == 0) {
             full = NO;
@@ -243,6 +237,12 @@
 - (void)stopAudio
 {
     if(_audioQueue){
+        for (int i = 0; i < QUEUE_BUFFER_SIZE; i++) {
+            if (_audioQueueBuffers[i]) {
+                AudioQueueFreeBuffer(_audioQueue, _audioQueueBuffers[i]);
+                _audioQueueBuffers[i] = NULL;
+            }
+        }
         AudioQueueDispose(_audioQueue, YES);
         _audioQueue = NULL;
     }
@@ -261,6 +261,7 @@
         fclose(file_pcm_r);
         file_pcm_r = NULL;
     }
+    
 #endif
 }
 
@@ -309,11 +310,16 @@
                 
         NSAssert(noErr == status, @"AudioQueueNewOutput");
         
+        //buffer大小应当跟采样率成比例
+        #define MIN_SIZE_PER_FRAME ((int)(sampleRate/44100) * 4096)
+
         //初始化音频缓冲区--audioQueueBuffers为结构体数组
         for (int i = 0; i < QUEUE_BUFFER_SIZE; i++) {
-            int result = AudioQueueAllocateBuffer(self.audioQueue,MIN_SIZE_PER_FRAME, &self->audioQueueBuffers[i]);
+            int result = AudioQueueAllocateBuffer(self.audioQueue,MIN_SIZE_PER_FRAME, &self->_audioQueueBuffers[i]);
             NSAssert(noErr == result, @"AudioQueueAllocateBuffer");
         }
+        
+        #undef MIN_SIZE_PER_FRAME
     }
 }
 
@@ -323,7 +329,7 @@ static void MRAudioQueueOutputCallback(
                                  AudioQueueRef           inAQ,
                                  AudioQueueBufferRef     inBuffer)
 {
-    MR0x23ViewController *am = (__bridge MR0x23ViewController *)inUserData;
+    MRAudioQueueViewController *am = (__bridge MRAudioQueueViewController *)inUserData;
     [am renderFramesToBuffer:inBuffer queue:inAQ];
 }
 
@@ -340,17 +346,17 @@ static void MRAudioQueueOutputCallback(
     return gotBytes;
 }
 
-- (int)fillBuffers:(uint8_t *[2])buffer
-           byteSize:(UInt32)bufferSize
+- (UInt32)fillBuffers:(uint8_t *[2])buffer
+             byteSize:(const UInt32)bufferSize
 {
-    int filled = [self.audioFrameQueue fillBuffers:buffer byteSize:bufferSize];
+    return [self.audioFrameQueue fillBuffers:buffer byteSize:bufferSize];
 #if DEBUG_RECORD_PCM_TO_FILE
     for(int i = 0; i < 2; i++) {
         uint8_t *src = buffer[i];
         if (NULL != src) {
             if (i == 0) {
                 if (file_pcm_l == NULL) {
-                    NSString *fileName = [NSString stringWithFormat:@"L-%@.pcm",self.audioSamplelInfo];
+                    NSString *fileName = [NSString stringWithFormat:@"L-%@.pcm",self.audioSampleInfo];
                     const char *l = [[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]UTF8String];
                     NSLog(@"create file:%s",l);
                     file_pcm_l = fopen(l, "wb+");
@@ -358,7 +364,8 @@ static void MRAudioQueueOutputCallback(
                 fwrite(src, bufferSize, 1, file_pcm_l);
             } else if (i == 1) {
                 if (file_pcm_r == NULL) {
-                    NSString *fileName = [NSString stringWithFormat:@"R-%@.pcm",self.audioSamplelInfo];
+                    
+                    NSString *fileName = [NSString stringWithFormat:@"R-%@.pcm",self.audioSampleInfo];
                     const char *r = [[NSTemporaryDirectory() stringByAppendingPathComponent:fileName]UTF8String];
                     NSLog(@"create file:%s",r);
                     file_pcm_r = fopen(r, "wb+");
@@ -368,13 +375,12 @@ static void MRAudioQueueOutputCallback(
         }
     }
 #endif
-    return filled;
 }
 
 - (void)displayAudioFrame:(AVFrame *)frame
 {
     const char *fmt_str = av_sample_fmt_to_string(frame->format);
-    self.audioSamplelInfo = [NSString stringWithFormat:@"(%s)%d",fmt_str,frame->sample_rate];
+    self.audioSampleInfo = [NSString stringWithFormat:@"(%s)%d",fmt_str,frame->sample_rate];
     [self.audioFrameQueue enQueue:frame];
 }
 
@@ -389,46 +395,8 @@ static void MRAudioQueueOutputCallback(
     }
 }
 
-- (IBAction)onSaveSnapshot:(NSButton *)sender
+- (void)doSelectSampleFormat:(MRSampleFormat)targetFmt
 {
-    NSImage *img = [self.videoRenderer snapshot];
-    NSString *videoName = [[NSURL URLWithString:self.player.contentPath] lastPathComponent];
-    if ([videoName isEqualToString:@"/"]) {
-        videoName = @"未知";
-    }
-    NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
-    long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
-    NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
-    [NSFileManager mr_saveImageToFile:[MRUtil nsImage2cg:img] path:filePath];
-    NSLog(@"img:%@",filePath);
-}
-
-- (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
-{
-    NSMenuItem *item = [sender selectedItem];
-        
-    if (item.tag == 1) {
-        [self.videoRenderer setRenderingMode:MRRenderingModeScaleToFill];
-    } else if (item.tag == 2) {
-        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFill];
-    } else if (item.tag == 3) {
-        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFit];
-    }
-}
-
-- (IBAction)onSelectAudioFmt:(NSPopUpButton *)sender
-{
-    NSMenuItem *item = [sender selectedItem];
-    int targetFmt = 0;
-    if (item.tag == 1) {
-        targetFmt = MR_SAMPLE_FMT_S16;
-    } else if (item.tag == 2) {
-        targetFmt = MR_SAMPLE_FMT_S16P;
-    } else if (item.tag == 3) {
-        targetFmt = MR_SAMPLE_FMT_FLT;
-    } else if (item.tag == 4) {
-        targetFmt = MR_SAMPLE_FMT_FLTP;
-    }
     if (_audioFmt == targetFmt) {
         return;
     }
@@ -442,17 +410,8 @@ static void MRAudioQueueOutputCallback(
     }
 }
 
-- (IBAction)onSelectSampleRate:(NSPopUpButton *)sender
+- (void)doSelectSampleRate:(int)sampleRate
 {
-    NSMenuItem *item = [sender selectedItem];
-    int sampleRate = 0;
-    if (item.tag == 1) {
-        sampleRate = 44100;
-    } else if (item.tag == 2) {
-        sampleRate = 44800;
-    } else if (item.tag == 3) {
-        sampleRate = 192000;
-    }
     if (_sampleRate != sampleRate) {
         _sampleRate = sampleRate;
         if (self.player) {
@@ -464,23 +423,81 @@ static void MRAudioQueueOutputCallback(
     }
 }
 
-- (void)alert:(NSString *)msg
+- (void)setupSampleFormats
 {
-    NSAlert *alert = [[NSAlert alloc] init];
-    [alert addButtonWithTitle:@"知道了"];
-    [alert setMessageText:@"错误提示"];
-    [alert setInformativeText:msg];
-    [alert setAlertStyle:NSInformationalAlertStyle];
-    NSModalResponse returnCode = [alert runModal];
-    
-    if (returnCode == NSAlertFirstButtonReturn)
-    {
-        //nothing todo
+#if TARGET_OS_IPHONE
+    NSArray *fmts = @[@"S16",@"Float"];
+    NSArray *tags = @[@(MR_SAMPLE_FMT_S16),@(MR_SAMPLE_FMT_FLT)];
+    [self.formatSegCtrl removeAllSegments];
+    for (int i = 0; i < [fmts count]; i++) {
+        NSString *title = fmts[i];
+        [self.formatSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
     }
-    else if (returnCode == NSAlertSecondButtonReturn)
-    {
-        
-    }
+    self.formatSegCtrl.selectedSegmentIndex = 0;
+    _audioFmt = [[tags firstObject] intValue];
+#else
+    _audioFmt = MR_SAMPLE_FMT_S16;
+#endif
 }
+
+- (void)setupSampleRates
+{
+#if TARGET_OS_IPHONE
+    NSArray *fmts = @[@"44100",@"48000",@"96000",@"192000"];
+    NSArray *tags = @[@(44100),@(48000),@(96000),@(192000)];
+    [self.rateSegCtrl removeAllSegments];
+    for (int i = 0; i < [fmts count]; i++) {
+        NSString *title = fmts[i];
+        [self.rateSegCtrl insertSegmentWithTitle:title atIndex:i animated:NO tag:[tags[i] intValue]];
+    }
+    self.rateSegCtrl.selectedSegmentIndex = 0;
+    _sampleRate = [[tags firstObject] intValue];
+#else
+    _sampleRate = 44100;
+#endif
+}
+
+
+#if TARGET_OS_OSX
+- (IBAction)onSelectAudioFmt:(NSPopUpButton *)sender
+{
+    NSMenuItem *item = [sender selectedItem];
+    int targetFmt = 0;
+    if (item.tag == 1) {
+        targetFmt = MR_SAMPLE_FMT_S16;
+    } else if (item.tag == 2) {
+        targetFmt = MR_SAMPLE_FMT_FLT;
+    }
+    [self doSelectSampleFormat:targetFmt];
+}
+
+- (IBAction)onSelectSampleRate:(NSPopUpButton *)sender
+{
+    NSMenuItem *item = [sender selectedItem];
+    int sampleRate = 0;
+    if (item.tag == 1) {
+        sampleRate = 44100;
+    } else if (item.tag == 2) {
+        sampleRate = 48000;
+    } else if (item.tag == 3) {
+        sampleRate = 96000;
+    } else if (item.tag == 4) {
+        sampleRate = 192000;
+    }
+    [self doSelectSampleRate:sampleRate];
+}
+
+#else
+- (IBAction)onSelectAudioFormat:(MRSegmentedControl *)sender
+{
+    [self doSelectSampleFormat:(MRSampleFormat)[sender tagForCurrentSelected]];
+}
+
+- (IBAction)onSelectSampleRate:(MRSegmentedControl *)sender
+{
+    [self doSelectSampleRate:(int)[sender tagForCurrentSelected]];
+}
+
+#endif
 
 @end
