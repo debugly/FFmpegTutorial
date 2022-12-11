@@ -151,11 +151,6 @@
             @"class":@"MRAudioQueueViewController",
         },
         @{
-            @"title":@"0x24",
-            @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
-            @"class":@"MR0x24ViewController",
-        },
-        @{
             @"title":@"四、封装播放器",
             @"isSection":@(YES)
         },
