@@ -52,9 +52,9 @@
     
     for (int i = 0; i < 2; i++) {
         uint8_t *dst = buffer[i];
-        if (NULL != dst) {
-            uint8_t *src = (uint8_t *)(frame->data[i]) + _audioFrameRead;
-            memcpy(dst, src, cpSize);
+        uint8_t *src = (uint8_t *)(frame->data[i]);
+        if (NULL != src && NULL != dst) {
+            memcpy(dst, src + _audioFrameRead, cpSize);
         } else {
             break;
         }
@@ -88,12 +88,22 @@
 - (int)fillBuffers:(uint8_t * _Nonnull [_Nullable 2])buffer
           byteSize:(int)bufferSize
 {
+    uint8_t * dst[2] = { 0 };
+    dst[0] = buffer[0];
+    dst[1] = buffer[1];
+    
     int totalFilled = 0;
     while (bufferSize > 0) {
-        int filled = [self doFillAudioBuffers:buffer byteSize:bufferSize];
+        int filled = [self doFillAudioBuffers:dst byteSize:bufferSize];
         if (filled) {
             totalFilled += filled;
             bufferSize -= filled;
+            if (dst[0]) {
+                dst[0] += filled;
+            }
+            if (dst[1]) {
+                dst[1] += filled;
+            }
         } else {
             break;
         }

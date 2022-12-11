@@ -71,9 +71,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 三、音频渲染
 
-- 0x20:封装音频重采样类，方便转出指定的采样格式
-- 0x21:使用 AudioUnit 渲染音频桢，声音断断续续的（支持 S16、S16P、FLT、FLTP）
-- 0x22:增加AudioFrame缓存队列，解决断断续续问题
+- AudioUnit:支持 S16,S16P,Float,FloatP 格式，采样率支持 44.1K,48K,96K,192K
 - 0x23:使用 AudioQueue 渲染音频桢（支持 S16、FLT）
 - 0x24:抽取 AudioRenderer 类，封装底层音频渲染逻辑
 

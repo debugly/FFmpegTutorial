@@ -46,14 +46,14 @@
 		DD53138129443E2F00185AD5 /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53137F29443E2F00185AD5 /* MROpenGLHelper.m */; };
 		DD5313F02944B18900185AD5 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313EC2944B18900185AD5 /* MRRWeakProxy.m */; };
 		DD5313F12944B18900185AD5 /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313ED2944B18900185AD5 /* NSFileManager+Sandbox.m */; };
+		DD5313FE2944D1C300185AD5 /* MRAudioUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313FD2944D1C300185AD5 /* MRAudioUnitViewController.m */; };
+		DD5314002944D58900185AD5 /* MRAudioUnitViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD5313FF2944D58900185AD5 /* MRAudioUnitViewController.xib */; };
 		DD56CAFB28670F460046C28A /* MRReadPacketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56CAF928670F460046C28A /* MRReadPacketViewController.m */; };
 		DD56CAFC28670F460046C28A /* MRReadPacketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CAFA28670F460046C28A /* MRReadPacketViewController.xib */; };
 		DD56CB0128674FA00046C28A /* MRDecodePacketViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CAFE28674FA00046C28A /* MRDecodePacketViewController.xib */; };
 		DD56CB0228674FA00046C28A /* MRDecodePacketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56CB0028674FA00046C28A /* MRDecodePacketViewController.m */; };
 		DD56CB072867FBBD0046C28A /* MRCustomDecoderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD56CB042867FBBD0046C28A /* MRCustomDecoderViewController.m */; };
 		DD56CB082867FBBD0046C28A /* MRCustomDecoderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD56CB052867FBBD0046C28A /* MRCustomDecoderViewController.xib */; };
-		DD7ABB6A287A87D800622984 /* MR0x21ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7ABB65287A87D800622984 /* MR0x21ViewController.xib */; };
-		DD7ABB6C287A87D800622984 /* MR0x21ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7ABB69287A87D800622984 /* MR0x21ViewController.m */; };
 		DD7ABB74287B0D3100622984 /* MR0x22ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD7ABB6F287B0D3100622984 /* MR0x22ViewController.m */; };
 		DD7ABB75287B0D3100622984 /* MR0x22ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD7ABB70287B0D3100622984 /* MR0x22ViewController.xib */; };
 		DD900F46292CFA2F00CECDE4 /* MRMetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = DD900F42292CFA2F00CECDE4 /* MRMetalShaders.metal */; };
@@ -223,6 +223,9 @@
 		DD5313ED2944B18900185AD5 /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+Sandbox.m"; path = "../../../Common/Util/NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
 		DD5313EE2944B18900185AD5 /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+Sandbox.h"; path = "../../../Common/Util/NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
 		DD5313EF2944B18900185AD5 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRRWeakProxy.h; path = ../../../Common/Util/MRRWeakProxy.h; sourceTree = "<group>"; };
+		DD5313FC2944D1C300185AD5 /* MRAudioUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioUnitViewController.h; sourceTree = "<group>"; };
+		DD5313FD2944D1C300185AD5 /* MRAudioUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioUnitViewController.m; sourceTree = "<group>"; };
+		DD5313FF2944D58900185AD5 /* MRAudioUnitViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRAudioUnitViewController.xib; sourceTree = "<group>"; };
 		DD56CAF828670F460046C28A /* MRReadPacketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRReadPacketViewController.h; sourceTree = "<group>"; };
 		DD56CAF928670F460046C28A /* MRReadPacketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRReadPacketViewController.m; sourceTree = "<group>"; };
 		DD56CAFA28670F460046C28A /* MRReadPacketViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRReadPacketViewController.xib; sourceTree = "<group>"; };
@@ -232,9 +235,6 @@
 		DD56CB042867FBBD0046C28A /* MRCustomDecoderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCustomDecoderViewController.m; sourceTree = "<group>"; };
 		DD56CB052867FBBD0046C28A /* MRCustomDecoderViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRCustomDecoderViewController.xib; sourceTree = "<group>"; };
 		DD56CB062867FBBD0046C28A /* MRCustomDecoderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCustomDecoderViewController.h; sourceTree = "<group>"; };
-		DD7ABB65287A87D800622984 /* MR0x21ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x21ViewController.xib; sourceTree = "<group>"; };
-		DD7ABB67287A87D800622984 /* MR0x21ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x21ViewController.h; sourceTree = "<group>"; };
-		DD7ABB69287A87D800622984 /* MR0x21ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x21ViewController.m; sourceTree = "<group>"; };
 		DD7ABB6F287B0D3100622984 /* MR0x22ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x22ViewController.m; sourceTree = "<group>"; };
 		DD7ABB70287B0D3100622984 /* MR0x22ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x22ViewController.xib; sourceTree = "<group>"; };
 		DD7ABB72287B0D3100622984 /* MR0x22ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x22ViewController.h; sourceTree = "<group>"; };
@@ -490,6 +490,17 @@
 			name = "Support Files";
 			sourceTree = "<group>";
 		};
+		DD5313FB2944D1C300185AD5 /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313FC2944D1C300185AD5 /* MRAudioUnitViewController.h */,
+				DD5313FD2944D1C300185AD5 /* MRAudioUnitViewController.m */,
+				DD5313FF2944D58900185AD5 /* MRAudioUnitViewController.xib */,
+			);
+			name = AudioUnit;
+			path = "../../../Common/3.Audio Rendering/AudioUnit";
+			sourceTree = "<group>";
+		};
 		DD56CAF728670F450046C28A /* Read Packet */ = {
 			isa = PBXGroup;
 			children = (
@@ -518,16 +529,6 @@
 				DD56CB052867FBBD0046C28A /* MRCustomDecoderViewController.xib */,
 			);
 			path = "Custom Decoder";
-			sourceTree = "<group>";
-		};
-		DD7ABB64287A87D800622984 /* 0x21 */ = {
-			isa = PBXGroup;
-			children = (
-				DD7ABB67287A87D800622984 /* MR0x21ViewController.h */,
-				DD7ABB69287A87D800622984 /* MR0x21ViewController.m */,
-				DD7ABB65287A87D800622984 /* MR0x21ViewController.xib */,
-			);
-			path = 0x21;
 			sourceTree = "<group>";
 		};
 		DD7ABB6D287B0D3100622984 /* 0x22 */ = {
@@ -908,8 +909,8 @@
 		DDF923BF28EC4A7A00F29C1A /* 3.Audio Rendering */ = {
 			isa = PBXGroup;
 			children = (
+				DD5313FB2944D1C300185AD5 /* AudioUnit */,
 				DDE8552E2871CA490006B140 /* 0x20 */,
-				DD7ABB64287A87D800622984 /* 0x21 */,
 				DD7ABB6D287B0D3100622984 /* 0x22 */,
 				C960C91E287BC9D8005365CA /* 0x23 */,
 				DDF598B9288056480079D26E /* 0x24 */,
@@ -1041,6 +1042,7 @@
 				DDF598E628826AD70079D26E /* MR0x30ViewController.xib in Resources */,
 				DD91F29326AC082C00B96334 /* common.vsh in Resources */,
 				DD7ABB75287B0D3100622984 /* MR0x22ViewController.xib in Resources */,
+				DD5314002944D58900185AD5 /* MRAudioUnitViewController.xib in Resources */,
 				DD56CAFC28670F460046C28A /* MRReadPacketViewController.xib in Resources */,
 				DDBFF18728CA300700AFCE44 /* MR0x50ViewController.xib in Resources */,
 				DD41905E2934B73600ADEFA7 /* MRModernGLRectViewController.xib in Resources */,
@@ -1049,7 +1051,6 @@
 				DDF59928288ED5D30079D26E /* MR0x34ViewController.xib in Resources */,
 				DDF922AD28E947FA00F29C1A /* 2_sampler2D.fsh in Resources */,
 				DDF599032882EA3C0079D26E /* MR0x31ViewController.xib in Resources */,
-				DD7ABB6A287A87D800622984 /* MR0x21ViewController.xib in Resources */,
 				DD900FD92933168B00CECDE4 /* MRGAMViewController.xib in Resources */,
 				DDF598C9288056480079D26E /* MR0x24ViewController.xib in Resources */,
 				DD56CB0128674FA00046C28A /* MRDecodePacketViewController.xib in Resources */,
@@ -1140,7 +1141,6 @@
 				DD900FD72933168B00CECDE4 /* MRCoreGraphicsView.m in Sources */,
 				DD41905B2934B73600ADEFA7 /* MRModernGLNV21RectView.m in Sources */,
 				DD419042293469E100ADEFA7 /* MRLegacyGLNV21View.m in Sources */,
-				DD7ABB6C287A87D800622984 /* MR0x21ViewController.m in Sources */,
 				DD900FDA2933168B00CECDE4 /* MRCoreAnimationView.m in Sources */,
 				DD900FD62933168B00CECDE4 /* MRCoreMediaView.m in Sources */,
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
@@ -1180,6 +1180,7 @@
 				DD900F46292CFA2F00CECDE4 /* MRMetalShaders.metal in Sources */,
 				DD900F8E292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m in Sources */,
 				DD41905D2934B73600ADEFA7 /* MRModernGLUYVYRectView.m in Sources */,
+				DD5313FE2944D1C300185AD5 /* MRAudioUnitViewController.m in Sources */,
 				DDBFF18528CA300700AFCE44 /* MR0x50VideoRenderer.m in Sources */,
 				DDF5992D288EE7970079D26E /* MR0x35ViewController.m in Sources */,
 				DD900F91292F249C00CECDE4 /* MRMetalYUYV422Pipeline.m in Sources */,

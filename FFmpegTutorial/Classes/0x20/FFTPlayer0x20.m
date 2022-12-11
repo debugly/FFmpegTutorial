@@ -302,21 +302,21 @@ static int decode_interrupt_cb(void *ctx)
     
     NSMutableDictionary *dumpDic = [NSMutableDictionary dictionary];
     
-    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
-        _videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
-        if (!_videoDecoder) {
-            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
-            self.error = _make_nserror_desc(FFPlayerErrorCode_VideoDecoderOpenFailed, @"音频解码器打开失败！");
-            [self performErrorResultOnMainThread];
-            //出错了，销毁下相关结构体
-            avformat_close_input(&formatCtx);
-            return;
-        } else {
-            [dumpDic setObject:@(_videoDecoder.picWidth) forKey:kFFTPlayer0x20Width];
-            [dumpDic setObject:@(_videoDecoder.picHeight) forKey:kFFTPlayer0x20Height];
-            _videoScale = [self createVideoScaleIfNeed];
-        }
-    }
+//    if (st_index[AVMEDIA_TYPE_VIDEO] >= 0){
+//        _videoDecoder = [self openStreamComponent:formatCtx streamIdx:st_index[AVMEDIA_TYPE_VIDEO]];
+//        if (!_videoDecoder) {
+//            av_log(NULL, AV_LOG_ERROR, "can't open video stream.");
+//            self.error = _make_nserror_desc(FFPlayerErrorCode_VideoDecoderOpenFailed, @"音频解码器打开失败！");
+//            [self performErrorResultOnMainThread];
+//            //出错了，销毁下相关结构体
+//            avformat_close_input(&formatCtx);
+//            return;
+//        } else {
+//            [dumpDic setObject:@(_videoDecoder.picWidth) forKey:kFFTPlayer0x20Width];
+//            [dumpDic setObject:@(_videoDecoder.picHeight) forKey:kFFTPlayer0x20Height];
+//            _videoScale = [self createVideoScaleIfNeed];
+//        }
+//    }
     
     mr_sync_main_queue(^{
         if (self.onStreamOpened) {
