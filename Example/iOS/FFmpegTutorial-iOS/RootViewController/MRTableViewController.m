@@ -91,19 +91,9 @@
         @"title":@"三、音频渲染",
         @"cells":@[
             @{
-                @"title":@"0x20",
-                @"detail":@"封装音频重采样类，方便转出指定的采样格式",
-                @"class":@"MR0x20ViewController",
-            },
-            @{
-                @"title":@"0x21",
-                @"detail":@"使用 AudioUnit 渲染音频桢，断断续续的",
-                @"class":@"MR0x21ViewController",
-            },
-            @{
-                @"title":@"0x22",
-                @"detail":@"增加Frame缓存队列，解决断断续续问题",
-                @"class":@"MR0x22ViewController",
+                @"title":@"AudioUnit",
+                @"detail":@"支持 S16,S16P,Float,FloatP 格式，采样率为 44.1K,48K,96K,192K",
+                @"class":@"MRAudioUnitViewController",
             },
             @{
                 @"title":@"0x23",

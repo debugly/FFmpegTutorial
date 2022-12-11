@@ -59,6 +59,8 @@
 		DD5313F72944B2AF00185AD5 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313F32944B2AF00185AD5 /* MRRWeakProxy.m */; };
 		DD5313F82944B2AF00185AD5 /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313F62944B2AF00185AD5 /* NSFileManager+Sandbox.m */; };
 		DD5313FA2944B3DC00185AD5 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD5313F92944B3DC00185AD5 /* CoreServices.framework */; };
+		DD53141E2945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD5314142945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib */; };
+		DD53141F2945DDC600185AD5 /* MRAudioUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5314152945DDC600185AD5 /* MRAudioUnitViewController.m */; };
 		DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */; };
 		DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */; };
 		DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */; };
@@ -166,6 +168,9 @@
 		DD5313F52944B2AF00185AD5 /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+Sandbox.h"; path = "../../Common/Util/NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
 		DD5313F62944B2AF00185AD5 /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+Sandbox.m"; path = "../../Common/Util/NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
 		DD5313F92944B3DC00185AD5 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		DD5314132945DDC600185AD5 /* MRAudioUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioUnitViewController.h; sourceTree = "<group>"; };
+		DD5314142945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioUnitViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5314152945DDC600185AD5 /* MRAudioUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioUnitViewController.m; sourceTree = "<group>"; };
 		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
 		DD97CCCC293B5BD400797F3B /* MRCrossPlatformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRCrossPlatformUtil.h; path = ../../Common/MRCrossPlatformUtil.h; sourceTree = "<group>"; };
 		DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRCrossPlatformUtil.m; path = ../../Common/MRCrossPlatformUtil.m; sourceTree = "<group>"; };
@@ -256,6 +261,7 @@
 				6003F59D195388D20070C39A /* MRAppDelegate.m */,
 				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
 				DD97CD14293C53D500797F3B /* 2.Video Rendering */,
+				DD5314012945DDC600185AD5 /* 3.Audio Rendering */,
 				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
@@ -408,6 +414,25 @@
 				DD5313F62944B2AF00185AD5 /* NSFileManager+Sandbox.m */,
 			);
 			name = MRUtil;
+			sourceTree = "<group>";
+		};
+		DD5314012945DDC600185AD5 /* 3.Audio Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				DD5314122945DDC600185AD5 /* AudioUnit */,
+			);
+			name = "3.Audio Rendering";
+			path = "../../Common/3.Audio Rendering";
+			sourceTree = "<group>";
+		};
+		DD5314122945DDC600185AD5 /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				DD5314132945DDC600185AD5 /* MRAudioUnitViewController.h */,
+				DD5314142945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib */,
+				DD5314152945DDC600185AD5 /* MRAudioUnitViewController.m */,
+			);
+			path = AudioUnit;
 			sourceTree = "<group>";
 		};
 		DD97CCCF293B5BE900797F3B /* Movie Prober */ = {
@@ -594,6 +619,7 @@
 				DD5313BC2944AD3400185AD5 /* 1_sampler2D_es3.fsh in Resources */,
 				DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */,
 				DD53139029443F4400185AD5 /* common_es2.vsh in Resources */,
+				DD53141E2945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib in Resources */,
 				DD5313EB2944B0D000185AD5 /* MRMetalViewController-iOS.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -638,6 +664,7 @@
 				DD5313A62944AA3100185AD5 /* MRGLES2YUV420PView.m in Sources */,
 				DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */,
 				DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */,
+				DD53141F2945DDC600185AD5 /* MRAudioUnitViewController.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DD97CCEE293B5BE900797F3B /* MRReadPacketViewController.m in Sources */,
 				DD5313E42944AEBA00185AD5 /* MRMetalOffscreenRendering.m in Sources */,
