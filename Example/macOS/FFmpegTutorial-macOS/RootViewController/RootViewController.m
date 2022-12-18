@@ -229,9 +229,9 @@
             @"isSection":@(YES)
         },
         @{
-            @"title":@"0x50",
+            @"title":@"Have Fun",
             @"detail":@"雪花屏，灰色色阶图，三个小球",
-            @"class":@"MR0x50ViewController",
+            @"class":@"MRHaveFunViewController",
         },
         @{
             @"title":@"六、实用工具",
