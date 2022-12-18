@@ -65,6 +65,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - AudioUnit:支持 S16,S16P,Float,FloatP 格式，采样率支持 44.1K,48K,96K,192K
 - AudioQueue:支持 S16,Float格式，采样率支持 44.1K,48K,96K,192K
+- 封装 AudioUnit 和 AudioQueue 渲染逻辑，调用者无需感知
 
 四、封装播放器
 
@@ -85,7 +86,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 五、趣味实验
 
-- 0x50:黑白电视机雪花屏、灰色色阶图
+- 黑白电视机雪花屏、灰色色阶图、三个小球
 
 六、实用工具
 
