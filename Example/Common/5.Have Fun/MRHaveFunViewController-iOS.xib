@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="19455" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_1" orientation="landscape" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19454"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MRAudioQueueViewController">
+            <connections>
+                <outlet property="videoRenderer" destination="5SN-5f-aGY" id="sqv-hN-EJ9"/>
+                <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
+            </connections>
+        </placeholder>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <view clearsContextBeforeDrawing="NO" contentMode="scaleToFill" id="i5M-Pr-FkT">
+            <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+            <subviews>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5SN-5f-aGY" customClass="MRHaveFunVideoRenderer">
+                    <rect key="frame" x="0.0" y="0.0" width="896" height="414"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                </view>
+                <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="2" translatesAutoresizingMaskIntoConstraints="NO" id="wEg-n9-ldp" customClass="MRSegmentedControl">
+                    <rect key="frame" x="319.5" y="0.0" width="257" height="32"/>
+                    <segments>
+                        <segment title="雪花屏"/>
+                        <segment title="灰色色阶图"/>
+                        <segment title="三个球"/>
+                    </segments>
+                    <connections>
+                        <action selector="onExchange:" destination="-2" eventType="valueChanged" id="GCo-dr-Oyf"/>
+                    </connections>
+                </segmentedControl>
+            </subviews>
+            <viewLayoutGuide key="safeArea" id="Q5M-cg-NOt"/>
+            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+            <constraints>
+                <constraint firstItem="5SN-5f-aGY" firstAttribute="bottom" secondItem="i5M-Pr-FkT" secondAttribute="bottom" id="24Q-zU-jrA"/>
+                <constraint firstItem="wEg-n9-ldp" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="Znz-78-Mwv"/>
+                <constraint firstItem="5SN-5f-aGY" firstAttribute="trailing" secondItem="i5M-Pr-FkT" secondAttribute="trailing" id="a9v-Wt-Bpr"/>
+                <constraint firstItem="5SN-5f-aGY" firstAttribute="top" secondItem="i5M-Pr-FkT" secondAttribute="top" id="bdK-vf-Ydy"/>
+                <constraint firstItem="wEg-n9-ldp" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="jmh-X5-3oe"/>
+                <constraint firstItem="5SN-5f-aGY" firstAttribute="leading" secondItem="i5M-Pr-FkT" secondAttribute="leading" id="rsG-G5-Is1"/>
+            </constraints>
+            <point key="canvasLocation" x="132" y="48"/>
+        </view>
+    </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
+</document>

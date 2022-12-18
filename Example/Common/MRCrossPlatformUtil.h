@@ -81,9 +81,10 @@ typedef UIScreen NSScreen;
 @interface MRBaseViewController : NSViewController
 
 #if TARGET_OS_IPHONE
+- (void)viewWillAppear;
 - (void)viewWillDisappear;
 #endif
-- (int)alert:(NSString *)title msg:(NSString *)msg;
+- (int)alert:(NSString *_Nonnull)title msg:(NSString *_Nullable)msg;
 
 @end
 

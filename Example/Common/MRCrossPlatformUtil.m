@@ -141,9 +141,26 @@ CGContextRef __nullable UIGraphicsGetCurrentContext(void)
 }
 
 #if TARGET_OS_IPHONE
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:YES];
+    [self viewWillAppear];
+}
+
+- (void)viewWillAppear
+{
+    
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+    [super viewWillDisappear:YES];
+    [self viewWillDisappear];
+}
+
 - (void)viewWillDisappear
 {
-    [self viewWillDisappear:YES];
+    
 }
 #endif
 

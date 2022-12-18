@@ -99,11 +99,6 @@
                 @"title":@"AudioQueue",
                 @"detail":@"支持 S16,Float 格式，采样率为 44.1K,48K,96K,192K",
                 @"class":@"MRAudioQueueViewController",
-            },
-            @{
-                @"title":@"0x24",
-                @"detail":@"抽取 AudioRenderer 类，封装底层音频渲染逻辑",
-                @"class":@"MR0x24ViewController",
             }
         ]
     };
@@ -183,9 +178,9 @@
         @"title":@"五、趣味实验",
         @"cells":@[
             @{
-                @"title":@"0x50",
+                @"title":@"Have Fun",
                 @"detail":@"雪花屏，灰色色阶图，三个小球",
-                @"class":@"MR0x50ViewController",
+                @"class":@"MRHaveFunViewController",
             }
         ]
     };

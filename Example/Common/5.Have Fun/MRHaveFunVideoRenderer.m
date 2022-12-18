@@ -11,6 +11,11 @@
 
 @implementation MRHaveFunVideoRenderer
 
++ (Class)layerClass
+{
+    return [AVSampleBufferDisplayLayer class];
+}
+
 - (CALayer *)makeBackingLayer
 {
     return [[AVSampleBufferDisplayLayer alloc] init];

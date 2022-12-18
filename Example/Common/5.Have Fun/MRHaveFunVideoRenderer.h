@@ -6,7 +6,7 @@
 //  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "MRCrossPlatformUtil.h"
 #import <CoreMedia/CMSampleBuffer.h>
 
 NS_ASSUME_NONNULL_BEGIN

@@ -332,13 +332,13 @@
 - (IBAction)onSelectedVideoRenderer:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
-    [self doSelectedVideoRenderer:item.tag];
+    [self doSelectedVideoRenderer:(int)item.tag];
 }
 
 - (IBAction)onSelectedVideMode:(NSPopUpButton *)sender
 {
     NSMenuItem *item = [sender selectedItem];
-    [self doSelectedVideMode:item.tag];
+    [self doSelectedVideMode:(int)item.tag];
 }
 
 - (IBAction)onSelectPixelFormat:(NSPopUpButton *)sender

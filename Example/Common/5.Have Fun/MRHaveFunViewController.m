@@ -14,7 +14,7 @@
 @interface MRHaveFunViewController ()<FFTPlayer0x50Delegate>
 
 @property (strong) FFTPlayer0x50 *player;
-@property (weak) IBOutlet MRHaveFunVideoRenderer *videoRenderer;
+@property (weak, nonatomic) IBOutlet MRHaveFunVideoRenderer *videoRenderer;
 
 @end
 
@@ -79,9 +79,20 @@
     }
 }
 
+#if TARGET_OS_OSX
+
 - (IBAction)onExchange:(NSSegmentedControl *)sender
 {
     self.player.videoType = sender.selectedSegment;
 }
+
+#else
+
+- (IBAction)onExchange:(MRSegmentedControl *)sender
+{
+    self.player.videoType = sender.selectedSegmentIndex;
+}
+
+#endif
 
 @end

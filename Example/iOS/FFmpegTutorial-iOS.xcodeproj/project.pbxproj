@@ -81,6 +81,9 @@
 		DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD62293C53D500797F3B /* MRGAMViewController.m */; };
 		DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */; };
 		DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */; };
+		DDCC56B1294EC7090024A4D7 /* MRHaveFunVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */; };
+		DDCC56B2294EC7090024A4D7 /* MRHaveFunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */; };
+		DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -209,6 +212,11 @@
 		DD97CD65293C53D500797F3B /* MRCoreMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreMediaView.h; sourceTree = "<group>"; };
 		DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreAnimationView.m; sourceTree = "<group>"; };
 		DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGAMViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRHaveFunVideoRenderer.m; sourceTree = "<group>"; };
+		DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRHaveFunViewController.m; sourceTree = "<group>"; };
+		DDCC56AE294EC7090024A4D7 /* MRHaveFunVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunVideoRenderer.h; sourceTree = "<group>"; };
+		DDCC56B0294EC7090024A4D7 /* MRHaveFunViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunViewController.h; sourceTree = "<group>"; };
+		DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRHaveFunViewController-iOS.xib"; sourceTree = "<group>"; };
 		F51DF2E8EB7607DA7709BDF6 /* Pods-FFmpegTutorial-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -267,6 +275,7 @@
 				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
 				DD97CD14293C53D500797F3B /* 2.Video Rendering */,
 				DD5314012945DDC600185AD5 /* 3.Audio Rendering */,
+				DDCC56AB294EC7090024A4D7 /* 5.Have Fun */,
 				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
 				6003F594195388D20070C39A /* Supporting Files */,
 			);
@@ -552,6 +561,19 @@
 			path = "Core-Graphics-Animation-Media";
 			sourceTree = "<group>";
 		};
+		DDCC56AB294EC7090024A4D7 /* 5.Have Fun */ = {
+			isa = PBXGroup;
+			children = (
+				DDCC56AE294EC7090024A4D7 /* MRHaveFunVideoRenderer.h */,
+				DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */,
+				DDCC56B0294EC7090024A4D7 /* MRHaveFunViewController.h */,
+				DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */,
+				DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */,
+			);
+			name = "5.Have Fun";
+			path = "../../Common/5.Have Fun";
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -614,6 +636,7 @@
 			files = (
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */,
+				DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */,
 				DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */,
@@ -677,11 +700,13 @@
 				DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */,
 				DD5313BD2944AD3400185AD5 /* MRGLES3NV21View.m in Sources */,
 				DD5313E02944AEBA00185AD5 /* MRMetalViewController.m in Sources */,
+				DDCC56B2294EC7090024A4D7 /* MRHaveFunViewController.m in Sources */,
 				DD5313A32944A4A900185AD5 /* MRGLES2NV21View.m in Sources */,
 				DD5313A62944AA3100185AD5 /* MRGLES2YUV420PView.m in Sources */,
 				DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */,
 				DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */,
 				DD53141F2945DDC600185AD5 /* MRAudioUnitViewController.m in Sources */,
+				DDCC56B1294EC7090024A4D7 /* MRHaveFunVideoRenderer.m in Sources */,
 				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
 				DD97CCEE293B5BE900797F3B /* MRReadPacketViewController.m in Sources */,
 				DD5313E42944AEBA00185AD5 /* MRMetalOffscreenRendering.m in Sources */,

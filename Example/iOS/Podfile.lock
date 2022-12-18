@@ -91,7 +91,7 @@ EXTERNAL SOURCES:
     :podspec: https://ifoxdev.hd.sohu.com/ffpods/20210913/MROpenSSLPod-iOS-1.1.1l.podspec
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: 3e456fd87e3522734d5f0215c6246558b0401334
+  FFmpegTutorial: dcf7670ee1f4af1288933f3c8c92ff7dafb8a6af
   MRFFmpegPod: 9ecbeeeb5c5a579d2ce815ffbafc3ae8eaa71e6f
   MROpenSSLPod: 68f2651fbd0a52d84414bae99cda46fb8ff733e7
 
