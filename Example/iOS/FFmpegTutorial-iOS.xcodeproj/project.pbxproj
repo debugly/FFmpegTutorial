@@ -81,6 +81,11 @@
 		DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD62293C53D500797F3B /* MRGAMViewController.m */; };
 		DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */; };
 		DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */; };
+		DDBFE77E294EF8C400403352 /* MRAudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE773294EF8C400403352 /* MRAudioRenderer.m */; };
+		DDBFE77F294EF8C400403352 /* MRAudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE775294EF8C400403352 /* MRAudioUnitRenderer.m */; };
+		DDBFE780294EF8C400403352 /* MRAudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE779294EF8C400403352 /* MRAudioQueueRenderer.m */; };
+		DDBFE782294EF8C400403352 /* MRAudioRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE77B294EF8C400403352 /* MRAudioRendererViewController.m */; };
+		DDBFE783294EF8C400403352 /* MRAudioRendererViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFE77D294EF8C400403352 /* MRAudioRendererViewController-iOS.xib */; };
 		DDCC56B1294EC7090024A4D7 /* MRHaveFunVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */; };
 		DDCC56B2294EC7090024A4D7 /* MRHaveFunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */; };
 		DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */; };
@@ -212,6 +217,16 @@
 		DD97CD65293C53D500797F3B /* MRCoreMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreMediaView.h; sourceTree = "<group>"; };
 		DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreAnimationView.m; sourceTree = "<group>"; };
 		DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGAMViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDBFE772294EF8C400403352 /* MRAudioRendererViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRendererViewController.h; sourceTree = "<group>"; };
+		DDBFE773294EF8C400403352 /* MRAudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioRenderer.m; sourceTree = "<group>"; };
+		DDBFE775294EF8C400403352 /* MRAudioUnitRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioUnitRenderer.m; sourceTree = "<group>"; };
+		DDBFE776294EF8C400403352 /* MRAudioQueueRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioQueueRenderer.h; sourceTree = "<group>"; };
+		DDBFE777294EF8C400403352 /* MRAudioUnitRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioUnitRenderer.h; sourceTree = "<group>"; };
+		DDBFE778294EF8C400403352 /* MRAudioRendererImpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRendererImpProtocol.h; sourceTree = "<group>"; };
+		DDBFE779294EF8C400403352 /* MRAudioQueueRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioQueueRenderer.m; sourceTree = "<group>"; };
+		DDBFE77B294EF8C400403352 /* MRAudioRendererViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioRendererViewController.m; sourceTree = "<group>"; };
+		DDBFE77C294EF8C400403352 /* MRAudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRenderer.h; sourceTree = "<group>"; };
+		DDBFE77D294EF8C400403352 /* MRAudioRendererViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioRendererViewController-iOS.xib"; sourceTree = "<group>"; };
 		DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRHaveFunVideoRenderer.m; sourceTree = "<group>"; };
 		DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRHaveFunViewController.m; sourceTree = "<group>"; };
 		DDCC56AE294EC7090024A4D7 /* MRHaveFunVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunVideoRenderer.h; sourceTree = "<group>"; };
@@ -445,6 +460,7 @@
 			children = (
 				DD5314122945DDC600185AD5 /* AudioUnit */,
 				DD469DEE294621E8004F5F39 /* AudioQueue */,
+				DDBFE771294EF8C400403352 /* AudioRenderer */,
 			);
 			name = "3.Audio Rendering";
 			path = "../../Common/3.Audio Rendering";
@@ -561,6 +577,31 @@
 			path = "Core-Graphics-Animation-Media";
 			sourceTree = "<group>";
 		};
+		DDBFE771294EF8C400403352 /* AudioRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFE774294EF8C400403352 /* AudioRenderImp */,
+				DDBFE77C294EF8C400403352 /* MRAudioRenderer.h */,
+				DDBFE773294EF8C400403352 /* MRAudioRenderer.m */,
+				DDBFE772294EF8C400403352 /* MRAudioRendererViewController.h */,
+				DDBFE77B294EF8C400403352 /* MRAudioRendererViewController.m */,
+				DDBFE77D294EF8C400403352 /* MRAudioRendererViewController-iOS.xib */,
+			);
+			path = AudioRenderer;
+			sourceTree = "<group>";
+		};
+		DDBFE774294EF8C400403352 /* AudioRenderImp */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFE775294EF8C400403352 /* MRAudioUnitRenderer.m */,
+				DDBFE776294EF8C400403352 /* MRAudioQueueRenderer.h */,
+				DDBFE777294EF8C400403352 /* MRAudioUnitRenderer.h */,
+				DDBFE778294EF8C400403352 /* MRAudioRendererImpProtocol.h */,
+				DDBFE779294EF8C400403352 /* MRAudioQueueRenderer.m */,
+			);
+			path = AudioRenderImp;
+			sourceTree = "<group>";
+		};
 		DDCC56AB294EC7090024A4D7 /* 5.Have Fun */ = {
 			isa = PBXGroup;
 			children = (
@@ -634,6 +675,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DDBFE783294EF8C400403352 /* MRAudioRendererViewController-iOS.xib in Resources */,
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */,
 				DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */,
@@ -718,6 +760,7 @@
 				DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */,
 				DD5313DE2944AEBA00185AD5 /* MRMetalView.m in Sources */,
 				DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */,
+				DDBFE77E294EF8C400403352 /* MRAudioRenderer.m in Sources */,
 				DD5313E82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m in Sources */,
 				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
 				DD5313DF2944AEBA00185AD5 /* MRMetalBasePipeline.m in Sources */,
@@ -734,12 +777,15 @@
 				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
 				DD5313C02944AD3400185AD5 /* MRGLES3RGBXView.m in Sources */,
 				DD5313BF2944AD3400185AD5 /* MRGLES3YUV420PView.m in Sources */,
+				DDBFE782294EF8C400403352 /* MRAudioRendererViewController.m in Sources */,
 				DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */,
 				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,
 				DD5313DD2944AEBA00185AD5 /* MRMetalYUV420PPipeline.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
 				DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */,
+				DDBFE77F294EF8C400403352 /* MRAudioUnitRenderer.m in Sources */,
 				DD97CCF4293B5BE900797F3B /* MRDecodePacketViewController.m in Sources */,
+				DDBFE780294EF8C400403352 /* MRAudioQueueRenderer.m in Sources */,
 				DD5313C12944AD3400185AD5 /* MRGLES3NV12View.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

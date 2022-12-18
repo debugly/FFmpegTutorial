@@ -90,6 +90,11 @@
 		DDCC56A5294EC3120024A4D7 /* MRHaveFunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56A1294EC3120024A4D7 /* MRHaveFunViewController.m */; };
 		DDCC56A6294EC3120024A4D7 /* MRHaveFunViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDCC56A2294EC3120024A4D7 /* MRHaveFunViewController.xib */; };
 		DDCC56AA294EC6080024A4D7 /* MRHaveFunVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56A9294EC6080024A4D7 /* MRHaveFunVideoRenderer.m */; };
+		DDD16C6C294EEF85007F69C2 /* MRAudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD16C61294EEF85007F69C2 /* MRAudioRenderer.m */; };
+		DDD16C6D294EEF85007F69C2 /* MRAudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD16C63294EEF85007F69C2 /* MRAudioUnitRenderer.m */; };
+		DDD16C6E294EEF85007F69C2 /* MRAudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD16C67294EEF85007F69C2 /* MRAudioQueueRenderer.m */; };
+		DDD16C6F294EEF85007F69C2 /* MRAudioRendererViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDD16C68294EEF85007F69C2 /* MRAudioRendererViewController.xib */; };
+		DDD16C70294EEF85007F69C2 /* MRAudioRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD16C69294EEF85007F69C2 /* MRAudioRendererViewController.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
 		DDF598E028826AD70079D26E /* MR0x30VideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF598D228826AD70079D26E /* MR0x30VideoRenderer.m */; };
 		DDF598E128826AD70079D26E /* MR0x30AudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF598D528826AD70079D26E /* MR0x30AudioQueueRenderer.m */; };
@@ -288,6 +293,16 @@
 		DDCC56A3294EC3120024A4D7 /* MRHaveFunViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunViewController.h; sourceTree = "<group>"; };
 		DDCC56A8294EC6080024A4D7 /* MRHaveFunVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRHaveFunVideoRenderer.h; path = "../../../Common/5.Have Fun/MRHaveFunVideoRenderer.h"; sourceTree = "<group>"; };
 		DDCC56A9294EC6080024A4D7 /* MRHaveFunVideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRHaveFunVideoRenderer.m; path = "../../../Common/5.Have Fun/MRHaveFunVideoRenderer.m"; sourceTree = "<group>"; };
+		DDD16C60294EEF85007F69C2 /* MRAudioRendererViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRendererViewController.h; sourceTree = "<group>"; };
+		DDD16C61294EEF85007F69C2 /* MRAudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioRenderer.m; sourceTree = "<group>"; };
+		DDD16C63294EEF85007F69C2 /* MRAudioUnitRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioUnitRenderer.m; sourceTree = "<group>"; };
+		DDD16C64294EEF85007F69C2 /* MRAudioQueueRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioQueueRenderer.h; sourceTree = "<group>"; };
+		DDD16C65294EEF85007F69C2 /* MRAudioUnitRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioUnitRenderer.h; sourceTree = "<group>"; };
+		DDD16C66294EEF85007F69C2 /* MRAudioRendererImpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRendererImpProtocol.h; sourceTree = "<group>"; };
+		DDD16C67294EEF85007F69C2 /* MRAudioQueueRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioQueueRenderer.m; sourceTree = "<group>"; };
+		DDD16C68294EEF85007F69C2 /* MRAudioRendererViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRAudioRendererViewController.xib; sourceTree = "<group>"; };
+		DDD16C69294EEF85007F69C2 /* MRAudioRendererViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioRendererViewController.m; sourceTree = "<group>"; };
+		DDD16C6A294EEF85007F69C2 /* MRAudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRenderer.h; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
 		DDF598D228826AD70079D26E /* MR0x30VideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x30VideoRenderer.m; sourceTree = "<group>"; };
@@ -641,6 +656,31 @@
 			path = MRUtil;
 			sourceTree = "<group>";
 		};
+		DDD16C5F294EEF85007F69C2 /* AudioRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				DDD16C62294EEF85007F69C2 /* AudioRenderImp */,
+				DDD16C6A294EEF85007F69C2 /* MRAudioRenderer.h */,
+				DDD16C61294EEF85007F69C2 /* MRAudioRenderer.m */,
+				DDD16C60294EEF85007F69C2 /* MRAudioRendererViewController.h */,
+				DDD16C69294EEF85007F69C2 /* MRAudioRendererViewController.m */,
+				DDD16C68294EEF85007F69C2 /* MRAudioRendererViewController.xib */,
+			);
+			path = AudioRenderer;
+			sourceTree = "<group>";
+		};
+		DDD16C62294EEF85007F69C2 /* AudioRenderImp */ = {
+			isa = PBXGroup;
+			children = (
+				DDD16C64294EEF85007F69C2 /* MRAudioQueueRenderer.h */,
+				DDD16C67294EEF85007F69C2 /* MRAudioQueueRenderer.m */,
+				DDD16C66294EEF85007F69C2 /* MRAudioRendererImpProtocol.h */,
+				DDD16C65294EEF85007F69C2 /* MRAudioUnitRenderer.h */,
+				DDD16C63294EEF85007F69C2 /* MRAudioUnitRenderer.m */,
+			);
+			path = AudioRenderImp;
+			sourceTree = "<group>";
+		};
 		DDE70E462584AC2900580A80 /* TextFieldCell */ = {
 			isa = PBXGroup;
 			children = (
@@ -825,6 +865,7 @@
 			children = (
 				DD5313FB2944D1C300185AD5 /* AudioUnit */,
 				DD469DE629461E59004F5F39 /* AudioQueue */,
+				DDD16C5F294EEF85007F69C2 /* AudioRenderer */,
 			);
 			path = "3.Audio Rendering";
 			sourceTree = "<group>";
@@ -984,6 +1025,7 @@
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
 				DDF923FB28EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh in Resources */,
 				DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */,
+				DDD16C6F294EEF85007F69C2 /* MRAudioRendererViewController.xib in Resources */,
 				DDBFF17328B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh in Resources */,
 				DD469DEC29461E59004F5F39 /* MRAudioQueueViewController.xib in Resources */,
 				C958F95E2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh in Resources */,
@@ -1031,6 +1073,7 @@
 				DDAD7FEB27FF3EBE00E947BB /* MRCustomThreadViewController.m in Sources */,
 				DD419041293469E100ADEFA7 /* MRLegacyGLYUV420PView.m in Sources */,
 				DD5313F12944B18900185AD5 /* NSFileManager+Sandbox.m in Sources */,
+				DDD16C6D294EEF85007F69C2 /* MRAudioUnitRenderer.m in Sources */,
 				DD900F7D292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m in Sources */,
 				DD41902E2934661B00ADEFA7 /* MRModernGLNV12View.m in Sources */,
 				DD53138029443E2F00185AD5 /* MROpenGLCompiler.m in Sources */,
@@ -1059,6 +1102,7 @@
 				DDAD7FED27FF3EBE00E947BB /* MRMovieProberViewController.m in Sources */,
 				DDF598E028826AD70079D26E /* MR0x30VideoRenderer.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
+				DDD16C70294EEF85007F69C2 /* MRAudioRendererViewController.m in Sources */,
 				DD41902F2934661B00ADEFA7 /* MRModernGLYUV420PView.m in Sources */,
 				DD469DED29461E59004F5F39 /* MRAudioQueueViewController.m in Sources */,
 				C940C23C2939E4FD00AC72FB /* MRMetalOffscreenRendering.m in Sources */,
@@ -1070,9 +1114,11 @@
 				DDF599012882EA3C0079D26E /* MR0x31AudioRenderer.m in Sources */,
 				DD4190602934B73600ADEFA7 /* MRModernGLYUYVRectView.m in Sources */,
 				DD41905A2934B73600ADEFA7 /* MRModernGLYUV420PRectView.m in Sources */,
+				DDD16C6C294EEF85007F69C2 /* MRAudioRenderer.m in Sources */,
 				DD900F74292E7A9A00CECDE4 /* MRMetalNV21Pipeline.m in Sources */,
 				DD419040293469E100ADEFA7 /* MRLegacyGLNV12View.m in Sources */,
 				DDF598E428826AD70079D26E /* MR0x30AudioRenderer.m in Sources */,
+				DDD16C6E294EEF85007F69C2 /* MRAudioQueueRenderer.m in Sources */,
 				DD4190292934661B00ADEFA7 /* MRModernGLViewController.m in Sources */,
 				DDF59927288ED5D30079D26E /* MR0x34ViewController.m in Sources */,
 				DD56CB072867FBBD0046C28A /* MRCustomDecoderViewController.m in Sources */,

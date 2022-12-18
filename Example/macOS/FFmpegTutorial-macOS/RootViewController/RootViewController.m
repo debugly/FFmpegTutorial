@@ -151,6 +151,11 @@
             @"class":@"MRAudioQueueViewController",
         },
         @{
+            @"title":@"封装AudioUnit 和 AudioQueue",
+            @"detail":@"支持 S16,S16P,Float,FloatP 格式，采样率为 44.1K,48K,96K,192K",
+            @"class":@"MRAudioRendererViewController",
+        },
+        @{
             @"title":@"四、封装播放器",
             @"isSection":@(YES)
         },
