@@ -137,12 +137,10 @@
         [self.indicatorView stopAnimation:nil];
         self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
         [self setupAudioRender:self.audioFmt sampleRate:self.sampleRate];
-        //AudioQueue需要等buffer填充满了才能播放，这里为了简单就先延迟2s再播放
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            [self prepareTickTimerIfNeed];
-            [self.indicatorView stopAnimation:nil];
-            [self playAudio];
-        });
+        [self prepareTickTimerIfNeed];
+        [self.indicatorView stopAnimation:nil];
+        [self playAudio];
+        
         NSLog(@"---VideoInfo-------------------");
         NSLog(@"%@",info);
         NSLog(@"----------------------");
@@ -339,9 +337,15 @@ static void MRAudioQueueOutputCallback(
     uint8_t * buffer[2] = { 0 };
     buffer[0] = inBuffer->mAudioData;
     UInt32 gotBytes = [self fillBuffers:buffer byteSize:inBuffer->mAudioDataBytesCapacity];
+    
+    //2、这里用buffer的大小（即使没有数据），否则queue会启动不起来，后续就没音了，除非重新调用play
+    if (gotBytes == 0) {
+        bzero(inBuffer->mAudioData, inBuffer->mAudioDataBytesCapacity);
+        gotBytes = inBuffer->mAudioDataBytesCapacity;
+    }
     inBuffer->mAudioDataByteSize = gotBytes;
     
-    // 2、通知 AudioQueue 有可以播放的 buffer 了
+    //3、通知 AudioQueue 有可以播放的 buffer 了
     AudioQueueEnqueueBuffer(inAQ, inBuffer, 0, NULL);
     return gotBytes;
 }
