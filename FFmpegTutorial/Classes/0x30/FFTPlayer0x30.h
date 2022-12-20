@@ -18,10 +18,6 @@ typedef NSString * const kFFTPlayer0x30InfoKey;
 FOUNDATION_EXPORT kFFTPlayer0x30InfoKey kFFTPlayer0x30Width;
 //视频高；单位像素
 FOUNDATION_EXPORT kFFTPlayer0x30InfoKey kFFTPlayer0x30Height;
-//视频流时基
-FOUNDATION_EXPORT kFFTPlayer0x30InfoKey kFFTPlayer0x30StreamTimeBase;
-//视频桢平均时长
-FOUNDATION_EXPORT kFFTPlayer0x30InfoKey kFFTPlayer0x30AverageDuration;
 
 @interface FFTPlayer0x30 : NSObject
 

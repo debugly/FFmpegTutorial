@@ -19,10 +19,6 @@
 kFFTPlayer0x30InfoKey kFFTPlayer0x30Width = @"kFFTPlayer0x30Width";
 //视频高；单位像素
 kFFTPlayer0x30InfoKey kFFTPlayer0x30Height = @"kFFTPlayer0x30Height";
-//视频流时基
-kFFTPlayer0x30InfoKey kFFTPlayer0x30StreamTimeBase = @"kFFTPlayer0x30StreamTimeBase";
-//视频桢平均时长
-kFFTPlayer0x30InfoKey kFFTPlayer0x30AverageDuration = @"kFFTPlayer0x30AverageDuration";
 
 @interface  FFTPlayer0x30 ()<FFTDecoderDelegate>
 {
@@ -86,8 +82,6 @@ static int decode_interrupt_cb(void *ctx)
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
-    
-    
     self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
 }
@@ -318,12 +312,6 @@ static int decode_interrupt_cb(void *ctx)
         } else {
             [dumpDic setObject:@(_videoDecoder.picWidth) forKey:kFFTPlayer0x30Width];
             [dumpDic setObject:@(_videoDecoder.picHeight) forKey:kFFTPlayer0x30Height];
-            
-            double streamTimeBase = av_q2d(_videoDecoder.stream->time_base);
-            double averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) / 1000.0 : 0);
-            
-            [dumpDic setObject:@(streamTimeBase) forKey:kFFTPlayer0x30StreamTimeBase];
-            [dumpDic setObject:@(averageDuration) forKey:kFFTPlayer0x30AverageDuration];
             _videoScale = [self createVideoScaleIfNeed];
         }
     }

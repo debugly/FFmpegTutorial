@@ -160,14 +160,14 @@
             @"isSection":@(YES)
         },
         @{
-            @"title":@"0x30",
-            @"detail":@"增加 VideoFrame 缓存队列，不再阻塞解码线程",
-            @"class":@"MR0x30ViewController",
+            @"title":@"VideoFrameQueue",
+            @"detail":@"增加 VideoFrame 缓存队列，不阻塞解码线程",
+            @"class":@"MRVideoFrameQueueViewController",
         },
         @{
-            @"title":@"0x31",
+            @"title":@"PacketQueue",
             @"detail":@"增加 AVPacket 缓存队列，创建解码线程",
-            @"class":@"MR0x31ViewController",
+            @"class":@"MRPacketQueueViewController",
         },
         @{
             @"title":@"0x32",
@@ -201,33 +201,18 @@
         },
         @{
             @"title":@"0x38",
-            @"detail":@"(TODO)使用将硬件解码数据快速上传至矩形纹理，避免拷贝解码数据",
-            @"class":@"MR0x38ViewController",
-        },
-        @{
-            @"title":@"0x39",
-            @"detail":@"(TODO)两种方式将软解解码数据格式封装成 CVPixelBuffer",
-            @"class":@"MR0x39ViewController",
-        },
-        @{
-            @"title":@"0x3a",
             @"detail":@"(TODO)统一软硬解渲染逻辑",
             @"class":@"MR0x3cViewController",
         },
         @{
-            @"title":@"0x3b",
+            @"title":@"0x39",
             @"detail":@"(TODO)支持 Seek",
             @"class":@"MR0x37ViewController",
         },
         @{
-            @"title":@"0x3b",
+            @"title":@"0x3a",
             @"detail":@"(TODO)支持从指定位置处播放",
             @"class":@"MR0x38ViewController",
-        },
-        @{
-            @"title":@"0x40",
-            @"detail":@"(TODO)iOS和Mac公用一套渲染逻辑",
-            @"class":@"MR0x40ViewController",
         },
         @{
             @"title":@"五、趣味实验",
