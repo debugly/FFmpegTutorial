@@ -7,8 +7,8 @@
 //
 
 #import "FFTFrameQueue.h"
-#import <MRFFmpegPod/libavutil/frame.h>
-#import <MRFFmpegPod/libavutil/rational.h>
+#import <libavutil/frame.h>
+#import <libavutil/rational.h>
 
 @implementation FFFrameItem
 

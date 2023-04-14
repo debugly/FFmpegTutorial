@@ -10,7 +10,7 @@
 #import <FFmpegTutorial/FFTPlayer0x20.h>
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <FFmpegTutorial/FFTAudioFrameQueue.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRRWeakProxy.h"
 
 #import "MRAudioRenderer.h"

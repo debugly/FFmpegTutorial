@@ -9,7 +9,7 @@
 #import "MRCoreGraphicsView.h"
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <FFmpegTutorial/FFTDispatch.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 
 @interface MRCoreGraphicsView ()
 {

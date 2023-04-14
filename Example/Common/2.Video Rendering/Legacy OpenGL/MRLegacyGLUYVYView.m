@@ -11,7 +11,7 @@
 #import <OpenGL/glext.h>
 #import <AVFoundation/AVUtilities.h>
 #import <GLKit/GLKit.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MROpenGLHelper.h"
 #import "MROpenGLCompiler.h"
 

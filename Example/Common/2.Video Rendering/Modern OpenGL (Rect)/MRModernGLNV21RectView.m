@@ -16,7 +16,7 @@
 #import <mach/mach_time.h>
 #import <GLKit/GLKit.h>
 #import "MROpenGLCompiler.h"
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 
 // Uniform index.
 enum

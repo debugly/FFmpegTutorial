@@ -1,11 +1,12 @@
 use_frameworks!
 
 platform :osx, '10.11'
-FF_VER='4.4'
-OpenSSL_VER='1.1.1l'
 
 target 'FFmpegTutorial-macOS' do
   pod 'FFmpegTutorial',:path => '../../'
-  pod 'MROpenSSLPod',  :podspec => "https://ifoxdev.hd.sohu.com/ffpods/20210913/MROpenSSLPod-macOS-#{OpenSSL_VER}.podspec"
-  pod 'MRFFmpegPod',   :podspec => "https://ifoxdev.hd.sohu.com/ffpods/20210913/MRFFmpegPod-macOS-#{FF_VER}-openssl.podspec"
 end
+
+pre_install do |installer|
+  puts `../../download-vendor.sh github macos`
+end
+

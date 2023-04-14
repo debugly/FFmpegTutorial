@@ -9,7 +9,7 @@
 #import "MRGLES3ViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRGLES3RGBXView.h"
 #import "MRGLES3NV12View.h"
 #import "MRGLES3NV21View.h"

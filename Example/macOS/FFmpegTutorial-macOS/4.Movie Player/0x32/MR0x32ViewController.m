@@ -12,7 +12,7 @@
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <FFmpegTutorial/FFTDispatch.h>
 #import <FFmpegTutorial/FFTPlayerHeader.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"
 #import "MRUtil.h"

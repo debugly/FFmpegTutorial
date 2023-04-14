@@ -10,7 +10,7 @@
 #import <OpenGLES/ES3/gl.h>
 #import <OpenGLES/ES3/glext.h>
 #import <AVFoundation/AVUtilities.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MROpenGLHelper.h"
 #import "MROpenGLCompiler.h"
 

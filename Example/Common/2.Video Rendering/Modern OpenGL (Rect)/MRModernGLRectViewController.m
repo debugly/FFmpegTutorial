@@ -9,7 +9,7 @@
 #import "MRModernGLRectViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRModernGLBGRARectView.h"
 #import "MRModernGLNV12RectView.h"
 #import "MRModernGLNV21RectView.h"

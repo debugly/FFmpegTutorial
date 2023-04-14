@@ -6,7 +6,7 @@
 //
 
 #import "FFTPacketQueue.h"
-#import <libavcodec/packet.h>
+#import <libavcodec/avcodec.h>
 
 @interface FFTPacketQueueItem : NSObject
 

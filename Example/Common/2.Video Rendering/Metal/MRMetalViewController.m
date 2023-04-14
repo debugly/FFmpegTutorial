@@ -10,7 +10,7 @@
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
 #import <FFmpegTutorial/FFTConvertUtil.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRMetalView.h"
 #import "MRRWeakProxy.h"
 #import "NSFileManager+Sandbox.h"

@@ -9,7 +9,7 @@
 #import "MRGAMViewController.h"
 #import <FFmpegTutorial/FFTPlayer0x10.h>
 #import <FFmpegTutorial/FFTHudControl.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRCoreAnimationView.h"
 #import "MRCoreGraphicsView.h"
 #import "MRCoreMediaView.h"

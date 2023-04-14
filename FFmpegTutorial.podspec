@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.5.19'
+  s.version          = '0.5.20'
   s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
   为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
@@ -21,7 +21,7 @@ Pod::Spec.new do |s|
 
   s.ios.deployment_target = '9.0'
   s.osx.deployment_target = '10.11'
-  s.static_framework = true
+  # s.static_framework = true
   
   s.subspec 'common' do |ss|
     ss.source_files = 'FFmpegTutorial/Classes/common/**/*.{h,c,m}'
@@ -79,36 +79,43 @@ Pod::Spec.new do |s|
   s.subspec '0x30' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x30/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x30/FFTPlayer0x30.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x31' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x31/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x31/FFTPlayer0x31.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x32' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x32/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x32/FFTPlayer0x32.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x33' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x33/**/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x33/FFTPlayer0x33.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x34' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x34/**/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x34/FFTPlayer0x34.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x35' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x35/**/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x35/FFTPlayer0x35.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x36' do |ss|
     ss.osx.source_files = 'FFmpegTutorial/Classes/0x36/**/*.{h,m}'
     ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x36/FFTPlayer0x36.h'
+    ss.ios.source_files = ''
   end
 
   s.subspec '0x50' do |ss|
@@ -116,8 +123,18 @@ Pod::Spec.new do |s|
     ss.public_header_files = 'FFmpegTutorial/Classes/0x50/FFTPlayer0x50.h'
   end
 
-  s.dependency 'MRFFmpegPod'
-  s.osx.framework = 'OpenGL'
-  s.ios.framework = 'OpenGLES'
+  s.ios.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/ios/universal/ffmpeg/include'}
+  s.ios.xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/ios/universal/ffmpeg/include'}
+  s.ios.vendored_libraries = 'vendor/product/ios/universal/*/lib/*.a'
+  s.ios.framework = 'OpenGLES',"CoreFoundation","CoreVideo","VideoToolbox","CoreMedia","AudioToolbox","Security"
+
+  s.osx.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/macos/universal/ffmpeg/include'}
+  s.osx.xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/macos/universal/ffmpeg/include'}
+  s.osx.vendored_libraries = 'vendor/product/macos/universal/*/lib/*.a'
+  s.osx.frameworks = 'OpenGL',"CoreFoundation","CoreVideo","VideoToolbox","CoreMedia","AudioToolbox","Security"
+
+  s.libraries = "z","bz2","iconv","lzma","xml2"
+  
+  
 
 end

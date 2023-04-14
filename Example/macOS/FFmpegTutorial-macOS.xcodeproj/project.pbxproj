@@ -882,6 +882,7 @@
 				DDFDF89E2564CDC700F1CAE2 /* Frameworks */,
 				DDFDF89F2564CDC700F1CAE2 /* Resources */,
 				DDA6CCBB2595D7CC005CA8BF /* Embed Frameworks */,
+				4FC1C8A1D0359DB0E8F35E17 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -976,6 +977,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		4FC1C8A1D0359DB0E8F35E17 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		973BC7971DE743C7C8787F08 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;

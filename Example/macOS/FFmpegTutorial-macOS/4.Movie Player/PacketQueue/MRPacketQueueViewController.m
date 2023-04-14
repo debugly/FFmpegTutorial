@@ -12,7 +12,7 @@
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <FFmpegTutorial/FFTAudioFrameQueue.h>
 #import <FFmpegTutorial/FFTVideoFrameQueue.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "MRMetalView.h"
 #import "MRAudioRenderer.h"
@@ -194,7 +194,7 @@
     
     FFTPlayer0x31 *player = [[FFTPlayer0x31 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormat  = MR_PIX_FMT_NV21;
+    player.supportedPixelFormat  = MR_PIX_FMT_NV12;
     player.supportedSampleRate   = 48000;
     player.supportedSampleFormat = MR_SAMPLE_FMT_S16;
     

@@ -12,7 +12,7 @@
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <FFmpegTutorial/FFTAudioFrameQueue.h>
 #import <FFmpegTutorial/FFTVideoFrameQueue.h>
-#import <MRFFmpegPod/libavutil/frame.h>
+#import <libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "MRMetalView.h"
 #import "MRAudioRenderer.h"
