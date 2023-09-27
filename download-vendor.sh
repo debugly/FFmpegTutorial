@@ -16,9 +16,6 @@
 #
 
 VERSION=20230304181936
-
-set -e
-
 EDITION=$1
 PLAT=$2
 VER=$3
@@ -49,7 +46,9 @@ function download() {
     local dir="product/$plat/universal"
     mkdir -p "$dir"
     unzip -oq $fname -d "$dir"
-    tree -L 2 "$dir"
+
+    command -v tree
+    [[ $? -eq 0 ]] && tree -L 2 "$dir"
     echo "===================================="
     cd - >/dev/null
 }

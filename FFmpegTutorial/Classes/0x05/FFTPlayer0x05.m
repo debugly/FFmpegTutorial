@@ -444,7 +444,7 @@ end:
             av_log(NULL, AV_LOG_ERROR, "audio decoder eof.\n");
         } else if (self.abort_request){
             av_log(NULL, AV_LOG_ERROR, "audio decoder cancel.\n");
-        } else {
+        } else if(r != AVERROR(EAGAIN)){
             av_log(NULL, AV_LOG_ERROR, "audio decoder decode err %d.\n",got_frame);
         }
     }
