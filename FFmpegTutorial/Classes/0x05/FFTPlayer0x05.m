@@ -8,6 +8,7 @@
 #import "FFTPlayer0x05.h"
 #import <libavutil/pixdesc.h>
 #import <libavformat/avformat.h>
+#import <libavcodec/avcodec.h>
 #import "FFTThread.h"
 #import "FFTDispatch.h"
 #import "FFTAbstractLogger.h"

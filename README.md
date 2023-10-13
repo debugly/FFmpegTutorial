@@ -12,9 +12,9 @@
 
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
-cd FFmpegTutorial/Example/iOS
-pod install
-open FFmpegTutorial-iOS.xcworkspace
+cd FFmpegTutorial
+pod install --project-directory=Example/iOS
+open Example/iOS/FFmpegTutorial-iOS.xcworkspace
 ```
 
 运行效果:
@@ -27,9 +27,9 @@ open FFmpegTutorial-iOS.xcworkspace
 
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
-cd FFmpegTutorial/Example/macOS
-pod install
-open FFmpegTutorial-macOS.xcworkspace
+cd FFmpegTutorial
+pod install --project-directory=Example/macOS
+open Example/macOS/FFmpegTutorial-macOS.xcworkspace
 ```
 
 ![](md/imgs/macos-snapshot-1.png)

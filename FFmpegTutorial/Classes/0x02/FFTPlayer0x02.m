@@ -11,6 +11,7 @@
 #import "FFTAbstractLogger.h"
 #import <libavutil/pixdesc.h>
 #import <libavformat/avformat.h>
+#import <libavcodec/avcodec.h>
 
 @interface FFTPlayer0x02 ()
 //读包线程
