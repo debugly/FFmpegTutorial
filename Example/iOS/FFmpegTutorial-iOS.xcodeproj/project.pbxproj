@@ -650,6 +650,7 @@
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = 96C96H28CU;
 						LastSwiftMigration = 1150;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -939,6 +940,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 96C96H28CU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS.pch";
@@ -946,8 +949,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.debugly.FFmpegTutorial.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.debugly.FFmpegTutorial${DEVELOPMENT_TEAM}";
 				PRODUCT_NAME = FFmpegTutorial;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 4.0;
@@ -962,6 +966,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 96C96H28CU;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS.pch";
@@ -969,8 +975,9 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				MARKETING_VERSION = 2.0;
 				MODULE_NAME = ExampleApp;
-				PRODUCT_BUNDLE_IDENTIFIER = cn.debugly.FFmpegTutorial.1;
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.debugly.FFmpegTutorial${DEVELOPMENT_TEAM}";
 				PRODUCT_NAME = FFmpegTutorial;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS-Bridging-Header.h";
 				SWIFT_VERSION = 4.0;
 				VALID_ARCHS = "arm64 x86_64";

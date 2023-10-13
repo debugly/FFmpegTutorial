@@ -7,5 +7,5 @@ target 'FFmpegTutorial-iOS' do
 end
 
 pre_install do |installer|
-  puts `../../download-vendor.sh github ios`
+  puts `../../download-vendor.sh ios 0.10.1-230831144049-ijk`
 end

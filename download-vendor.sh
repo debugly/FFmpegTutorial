@@ -15,10 +15,10 @@
 # limitations under the License.
 #
 
-VERSION=20230304181936
-EDITION=$1
-PLAT=$2
-VER=$3
+set -e
+
+PLAT=$1
+VER=$2
 
 if test -z $PLAT ;then
     PLAT='all'
@@ -29,35 +29,25 @@ c_dir="$PWD"
 
 function usage() {
     echo "=== useage ===================="
-    echo "Download precompiled ijk or github edition libs from github,The usage is as follows:"
-    echo "$0 ijk|github [ios|macos|all] [<release tag>]"
+    echo "Download precompiled libs from github,The usage is as follows:"
+    echo "$0 [ios|macos|all] [<release tag>]"
 }
 
 function download() {
     local plat=$1
-    echo "===[download $plat $EDITION $VER]===================="
-    mkdir -p vendor
-    cd vendor
-    local fname="$plat-universal-$VER-$EDITION.zip"
-    local url="https://github.com/debugly/MRFFToolChainBuildShell/releases/download/$VER-$EDITION/$fname"
+    echo "===[download $plat $VER]===================="
+    mkdir -p build/pre
+    cd build/pre
+    local fname="$plat-universal-$VER.zip"
+    local url="https://github.com/debugly/MRFFToolChainBuildShell/releases/download/$VER/$fname"
     echo "$url"
-    curl -C - -L "$url" -o "$fname"
-
-    local dir="product/$plat/universal"
-    mkdir -p "$dir"
-    unzip -oq $fname -d "$dir"
-
-    command -v tree
-    [[ $? -eq 0 ]] && tree -L 2 "$dir"
+    curl -LO "$url"
+    mkdir -p ../product/$plat/universal
+    unzip -oq $fname -d ../product/$plat/universal
+    tree -L 2 ../product/$plat/universal
     echo "===================================="
     cd - >/dev/null
 }
-
-if [[ "$EDITION" != 'ijk' && "$EDITION" != 'github' ]]; then
-    echo 'wrong edition,use ijk or github!'
-    usage
-    exit
-fi
 
 if [[ "$PLAT" != 'ios' && "$PLAT" != 'macos' && "$PLAT" != 'all' ]]; then
     echo 'wrong plat,use ios or macos or all!'
@@ -67,8 +57,8 @@ fi
 
 if test -z $VER ;then
     #VER=$(git describe --abbrev=0 --tag | awk -F - '{printf "%s-%s",$1,$2}')
-    VER="$VERSION"
-    echo "use the default version:${VER}"
+    usage
+    exit
 fi
 
 if [[ "$PLAT" == 'ios' || "$PLAT" == 'macos' ]]; then

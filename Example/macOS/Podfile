@@ -7,6 +7,6 @@ target 'FFmpegTutorial-macOS' do
 end
 
 pre_install do |installer|
-  puts `../../download-vendor.sh github macos`
+  puts `../../download-vendor.sh macos 0.10.1-230831144049-ijk`
 end
 
