@@ -44,7 +44,9 @@ function download() {
     curl -LO "$url"
     mkdir -p ../product/$plat/universal
     unzip -oq $fname -d ../product/$plat/universal
-    tree -L 2 ../product/$plat/universal
+    if command -v tree >/dev/null 2>&1; then 
+        tree -L 2 ../product/$plat/universal
+    fi
     echo "===================================="
     cd - >/dev/null
 }
