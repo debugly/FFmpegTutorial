@@ -7,6 +7,16 @@ target 'FFmpegTutorial-macOS' do
 end
 
 pre_install do |installer|
-  puts `../../download-vendor.sh macos 0.10.1-230831144049-ijk`
+  this_dir = File.dirname(File.realpath(__FILE__))
+  install_shell = File.expand_path('../../install-pre-any.sh', this_dir)
+  # puts "#{install_shell}"
+  if system "#{install_shell} macos all" 
+    puts "依赖库安装成功！"
+  else
+    puts
+    puts "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️  依赖库安装失败，请重新运行 pod install ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
+    puts "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️  依赖库安装失败，请重新运行 pod install ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
+    puts "⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️  依赖库安装失败，请重新运行 pod install ⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️⚠️"
+    puts
+  end
 end
-
