@@ -128,10 +128,20 @@ CGContextRef __nullable UIGraphicsGetCurrentContext(void)
 
 @implementation MRBaseViewController
 
+- (void)loadView
+{
+#if TARGET_OS_IPHONE
+    NSString *nibName = [NSStringFromClass([self class]) stringByAppendingString:@"-iOS"];
+    UINib *nib = [UINib nibWithNibName:nibName bundle:nil];
+    NSArray *views = [nib instantiateWithOwner:self options:nil];
+    self.view = [views firstObject];
+#endif
+}
+
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
 #if TARGET_OS_IPHONE
-    nibNameOrNil = [nibNameOrNil stringByAppendingString:@"-iOS"];
+    nibNameOrNil = nil;
 #endif
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {

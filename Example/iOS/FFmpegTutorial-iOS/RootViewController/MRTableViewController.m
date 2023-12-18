@@ -112,14 +112,14 @@
         @"title":@"四、封装播放器",
         @"cells":@[
             @{
-                @"title":@"0x30",
+                @"title":@"VideoFrameQueue",
                 @"detail":@"增加 VideoFrame 缓存队列，不再阻塞解码线程",
-                @"class":@"MR0x30ViewController",
+                @"class":@"MRVideoFrameQueueViewController",
             },
             @{
-                @"title":@"0x31",
+                @"title":@"PacketQueue",
                 @"detail":@"增加 AVPacket 缓存队列，创建解码线程",
-                @"class":@"MR0x31ViewController",
+                @"class":@"MRPacketQueueViewController",
             },
             @{
                 @"title":@"0x32",

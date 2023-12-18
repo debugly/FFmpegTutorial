@@ -272,11 +272,13 @@
     if ([videoName isEqualToString:@"/"]) {
         videoName = @"未知";
     }
-    NSString *folder = [NSFileManager mr_DirWithType:NSPicturesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
-    long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
-    NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
-    [NSFileManager mr_saveImageToFile:img path:filePath];
-    NSLog(@"img:%@",filePath);
+    NSString *folder = [NSFileManager mr_DirWithType:NSCachesDirectory WithPathComponents:@[@"FFmpegTutorial",videoName]];
+    if (folder) {
+        long timestamp = [NSDate timeIntervalSinceReferenceDate] * 1000;
+        NSString *filePath = [folder stringByAppendingPathComponent:[NSString stringWithFormat:@"%ld.jpg",timestamp]];
+        [NSFileManager mr_saveImageToFile:img path:filePath];
+        NSLog(@"img:%@",filePath);
+    }
 }
 
 - (void)doSelectedVideMode:(int)tag

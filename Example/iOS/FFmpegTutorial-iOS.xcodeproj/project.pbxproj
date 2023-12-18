@@ -16,6 +16,10 @@
 		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
 		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
 		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		C94AF23E2B3040EE006DC380 /* MRPacketQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2192B3040EE006DC380 /* MRPacketQueueViewController.m */; };
+		C94AF23F2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF21A2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib */; };
+		C94AF24C2B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2362B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib */; };
+		C94AF24E2B3040EE006DC380 /* MRVideoFrameQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */; };
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
@@ -108,6 +112,12 @@
 		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		8AFD9C05D63093CAE7B71E20 /* Pods-FFmpegTutorial-iOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.release.xcconfig"; sourceTree = "<group>"; };
 		B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_iOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C94AF2192B3040EE006DC380 /* MRPacketQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRPacketQueueViewController.m; sourceTree = "<group>"; };
+		C94AF21A2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRPacketQueueViewController-iOS.xib"; sourceTree = "<group>"; };
+		C94AF21C2B3040EE006DC380 /* MRPacketQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPacketQueueViewController.h; sourceTree = "<group>"; };
+		C94AF2362B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRVideoFrameQueueViewController-iOS.xib"; sourceTree = "<group>"; };
+		C94AF2372B3040EE006DC380 /* MRVideoFrameQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoFrameQueueViewController.h; sourceTree = "<group>"; };
+		C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrameQueueViewController.m; sourceTree = "<group>"; };
 		DD2EADF4244C923600B057DE /* MRNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRNavigationController.h; sourceTree = "<group>"; };
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
@@ -290,6 +300,7 @@
 				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
 				DD97CD14293C53D500797F3B /* 2.Video Rendering */,
 				DD5314012945DDC600185AD5 /* 3.Audio Rendering */,
+				C94AF2172B3040EE006DC380 /* 4.Movie Player */,
 				DDCC56AB294EC7090024A4D7 /* 5.Have Fun */,
 				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
 				6003F594195388D20070C39A /* Supporting Files */,
@@ -314,6 +325,36 @@
 				6003F59B195388D20070C39A /* FFmpegTutorial-iOS.pch */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C94AF2172B3040EE006DC380 /* 4.Movie Player */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF2352B3040EE006DC380 /* VideoFrameQueue */,
+				C94AF2182B3040EE006DC380 /* PacketQueue */,
+			);
+			name = "4.Movie Player";
+			path = "../../Common/4.Movie Player";
+			sourceTree = "<group>";
+		};
+		C94AF2182B3040EE006DC380 /* PacketQueue */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF21A2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib */,
+				C94AF21C2B3040EE006DC380 /* MRPacketQueueViewController.h */,
+				C94AF2192B3040EE006DC380 /* MRPacketQueueViewController.m */,
+			);
+			path = PacketQueue;
+			sourceTree = "<group>";
+		};
+		C94AF2352B3040EE006DC380 /* VideoFrameQueue */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF2362B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib */,
+				C94AF2372B3040EE006DC380 /* MRVideoFrameQueueViewController.h */,
+				C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */,
+			);
+			path = VideoFrameQueue;
 			sourceTree = "<group>";
 		};
 		CF60E7891F87B97CC29DD34F /* Pods */ = {
@@ -681,6 +722,7 @@
 				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
 				DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */,
 				DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */,
+				C94AF24C2B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib in Resources */,
 				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
 				DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */,
 				DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */,
@@ -690,6 +732,7 @@
 				DD5313C22944AD3400185AD5 /* common_es3.vsh in Resources */,
 				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
 				DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */,
+				C94AF23F2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib in Resources */,
 				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
@@ -759,6 +802,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				C94AF23E2B3040EE006DC380 /* MRPacketQueueViewController.m in Sources */,
 				DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */,
 				DD5313BD2944AD3400185AD5 /* MRGLES3NV21View.m in Sources */,
 				DD5313E02944AEBA00185AD5 /* MRMetalViewController.m in Sources */,
@@ -774,6 +818,7 @@
 				DD5313E42944AEBA00185AD5 /* MRMetalOffscreenRendering.m in Sources */,
 				DD97CCEF293B5BE900797F3B /* MRCustomThreadViewController.m in Sources */,
 				DD5313F72944B2AF00185AD5 /* MRRWeakProxy.m in Sources */,
+				C94AF24E2B3040EE006DC380 /* MRVideoFrameQueueViewController.m in Sources */,
 				DD5313E52944AEBA00185AD5 /* MRMetalBGRAPipeline.m in Sources */,
 				DD469DF5294621E8004F5F39 /* MRAudioQueueViewController.m in Sources */,
 				DD5313E62944AEBA00185AD5 /* MRMetalNV21Pipeline.m in Sources */,
