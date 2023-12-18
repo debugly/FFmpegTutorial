@@ -128,21 +128,18 @@ CGContextRef __nullable UIGraphicsGetCurrentContext(void)
 
 @implementation MRBaseViewController
 
+#if TARGET_OS_IPHONE
 - (void)loadView
 {
-#if TARGET_OS_IPHONE
     NSString *nibName = [NSStringFromClass([self class]) stringByAppendingString:@"-iOS"];
     UINib *nib = [UINib nibWithNibName:nibName bundle:nil];
     NSArray *views = [nib instantiateWithOwner:self options:nil];
     self.view = [views firstObject];
-#endif
 }
 
 - (instancetype)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
-#if TARGET_OS_IPHONE
     nibNameOrNil = nil;
-#endif
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
         
@@ -150,6 +147,7 @@ CGContextRef __nullable UIGraphicsGetCurrentContext(void)
     return self;
 }
 
+#endif
 #if TARGET_OS_IPHONE
 - (void)viewWillAppear:(BOOL)animated
 {
