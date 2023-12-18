@@ -24,6 +24,7 @@ typedef struct AVFrame AVFrame;
 @interface FFTFrameQueue : NSObject
 
 @property (nonatomic, assign) BOOL eof;
+@property (nonatomic, assign) double streamTimeBase;
 
 - (void)push:(FFFrameItem *)frame;
 - (void)pop;

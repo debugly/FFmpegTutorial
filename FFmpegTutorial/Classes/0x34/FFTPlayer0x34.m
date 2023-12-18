@@ -357,6 +357,8 @@ static int decode_interrupt_cb(void *ctx)
     _videoFrameQueue.averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
     
     _audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
+    _audioFrameQueue.streamTimeBase = av_q2d(_audioDecoder.stream->time_base);
+    
     _duration = 1.0 * formatCtx->duration / AV_TIME_BASE;
     [dumpDic setObject:@(_duration) forKey:kFFTPlayer0x34Duration];
     

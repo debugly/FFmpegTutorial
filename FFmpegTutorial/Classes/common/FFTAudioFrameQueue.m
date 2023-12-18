@@ -23,8 +23,7 @@
     FFFrameItem *item = [[FFFrameItem alloc] initWithAVFrame:frame];
 
     if (frame->pts != AV_NOPTS_VALUE) {
-        AVRational tb = (AVRational){1, frame->sample_rate};
-        item.pts = frame->pts * av_q2d(tb);
+        item.pts = frame->pts * self.streamTimeBase;
     }
     
     item.duration = av_q2d((AVRational){frame->nb_samples, frame->sample_rate});

@@ -11,7 +11,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @interface FFTVideoFrameQueue : FFTFrameQueue
 
-@property (nonatomic, assign) double streamTimeBase;
 //根据 fps 计算得出
 @property (nonatomic, assign) double averageDuration;
 

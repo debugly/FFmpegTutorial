@@ -205,8 +205,7 @@ enum AVPixelFormat MRPixelFormat2AV (MRPixelFormat mrpf){
 int audio_buffer_size(AVFrame *frame)
 {
     const int fmt = frame->format;
-    int chanels = av_sample_fmt_is_planar(fmt) ? 1 : 2;
-    //self.frame->linesize[i] 比 data_size 要大，所以有杂音
-    int data_size = av_samples_get_buffer_size(frame->linesize, chanels, frame->nb_samples, fmt, 1);
+    int chanels = frame->ch_layout.nb_channels;
+    int data_size = av_samples_get_buffer_size(NULL, chanels, frame->nb_samples, fmt, 1);
     return data_size;
 }

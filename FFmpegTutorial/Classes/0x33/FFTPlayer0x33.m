@@ -352,6 +352,7 @@ static int decode_interrupt_cb(void *ctx)
     _videoFrameQueue.averageDuration = (_videoDecoder.frameRate.num && _videoDecoder.frameRate.den ? av_q2d(_videoDecoder.frameRate) : 0);
     
     _audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
+    _audioFrameQueue.streamTimeBase = av_q2d(_audioDecoder.stream->time_base);
     
     mr_sync_main_queue(^{
         //audio queue 不能跨线程，不可以在子线程创建，主线程play。audio unit 可以
