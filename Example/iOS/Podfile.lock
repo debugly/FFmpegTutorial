@@ -1,39 +1,39 @@
 PODS:
-  - FFmpegTutorial (0.5.20):
-    - FFmpegTutorial/0x01 (= 0.5.20)
-    - FFmpegTutorial/0x02 (= 0.5.20)
-    - FFmpegTutorial/0x03 (= 0.5.20)
-    - FFmpegTutorial/0x04 (= 0.5.20)
-    - FFmpegTutorial/0x05 (= 0.5.20)
-    - FFmpegTutorial/0x06 (= 0.5.20)
-    - FFmpegTutorial/0x10 (= 0.5.20)
-    - FFmpegTutorial/0x20 (= 0.5.20)
-    - FFmpegTutorial/0x30 (= 0.5.20)
-    - FFmpegTutorial/0x31 (= 0.5.20)
-    - FFmpegTutorial/0x32 (= 0.5.20)
-    - FFmpegTutorial/0x33 (= 0.5.20)
-    - FFmpegTutorial/0x34 (= 0.5.20)
-    - FFmpegTutorial/0x35 (= 0.5.20)
-    - FFmpegTutorial/0x36 (= 0.5.20)
-    - FFmpegTutorial/0x50 (= 0.5.20)
-    - FFmpegTutorial/common (= 0.5.20)
-  - FFmpegTutorial/0x01 (0.5.20)
-  - FFmpegTutorial/0x02 (0.5.20)
-  - FFmpegTutorial/0x03 (0.5.20)
-  - FFmpegTutorial/0x04 (0.5.20)
-  - FFmpegTutorial/0x05 (0.5.20)
-  - FFmpegTutorial/0x06 (0.5.20)
-  - FFmpegTutorial/0x10 (0.5.20)
-  - FFmpegTutorial/0x20 (0.5.20)
-  - FFmpegTutorial/0x30 (0.5.20)
-  - FFmpegTutorial/0x31 (0.5.20)
-  - FFmpegTutorial/0x32 (0.5.20)
-  - FFmpegTutorial/0x33 (0.5.20)
-  - FFmpegTutorial/0x34 (0.5.20)
-  - FFmpegTutorial/0x35 (0.5.20)
-  - FFmpegTutorial/0x36 (0.5.20)
-  - FFmpegTutorial/0x50 (0.5.20)
-  - FFmpegTutorial/common (0.5.20)
+  - FFmpegTutorial (0.5.21):
+    - FFmpegTutorial/0x01 (= 0.5.21)
+    - FFmpegTutorial/0x02 (= 0.5.21)
+    - FFmpegTutorial/0x03 (= 0.5.21)
+    - FFmpegTutorial/0x04 (= 0.5.21)
+    - FFmpegTutorial/0x05 (= 0.5.21)
+    - FFmpegTutorial/0x06 (= 0.5.21)
+    - FFmpegTutorial/0x10 (= 0.5.21)
+    - FFmpegTutorial/0x20 (= 0.5.21)
+    - FFmpegTutorial/0x30 (= 0.5.21)
+    - FFmpegTutorial/0x31 (= 0.5.21)
+    - FFmpegTutorial/0x32 (= 0.5.21)
+    - FFmpegTutorial/0x33 (= 0.5.21)
+    - FFmpegTutorial/0x34 (= 0.5.21)
+    - FFmpegTutorial/0x35 (= 0.5.21)
+    - FFmpegTutorial/0x36 (= 0.5.21)
+    - FFmpegTutorial/0x50 (= 0.5.21)
+    - FFmpegTutorial/common (= 0.5.21)
+  - FFmpegTutorial/0x01 (0.5.21)
+  - FFmpegTutorial/0x02 (0.5.21)
+  - FFmpegTutorial/0x03 (0.5.21)
+  - FFmpegTutorial/0x04 (0.5.21)
+  - FFmpegTutorial/0x05 (0.5.21)
+  - FFmpegTutorial/0x06 (0.5.21)
+  - FFmpegTutorial/0x10 (0.5.21)
+  - FFmpegTutorial/0x20 (0.5.21)
+  - FFmpegTutorial/0x30 (0.5.21)
+  - FFmpegTutorial/0x31 (0.5.21)
+  - FFmpegTutorial/0x32 (0.5.21)
+  - FFmpegTutorial/0x33 (0.5.21)
+  - FFmpegTutorial/0x34 (0.5.21)
+  - FFmpegTutorial/0x35 (0.5.21)
+  - FFmpegTutorial/0x36 (0.5.21)
+  - FFmpegTutorial/0x50 (0.5.21)
+  - FFmpegTutorial/common (0.5.21)
 
 DEPENDENCIES:
   - FFmpegTutorial (from `../../`)
@@ -43,8 +43,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: a3a8917261798e4d0fa660c7abe096052190705d
+  FFmpegTutorial: 68faa119fb671391f39954e7aa395db210cafc6d
 
 PODFILE CHECKSUM: 749112b8978d95a8c77c7ee2907f05acd56b740f
 
-COCOAPODS: 1.11.2
+COCOAPODS: 1.13.0

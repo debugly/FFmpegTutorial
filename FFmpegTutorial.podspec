@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.5.20'
+  s.version          = '0.5.21'
   s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
   为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
@@ -123,14 +123,14 @@ Pod::Spec.new do |s|
     ss.public_header_files = 'FFmpegTutorial/Classes/0x50/FFTPlayer0x50.h'
   end
 
-  s.ios.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/ios/universal/ffmpeg/include'}
-  s.ios.xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/ios/universal/ffmpeg/include'}
-  s.ios.vendored_libraries = 'vendor/product/ios/universal/*/lib/*.a'
+  s.ios.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../build/product/ios/universal/ffmpeg/include'}
+  s.ios.xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../build/product/ios/universal/ffmpeg/include'}
+  s.ios.vendored_libraries = 'build/product/ios/universal/*/lib/*.a'
   s.ios.framework = 'OpenGLES',"CoreFoundation","CoreVideo","VideoToolbox","CoreMedia","AudioToolbox","Security"
 
-  s.osx.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/macos/universal/ffmpeg/include'}
-  s.osx.xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../vendor/product/macos/universal/ffmpeg/include'}
-  s.osx.vendored_libraries = 'vendor/product/macos/universal/*/lib/*.a'
+  s.osx.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../build/product/macos/universal/ffmpeg/include'}
+  s.osx.xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../build/product/macos/universal/ffmpeg/include'}
+  s.osx.vendored_libraries = 'build/product/macos/universal/*/lib/*.a'
   s.osx.frameworks = 'OpenGL',"CoreFoundation","CoreVideo","VideoToolbox","CoreMedia","AudioToolbox","Security"
 
   s.libraries = "z","bz2","iconv","lzma","xml2"
