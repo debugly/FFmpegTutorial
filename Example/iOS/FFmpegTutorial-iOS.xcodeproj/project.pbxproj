@@ -95,6 +95,8 @@
 		DDCC56B1294EC7090024A4D7 /* MRHaveFunVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */; };
 		DDCC56B2294EC7090024A4D7 /* MRHaveFunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */; };
 		DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */; };
+		DDE0751F2B31DBB4004B7042 /* MRAudioEmbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE0751B2B31DBB4004B7042 /* MRAudioEmbedViewController.m */; };
+		DDE075202B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDE0751C2B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -247,6 +249,9 @@
 		DDCC56AE294EC7090024A4D7 /* MRHaveFunVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunVideoRenderer.h; sourceTree = "<group>"; };
 		DDCC56B0294EC7090024A4D7 /* MRHaveFunViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunViewController.h; sourceTree = "<group>"; };
 		DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRHaveFunViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDE0751B2B31DBB4004B7042 /* MRAudioEmbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioEmbedViewController.m; sourceTree = "<group>"; };
+		DDE0751C2B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioEmbedViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDE0751D2B31DBB4004B7042 /* MRAudioEmbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioEmbedViewController.h; sourceTree = "<group>"; };
 		F51DF2E8EB7607DA7709BDF6 /* Pods-FFmpegTutorial-iOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-iOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-iOS/Pods-FFmpegTutorial-iOS.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -338,6 +343,7 @@
 				C94AF2182B3040EE006DC380 /* PacketQueue */,
 				C94AF2352B3040EE006DC380 /* VideoFrameQueue */,
 				C94AF2602B305659006DC380 /* VideoEmbed */,
+				DDE075192B31DBB4004B7042 /* AudioEmbed */,
 			);
 			name = "4.Movie Player";
 			path = "../../Common/4.Movie Player";
@@ -672,6 +678,16 @@
 			path = "../../Common/5.Have Fun";
 			sourceTree = "<group>";
 		};
+		DDE075192B31DBB4004B7042 /* AudioEmbed */ = {
+			isa = PBXGroup;
+			children = (
+				DDE0751C2B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib */,
+				DDE0751D2B31DBB4004B7042 /* MRAudioEmbedViewController.h */,
+				DDE0751B2B31DBB4004B7042 /* MRAudioEmbedViewController.m */,
+			);
+			path = AudioEmbed;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -758,6 +774,7 @@
 				DD5313B92944AD3400185AD5 /* 3_sampler2D_es3.fsh in Resources */,
 				DD5313BB2944AD3400185AD5 /* 2_sampler2D_es3.fsh in Resources */,
 				DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */,
+				DDE075202B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib in Resources */,
 				DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */,
 				DD5313BE2944AD3400185AD5 /* MRGLES3ViewController-iOS.xib in Resources */,
 				DD5313BC2944AD3400185AD5 /* 1_sampler2D_es3.fsh in Resources */,
@@ -845,6 +862,7 @@
 				DDBFE77E294EF8C400403352 /* MRAudioRenderer.m in Sources */,
 				DD5313E82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m in Sources */,
 				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
+				DDE0751F2B31DBB4004B7042 /* MRAudioEmbedViewController.m in Sources */,
 				DD5313DF2944AEBA00185AD5 /* MRMetalBasePipeline.m in Sources */,
 				DD5313E72944AEBA00185AD5 /* MRMetalNV12Pipeline.m in Sources */,
 				DD5313E12944AEBA00185AD5 /* MRMetalShaders.metal in Sources */,
