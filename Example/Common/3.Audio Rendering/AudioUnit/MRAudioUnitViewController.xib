@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="19455" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
+<document type="com.apple.InterfaceBuilder3.Cocoa.XIB" version="3.0" toolsVersion="22505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" customObjectInstantitationMethod="direct">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="19455"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="22505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
         <customObject id="-2" userLabel="File's Owner" customClass="MRAudioUnitViewController">
             <connections>
-                <outlet property="formatPopup" destination="0X5-AM-SH0" id="w0h-Te-Rmd"/>
                 <outlet property="indicatorView" destination="A8v-NC-bh6" id="vrp-86-BMn"/>
                 <outlet property="inputField" destination="X45-WW-lE6" id="vzy-yO-Yvh"/>
-                <outlet property="playbackView" destination="xd5-Jb-nAf" id="LVl-pi-8KH"/>
                 <outlet property="view" destination="Hz6-mo-xeY" id="0bl-1N-x8E"/>
             </connections>
         </customObject>
@@ -24,7 +22,7 @@
                 <stackView distribution="fillProportionally" orientation="horizontal" alignment="centerY" spacing="10" horizontalStackHuggingPriority="249.99998474121094" verticalStackHuggingPriority="249.99998474121094" detachesHiddenViews="YES" translatesAutoresizingMaskIntoConstraints="NO" id="NMB-98-nYq">
                     <rect key="frame" x="0.0" y="232" width="782" height="40"/>
                     <subviews>
-                        <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wch-5O-bYT">
+                        <textField focusRingType="none" horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="wch-5O-bYT">
                             <rect key="frame" x="8" y="12" width="58" height="16"/>
                             <textFieldCell key="cell" lineBreakMode="clipping" title="视频地址" id="MXO-pd-vL2">
                                 <font key="font" metaFont="system"/>
@@ -32,7 +30,7 @@
                                 <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
                             </textFieldCell>
                         </textField>
-                        <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X45-WW-lE6">
+                        <textField focusRingType="none" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="X45-WW-lE6">
                             <rect key="frame" x="74" y="10" width="421" height="21"/>
                             <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="JaS-Je-Vlq">
                                 <font key="font" usesAppearanceFont="YES"/>
@@ -52,9 +50,6 @@
                         </button>
                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="0X5-AM-SH0">
                             <rect key="frame" x="559" y="6" width="107" height="25"/>
-                            <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="AOn-T5-JpW"/>
-                            </constraints>
                             <popUpButtonCell key="cell" type="push" title="S16" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="Euc-v7-yHs" id="N05-0S-hUf">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="menu"/>
@@ -75,15 +70,15 @@
                                     </items>
                                 </menu>
                             </popUpButtonCell>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="AOn-T5-JpW"/>
+                            </constraints>
                             <connections>
                                 <action selector="onSelectAudioFmt:" target="-2" id="ylz-j4-ql8"/>
                             </connections>
                         </popUpButton>
                         <popUpButton verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="yZZ-Vj-63K">
                             <rect key="frame" x="669" y="6" width="107" height="25"/>
-                            <constraints>
-                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="T0N-4d-S9f"/>
-                            </constraints>
                             <popUpButtonCell key="cell" type="push" title="44100" bezelStyle="rounded" alignment="left" lineBreakMode="truncatingTail" state="on" borderStyle="borderAndBezel" tag="1" imageScaling="proportionallyDown" inset="2" selectedItem="9aS-yP-aax" id="AMz-tq-Vu4">
                                 <behavior key="behavior" lightByBackground="YES" lightByGray="YES"/>
                                 <font key="font" metaFont="menu"/>
@@ -104,6 +99,9 @@
                                     </items>
                                 </menu>
                             </popUpButtonCell>
+                            <constraints>
+                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="100" id="T0N-4d-S9f"/>
+                            </constraints>
                             <connections>
                                 <action selector="onSelectSampleRate:" target="-2" id="63C-7U-p0t"/>
                             </connections>

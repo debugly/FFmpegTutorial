@@ -181,7 +181,7 @@ CGContextRef __nullable UIGraphicsGetCurrentContext(void)
     [alert addButtonWithTitle:title];
     //[alert setMessageText:@""];
     [alert setInformativeText:msg];
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setAlertStyle:NSAlertStyleInformational];
     NSModalResponse returnCode = [alert runModal];
     
     if (returnCode == NSAlertFirstButtonReturn)

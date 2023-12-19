@@ -14,8 +14,6 @@
 #import <FFmpegTutorial/FFTPlayerHeader.h>
 #import <libavutil/frame.h>
 #import "MRRWeakProxy.h"
-#import "NSFileManager+Sandbox.h"
-#import "MRUtil.h"
 
 @interface MR0x36ViewController ()
 
@@ -205,11 +203,11 @@
     NSMenuItem *item = [sender selectedItem];
         
     if (item.tag == 1) {
-        [self.player.videoRender setRenderingMode:FFTRenderingModeScaleToFill];
+        [self.player.videoRender setScalingMode:IJKMPMovieScalingModeFill];
     } else if (item.tag == 2) {
-        [self.player.videoRender setRenderingMode:FFTRenderingModeScaleAspectFill];
+        [self.player.videoRender setScalingMode:IJKMPMovieScalingModeAspectFill];
     } else if (item.tag == 3) {
-        [self.player.videoRender setRenderingMode:FFTRenderingModeScaleAspectFit];
+        [self.player.videoRender setScalingMode:IJKMPMovieScalingModeAspectFit];
     }
 }
 
@@ -300,7 +298,7 @@
     [alert addButtonWithTitle:@"知道了"];
     [alert setMessageText:@"错误提示"];
     [alert setInformativeText:msg];
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setAlertStyle:NSAlertStyleInformational];
     NSModalResponse returnCode = [alert runModal];
     
     if (returnCode == NSAlertFirstButtonReturn)

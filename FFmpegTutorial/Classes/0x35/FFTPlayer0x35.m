@@ -17,12 +17,13 @@
 #import "FFTAudioResample.h"
 #import "FFTDispatch.h"
 #import "FFTPacketQueue.h"
-#import "FFTVideoRenderer.h"
+#import "IJKMetalView.h"
 #import "FFTAudioRenderer.h"
 #import "FFTAudioFrameQueue.h"
 #import "FFTVideoFrameQueue.h"
 #import "FFTSyncClock.h"
 #import "FFTAbstractLogger.h"
+#import "FFTConvertUtil.h"
 
 //视频宽；单位像素
 kFFTPlayer0x35InfoKey kFFTPlayer0x35Width = @"kFFTPlayer0x35Width";
@@ -61,7 +62,7 @@ kFFTPlayer0x35InfoKey kFFTPlayer0x35Duration = @"kFFTPlayer0x35Duration";
     
     //读包完毕？
     int _eof;
-    
+    CVPixelBufferPoolRef _pixelBufferPoolRef;
     float _duration;
     float _audioPos;
     
@@ -586,13 +587,48 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma - mark Video
 
-- (void)doDisplayVideoFrame:(FFFrameItem *)vp
+- (CVPixelBufferRef)createCVPixelBufferFromAVFrame:(AVFrame *)frame
+{
+    if (_pixelBufferPoolRef) {
+        NSDictionary *attributes = (__bridge NSDictionary *)CVPixelBufferPoolGetPixelBufferAttributes(_pixelBufferPoolRef);
+        int _width = [[attributes objectForKey:(NSString*)kCVPixelBufferWidthKey] intValue];
+        int _height = [[attributes objectForKey:(NSString*)kCVPixelBufferHeightKey] intValue];
+        int _format = [[attributes objectForKey:(NSString*)kCVPixelBufferPixelFormatTypeKey] intValue];
+        
+        if (frame->width != _width || frame->height != _height || [FFTConvertUtil cvpixelFormatTypeWithAVFrame:frame] != _format) {
+            CVPixelBufferPoolRelease(_pixelBufferPoolRef);
+            _pixelBufferPoolRef = NULL;
+        }
+    }
+    
+    if (!_pixelBufferPoolRef) {
+        _pixelBufferPoolRef = [FFTConvertUtil createPixelBufferPoolWithAVFrame:frame];
+    }
+    return [FFTConvertUtil pixelBufferFromAVFrame:frame opt:_pixelBufferPoolRef];
+}
+
+- (void)displayVideoFrame:(FFFrameItem *)vp
 {
     if (!vp) {
         return;
     }
+    AVFrame *frame = vp.frame;
+    CVPixelBufferRef videoPic = [self createCVPixelBufferFromAVFrame:frame];
     
-    [[self _videoRender] displayAVFrame:vp.frame];
+    IJKOverlayAttach *attach = [[IJKOverlayAttach alloc] init];
+    attach.w = frame->width;
+    attach.h = frame->height;
+  
+    attach.pixelW = (int)CVPixelBufferGetWidth(videoPic);
+    attach.pixelH = (int)CVPixelBufferGetHeight(videoPic);
+    
+    attach.sarNum = frame->sample_aspect_ratio.num;
+    attach.sarDen = frame->sample_aspect_ratio.den;
+    attach.autoZRotate = 0;
+    attach.videoPicture = CVPixelBufferRetain(videoPic);
+    
+    [self.videoRender displayAttach:attach];
+    CVPixelBufferRelease(videoPic);
 }
 
 - (double)vp_duration:(FFFrameItem *)p1 current:(FFFrameItem *)p2
@@ -641,7 +677,7 @@ static int decode_interrupt_cb(void *ctx)
         }
         
         FFFrameItem *vp = [_videoFrameQueue peek];
-        [self doDisplayVideoFrame:vp];
+        [self displayVideoFrame:vp];
         [_videoClk setClock:vp.pts];
         
         if ([_videoFrameQueue count] > 1) {
@@ -820,15 +856,10 @@ static int decode_interrupt_cb(void *ctx)
     return [_audioRender name];
 }
 
-- (FFTVideoRenderer *)_videoRender
-{
-    return (FFTVideoRenderer *)_videoRender;
-}
-
 - (UIView *)videoRender
 {
     if (!_videoRender) {
-        id videoRender = [[FFTVideoRenderer alloc] init];
+        id videoRender = [[IJKMetalView alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;

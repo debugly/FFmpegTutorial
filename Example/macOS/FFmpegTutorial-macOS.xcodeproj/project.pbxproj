@@ -3,12 +3,14 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
 		C940C23C2939E4FD00AC72FB /* MRMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */; };
+		C94AF2572B304EC5006DC380 /* MRVideoEmbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2522B304EC5006DC380 /* MRVideoEmbedViewController.m */; };
+		C94AF2582B304EC5006DC380 /* MRVideoEmbedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2532B304EC5006DC380 /* MRVideoEmbedViewController.xib */; };
 		C958F95E2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */; };
 		C958FAAD2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */; };
 		C958FACD279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */; };
@@ -100,11 +102,6 @@
 		DDD16C6F294EEF85007F69C2 /* MRAudioRendererViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDD16C68294EEF85007F69C2 /* MRAudioRendererViewController.xib */; };
 		DDD16C70294EEF85007F69C2 /* MRAudioRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDD16C69294EEF85007F69C2 /* MRAudioRendererViewController.m */; };
 		DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */; };
-		DDF5991628883D3C0079D26E /* MR0x32ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5990928883D3B0079D26E /* MR0x32ViewController.m */; };
-		DDF5991728883D3C0079D26E /* MR0x32AudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5990D28883D3B0079D26E /* MR0x32AudioQueueRenderer.m */; };
-		DDF5991828883D3C0079D26E /* MR0x32AudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5990E28883D3B0079D26E /* MR0x32AudioUnitRenderer.m */; };
-		DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5991328883D3B0079D26E /* MR0x32ViewController.xib */; };
-		DDF5991B28883D3C0079D26E /* MR0x32AudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5991528883D3C0079D26E /* MR0x32AudioRenderer.m */; };
 		DDF5992128884D280079D26E /* MR0x33ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF5991E28884D280079D26E /* MR0x33ViewController.m */; };
 		DDF5992228884D280079D26E /* MR0x33ViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDF5991F28884D280079D26E /* MR0x33ViewController.xib */; };
 		DDF59927288ED5D30079D26E /* MR0x34ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDF59924288ED5D30079D26E /* MR0x34ViewController.m */; };
@@ -144,6 +141,9 @@
 		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
 		C940C23A2939E4FD00AC72FB /* MRMetalOffscreenRendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalOffscreenRendering.h; sourceTree = "<group>"; };
 		C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalOffscreenRendering.m; sourceTree = "<group>"; };
+		C94AF2522B304EC5006DC380 /* MRVideoEmbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRVideoEmbedViewController.m; path = "../../../../Common/4.Movie Player/VideoEmbed/MRVideoEmbedViewController.m"; sourceTree = "<group>"; };
+		C94AF2532B304EC5006DC380 /* MRVideoEmbedViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; name = MRVideoEmbedViewController.xib; path = "../../../../Common/4.Movie Player/VideoEmbed/MRVideoEmbedViewController.xib"; sourceTree = "<group>"; };
+		C94AF2542B304EC5006DC380 /* MRVideoEmbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRVideoEmbedViewController.h; path = "../../../../Common/4.Movie Player/VideoEmbed/MRVideoEmbedViewController.h"; sourceTree = "<group>"; };
 		C958F95C2796A7520058D64A /* 3_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
 		C958FAAC2797F0E90058D64A /* 2_sampler2D_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_Rect_v3.fsh; sourceTree = "<group>"; };
 		C958FACB279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_Rect_v3.fsh; sourceTree = "<group>"; };
@@ -303,16 +303,6 @@
 		DDD16C6A294EEF85007F69C2 /* MRAudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRenderer.h; sourceTree = "<group>"; };
 		DDE70E472584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRVerticallyCenteredTextFieldCell.h; sourceTree = "<group>"; };
 		DDE70E482584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRVerticallyCenteredTextFieldCell.m; sourceTree = "<group>"; };
-		DDF5990928883D3B0079D26E /* MR0x32ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x32ViewController.m; sourceTree = "<group>"; };
-		DDF5990C28883D3B0079D26E /* MR0x32AudioUnitRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x32AudioUnitRenderer.h; sourceTree = "<group>"; };
-		DDF5990D28883D3B0079D26E /* MR0x32AudioQueueRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x32AudioQueueRenderer.m; sourceTree = "<group>"; };
-		DDF5990E28883D3B0079D26E /* MR0x32AudioUnitRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x32AudioUnitRenderer.m; sourceTree = "<group>"; };
-		DDF5990F28883D3B0079D26E /* MR0x32AudioRendererImpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x32AudioRendererImpProtocol.h; sourceTree = "<group>"; };
-		DDF5991028883D3B0079D26E /* MR0x32AudioQueueRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x32AudioQueueRenderer.h; sourceTree = "<group>"; };
-		DDF5991128883D3B0079D26E /* MR0x32AudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x32AudioRenderer.h; sourceTree = "<group>"; };
-		DDF5991228883D3B0079D26E /* MR0x32ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x32ViewController.h; sourceTree = "<group>"; };
-		DDF5991328883D3B0079D26E /* MR0x32ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x32ViewController.xib; sourceTree = "<group>"; };
-		DDF5991528883D3C0079D26E /* MR0x32AudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x32AudioRenderer.m; sourceTree = "<group>"; };
 		DDF5991E28884D280079D26E /* MR0x33ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MR0x33ViewController.m; sourceTree = "<group>"; };
 		DDF5991F28884D280079D26E /* MR0x33ViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MR0x33ViewController.xib; sourceTree = "<group>"; };
 		DDF5992028884D280079D26E /* MR0x33ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MR0x33ViewController.h; sourceTree = "<group>"; };
@@ -693,29 +683,14 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		DDF5990828883D3B0079D26E /* 0x32 */ = {
+		DDF5990828883D3B0079D26E /* VideoEmbed */ = {
 			isa = PBXGroup;
 			children = (
-				DDF5990B28883D3B0079D26E /* AudioRenderImp */,
-				DDF5991128883D3B0079D26E /* MR0x32AudioRenderer.h */,
-				DDF5991528883D3C0079D26E /* MR0x32AudioRenderer.m */,
-				DDF5991228883D3B0079D26E /* MR0x32ViewController.h */,
-				DDF5990928883D3B0079D26E /* MR0x32ViewController.m */,
-				DDF5991328883D3B0079D26E /* MR0x32ViewController.xib */,
+				C94AF2542B304EC5006DC380 /* MRVideoEmbedViewController.h */,
+				C94AF2522B304EC5006DC380 /* MRVideoEmbedViewController.m */,
+				C94AF2532B304EC5006DC380 /* MRVideoEmbedViewController.xib */,
 			);
-			path = 0x32;
-			sourceTree = "<group>";
-		};
-		DDF5990B28883D3B0079D26E /* AudioRenderImp */ = {
-			isa = PBXGroup;
-			children = (
-				DDF5991028883D3B0079D26E /* MR0x32AudioQueueRenderer.h */,
-				DDF5990D28883D3B0079D26E /* MR0x32AudioQueueRenderer.m */,
-				DDF5990F28883D3B0079D26E /* MR0x32AudioRendererImpProtocol.h */,
-				DDF5990C28883D3B0079D26E /* MR0x32AudioUnitRenderer.h */,
-				DDF5990E28883D3B0079D26E /* MR0x32AudioUnitRenderer.m */,
-			);
-			path = AudioRenderImp;
+			path = VideoEmbed;
 			sourceTree = "<group>";
 		};
 		DDF5991D28884D280079D26E /* 0x33 */ = {
@@ -815,7 +790,7 @@
 			children = (
 				DDBFE7942951A8A300403352 /* VideoFrameQueue */,
 				DDBFE79C2951B32700403352 /* PacketQueue */,
-				DDF5990828883D3B0079D26E /* 0x32 */,
+				DDF5990828883D3B0079D26E /* VideoEmbed */,
 				DDF5991D28884D280079D26E /* 0x33 */,
 				DDF59923288ED5D30079D26E /* 0x34 */,
 				DDF59929288EE7970079D26E /* 0x35 */,
@@ -932,6 +907,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C958FACD279A60740058D64A /* 2_sampler2D_NV21_Rect_v3.fsh in Resources */,
+				C94AF2582B304EC5006DC380 /* MRVideoEmbedViewController.xib in Resources */,
 				DDF5993428918E410079D26E /* MR0x36ViewController.xib in Resources */,
 				DDF922AC28E947FA00F29C1A /* 1_sampler2D.fsh in Resources */,
 				DDFDF8AB2564CDCA00F1CAE2 /* Assets.xcassets in Resources */,
@@ -965,7 +941,6 @@
 				DDF922AB28E947FA00F29C1A /* 2_sampler2D_NV21.fsh in Resources */,
 				DDFDF8AE2564CDCA00F1CAE2 /* Main.storyboard in Resources */,
 				DDF923FB28EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh in Resources */,
-				DDF5991928883D3C0079D26E /* MR0x32ViewController.xib in Resources */,
 				DDD16C6F294EEF85007F69C2 /* MRAudioRendererViewController.xib in Resources */,
 				DDBFF17328B51A9F00AFCE44 /* 1_sampler2D_Rect_v3.fsh in Resources */,
 				DD469DEC29461E59004F5F39 /* MRAudioQueueViewController.xib in Resources */,
@@ -1035,7 +1010,6 @@
 				DD900F7D292E7B7D00CECDE4 /* MRMetalYUV420PPipeline.m in Sources */,
 				DD41902E2934661B00ADEFA7 /* MRModernGLNV12View.m in Sources */,
 				DD53138029443E2F00185AD5 /* MROpenGLCompiler.m in Sources */,
-				DDF5991828883D3C0079D26E /* MR0x32AudioUnitRenderer.m in Sources */,
 				DD900FC829321E2900CECDE4 /* MRMetalViewController.m in Sources */,
 				DD53138129443E2F00185AD5 /* MROpenGLHelper.m in Sources */,
 				DDB73F672577DDE60060EB57 /* MRUtil.m in Sources */,
@@ -1043,7 +1017,6 @@
 				DD4190612934B73600ADEFA7 /* MRModernGLRectViewController.m in Sources */,
 				DDBFE7A12951B32700403352 /* MRPacketQueueViewController.m in Sources */,
 				C9FC185D2930A88A00F935E7 /* AAPLMathUtilities.m in Sources */,
-				DDF5991628883D3C0079D26E /* MR0x32ViewController.m in Sources */,
 				DD900FC929321E2900CECDE4 /* MRMetalView.m in Sources */,
 				DD900FD72933168B00CECDE4 /* MRCoreGraphicsView.m in Sources */,
 				DD41905B2934B73600ADEFA7 /* MRModernGLNV21RectView.m in Sources */,
@@ -1053,7 +1026,6 @@
 				DDE70E492584AC4B00580A80 /* MRVerticallyCenteredTextFieldCell.m in Sources */,
 				DD900F62292E531A00CECDE4 /* MRMetalNV12Pipeline.m in Sources */,
 				DD900FEE293352EE00CECDE4 /* MRLegacyGLBGRAView.m in Sources */,
-				DDF5991B28883D3C0079D26E /* MR0x32AudioRenderer.m in Sources */,
 				DDAD7FED27FF3EBE00E947BB /* MRMovieProberViewController.m in Sources */,
 				DDFDF8B12564CDCA00F1CAE2 /* main.m in Sources */,
 				DDBFE79B2951A8A300403352 /* MRVideoFrameQueueViewController.m in Sources */,
@@ -1083,6 +1055,7 @@
 				DD56CB0228674FA00046C28A /* MRDecodePacketViewController.m in Sources */,
 				DDCC56AA294EC6080024A4D7 /* MRHaveFunVideoRenderer.m in Sources */,
 				DD900F46292CFA2F00CECDE4 /* MRMetalShaders.metal in Sources */,
+				C94AF2572B304EC5006DC380 /* MRVideoEmbedViewController.m in Sources */,
 				DD900F8E292F194B00CECDE4 /* MRMetalUYVY422Pipeline.m in Sources */,
 				DD41905D2934B73600ADEFA7 /* MRModernGLUYVYRectView.m in Sources */,
 				DD5313FE2944D1C300185AD5 /* MRAudioUnitViewController.m in Sources */,
@@ -1096,7 +1069,6 @@
 				DDFDF8A62564CDC700F1CAE2 /* AppDelegate.m in Sources */,
 				DDF5993328918E410079D26E /* MR0x36ViewController.m in Sources */,
 				DD97CCF7293B5C1900797F3B /* MRCrossPlatformUtil.m in Sources */,
-				DDF5991728883D3C0079D26E /* MR0x32AudioQueueRenderer.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1244,7 +1216,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "debugly.cn.FFmpegTutorial-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1269,7 +1241,7 @@
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.11;
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				PRODUCT_BUNDLE_IDENTIFIER = "debugly.cn.FFmpegTutorial-macOS";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};

@@ -170,9 +170,9 @@
             @"class":@"MRPacketQueueViewController",
         },
         @{
-            @"title":@"0x32",
+            @"title":@"VideoRendering Embed",
             @"detail":@"创建视频渲染线程，将视频相关逻辑封装到播放器内",
-            @"class":@"MR0x32ViewController",
+            @"class":@"MRVideoEmbedViewController",
         },
         @{
             @"title":@"0x33",

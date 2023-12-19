@@ -88,7 +88,7 @@
     [alert addButtonWithTitle:@"知道了"];
     [alert setMessageText:@"错误提示"];
     [alert setInformativeText:msg];
-    [alert setAlertStyle:NSInformationalAlertStyle];
+    [alert setAlertStyle:NSAlertStyleInformational];
     NSModalResponse returnCode = [alert runModal];
     
     if (returnCode == NSAlertFirstButtonReturn)
