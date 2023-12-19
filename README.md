@@ -71,8 +71,8 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - VideoFrameQueue:增加 VideoFrame 缓存队列，不再阻塞解码线程
 - PacketQueue:增加 AVPacket 缓存队列，创建解码线程
-- 0x32:创建视频渲染线程，将视频相关逻辑封装到播放器内
-- 0x33:将音频相关逻辑封装到播放器内
+- VideoRendering Embed:创建视频渲染线程，将视频相关逻辑封装到播放器内
+- AudioRendering Embed:将音频相关逻辑封装到播放器内
 - 0x34:显示音视频播放进度
 - 0x35:音视频同步
 - 0x36:开始，结束，暂停，续播

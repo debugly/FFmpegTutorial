@@ -96,7 +96,7 @@
     rect.size.height = 150;
 #else
     CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-    rect.size.height = MIN(screenWidth / 3.0, 210);
+    rect.size.height = MIN(screenWidth / 3.0, 260);
 #endif
     [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewWidthSizable;
@@ -197,6 +197,8 @@
     [self.hud setHudValue:[NSString stringWithFormat:@"%d",self.player.videoFrameQueueSize] forKey:@"v-frame-q"];
     
     [self.hud setHudValue:self.audioRender.name forKey:@"a-renderer"];
+    
+    [self.hud setHudValue:self.player.videoRender.name forKey:@"v-renderer"];
 }
 
 - (void)onTimer:(NSTimer *)sender

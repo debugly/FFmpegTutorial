@@ -175,9 +175,9 @@
             @"class":@"MRVideoEmbedViewController",
         },
         @{
-            @"title":@"0x33",
+            @"title":@"AudioRendering Embed",
             @"detail":@"将音频相关逻辑封装到播放器内",
-            @"class":@"MR0x33ViewController",
+            @"class":@"MRAudioEmbedViewController",
         },
         @{
             @"title":@"0x34",

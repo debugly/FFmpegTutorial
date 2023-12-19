@@ -43,8 +43,8 @@ EXTERNAL SOURCES:
     :path: "../../"
 
 SPEC CHECKSUMS:
-  FFmpegTutorial: 1cfb95564acfe35fe495cda0f33afc57d642230a
+  FFmpegTutorial: bdc35c3e9d6de4ba44d87db4d1f64b5121bfde59
 
 PODFILE CHECKSUM: 7f444c1447c7ac6ff14c6aa230a62f71c990a9f3
 
-COCOAPODS: 1.13.0
+COCOAPODS: 1.11.2

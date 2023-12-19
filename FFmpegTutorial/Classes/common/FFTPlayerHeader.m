@@ -18,6 +18,7 @@ const char * av_pixel_fmt_to_string(int fmt)
 
 const char * av_sample_fmt_to_string(int format)
 {
+    return av_get_sample_fmt_name(format);
     if (AV_SAMPLE_FMT_S16 == format) {
         return "s16";
     } else if (AV_SAMPLE_FMT_S16P == format) {
@@ -43,9 +44,7 @@ enum AVSampleFormat MRSampleFormat2AV (MRSampleFormat mrsf){
             return AV_SAMPLE_FMT_FLTP;
         case MR_SAMPLE_FMT_EOF:
         case MR_SAMPLE_FMT_NONE:
-        {
             return AV_SAMPLE_FMT_NONE;
-        }
     }
 }
 
@@ -62,8 +61,10 @@ MRSampleFormat AVSampleFormat2MR (enum AVSampleFormat avsf){
         case AV_SAMPLE_FMT_NONE:
             return MR_SAMPLE_FMT_NONE;
         default:
+        {
             assert(0);
             return MR_SAMPLE_FMT_NONE;
+        }
     }
 }
 
