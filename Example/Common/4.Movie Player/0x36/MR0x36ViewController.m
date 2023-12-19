@@ -244,7 +244,7 @@
     if (item.tag == 1) {
         sampleRate = 44100;
     } else if (item.tag == 2) {
-        sampleRate = 44800;
+        sampleRate = 48000;
     } else if (item.tag == 3) {
         sampleRate = 192000;
     }

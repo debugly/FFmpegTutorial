@@ -123,7 +123,6 @@ Pod::Spec.new do |s|
 
   s.pod_target_xcconfig = {
     'GCC_PREPROCESSOR_DEFINITIONS' => '$(inherited) IJK_USE_METAL_2=1',
-    'METAL_LIBRARY_OUTPUT_DIR' => '${CONFIGURATION_BUILD_DIR}/FFmpegTutorial.framework/Resources',
     'MTL_LANGUAGE_REVISION' => 'Metal20'
   }
   s.ios.pod_target_xcconfig = { 'HEADER_SEARCH_PATHS' => '${PODS_ROOT}/../../../build/product/ios/universal/ffmpeg/include'}

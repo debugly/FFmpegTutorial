@@ -54,15 +54,12 @@
         } else if (cv_format == kCVPixelFormatType_4444AYpCbCr16) {
             needConvertColor = YES;
             shaderName = @"ayuvFragmentShader";
-        }
-    #if TARGET_OS_OSX
-        else if (cv_format == kCVPixelFormatType_422YpCbCr8) {
+        } else if (cv_format == kCVPixelFormatType_422YpCbCr8) {
             shaderName = @"uyvy422FragmentShader";
         } else if (cv_format == kCVPixelFormatType_422YpCbCr8_yuvs ||
                    cv_format == kCVPixelFormatType_422YpCbCr8FullRange) {
             shaderName = @"uyvy422FragmentShader";
         }
-    #endif
     } else {
         //wtf?
         OSType cv_format = CVPixelBufferGetPixelFormatType(pixelBuffer);

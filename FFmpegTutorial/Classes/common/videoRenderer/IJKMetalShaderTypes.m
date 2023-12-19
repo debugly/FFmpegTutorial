@@ -24,7 +24,6 @@ static mp_format mp_formats[] = {
         .planes = 1,
         .formats = {MTLPixelFormatRGBA16Unorm}
     },
-#if TARGET_OS_OSX
     {
         .cvpixfmt = kCVPixelFormatType_422YpCbCr8,
         .planes = 1,
@@ -40,7 +39,6 @@ static mp_format mp_formats[] = {
         .planes = 1,
         .formats = {MTLPixelFormatGBGR422}
     },
-#endif
     {
         .cvpixfmt = kCVPixelFormatType_444YpCbCr8BiPlanarVideoRange,
         .planes = 2,
