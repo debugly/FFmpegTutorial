@@ -9,7 +9,6 @@
 #import "FFTThread.h"
 #import "FFTDispatch.h"
 #import "FFTAbstractLogger.h"
-#import <libavutil/pixdesc.h>
 #import <libavformat/avformat.h>
 #import <libavcodec/avcodec.h>
 
@@ -162,7 +161,7 @@
                         //视频像素格式
                         enum AVPixelFormat format = codecCtx->pix_fmt;
                         //获取视频像素格式名称
-                        const char * formatDesc = av_get_pix_fmt_name(format);
+                        const char * formatDesc = av_pixel_fmt_to_string(format);
                         //帧率
                         CGFloat fps, timebase = 0.04;
                         if (stream->time_base.den && stream->time_base.num) {

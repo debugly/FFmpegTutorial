@@ -79,7 +79,7 @@
     int data_size = audio_buffer_size(frame);
     float percent = 1.0 * _audioFrameRead / data_size;
     double audio_clock = item.pts + percent * item.frame->nb_samples / item.frame->sample_rate;
-    //double bytes_per_sec = self.supportedSampleRate * self.audioClk.bytesPerSample;
+    //double bytes_per_sec = self.sampleRate * self.audioClk.bytesPerSample;
     //double audio_clock = audio_pts - 2.0 * (ap->offset + filled) / bytes_per_sec;
     return audio_clock;
 }

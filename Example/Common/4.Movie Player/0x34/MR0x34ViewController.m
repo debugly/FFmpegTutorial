@@ -131,9 +131,9 @@
     
     FFTPlayer0x34 *player = [[FFTPlayer0x34 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormat  = _videoFmt;
-    player.supportedSampleRate   = _sampleRate;
-    player.supportedSampleFormat = _audioFmt;
+    player.pixelFormat  = _videoFmt;
+    player.sampleRate   = _sampleRate;
+    player.sampleFormat = _audioFmt;
     
     __weakSelf__
     player.onStreamOpened = ^(FFTPlayer0x34 *player,NSDictionary * _Nonnull info) {

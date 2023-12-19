@@ -383,7 +383,7 @@ static int decode_interrupt_cb(void *ctx)
 - (FFTVideoScale *)createVideoScaleIfNeed
 {
     //未指定期望像素格式
-    if (self.supportedPixelFormat == MR_PIX_FMT_NONE) {
+    if (self.pixelFormat == MR_PIX_FMT_NONE) {
         NSAssert(NO, @"supportedPixelFormats can't be none!");
         return nil;
     }
@@ -391,36 +391,19 @@ static int decode_interrupt_cb(void *ctx)
     //当前视频的像素格式
     const enum AVPixelFormat format = _videoDecoder.format;
     
-    bool matched = false;
-    MRPixelFormat firstSupportedFmt = MR_PIX_FMT_NONE;
-    for (int i = MR_PIX_FMT_BEGIN; i <= MR_PIX_FMT_END; i ++) {
-        const MRPixelFormat fmt = i;
-        if (self.supportedPixelFormat == fmt) {
-            if (firstSupportedFmt == MR_PIX_FMT_NONE) {
-                firstSupportedFmt = fmt;
-            }
-            
-            if (format == MRPixelFormat2AV(fmt)) {
-                matched = true;
-                break;
-            }
-        }
-    }
+    int dest = MRPixelFormat2AV(self.pixelFormat);
     
-    if (matched) {
+    if (dest == format) {
         //期望像素格式包含了当前视频像素格式，则直接使用当前格式，不再转换。
         return nil;
     }
+    const char *in_fmt_str = av_pixel_fmt_to_string(format);
+    const char *out_fmt_str = av_pixel_fmt_to_string(dest);
     
-    if (firstSupportedFmt == MR_PIX_FMT_NONE) {
-        NSAssert(NO, @"supportedPixelFormats is invalid!");
-        return nil;
-    }
+    av_log(NULL, AV_LOG_INFO, "scale %s to %s (%dx%d)",in_fmt_str,out_fmt_str,_videoDecoder.picWidth,_videoDecoder.picHeight);
     
-    int dest = MRPixelFormat2AV(firstSupportedFmt);
     if ([FFTVideoScale checkCanConvertFrom:format to:dest]) {
         //创建像素格式转换上下文
-        av_log(NULL, AV_LOG_INFO, "will scale %d to %d (%dx%d)",format,dest,_videoDecoder.picWidth,_videoDecoder.picHeight);
         FFTVideoScale *scale = [[FFTVideoScale alloc] initWithSrcPixFmt:format dstPixFmt:dest picWidth:_videoDecoder.picWidth picHeight:_videoDecoder.picHeight];
         return scale;
     } else {
@@ -433,61 +416,41 @@ static int decode_interrupt_cb(void *ctx)
 - (FFTAudioResample *)createAudioResampleIfNeed
 {
     //未指定期望音频格式
-    if (self.supportedSampleFormat == MR_SAMPLE_FMT_NONE) {
+    if (self.sampleFormat == MR_SAMPLE_FMT_NONE) {
         NSAssert(NO, @"supportedSampleFormats can't be none!");
         return nil;
     }
     
     //未指定支持的比特率就使用目标音频的
-    if (self.supportedSampleRate == 0) {
-        self.supportedSampleRate = _audioDecoder.sampleRate;
+    if (self.sampleRate == 0) {
+        self.sampleRate = _audioDecoder.sampleRate;
     }
     
-    //当前视频的像素格式
+    //当前音频的采样格式
     const enum AVSampleFormat format = _audioDecoder.format;
     
-    bool matched = false;
-    MRSampleFormat firstSupportedFmt = MR_SAMPLE_FMT_NONE;
-    for (int i = MR_SAMPLE_FMT_BEGIN; i <= MR_SAMPLE_FMT_END; i ++) {
-        const MRSampleFormat fmt = i;
-        if (self.supportedSampleFormat == fmt) {
-            if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
-                firstSupportedFmt = fmt;
-            }
-            
-            if (format == MRSampleFormat2AV(fmt)) {
-                matched = true;
-                break;
-            }
+    int dest = MRSampleFormat2AV(self.sampleFormat);
+    
+    if (dest == format) {
+        //采样率也匹配
+        if (self.sampleRate == _audioDecoder.sampleRate) {
+            av_log(NULL, AV_LOG_INFO, "audio not need resample!\n");
+            return nil;
         }
     }
     
-    if (matched) {
-        //采样率不匹配
-        if (self.supportedSampleRate != _audioDecoder.sampleRate) {
-            firstSupportedFmt = AVSampleFormat2MR(format);
-            matched = NO;
-        }
-    }
+    const char *in_fmt_str = av_sample_fmt_to_string(format);
+    const char *out_fmt_str = av_sample_fmt_to_string(dest);
     
-    if (matched) {
-        //期望音频格式包含了当前音频格式，则直接使用当前格式，不再转换。
-        av_log(NULL, AV_LOG_INFO, "audio not need resample!\n");
-        return nil;
-    }
-    
-    if (firstSupportedFmt == MR_SAMPLE_FMT_NONE) {
-        NSAssert(NO, @"supportedSampleFormats is invalid!");
-        return nil;
-    }
+    av_log(NULL, AV_LOG_INFO, "scale sample %s to %s (%dx%d)",in_fmt_str,out_fmt_str,_videoDecoder.picWidth,_videoDecoder.picHeight);
     
     //创建音频格式转换上下文
     FFTAudioResample *resample = [[FFTAudioResample alloc] initWithSrcSampleFmt:format
-                                                                         dstSampleFmt:MRSampleFormat2AV(firstSupportedFmt)
-                                                                   srcChannel:_audioDecoder.channelLayout
-                                                                           dstChannel:_audioDecoder.channelLayout
-                                                                              srcRate:_audioDecoder.sampleRate
-                                                                              dstRate:self.supportedSampleRate];
+                                                                   dstSampleFmt:dest
+                                                                     srcChannel:_audioDecoder.channelLayout
+                                                                     dstChannel:_audioDecoder.channelLayout
+                                                                        srcRate:_audioDecoder.sampleRate
+                                                                        dstRate:self.sampleRate];
     return resample;
 }
 
@@ -681,7 +644,7 @@ static int decode_interrupt_cb(void *ctx)
 - (void)setupAudioRender
 {
     //这里指定了优先使用AudioQueue，当遇到不支持的格式时，自动使用AudioUnit
-    FFTAudioRenderer *audioRender = [[FFTAudioRenderer alloc] initWithFmt:self.supportedSampleFormat preferredAudioQueue:YES sampleRate:self.supportedSampleRate];
+    FFTAudioRenderer *audioRender = [[FFTAudioRenderer alloc] initWithFmt:self.sampleFormat preferredAudioQueue:YES sampleRate:self.sampleRate];
     __weakSelf__
     [audioRender onFetchSamples:^UInt32(uint8_t * _Nonnull *buffer, UInt32 bufferSize) {
         __strongSelf__

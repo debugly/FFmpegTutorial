@@ -35,9 +35,7 @@
     window.contentViewController = navController;
     window.movableByWindowBackground = YES;
     [window center];
-    [window makeKeyWindow];
-    [rootWinController showWindow:nil];
-    
+    [window makeKeyAndOrderFront:nil];
     self.rootWinController = rootWinController;
 }
 

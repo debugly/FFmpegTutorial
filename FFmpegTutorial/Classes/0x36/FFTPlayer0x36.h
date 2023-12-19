@@ -52,11 +52,11 @@ typedef struct AVFrame AVFrame;
 @property (nonatomic, copy) NSString * audioSamplelInfo;
 
 ///指定输出的视频像素格式
-@property (nonatomic, assign) MRPixelFormat supportedPixelFormat;
+@property (nonatomic, assign) MRPixelFormat pixelFormat;
 ///指定输出的音频采样格式
-@property (nonatomic, assign) MRSampleFormat supportedSampleFormat;
+@property (nonatomic, assign) MRSampleFormat sampleFormat;
 ///期望的音频采样率，比如 44100;不指定时使用音频的采样率
-@property (nonatomic, assign) int supportedSampleRate;
+@property (nonatomic, assign) int sampleRate;
 
 @property (nonatomic, copy) void(^onStreamOpened)(FFTPlayer0x36 *player,NSDictionary *info);
 @property (nonatomic, copy) void(^onReadPkt)(FFTPlayer0x36 *player,int a,int v);

@@ -222,9 +222,9 @@
     
     FFTPlayer0x32 *player = [[FFTPlayer0x32 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormat  = _videoFmt;
-    player.supportedSampleRate   = _sampleRate;
-    player.supportedSampleFormat = _audioFmt;
+    player.pixelFormat  = _videoFmt;
+    player.sampleRate   = _sampleRate;
+    player.sampleFormat = _audioFmt;
     player.videoRender.scalingMode = _scalingMode;
     __weakSelf__
     player.onStreamOpened = ^(FFTPlayer0x32 *player,NSDictionary * _Nonnull info) {
@@ -453,22 +453,25 @@
         //nv12
         targetFmt = MR_PIX_FMT_NV12;
     } else if (itemTag == 2) {
-        //nv21
-        targetFmt = MR_PIX_FMT_NV21;
+        //bgra
+        targetFmt = MR_PIX_FMT_BGRA;
     } else if (itemTag == 3) {
-        //yuv420p
-        targetFmt = MR_PIX_FMT_YUV420P;
+        //bgr0
+        targetFmt = MR_PIX_FMT_BGR0;
     } else if (itemTag == 4) {
         //uyvy422
         targetFmt = MR_PIX_FMT_UYVY422;
     } else if (itemTag == 5) {
         //yuyv422
         targetFmt = MR_PIX_FMT_YUYV422;
+    } else if (itemTag == 6) {
+        //yuv420p
+        targetFmt = MR_PIX_FMT_YUV420P;
     }
     if (_videoFmt == targetFmt) {
         return;
     }
-    [self exchangeVideoFormat:itemTag];
+    [self exchangeVideoFormat:targetFmt];
 }
 #else
 

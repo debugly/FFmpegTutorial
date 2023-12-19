@@ -194,9 +194,9 @@
     
     FFTPlayer0x30 *player = [[FFTPlayer0x30 alloc] init];
     player.contentPath = url;
-    player.supportedPixelFormat  = MR_PIX_FMT_NV21;
-    player.supportedSampleRate   = 48000;
-    player.supportedSampleFormat = MR_SAMPLE_FMT_S16;
+    player.pixelFormat  = MR_PIX_FMT_NV21;
+    player.sampleRate   = 48000;
+    player.sampleFormat = MR_SAMPLE_FMT_S16;
     
     __weakSelf__
     player.onStreamOpened = ^(FFTPlayer0x30 *player, NSDictionary * _Nonnull info) {
@@ -207,7 +207,7 @@
         
         [self.indicatorView stopAnimation:nil];
         self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
-        [self setupAudioRender:player.supportedSampleFormat sampleRate:player.supportedSampleRate];
+        [self setupAudioRender:player.sampleFormat sampleRate:player.sampleRate];
         [self playAudio];
         
         [self prepareRendererView];

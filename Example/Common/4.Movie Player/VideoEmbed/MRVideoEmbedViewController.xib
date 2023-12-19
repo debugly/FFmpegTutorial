@@ -115,16 +115,19 @@
                                                         <menuItem title="NV12" state="on" tag="1" id="EOa-FE-2Uw">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
-                                                        <menuItem title="NV21" tag="2" id="uZT-Ol-t8V">
+                                                        <menuItem title="BGRA" tag="2" id="hVE-1G-L07">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
-                                                        <menuItem title="YUV420P" tag="3" id="hVE-1G-L07">
+                                                        <menuItem title="BGR0" tag="3" id="JrZ-nH-fKb">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
                                                         <menuItem title="UYVY422" tag="4" id="oxC-Tz-CeH">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
-                                                        <menuItem title="YUYV422" tag="4" id="fMQ-JM-emy">
+                                                        <menuItem title="YUYV422" tag="5" id="fMQ-JM-emy">
+                                                            <modifierMask key="keyEquivalentModifierMask"/>
+                                                        </menuItem>
+                                                        <menuItem title="YUV420P" tag="6" id="mel-Ql-poY">
                                                             <modifierMask key="keyEquivalentModifierMask"/>
                                                         </menuItem>
                                                     </items>
