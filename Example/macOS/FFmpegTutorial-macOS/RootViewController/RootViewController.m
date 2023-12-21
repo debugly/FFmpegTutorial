@@ -185,34 +185,9 @@
             @"class":@"MRPlayProgressViewController",
         },
         @{
-            @"title":@"0x35",
+            @"title":@"Sync Audio And Video",
             @"detail":@"音视频同步",
-            @"class":@"MR0x35ViewController",
-        },
-        @{
-            @"title":@"0x36",
-            @"detail":@"开始，结束，暂停，续播",
-            @"class":@"MR0x36ViewController",
-        },
-        @{
-            @"title":@"0x37",
-            @"detail":@"(TODO)使用 FFmpeg 内置的硬件加速解码器",
-            @"class":@"MR0x37ViewController",
-        },
-        @{
-            @"title":@"0x38",
-            @"detail":@"(TODO)统一软硬解渲染逻辑",
-            @"class":@"MR0x3cViewController",
-        },
-        @{
-            @"title":@"0x39",
-            @"detail":@"(TODO)支持 Seek",
-            @"class":@"MR0x37ViewController",
-        },
-        @{
-            @"title":@"0x3a",
-            @"detail":@"(TODO)支持从指定位置处播放",
-            @"class":@"MR0x38ViewController",
+            @"class":@"MRSyncAVViewController",
         },
         @{
             @"title":@"五、趣味实验",

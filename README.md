@@ -1,8 +1,8 @@
 [![](md/imgs/ffmpeg.png)](https://ffmpeg.org/) 
 
-> 了解底层音视频技术是很有必要的，为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个使用 FFmpeg 封装播放器系列教程，非常适合零基础的 iOS/macOS 开发者学习。 
+> 帮助零基础的 iOS/macOS 开发人员快速学习音视频技术，主要包括了 FFmpeg API 的使用，以及 iOS/macOS 平台多种音视频渲染技术的对比。 
 > 
-> 喜欢的老铁给个 Star 吧（先别着急 fork，现阶段会经常更新）。
+> 感觉有用的话给个 Star 吧😊
 
 [![Stargazers repo roster for @debugly/FFmpegTutorial](https://reporoster.com/stars/debugly/FFmpegTutorial)](https://github.com/debugly/FFmpegTutorial/stargazers)
 
@@ -40,7 +40,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 ## Introduction
 
-为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，因此我把编译好的 FFmpeg 库也做成了 Pod 库，编译 FFmpeg 等库的脚本在这里开源 [MRFFmpegPod](https://github.com/debugly/MRFFToolChainPod)。
+为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，在 pod install 时会自动下载已经预编译好的 FFmpeg 库，编译 FFmpeg 的脚本也是开源的 [[MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)]([debugly/MRFFToolChainBuildShell: use github action auto compile FFmpeg libs. (使用 github action 自动预编译 FFmpeg 等库，跟 ijkplayer 配套使用。)](https://github.com/debugly/MRFFToolChainBuildShell))。
 
 教程共分为六个部分，提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发:
 
@@ -73,13 +73,8 @@ open FFmpegTutorial-macOS.xcworkspace
 - PacketQueue:增加 AVPacket 缓存队列，创建解码线程
 - VideoRendering Embed:创建视频渲染线程，将视频相关逻辑封装到播放器内
 - AudioRendering Embed:将音频相关逻辑封装到播放器内
-- 0x34:显示音视频播放进度
-- 0x35:音视频同步
-- 0x36:开始，结束，暂停，续播
-- 0x37:(TODO)使用硬件加速解码
-- 0x38:(TODO)统一软硬解渲染逻辑
-- 0x39:(TODO)支持 Seek
-- 0x3a:(TODO)支持从指定位置处播放
+- Show Play Progress:显示音视频播放进度
+- Sync Audio And Video:音视频同步
 
 五、趣味实验
 
@@ -91,9 +86,9 @@ open FFmpegTutorial-macOS.xcworkspace
 
 ## Cross-Platform
 
-本教程的终极目标是写一款跨平台播放器，考虑到这是一项庞大的工程，本教程仅实现最基础的功能。
+本教程相对于商用播放器存在很大差距，仅仅用来科普FFmpeg和Apple平台的音视频渲染技术。
 
-完整的播放器功能则在 B 站开源的 ijkplayer 之上进行二次开发，我已经从 iOS 平台移植到了 macOS 平台 : [ijkplayer](https://github.com/debugly/ijkplayer) ，增加了字幕、视频旋转等功能，最主要的是重构了视频渲染逻辑，值得一看！
+如果对播放器感兴趣，可以了解下我移植到的跨平台 [ijkplayer](https://github.com/debugly/ijkplayer) ，增加了字幕、视频旋转、Metal 渲染、HDR等功能！
 
 ## Ends
 

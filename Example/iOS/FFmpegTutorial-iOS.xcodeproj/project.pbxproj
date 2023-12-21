@@ -24,6 +24,8 @@
 		C94AF2672B305809006DC380 /* MRVideoEmbedViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2662B305809006DC380 /* MRVideoEmbedViewController-iOS.xib */; };
 		C9F3DFDD2B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */; };
 		C9F3DFDF2B33CF4B003602E0 /* MRPlayProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */; };
+		C9F3DFF22B33D56F003602E0 /* MRSyncAVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F3DFEE2B33D56F003602E0 /* MRSyncAVViewController.m */; };
+		C9F3DFF32B33D56F003602E0 /* MRSyncAVViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F3DFEF2B33D56F003602E0 /* MRSyncAVViewController-iOS.xib */; };
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
@@ -130,6 +132,9 @@
 		C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRPlayProgressViewController-iOS.xib"; sourceTree = "<group>"; };
 		C9F3DFDA2B33CF4B003602E0 /* MRPlayProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPlayProgressViewController.h; sourceTree = "<group>"; };
 		C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRPlayProgressViewController.m; sourceTree = "<group>"; };
+		C9F3DFEE2B33D56F003602E0 /* MRSyncAVViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRSyncAVViewController.m; sourceTree = "<group>"; };
+		C9F3DFEF2B33D56F003602E0 /* MRSyncAVViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRSyncAVViewController-iOS.xib"; sourceTree = "<group>"; };
+		C9F3DFF02B33D56F003602E0 /* MRSyncAVViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRSyncAVViewController.h; sourceTree = "<group>"; };
 		DD2EADF4244C923600B057DE /* MRNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRNavigationController.h; sourceTree = "<group>"; };
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
@@ -350,6 +355,7 @@
 				C94AF2602B305659006DC380 /* VideoEmbed */,
 				DDE075192B31DBB4004B7042 /* AudioEmbed */,
 				C9F3DFD82B33CF4B003602E0 /* PlayProgress */,
+				C9F3DFED2B33D56F003602E0 /* SyncAV */,
 			);
 			name = "4.Movie Player";
 			path = "../../Common/4.Movie Player";
@@ -393,6 +399,16 @@
 				C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */,
 			);
 			path = PlayProgress;
+			sourceTree = "<group>";
+		};
+		C9F3DFED2B33D56F003602E0 /* SyncAV */ = {
+			isa = PBXGroup;
+			children = (
+				C9F3DFEF2B33D56F003602E0 /* MRSyncAVViewController-iOS.xib */,
+				C9F3DFF02B33D56F003602E0 /* MRSyncAVViewController.h */,
+				C9F3DFEE2B33D56F003602E0 /* MRSyncAVViewController.m */,
+			);
+			path = SyncAV;
 			sourceTree = "<group>";
 		};
 		CF60E7891F87B97CC29DD34F /* Pods */ = {
@@ -775,6 +791,7 @@
 				DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */,
 				DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */,
 				DD97CCEC293B5BE900797F3B /* MRGLVersionViewController-iOS.xib in Resources */,
+				C9F3DFF32B33D56F003602E0 /* MRSyncAVViewController-iOS.xib in Resources */,
 				DD97CCFB293B74C100797F3B /* MRMovieProberViewController-iOS.xib in Resources */,
 				DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */,
 				DD5313C22944AD3400185AD5 /* common_es3.vsh in Resources */,
@@ -875,6 +892,7 @@
 				DD5313E62944AEBA00185AD5 /* MRMetalNV21Pipeline.m in Sources */,
 				DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */,
 				DD5313DE2944AEBA00185AD5 /* MRMetalView.m in Sources */,
+				C9F3DFF22B33D56F003602E0 /* MRSyncAVViewController.m in Sources */,
 				DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */,
 				DDBFE77E294EF8C400403352 /* MRAudioRenderer.m in Sources */,
 				DD5313E82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m in Sources */,

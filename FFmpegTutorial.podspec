@@ -8,10 +8,10 @@
 
 Pod::Spec.new do |s|
   s.name             = 'FFmpegTutorial'
-  s.version          = '0.5.23'
+  s.version          = '0.5.24'
   s.summary          = '适合 iOS/macOS 开发人员学习的 FFmpeg 教程.'
   s.description      = <<-DESC
-  为了让更多零基础的 iOS/macOS 开发人员少走弯路，我编写了这个 FFmpeg 学习教程，最终的目标是封装一个播放器。
+  帮助零基础的 iOS/macOS 开发人员快速学习FFmpeg和音视频渲染技术。
                        DESC
 
   s.homepage         = 'https://debugly.cn/FFmpegTutorial/'
@@ -103,15 +103,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec '0x35' do |ss|
-    ss.osx.source_files = 'FFmpegTutorial/Classes/0x35/**/*.{h,m}'
-    ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x35/FFTPlayer0x35.h'
-    ss.ios.source_files = ''
-  end
-
-  s.subspec '0x36' do |ss|
-    ss.osx.source_files = 'FFmpegTutorial/Classes/0x36/**/*.{h,m}'
-    ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x36/FFTPlayer0x36.h'
-    ss.ios.source_files = ''
+    ss.source_files = 'FFmpegTutorial/Classes/0x35/**/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x35/FFTPlayer0x35.h'
   end
 
   s.subspec '0x50' do |ss|
@@ -134,7 +127,5 @@ Pod::Spec.new do |s|
   s.osx.frameworks = 'OpenGL',"CoreFoundation","CoreVideo","VideoToolbox","CoreMedia","AudioToolbox","Security"
 
   s.libraries = "z","bz2","iconv","lzma","xml2"
-  
-  
 
 end

@@ -8,7 +8,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MRPlayProgressViewController">
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="MRSyncAVViewController">
             <connections>
                 <outlet property="audioFmtSegCtrl" destination="jGI-4a-7Ui" id="TJp-n0-QGp"/>
                 <outlet property="audioSampleSegCtrl" destination="yUv-Ko-4g7" id="N3j-0a-kzU"/>

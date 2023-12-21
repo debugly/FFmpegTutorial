@@ -137,44 +137,9 @@
                 @"class":@"MRPlayProgressViewController",
             },
             @{
-                @"title":@"0x35",
+                @"title":@"Sync Audio And Video",
                 @"detail":@"音视频同步",
-                @"class":@"MR0x35ViewController",
-            },
-            @{
-                @"title":@"0x36",
-                @"detail":@"开始，结束，暂停，续播",
-                @"class":@"MR0x36ViewController",
-            },
-            @{
-                @"title":@"0x37",
-                @"detail":@"支持Seek",
-                @"class":@"MR0x37ViewController",
-            },
-            @{
-                @"title":@"0x38",
-                @"detail":@"支持指定播放开始位置",
-                @"class":@"MR0x38ViewController",
-            },
-            @{
-                @"title":@"0x39",
-                @"detail":@"使用硬件加速解码",
-                @"class":@"MR0x39ViewController",
-            },
-            @{
-                @"title":@"0x3a",
-                @"detail":@"统一软硬解解码数据结构",
-                @"class":@"MR0x3aViewController",
-            },
-            @{
-                @"title":@"0x3b",
-                @"detail":@"统一软硬解渲染逻辑",
-                @"class":@"MR0x3bViewController",
-            },
-            @{
-                @"title":@"0x40",
-                @"detail":@"iOS和Mac公用一套渲染逻辑",
-                @"class":@"MR0x40ViewController",
+                @"class":@"MRSyncAVViewController",
             }
         ]
     };
@@ -271,13 +236,13 @@
         } else {
             
         }
-        [tableView deselectRowAtIndexPath:indexPath animated:NO];
     } else {
         NSString * url = dic[@"url"];
         if (url) {
-            //
+            [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:NULL];
         }
     }
+    [tableView deselectRowAtIndexPath:indexPath animated:NO];
 }
 
 - (void)didReceiveMemoryWarning
