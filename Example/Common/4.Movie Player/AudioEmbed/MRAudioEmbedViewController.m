@@ -71,7 +71,7 @@
     CGRect rect = self.view.bounds;
 #if TARGET_OS_IPHONE
     rect.origin.y = CGRectGetHeight(rect) - 100;
-    rect.size.height = 150;
+    rect.size.height = 165;
 #else
     CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
     rect.size.height = MIN(screenWidth / 3.0, 260);
