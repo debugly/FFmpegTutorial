@@ -132,9 +132,9 @@
                 @"class":@"MRAudioEmbedViewController",
             },
             @{
-                @"title":@"0x34",
+                @"title":@"Show Play Progress",
                 @"detail":@"显示音视频播放进度",
-                @"class":@"MR0x34ViewController",
+                @"class":@"MRPlayProgressViewController",
             },
             @{
                 @"title":@"0x35",

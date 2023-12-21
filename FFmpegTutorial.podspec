@@ -98,9 +98,8 @@ Pod::Spec.new do |s|
   end
 
   s.subspec '0x34' do |ss|
-    ss.osx.source_files = 'FFmpegTutorial/Classes/0x34/**/*.{h,m}'
-    ss.osx.public_header_files = 'FFmpegTutorial/Classes/0x34/FFTPlayer0x34.h'
-    ss.ios.source_files = ''
+    ss.source_files = 'FFmpegTutorial/Classes/0x34/**/*.{h,m}'
+    ss.public_header_files = 'FFmpegTutorial/Classes/0x34/FFTPlayer0x34.h'
   end
 
   s.subspec '0x35' do |ss|

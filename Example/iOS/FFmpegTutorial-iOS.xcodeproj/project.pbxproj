@@ -22,6 +22,8 @@
 		C94AF24E2B3040EE006DC380 /* MRVideoFrameQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */; };
 		C94AF2642B305659006DC380 /* MRVideoEmbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2612B305659006DC380 /* MRVideoEmbedViewController.m */; };
 		C94AF2672B305809006DC380 /* MRVideoEmbedViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2662B305809006DC380 /* MRVideoEmbedViewController-iOS.xib */; };
+		C9F3DFDD2B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */; };
+		C9F3DFDF2B33CF4B003602E0 /* MRPlayProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */; };
 		D09D3CC417BCC9F4FAEDBE9F /* Pods_FFmpegTutorial_iOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B07FE59876DF5855B63B887A /* Pods_FFmpegTutorial_iOS.framework */; };
 		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
 		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
@@ -125,6 +127,9 @@
 		C94AF2612B305659006DC380 /* MRVideoEmbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoEmbedViewController.m; sourceTree = "<group>"; };
 		C94AF2632B305659006DC380 /* MRVideoEmbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoEmbedViewController.h; sourceTree = "<group>"; };
 		C94AF2662B305809006DC380 /* MRVideoEmbedViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRVideoEmbedViewController-iOS.xib"; sourceTree = "<group>"; };
+		C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRPlayProgressViewController-iOS.xib"; sourceTree = "<group>"; };
+		C9F3DFDA2B33CF4B003602E0 /* MRPlayProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPlayProgressViewController.h; sourceTree = "<group>"; };
+		C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRPlayProgressViewController.m; sourceTree = "<group>"; };
 		DD2EADF4244C923600B057DE /* MRNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRNavigationController.h; sourceTree = "<group>"; };
 		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
 		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
@@ -344,6 +349,7 @@
 				C94AF2352B3040EE006DC380 /* VideoFrameQueue */,
 				C94AF2602B305659006DC380 /* VideoEmbed */,
 				DDE075192B31DBB4004B7042 /* AudioEmbed */,
+				C9F3DFD82B33CF4B003602E0 /* PlayProgress */,
 			);
 			name = "4.Movie Player";
 			path = "../../Common/4.Movie Player";
@@ -377,6 +383,16 @@
 				C94AF2612B305659006DC380 /* MRVideoEmbedViewController.m */,
 			);
 			path = VideoEmbed;
+			sourceTree = "<group>";
+		};
+		C9F3DFD82B33CF4B003602E0 /* PlayProgress */ = {
+			isa = PBXGroup;
+			children = (
+				C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */,
+				C9F3DFDA2B33CF4B003602E0 /* MRPlayProgressViewController.h */,
+				C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */,
+			);
+			path = PlayProgress;
 			sourceTree = "<group>";
 		};
 		CF60E7891F87B97CC29DD34F /* Pods */ = {
@@ -768,6 +784,7 @@
 				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
 				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
 				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
+				C9F3DFDD2B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib in Resources */,
 				DD469DF3294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib in Resources */,
 				C94AF2672B305809006DC380 /* MRVideoEmbedViewController-iOS.xib in Resources */,
 				DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */,
@@ -873,6 +890,7 @@
 				DD5313E92944AEBA00185AD5 /* AAPLMathUtilities.m in Sources */,
 				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
 				DD5313E22944AEBA00185AD5 /* MRMetalUYVY422Pipeline.m in Sources */,
+				C9F3DFDF2B33CF4B003602E0 /* MRPlayProgressViewController.m in Sources */,
 				DD5313F82944B2AF00185AD5 /* NSFileManager+Sandbox.m in Sources */,
 				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
 				DD5313C02944AD3400185AD5 /* MRGLES3RGBXView.m in Sources */,
