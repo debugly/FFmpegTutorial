@@ -70,14 +70,20 @@
     hudView.layer.zPosition = 100;
     CGRect rect = self.view.bounds;
 #if TARGET_OS_IPHONE
-    rect.origin.y = CGRectGetHeight(rect) - 100;
+    CGFloat viewHeigth = CGRectGetHeight(rect);
+    CGFloat viewWidth  = CGRectGetWidth(rect);
     rect.size.height = 165;
+    rect.size.width = 240;
+    rect.origin.x = viewWidth - rect.size.width;
+    rect.origin.y = viewHeigth - rect.size.height;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 #else
     CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
     rect.size.height = MIN(screenWidth / 3.0, 260);
-#endif
-    [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewWidthSizable;
+    [hudView setFrame:rect];
+#endif
     
     self.inputField.stringValue = KTestVideoURL1;
     
@@ -141,6 +147,13 @@
         self.audioSampleSegCtrl.selectedSegmentIndex = 0;
         _sampleRate = [[tags firstObject] intValue];
     }
+}
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UIView *ctrlPanel = self.videoFmtSegCtrl.superview;
+    ctrlPanel.hidden = !ctrlPanel.isHidden;
+    self.hud.contentView.hidden = !ctrlPanel.isHidden;
 }
 #endif
 
@@ -210,6 +223,7 @@
         NSLog(@"%@",info);
         NSLog(@"----------------------");
         
+        self.player.videoRender.scalingMode = self.scalingMode;
         [self.videoRendererContainer addSubview:self.player.videoRender];
         self.player.videoRender.frame = [self.videoRendererContainer bounds];
         self.player.videoRender.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
@@ -246,6 +260,9 @@
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
+#if TARGET_OS_IPHONE
+    [self.inputField resignFirstResponder];
+#endif
 }
 
 - (void)exchangeAudioFmt:(int)targetFmt

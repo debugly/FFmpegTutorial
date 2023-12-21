@@ -54,25 +54,6 @@
                     <rect key="frame" x="48" y="35" width="800" height="358"/>
                     <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                 </view>
-                <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" alignment="top" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="C3f-Hn-htB">
-                    <rect key="frame" x="58" y="45" width="790" height="72"/>
-                    <subviews>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" translatesAutoresizingMaskIntoConstraints="NO" id="wEg-n9-ldp" customClass="MRSegmentedControl">
-                            <rect key="frame" x="0.0" y="0.0" width="101" height="32"/>
-                            <segments>
-                                <segment title="S16"/>
-                                <segment title="S16P"/>
-                            </segments>
-                        </segmentedControl>
-                        <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="bMM-Ds-0RT" customClass="MRSegmentedControl">
-                            <rect key="frame" x="0.0" y="41" width="123" height="32"/>
-                            <segments>
-                                <segment title="44100"/>
-                                <segment title="48000"/>
-                            </segments>
-                        </segmentedControl>
-                    </subviews>
-                </stackView>
                 <activityIndicatorView hidden="YES" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" style="large" translatesAutoresizingMaskIntoConstraints="NO" id="c3R-Bl-JJX">
                     <rect key="frame" x="429.5" y="188.5" width="37" height="37"/>
                 </activityIndicatorView>
@@ -85,10 +66,7 @@
                 <constraint firstItem="c3R-Bl-JJX" firstAttribute="centerY" secondItem="i5M-Pr-FkT" secondAttribute="centerY" id="5jc-5T-TEF"/>
                 <constraint firstItem="eBw-Qp-cGp" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="5" id="AkW-KK-t72"/>
                 <constraint firstItem="eBw-Qp-cGp" firstAttribute="top" secondItem="Q5M-cg-NOt" secondAttribute="top" id="AmG-lN-znM"/>
-                <constraint firstItem="Q5M-cg-NOt" firstAttribute="trailing" secondItem="C3f-Hn-htB" secondAttribute="trailing" id="NXs-Ei-Yo9"/>
-                <constraint firstItem="C3f-Hn-htB" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" constant="10" id="Pzk-JK-iMM"/>
                 <constraint firstItem="5SN-5f-aGY" firstAttribute="leading" secondItem="Q5M-cg-NOt" secondAttribute="leading" id="QGO-76-ftk"/>
-                <constraint firstItem="C3f-Hn-htB" firstAttribute="top" secondItem="eBw-Qp-cGp" secondAttribute="bottom" constant="10" id="SPF-PZ-8sA"/>
                 <constraint firstItem="5SN-5f-aGY" firstAttribute="top" secondItem="eBw-Qp-cGp" secondAttribute="bottom" id="ki7-F4-cPf"/>
                 <constraint firstItem="c3R-Bl-JJX" firstAttribute="centerX" secondItem="i5M-Pr-FkT" secondAttribute="centerX" id="t8U-WM-7LF"/>
                 <constraint firstItem="Q5M-cg-NOt" firstAttribute="bottom" secondItem="5SN-5f-aGY" secondAttribute="bottom" id="zqG-Aq-EvD"/>

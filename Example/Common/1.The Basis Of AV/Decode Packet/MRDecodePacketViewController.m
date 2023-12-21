@@ -139,6 +139,9 @@
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
+#if TARGET_OS_IPHONE
+    [self.inputField resignFirstResponder];
+#endif
 }
 
 @end

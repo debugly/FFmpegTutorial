@@ -262,17 +262,30 @@
     hudView.layer.zPosition = 100;
     CGRect rect = self.view.bounds;
 #if TARGET_OS_IPHONE
-    rect.origin.y = CGRectGetHeight(rect) - 100;
+    CGFloat viewHeigth = CGRectGetHeight(rect);
+    CGFloat viewWidth  = CGRectGetWidth(rect);
     rect.size.height = 130;
+    rect.size.width = 240;
+    rect.origin.x = viewWidth - rect.size.width;
+    rect.origin.y = viewHeigth - rect.size.height;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 #else
     CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
     rect.size.height = MIN(screenWidth / 3.0, 210);
-#endif
-    [hudView setFrame:rect];
     hudView.autoresizingMask = NSViewWidthSizable;
+    [hudView setFrame:rect];
+#endif
     
     self.inputField.stringValue = KTestVideoURL1;
 }
+
+#if TARGET_OS_IPHONE
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    self.hud.contentView.hidden = !self.hud.contentView.isHidden;
+}
+#endif
 
 #pragma - mark Audio
 
@@ -323,6 +336,9 @@
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
+#if TARGET_OS_IPHONE
+    [self.inputField resignFirstResponder];
+#endif
 }
 
 @end

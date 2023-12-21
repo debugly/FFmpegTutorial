@@ -171,11 +171,12 @@
 
 - (BOOL)shouldAutorotate
 {
-    return NO;
+    return YES;
 }
 
-- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation{
-    return UIInterfaceOrientationPortrait;
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+    return UIInterfaceOrientationLandscapeLeft;
 }
 
 - (UIInterfaceOrientationMask)supportedInterfaceOrientations
@@ -185,7 +186,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 50;
+    return 45;
 }
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
@@ -237,7 +238,7 @@
             
         }
     } else {
-        NSString * url = dic[@"url"];
+        NSString * url = info[@"url"];
         if (url) {
             [[UIApplication sharedApplication] openURL:[NSURL URLWithString:url] options:@{} completionHandler:NULL];
         }

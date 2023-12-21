@@ -58,14 +58,12 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view setWantsLayer:YES];
-    self.view.layer.backgroundColor = [[NSColor whiteColor] CGColor];
     [self preparePlayer];
 }
 
-- (void)viewWillAppear
+- (void)viewDidAppear
 {
-    [super viewWillAppear];
+    [super viewDidAppear];
     [self.player prapareWithSize:self.videoRenderer.bounds.size];
     [self.player play];
 }

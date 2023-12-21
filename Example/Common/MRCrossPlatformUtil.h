@@ -83,6 +83,7 @@ typedef UIScreen NSScreen;
 #if TARGET_OS_IPHONE
 - (void)viewWillAppear;
 - (void)viewWillDisappear;
+- (void)viewDidAppear;
 #endif
 - (int)alert:(NSString *_Nonnull)title msg:(NSString *_Nullable)msg;
 

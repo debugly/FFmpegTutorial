@@ -18,6 +18,7 @@
 @interface MRGAMViewController ()
 {
     MRPixelFormatMask _pixelFormat;
+    MRRenderingMode _renderingMode;
 }
 
 @property (strong) FFTPlayer0x10 *player;
@@ -109,7 +110,6 @@
     FFTPlayer0x10 *player = [[FFTPlayer0x10 alloc] init];
     player.contentPath = url;
     player.supportedPixelFormats = _pixelFormat;
-    
     __weakSelf__
     player.onVideoOpened = ^(FFTPlayer0x10 *player, NSDictionary * _Nonnull info) {
         __strongSelf__
@@ -219,18 +219,23 @@
     hudView.layer.zPosition = 100;
     CGRect rect = self.playbackView.bounds;
 #if TARGET_OS_IPHONE
-    rect.size.width = 300;
+    CGFloat viewHeigth = CGRectGetHeight(rect);
+    CGFloat viewWidth  = CGRectGetWidth(rect);
+    rect.size.height = 100;
+    rect.size.width = 240;
+    rect.origin.x = viewWidth - rect.size.width;
+    rect.origin.y = viewHeigth - rect.size.height;
+    [hudView setFrame:rect];
+    hudView.autoresizingMask = UIViewAutoresizingFlexibleTopMargin | UIViewAutoresizingFlexibleLeftMargin;
 #else
     CGFloat screenWidth = [[NSScreen mainScreen]frame].size.width;
-    rect.size.width = MIN(screenWidth / 5.0, 150);
-#endif
-    rect.origin.x = CGRectGetWidth(self.view.bounds) - rect.size.width;
+    rect.size.height = MIN(screenWidth / 3.0, 210);
+    hudView.autoresizingMask = NSViewWidthSizable;
     [hudView setFrame:rect];
-    
-    hudView.autoresizingMask = NSViewMinXMargin | NSViewHeightSizable;
+#endif
     
     self.inputField.stringValue = KTestVideoURL1;
-    
+    _renderingMode = MRRenderingModeScaleAspectFit;
     [self prepareCoreAnimationView];
 }
 
@@ -243,6 +248,9 @@
     } else {
         self.inputField.placeholderString = @"请输入视频地址";
     }
+#if TARGET_OS_IPHONE
+    [self.inputField resignFirstResponder];
+#endif
 }
 
 - (BOOL)prepareRendererWidthClass:(Class)clazz
@@ -260,6 +268,7 @@
 #endif
     videoRenderer.autoresizingMask = NSViewWidthSizable | NSViewHeightSizable;
     self.videoRenderer = videoRenderer;
+    [self.videoRenderer setRenderingMode:_renderingMode];
     return YES;
 }
 
@@ -311,12 +320,17 @@
 
 - (void)doSelectedVideMode:(int)tag
 {
+    MRRenderingMode renderingMode = MRRenderingModeScaleToFill;
     if (tag == 1) {
-        [self.videoRenderer setRenderingMode:MRRenderingModeScaleToFill];
+        renderingMode = MRRenderingModeScaleToFill;
     } else if (tag == 2) {
-        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFill];
+        renderingMode = MRRenderingModeScaleAspectFill;
     } else if (tag == 3) {
-        [self.videoRenderer setRenderingMode:MRRenderingModeScaleAspectFit];
+        renderingMode = MRRenderingModeScaleAspectFit;
+    }
+    if (_renderingMode != renderingMode) {
+        _renderingMode = renderingMode;
+        [self.videoRenderer setRenderingMode:renderingMode];
     }
 }
 
@@ -347,6 +361,13 @@
     [self doSelectPixelFormat:(MRPixelFormatMask)item.tag];
 }
 #else
+
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    UIView *ctrlPanel = self.formatSegCtrl.superview;
+    ctrlPanel.hidden = !ctrlPanel.isHidden;
+    self.hud.contentView.hidden = !ctrlPanel.isHidden;
+}
 
 - (IBAction)onSelectedVideoRenderer:(MRSegmentedControl *)sender
 {

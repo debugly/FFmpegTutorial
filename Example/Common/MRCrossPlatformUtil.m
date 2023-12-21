@@ -170,6 +170,17 @@ CGContextRef __nullable UIGraphicsGetCurrentContext(void)
 {
     
 }
+
+- (void)viewDidAppear:(BOOL)animated
+{
+    [super viewDidAppear:YES];
+    [self viewDidAppear];
+}
+
+- (void)viewDidAppear
+{
+    
+}
 #endif
 
 - (int)alert:(NSString *)title msg:(NSString *)msg
