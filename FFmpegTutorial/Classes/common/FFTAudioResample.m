@@ -74,7 +74,7 @@
 
     //int64_t dst_ch_layout;
     //av_opt_get_int(d.swr_ctx, "out_channel_layout", 0, &dst_ch_layout);
-    out_frame->channel_layout = inF->channel_layout;
+    out_frame->channel_layout = inF->ch_layout.nb_channels;
     out_frame->sample_rate = self.out_sample_rate;
     out_frame->format = self.out_sample_fmt;
     

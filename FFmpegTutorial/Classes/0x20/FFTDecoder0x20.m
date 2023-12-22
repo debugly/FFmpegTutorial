@@ -79,7 +79,7 @@
     avctx->pkt_timebase = stream->time_base;
     
     //查找解码器
-    AVCodec *codec = avcodec_find_decoder(avctx->codec_id);
+    const AVCodec *codec = avcodec_find_decoder(avctx->codec_id);
     if (!codec){
         avcodec_free_context(&avctx);
         return -1;
@@ -100,7 +100,7 @@
     if (avctx->codec_type == AVMEDIA_TYPE_AUDIO) {
         self.format = avctx->sample_fmt;
         self.sampleRate = avctx->sample_rate;
-        self.channelLayout = (int)avctx->channel_layout;
+        self.channelLayout = (int)avctx->ch_layout.nb_channels;
     } else if (avctx->codec_type == AVMEDIA_TYPE_VIDEO) {
         self.format = avctx->pix_fmt;
         self.picWidth = avctx->width;

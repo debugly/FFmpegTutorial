@@ -128,7 +128,7 @@
                         //采样率
                         int sample_rate = codecCtx->sample_rate;
                         //声道数
-                        int channels = codecCtx->channels;
+                        int channels = codecCtx->ch_layout.nb_channels;
                         //平均比特率
                         int64_t brate = codecCtx->bit_rate;
                         //时长
