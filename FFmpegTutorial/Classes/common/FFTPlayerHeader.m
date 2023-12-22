@@ -19,17 +19,6 @@ const char * av_pixel_fmt_to_string(int fmt)
 const char * av_sample_fmt_to_string(int format)
 {
     return av_get_sample_fmt_name(format);
-    if (AV_SAMPLE_FMT_S16 == format) {
-        return "s16";
-    } else if (AV_SAMPLE_FMT_S16P == format) {
-        return "s16p";
-    } else if (AV_SAMPLE_FMT_FLT == format) {
-        return "float";
-    } else if (AV_SAMPLE_FMT_FLTP == format) {
-        return "floatp";
-    } else {
-        return "unknow";
-    }
 }
 
 enum AVSampleFormat MRSampleFormat2AV (MRSampleFormat mrsf){
@@ -164,6 +153,10 @@ int audio_buffer_size(AVFrame *frame)
 {
     const int fmt = frame->format;
     int chanels = frame->ch_layout.nb_channels;
+    //如果是平面的，那么上层需要的是一个平面的，所以改为1
+    if (av_sample_fmt_is_planar(frame->format)) {
+        chanels = 1;
+    }
     int data_size = av_samples_get_buffer_size(NULL, chanels, frame->nb_samples, fmt, 1);
     return data_size;
 }
