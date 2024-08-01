@@ -90,9 +90,10 @@ open FFmpegTutorial-macOS.xcworkspace
 
 如果对播放器感兴趣，可以了解下我移植到的跨平台 [ijkplayer](https://github.com/debugly/ijkplayer) ，增加了字幕、视频旋转、Metal 渲染、HDR等功能！
 
-## Ends
+## Donate
 
-- Please give me an issue or a star or pull request！
-- New members are always welcome!
+编写这个教程，花费了七年的时间，期间工程重构了三次，不记得熬了多少个夜晚去死磕遇到的问题...
 
-Good Luck,Thank you！
+希望这些教程能够为新人学习音视频渲染提供上帮助，请买杯咖啡给我提提神儿。
+
+![donate.jpg](https://i.postimg.cc/xdVqnBLp/IMG-7481.jpg)
