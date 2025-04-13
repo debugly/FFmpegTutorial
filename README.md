@@ -1,6 +1,6 @@
 [![](md/imgs/ffmpeg.png)](https://ffmpeg.org/) 
 
-> 帮助零基础的 iOS/macOS 开发人员快速学习音视频技术，主要包括了 FFmpeg API 的使用，以及 iOS/macOS 平台多种音视频渲染技术的对比。 
+> 帮助零基础的 iOS/macOS 开发人员快速学习基于 FFmpeg 的音视频技术，主要包括了在 iOS/macOS 平台如何调用 FFmpeg 以及多种音视频渲染技术的对比。 
 > 
 > 感觉有用的话给个 Star 吧😊
 
@@ -40,7 +40,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 ## Introduction
 
-为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，在 pod install 时会自动下载已经预编译好的 FFmpeg 库，编译 FFmpeg 的脚本也是开源的 [[MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)]([debugly/MRFFToolChainBuildShell: use github action auto compile FFmpeg libs. (使用 github action 自动预编译 FFmpeg 等库，跟 ijkplayer 配套使用。)](https://github.com/debugly/MRFFToolChainBuildShell))。
+为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，在 pod install 时会自动下载已经预编译好的 FFmpeg 库，编译 FFmpeg 的脚本也是开源的 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)。
 
 教程共分为六个部分，提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发:
 
@@ -88,7 +88,7 @@ open FFmpegTutorial-macOS.xcworkspace
 
 本教程相对于商用播放器存在很大差距，仅仅用来科普FFmpeg和Apple平台的音视频渲染技术。
 
-如果对播放器感兴趣，可以了解下我移植到的跨平台 [ijkplayer](https://github.com/debugly/ijkplayer) ，增加了字幕、视频旋转、Metal 渲染、HDR等功能！
+如果对播放器感兴趣，可以了解下我移植到的跨平台 [fsplayer](https://github.com/debugly/fsplayer) ，增加了字幕、视频旋转、Metal 渲染、HDR等功能！
 
 ## Donate
 
