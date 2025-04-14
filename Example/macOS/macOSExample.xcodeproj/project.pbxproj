@@ -3,11 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 50;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */; };
+		C90157D82DACF19D004ED6F2 /* FFmpegTutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90157D72DACF19D004ED6F2 /* FFmpegTutorial.framework */; };
 		C940C23C2939E4FD00AC72FB /* MRMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */; };
 		C94AF2572B304EC5006DC380 /* MRVideoEmbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2522B304EC5006DC380 /* MRVideoEmbedViewController.m */; };
 		C94AF2582B304EC5006DC380 /* MRVideoEmbedViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2532B304EC5006DC380 /* MRVideoEmbedViewController.xib */; };
@@ -135,8 +135,7 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.debug.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.debug.xcconfig"; sourceTree = "<group>"; };
-		81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-FFmpegTutorial-macOS.release.xcconfig"; path = "Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS.release.xcconfig"; sourceTree = "<group>"; };
+		C90157D72DACF19D004ED6F2 /* FFmpegTutorial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FFmpegTutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C940C23A2939E4FD00AC72FB /* MRMetalOffscreenRendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRMetalOffscreenRendering.h; sourceTree = "<group>"; };
 		C940C23B2939E4FD00AC72FB /* MRMetalOffscreenRendering.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRMetalOffscreenRendering.m; sourceTree = "<group>"; };
 		C94AF2522B304EC5006DC380 /* MRVideoEmbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRVideoEmbedViewController.m; path = "../../../../Common/4.Movie Player/VideoEmbed/MRVideoEmbedViewController.m"; sourceTree = "<group>"; };
@@ -153,7 +152,6 @@
 		C9F3DFE62B33D087003602E0 /* MRSyncAVViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MRSyncAVViewController.xib; sourceTree = "<group>"; };
 		C9FC185B2930A88A00F935E7 /* AAPLMathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLMathUtilities.h; sourceTree = "<group>"; };
 		C9FC185C2930A88A00F935E7 /* AAPLMathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLMathUtilities.m; sourceTree = "<group>"; };
-		D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_FFmpegTutorial_macOS.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		DD21E1F625836B45000D5DB5 /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		DD4190102934661B00ADEFA7 /* MRModernGLYUV420PView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRModernGLYUV420PView.h; sourceTree = "<group>"; };
 		DD4190112934661B00ADEFA7 /* MRModernGLNV12View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRModernGLNV12View.h; sourceTree = "<group>"; };
@@ -318,14 +316,14 @@
 		DDF922AA28E947FA00F29C1A /* 2_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D.fsh; sourceTree = "<group>"; };
 		DDF922D528E94A8700F29C1A /* 3_sampler2D.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D.fsh; sourceTree = "<group>"; };
 		DDF923F928EC768B00F29C1A /* 1_sampler2D_422_Rect_v3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_422_Rect_v3.fsh; sourceTree = "<group>"; };
-		DDFDF8A12564CDC700F1CAE2 /* FFmpegTutorial-macOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "FFmpegTutorial-macOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		DDFDF8A12564CDC700F1CAE2 /* macOSExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = macOSExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		DDFDF8A52564CDC700F1CAE2 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DDFDF8AD2564CDCA00F1CAE2 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DDFDF8AF2564CDCA00F1CAE2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		DDFDF8B02564CDCA00F1CAE2 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = FFmpegTutorial_macOS.entitlements; sourceTree = "<group>"; };
+		DDFDF8B22564CDCA00F1CAE2 /* macOSExample.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = macOSExample.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -335,7 +333,7 @@
 			files = (
 				DD9AB3EA278E7EDE00F92F61 /* OpenGL.framework in Frameworks */,
 				DD91F144268CC78A00B96334 /* AVFoundation.framework in Frameworks */,
-				9268CCE3F490A2BE24BA131F /* Pods_FFmpegTutorial_macOS.framework in Frameworks */,
+				C90157D82DACF19D004ED6F2 /* FFmpegTutorial.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -345,9 +343,9 @@
 		7242AB7453C4217BF5311C6C /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				C90157D72DACF19D004ED6F2 /* FFmpegTutorial.framework */,
 				DD9AB3E8278E7DCD00F92F61 /* OpenGL.framework */,
 				DD91F143268CC78A00B96334 /* AVFoundation.framework */,
-				D6BF4E9301926244436DE210 /* Pods_FFmpegTutorial_macOS.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -449,7 +447,7 @@
 				DD97E8482572B05400B93F9F /* NSNavigationController */,
 				DDE70E462584AC2900580A80 /* TextFieldCell */,
 				DDFDF8AA2564CDCA00F1CAE2 /* Assets.xcassets */,
-				DDFDF8B22564CDCA00F1CAE2 /* FFmpegTutorial_macOS.entitlements */,
+				DDFDF8B22564CDCA00F1CAE2 /* macOSExample.entitlements */,
 				DDFDF8AF2564CDCA00F1CAE2 /* Info.plist */,
 				DDFDF8B02564CDCA00F1CAE2 /* main.m */,
 				DDFDF8AC2564CDCA00F1CAE2 /* Main.storyboard */,
@@ -701,15 +699,6 @@
 			path = TextFieldCell;
 			sourceTree = "<group>";
 		};
-		DDEC031CF725852BB0A5A612 /* Pods */ = {
-			isa = PBXGroup;
-			children = (
-				6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */,
-				81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */,
-			);
-			path = Pods;
-			sourceTree = "<group>";
-		};
 		DDF5990828883D3B0079D26E /* VideoEmbed */ = {
 			isa = PBXGroup;
 			children = (
@@ -800,9 +789,8 @@
 		DDFDF8982564CDC700F1CAE2 = {
 			isa = PBXGroup;
 			children = (
-				DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */,
+				DDFDF8A32564CDC700F1CAE2 /* macOSExample */,
 				DDFDF8A22564CDC700F1CAE2 /* Products */,
-				DDEC031CF725852BB0A5A612 /* Pods */,
 				7242AB7453C4217BF5311C6C /* Frameworks */,
 			);
 			sourceTree = "<group>";
@@ -810,12 +798,12 @@
 		DDFDF8A22564CDC700F1CAE2 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				DDFDF8A12564CDC700F1CAE2 /* FFmpegTutorial-macOS.app */,
+				DDFDF8A12564CDC700F1CAE2 /* macOSExample.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		DDFDF8A32564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
+		DDFDF8A32564CDC700F1CAE2 /* macOSExample */ = {
 			isa = PBXGroup;
 			children = (
 				DDFDF8A42564CDC700F1CAE2 /* AppDelegate.h */,
@@ -828,30 +816,28 @@
 				DD97E83525720E3000B93F9F /* RootViewController */,
 				DD4CCBDB28EEC80E0047F238 /* Support Files */,
 			);
-			path = "FFmpegTutorial-macOS";
+			path = macOSExample;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		DDFDF8A02564CDC700F1CAE2 /* FFmpegTutorial-macOS */ = {
+		DDFDF8A02564CDC700F1CAE2 /* macOSExample */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = DDFDF8B52564CDCA00F1CAE2 /* Build configuration list for PBXNativeTarget "FFmpegTutorial-macOS" */;
+			buildConfigurationList = DDFDF8B52564CDCA00F1CAE2 /* Build configuration list for PBXNativeTarget "macOSExample" */;
 			buildPhases = (
-				973BC7971DE743C7C8787F08 /* [CP] Check Pods Manifest.lock */,
 				DDFDF89D2564CDC700F1CAE2 /* Sources */,
 				DDFDF89E2564CDC700F1CAE2 /* Frameworks */,
 				DDFDF89F2564CDC700F1CAE2 /* Resources */,
 				DDA6CCBB2595D7CC005CA8BF /* Embed Frameworks */,
-				4FC1C8A1D0359DB0E8F35E17 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "FFmpegTutorial-macOS";
+			name = macOSExample;
 			productName = "FFmpegTutorial-macOS";
-			productReference = DDFDF8A12564CDC700F1CAE2 /* FFmpegTutorial-macOS.app */;
+			productReference = DDFDF8A12564CDC700F1CAE2 /* macOSExample.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -869,7 +855,7 @@
 					};
 				};
 			};
-			buildConfigurationList = DDFDF89C2564CDC700F1CAE2 /* Build configuration list for PBXProject "FFmpegTutorial-macOS" */;
+			buildConfigurationList = DDFDF89C2564CDC700F1CAE2 /* Build configuration list for PBXProject "macOSExample" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -882,7 +868,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				DDFDF8A02564CDC700F1CAE2 /* FFmpegTutorial-macOS */,
+				DDFDF8A02564CDC700F1CAE2 /* macOSExample */,
 			);
 		};
 /* End PBXProject section */
@@ -935,48 +921,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		4FC1C8A1D0359DB0E8F35E17 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-FFmpegTutorial-macOS/Pods-FFmpegTutorial-macOS-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		973BC7971DE743C7C8787F08 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-FFmpegTutorial-macOS-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		DDFDF89D2564CDC700F1CAE2 /* Sources */ = {
@@ -1183,25 +1127,31 @@
 		};
 		DDFDF8B62564CDCA00F1CAE2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 6EB11F898A0A36648BE71C5C /* Pods-FFmpegTutorial-macOS.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "FFmpegTutorial-macOS/FFmpegTutorial_macOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = macOSExample/macOSExample.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 96C96H28CU;
+				FRAMEWORK_SEARCH_PATHS = $TARGET_BUILD_DIR/FFmpegTutorial.framework;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PRODUCT_NAME}/PrefixHeader.pch";
-				INFOPLIST_FILE = "FFmpegTutorial-macOS/Info.plist";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/ffmpeg/include",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/openssl/include",
+				);
+				INFOPLIST_FILE = macOSExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_HEADER_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "cn.debugly.FFmpegTutorial-macOS.${DEVELOPMENT_TEAM}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1209,25 +1159,31 @@
 		};
 		DDFDF8B72564CDCA00F1CAE2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 81FE4C81B17F298F50E447F1 /* Pods-FFmpegTutorial-macOS.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_ENTITLEMENTS = "FFmpegTutorial-macOS/FFmpegTutorial_macOS.entitlements";
+				CODE_SIGN_ENTITLEMENTS = macOSExample/macOSExample.entitlements;
 				CODE_SIGN_IDENTITY = "-";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = 96C96H28CU;
+				FRAMEWORK_SEARCH_PATHS = $TARGET_BUILD_DIR/FFmpegTutorial.framework;
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "${PRODUCT_NAME}/PrefixHeader.pch";
-				INFOPLIST_FILE = "FFmpegTutorial-macOS/Info.plist";
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/ffmpeg/include",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/openssl/include",
+				);
+				INFOPLIST_FILE = macOSExample/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_HEADER_SEARCH_PATHS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = "cn.debugly.FFmpegTutorial-macOS.${DEVELOPMENT_TEAM}";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
@@ -1236,7 +1192,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		DDFDF89C2564CDC700F1CAE2 /* Build configuration list for PBXProject "FFmpegTutorial-macOS" */ = {
+		DDFDF89C2564CDC700F1CAE2 /* Build configuration list for PBXProject "macOSExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDFDF8B32564CDCA00F1CAE2 /* Debug */,
@@ -1245,7 +1201,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		DDFDF8B52564CDCA00F1CAE2 /* Build configuration list for PBXNativeTarget "FFmpegTutorial-macOS" */ = {
+		DDFDF8B52564CDCA00F1CAE2 /* Build configuration list for PBXNativeTarget "macOSExample" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				DDFDF8B62564CDCA00F1CAE2 /* Debug */,

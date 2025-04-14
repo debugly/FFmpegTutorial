@@ -12,9 +12,9 @@
 
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
-cd FFmpegTutorial/Example/iOS
-pod install
-open FFmpegTutorial-iOS.xcworkspace
+cd FFmpegTutorial
+./install-pre-any.sh ios
+open Example/iOS/iOSExample.xcworkspace
 ```
 
 运行效果:
@@ -27,9 +27,9 @@ open FFmpegTutorial-iOS.xcworkspace
 
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
-cd FFmpegTutorial/Example/macOS
-pod install
-open FFmpegTutorial-macOS.xcworkspace
+cd FFmpegTutorial
+./install-pre-any.sh macos
+open Example/macOS/macOSExample.xcworkspace
 ```
 
 ![](md/imgs/macos-snapshot-1.png)
@@ -40,7 +40,9 @@ open FFmpegTutorial-macOS.xcworkspace
 
 ## Introduction
 
-为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，在 pod install 时会自动下载已经预编译好的 FFmpeg 库，编译 FFmpeg 的脚本也是开源的 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)。
+前期为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，现在已经不再用了，避免对 cocoapods 的依赖。
+
+所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，在执行 ./install-pre-any.sh 脚本时会自动下载已经预编译好的 FFmpeg 库，编译 FFmpeg 的脚本也是开源的 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)。
 
 教程共分为六个部分，提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发:
 
@@ -80,15 +82,9 @@ open FFmpegTutorial-macOS.xcworkspace
 
 - 黑白电视机雪花屏、灰色色阶图、三个小球
 
-六、实用工具
+六、跨平台播放器
 
-- 高效视频抽帧器:[MRVideoToPicture](https://github.com/debugly/MRVideoToPicture)
-
-## Cross-Platform
-
-本教程相对于商用播放器存在很大差距，仅仅用来科普FFmpeg和Apple平台的音视频渲染技术。
-
-如果对播放器感兴趣，可以了解下我移植到的跨平台 [fsplayer](https://github.com/debugly/fsplayer) ，增加了字幕、视频旋转、Metal 渲染、HDR等功能！
+- [fsplayer](https://github.com/debugly/fsplayer)
 
 ## Donate
 

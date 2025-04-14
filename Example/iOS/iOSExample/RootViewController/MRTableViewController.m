@@ -156,12 +156,12 @@
     };
     
     NSDictionary *section5 = @{
-        @"title":@"六、实用工具",
+        @"title":@"六、跨平台播放器",
         @"cells":@[
             @{
-                @"title":@"VTP",
-                @"detail":@"高效视频抽帧器",
-                @"url":@"https://github.com/debugly/MRVideoToPicture"
+                @"title":@"fsplayer",
+                @"detail":@"跨平台播放器",
+                @"url":@"https://github.com/debugly/fsplayer"
             }
         ]
     };
