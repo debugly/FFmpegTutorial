@@ -12,10 +12,10 @@
 #import <FFmpegTutorial/FFTConvertUtil.h>
 #import <FFmpegTutorial/FFTDispatch.h>
 #import <FFmpegTutorial/FFTPlayerHeader.h>
+#import <FFmpegTutorial/FFTAudioFrameQueue.h>
 #import <libavutil/frame.h>
 #import "MRRWeakProxy.h"
 #import "MRAudioRenderer.h"
-#import "FFTAudioFrameQueue.h"
 
 //将音频裸流PCM写入到文件
 #define DEBUG_RECORD_PCM_TO_FILE 0

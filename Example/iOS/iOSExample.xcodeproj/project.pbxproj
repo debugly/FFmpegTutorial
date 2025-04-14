@@ -1,0 +1,1105 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
+		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
+		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
+		6003F598195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F596195388D20070C39A /* InfoPlist.strings */; };
+		6003F59A195388D20070C39A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F599195388D20070C39A /* main.m */; };
+		6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F59D195388D20070C39A /* MRAppDelegate.m */; };
+		6003F5A9195388D20070C39A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5A8195388D20070C39A /* Images.xcassets */; };
+		71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */; };
+		873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 873B8AEA1B1F5CCA007FD442 /* Main.storyboard */; };
+		C90157D52DACDFFB004ED6F2 /* FFmpegTutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C90157D42DACDFFA004ED6F2 /* FFmpegTutorial.framework */; };
+		C90157D62DACE00E004ED6F2 /* FFmpegTutorial.framework in CopyFiles */ = {isa = PBXBuildFile; fileRef = C90157D42DACDFFA004ED6F2 /* FFmpegTutorial.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		C94AF23E2B3040EE006DC380 /* MRPacketQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2192B3040EE006DC380 /* MRPacketQueueViewController.m */; };
+		C94AF23F2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF21A2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib */; };
+		C94AF24C2B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2362B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib */; };
+		C94AF24E2B3040EE006DC380 /* MRVideoFrameQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */; };
+		C94AF2642B305659006DC380 /* MRVideoEmbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C94AF2612B305659006DC380 /* MRVideoEmbedViewController.m */; };
+		C94AF2672B305809006DC380 /* MRVideoEmbedViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C94AF2662B305809006DC380 /* MRVideoEmbedViewController-iOS.xib */; };
+		C9F3DFDD2B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */; };
+		C9F3DFDF2B33CF4B003602E0 /* MRPlayProgressViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */; };
+		C9F3DFF22B33D56F003602E0 /* MRSyncAVViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C9F3DFEE2B33D56F003602E0 /* MRSyncAVViewController.m */; };
+		C9F3DFF32B33D56F003602E0 /* MRSyncAVViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = C9F3DFEF2B33D56F003602E0 /* MRSyncAVViewController-iOS.xib */; };
+		DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF5244C923600B057DE /* MRNavigationController.m */; };
+		DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD2EADF8244C9CE500B057DE /* MRTableViewController.m */; };
+		DD469DF3294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD469DEF294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib */; };
+		DD469DF5294621E8004F5F39 /* MRAudioQueueViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD469DF2294621E8004F5F39 /* MRAudioQueueViewController.m */; };
+		DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */; };
+		DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */; };
+		DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */; };
+		DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53138629443F4400185AD5 /* MRGLES2ViewController.m */; };
+		DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */; };
+		DD53139029443F4400185AD5 /* common_es2.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD53138929443F4400185AD5 /* common_es2.vsh */; };
+		DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */; };
+		DD5313942944403B00185AD5 /* MRGLES2RGBXView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313922944403B00185AD5 /* MRGLES2RGBXView.m */; };
+		DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313952944410500185AD5 /* MROpenGLHelper.m */; };
+		DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313962944410500185AD5 /* MROpenGLCompiler.m */; };
+		DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */; };
+		DD5313A32944A4A900185AD5 /* MRGLES2NV21View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313A12944A4A900185AD5 /* MRGLES2NV21View.m */; };
+		DD5313A62944AA3100185AD5 /* MRGLES2YUV420PView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313A42944AA3100185AD5 /* MRGLES2YUV420PView.m */; };
+		DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313A92944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh */; };
+		DD5313B92944AD3400185AD5 /* 3_sampler2D_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313AA2944AD3400185AD5 /* 3_sampler2D_es3.fsh */; };
+		DD5313BA2944AD3400185AD5 /* MRGLES3ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313AB2944AD3400185AD5 /* MRGLES3ViewController.m */; };
+		DD5313BB2944AD3400185AD5 /* 2_sampler2D_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313AD2944AD3400185AD5 /* 2_sampler2D_es3.fsh */; };
+		DD5313BC2944AD3400185AD5 /* 1_sampler2D_es3.fsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313AE2944AD3400185AD5 /* 1_sampler2D_es3.fsh */; };
+		DD5313BD2944AD3400185AD5 /* MRGLES3NV21View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313AF2944AD3400185AD5 /* MRGLES3NV21View.m */; };
+		DD5313BE2944AD3400185AD5 /* MRGLES3ViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD5313B02944AD3400185AD5 /* MRGLES3ViewController-iOS.xib */; };
+		DD5313BF2944AD3400185AD5 /* MRGLES3YUV420PView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313B12944AD3400185AD5 /* MRGLES3YUV420PView.m */; };
+		DD5313C02944AD3400185AD5 /* MRGLES3RGBXView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313B22944AD3400185AD5 /* MRGLES3RGBXView.m */; };
+		DD5313C12944AD3400185AD5 /* MRGLES3NV12View.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313B32944AD3400185AD5 /* MRGLES3NV12View.m */; };
+		DD5313C22944AD3400185AD5 /* common_es3.vsh in Resources */ = {isa = PBXBuildFile; fileRef = DD5313B72944AD3400185AD5 /* common_es3.vsh */; };
+		DD5313DD2944AEBA00185AD5 /* MRMetalYUV420PPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313C42944AEBA00185AD5 /* MRMetalYUV420PPipeline.m */; };
+		DD5313DE2944AEBA00185AD5 /* MRMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313C82944AEBA00185AD5 /* MRMetalView.m */; };
+		DD5313DF2944AEBA00185AD5 /* MRMetalBasePipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313C92944AEBA00185AD5 /* MRMetalBasePipeline.m */; };
+		DD5313E02944AEBA00185AD5 /* MRMetalViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313CA2944AEBA00185AD5 /* MRMetalViewController.m */; };
+		DD5313E12944AEBA00185AD5 /* MRMetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = DD5313CB2944AEBA00185AD5 /* MRMetalShaders.metal */; };
+		DD5313E22944AEBA00185AD5 /* MRMetalUYVY422Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313CC2944AEBA00185AD5 /* MRMetalUYVY422Pipeline.m */; };
+		DD5313E42944AEBA00185AD5 /* MRMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313CE2944AEBA00185AD5 /* MRMetalOffscreenRendering.m */; };
+		DD5313E52944AEBA00185AD5 /* MRMetalBGRAPipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313D02944AEBA00185AD5 /* MRMetalBGRAPipeline.m */; };
+		DD5313E62944AEBA00185AD5 /* MRMetalNV21Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313D12944AEBA00185AD5 /* MRMetalNV21Pipeline.m */; };
+		DD5313E72944AEBA00185AD5 /* MRMetalNV12Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313D72944AEBA00185AD5 /* MRMetalNV12Pipeline.m */; };
+		DD5313E82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313D82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m */; };
+		DD5313E92944AEBA00185AD5 /* AAPLMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313DA2944AEBA00185AD5 /* AAPLMathUtilities.m */; };
+		DD5313EB2944B0D000185AD5 /* MRMetalViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD5313EA2944B0D000185AD5 /* MRMetalViewController-iOS.xib */; };
+		DD5313F72944B2AF00185AD5 /* MRRWeakProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313F32944B2AF00185AD5 /* MRRWeakProxy.m */; };
+		DD5313F82944B2AF00185AD5 /* NSFileManager+Sandbox.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5313F62944B2AF00185AD5 /* NSFileManager+Sandbox.m */; };
+		DD5313FA2944B3DC00185AD5 /* CoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DD5313F92944B3DC00185AD5 /* CoreServices.framework */; };
+		DD53141E2945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD5314142945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib */; };
+		DD53141F2945DDC600185AD5 /* MRAudioUnitViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD5314152945DDC600185AD5 /* MRAudioUnitViewController.m */; };
+		DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */; };
+		DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */; };
+		DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */; };
+		DD97CCEC293B5BE900797F3B /* MRGLVersionViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCD7293B5BE900797F3B /* MRGLVersionViewController-iOS.xib */; };
+		DD97CCEE293B5BE900797F3B /* MRReadPacketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCDB293B5BE900797F3B /* MRReadPacketViewController.m */; };
+		DD97CCEF293B5BE900797F3B /* MRCustomThreadViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCDE293B5BE900797F3B /* MRCustomThreadViewController.m */; };
+		DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCE3293B5BE900797F3B /* MRCustomDecoderViewController.m */; };
+		DD97CCF4293B5BE900797F3B /* MRDecodePacketViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CCE7293B5BE900797F3B /* MRDecodePacketViewController.m */; };
+		DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCF8293B744000797F3B /* MRCustomThreadViewController-iOS.xib */; };
+		DD97CCFB293B74C100797F3B /* MRMovieProberViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCFA293B74C100797F3B /* MRMovieProberViewController-iOS.xib */; };
+		DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCFC293B7C4700797F3B /* MRReadPacketViewController-iOS.xib */; };
+		DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CCFE293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib */; };
+		DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CD00293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib */; };
+		DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD5F293C53D500797F3B /* MRCoreMediaView.m */; };
+		DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD60293C53D500797F3B /* MRCoreGraphicsView.m */; };
+		DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD62293C53D500797F3B /* MRGAMViewController.m */; };
+		DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */ = {isa = PBXBuildFile; fileRef = DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */; };
+		DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */; };
+		DDBFE77E294EF8C400403352 /* MRAudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE773294EF8C400403352 /* MRAudioRenderer.m */; };
+		DDBFE77F294EF8C400403352 /* MRAudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE775294EF8C400403352 /* MRAudioUnitRenderer.m */; };
+		DDBFE780294EF8C400403352 /* MRAudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE779294EF8C400403352 /* MRAudioQueueRenderer.m */; };
+		DDBFE782294EF8C400403352 /* MRAudioRendererViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDBFE77B294EF8C400403352 /* MRAudioRendererViewController.m */; };
+		DDBFE783294EF8C400403352 /* MRAudioRendererViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDBFE77D294EF8C400403352 /* MRAudioRendererViewController-iOS.xib */; };
+		DDCC56B1294EC7090024A4D7 /* MRHaveFunVideoRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */; };
+		DDCC56B2294EC7090024A4D7 /* MRHaveFunViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */; };
+		DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */; };
+		DDE0751F2B31DBB4004B7042 /* MRAudioEmbedViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DDE0751B2B31DBB4004B7042 /* MRAudioEmbedViewController.m */; };
+		DDE075202B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib in Resources */ = {isa = PBXBuildFile; fileRef = DDE0751C2B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C90157D32DACDFCF004ED6F2 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 12;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C90157D62DACE00E004ED6F2 /* FFmpegTutorial.framework in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		6003F58A195388D20070C39A /* FFmpegTutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FFmpegTutorial.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		6003F591195388D20070C39A /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		6003F595195388D20070C39A /* iOSExample.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = iOSExample.plist; sourceTree = "<group>"; };
+		6003F597195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		6003F599195388D20070C39A /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		6003F59B195388D20070C39A /* iOSExample.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = iOSExample.pch; sourceTree = "<group>"; };
+		6003F59C195388D20070C39A /* MRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRAppDelegate.h; sourceTree = "<group>"; };
+		6003F59D195388D20070C39A /* MRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRAppDelegate.m; sourceTree = "<group>"; };
+		6003F5A8195388D20070C39A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Images.xcassets; sourceTree = "<group>"; };
+		71719F9E1E33DC2100824A3D /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		873B8AEA1B1F5CCA007FD442 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		C90157D42DACDFFA004ED6F2 /* FFmpegTutorial.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FFmpegTutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C94AF2192B3040EE006DC380 /* MRPacketQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRPacketQueueViewController.m; sourceTree = "<group>"; };
+		C94AF21A2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRPacketQueueViewController-iOS.xib"; sourceTree = "<group>"; };
+		C94AF21C2B3040EE006DC380 /* MRPacketQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPacketQueueViewController.h; sourceTree = "<group>"; };
+		C94AF2362B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRVideoFrameQueueViewController-iOS.xib"; sourceTree = "<group>"; };
+		C94AF2372B3040EE006DC380 /* MRVideoFrameQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoFrameQueueViewController.h; sourceTree = "<group>"; };
+		C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoFrameQueueViewController.m; sourceTree = "<group>"; };
+		C94AF2612B305659006DC380 /* MRVideoEmbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRVideoEmbedViewController.m; sourceTree = "<group>"; };
+		C94AF2632B305659006DC380 /* MRVideoEmbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoEmbedViewController.h; sourceTree = "<group>"; };
+		C94AF2662B305809006DC380 /* MRVideoEmbedViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRVideoEmbedViewController-iOS.xib"; sourceTree = "<group>"; };
+		C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRPlayProgressViewController-iOS.xib"; sourceTree = "<group>"; };
+		C9F3DFDA2B33CF4B003602E0 /* MRPlayProgressViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRPlayProgressViewController.h; sourceTree = "<group>"; };
+		C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRPlayProgressViewController.m; sourceTree = "<group>"; };
+		C9F3DFEE2B33D56F003602E0 /* MRSyncAVViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRSyncAVViewController.m; sourceTree = "<group>"; };
+		C9F3DFEF2B33D56F003602E0 /* MRSyncAVViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRSyncAVViewController-iOS.xib"; sourceTree = "<group>"; };
+		C9F3DFF02B33D56F003602E0 /* MRSyncAVViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRSyncAVViewController.h; sourceTree = "<group>"; };
+		DD2EADF4244C923600B057DE /* MRNavigationController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRNavigationController.h; sourceTree = "<group>"; };
+		DD2EADF5244C923600B057DE /* MRNavigationController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRNavigationController.m; sourceTree = "<group>"; };
+		DD2EADF7244C9CE500B057DE /* MRTableViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MRTableViewController.h; sourceTree = "<group>"; };
+		DD2EADF8244C9CE500B057DE /* MRTableViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MRTableViewController.m; sourceTree = "<group>"; };
+		DD469DEF294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioQueueViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD469DF0294621E8004F5F39 /* MRAudioQueueViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioQueueViewController.h; sourceTree = "<group>"; };
+		DD469DF2294621E8004F5F39 /* MRAudioQueueViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioQueueViewController.m; sourceTree = "<group>"; };
+		DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_es2.fsh; sourceTree = "<group>"; };
+		DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_es2.fsh; sourceTree = "<group>"; };
+		DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_es2.fsh; sourceTree = "<group>"; };
+		DD53138629443F4400185AD5 /* MRGLES2ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2ViewController.m; sourceTree = "<group>"; };
+		DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_es2.fsh; sourceTree = "<group>"; };
+		DD53138829443F4400185AD5 /* MRGLES2ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2ViewController.h; sourceTree = "<group>"; };
+		DD53138929443F4400185AD5 /* common_es2.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_es2.vsh; sourceTree = "<group>"; };
+		DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGLES2ViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5313922944403B00185AD5 /* MRGLES2RGBXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2RGBXView.m; sourceTree = "<group>"; };
+		DD5313932944403B00185AD5 /* MRGLES2RGBXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2RGBXView.h; sourceTree = "<group>"; };
+		DD5313952944410500185AD5 /* MROpenGLHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLHelper.m; sourceTree = "<group>"; };
+		DD5313962944410500185AD5 /* MROpenGLCompiler.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MROpenGLCompiler.m; sourceTree = "<group>"; };
+		DD5313972944410600185AD5 /* MROpenGLHelper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLHelper.h; sourceTree = "<group>"; };
+		DD5313982944410600185AD5 /* MROpenGLCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MROpenGLCompiler.h; sourceTree = "<group>"; };
+		DD53139E29448BC000185AD5 /* MRGLES2NV12View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2NV12View.h; sourceTree = "<group>"; };
+		DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2NV12View.m; sourceTree = "<group>"; };
+		DD5313A12944A4A900185AD5 /* MRGLES2NV21View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2NV21View.m; sourceTree = "<group>"; };
+		DD5313A22944A4A900185AD5 /* MRGLES2NV21View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2NV21View.h; sourceTree = "<group>"; };
+		DD5313A42944AA3100185AD5 /* MRGLES2YUV420PView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES2YUV420PView.m; sourceTree = "<group>"; };
+		DD5313A52944AA3100185AD5 /* MRGLES2YUV420PView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES2YUV420PView.h; sourceTree = "<group>"; };
+		DD5313A82944AD3400185AD5 /* MRGLES3RGBXView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3RGBXView.h; sourceTree = "<group>"; };
+		DD5313A92944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_NV21_es3.fsh; sourceTree = "<group>"; };
+		DD5313AA2944AD3400185AD5 /* 3_sampler2D_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 3_sampler2D_es3.fsh; sourceTree = "<group>"; };
+		DD5313AB2944AD3400185AD5 /* MRGLES3ViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3ViewController.m; sourceTree = "<group>"; };
+		DD5313AC2944AD3400185AD5 /* MRGLES3NV12View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3NV12View.h; sourceTree = "<group>"; };
+		DD5313AD2944AD3400185AD5 /* 2_sampler2D_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 2_sampler2D_es3.fsh; sourceTree = "<group>"; };
+		DD5313AE2944AD3400185AD5 /* 1_sampler2D_es3.fsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = 1_sampler2D_es3.fsh; sourceTree = "<group>"; };
+		DD5313AF2944AD3400185AD5 /* MRGLES3NV21View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3NV21View.m; sourceTree = "<group>"; };
+		DD5313B02944AD3400185AD5 /* MRGLES3ViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGLES3ViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5313B12944AD3400185AD5 /* MRGLES3YUV420PView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3YUV420PView.m; sourceTree = "<group>"; };
+		DD5313B22944AD3400185AD5 /* MRGLES3RGBXView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3RGBXView.m; sourceTree = "<group>"; };
+		DD5313B32944AD3400185AD5 /* MRGLES3NV12View.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLES3NV12View.m; sourceTree = "<group>"; };
+		DD5313B42944AD3400185AD5 /* MRGLES3ViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3ViewController.h; sourceTree = "<group>"; };
+		DD5313B52944AD3400185AD5 /* MRGLES3NV21View.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3NV21View.h; sourceTree = "<group>"; };
+		DD5313B62944AD3400185AD5 /* MRGLES3YUV420PView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLES3YUV420PView.h; sourceTree = "<group>"; };
+		DD5313B72944AD3400185AD5 /* common_es3.vsh */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.glsl; path = common_es3.vsh; sourceTree = "<group>"; };
+		DD5313C42944AEBA00185AD5 /* MRMetalYUV420PPipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalYUV420PPipeline.m; sourceTree = "<group>"; };
+		DD5313C52944AEBA00185AD5 /* MRMetalNV21Pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalNV21Pipeline.h; sourceTree = "<group>"; };
+		DD5313C62944AEBA00185AD5 /* MRMetalYUYV422Pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalYUYV422Pipeline.h; sourceTree = "<group>"; };
+		DD5313C72944AEBA00185AD5 /* MRMetalNV12Pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalNV12Pipeline.h; sourceTree = "<group>"; };
+		DD5313C82944AEBA00185AD5 /* MRMetalView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalView.m; sourceTree = "<group>"; };
+		DD5313C92944AEBA00185AD5 /* MRMetalBasePipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalBasePipeline.m; sourceTree = "<group>"; };
+		DD5313CA2944AEBA00185AD5 /* MRMetalViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalViewController.m; sourceTree = "<group>"; };
+		DD5313CB2944AEBA00185AD5 /* MRMetalShaders.metal */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.metal; path = MRMetalShaders.metal; sourceTree = "<group>"; };
+		DD5313CC2944AEBA00185AD5 /* MRMetalUYVY422Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalUYVY422Pipeline.m; sourceTree = "<group>"; };
+		DD5313CE2944AEBA00185AD5 /* MRMetalOffscreenRendering.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalOffscreenRendering.m; sourceTree = "<group>"; };
+		DD5313CF2944AEBA00185AD5 /* AAPLMathUtilities.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AAPLMathUtilities.h; sourceTree = "<group>"; };
+		DD5313D02944AEBA00185AD5 /* MRMetalBGRAPipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalBGRAPipeline.m; sourceTree = "<group>"; };
+		DD5313D12944AEBA00185AD5 /* MRMetalNV21Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalNV21Pipeline.m; sourceTree = "<group>"; };
+		DD5313D22944AEBA00185AD5 /* MRMetalYUV420PPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalYUV420PPipeline.h; sourceTree = "<group>"; };
+		DD5313D32944AEBA00185AD5 /* MRMetalBasePipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalBasePipeline.h; sourceTree = "<group>"; };
+		DD5313D42944AEBA00185AD5 /* MRMetalViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalViewController.h; sourceTree = "<group>"; };
+		DD5313D52944AEBA00185AD5 /* MRMetalView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalView.h; sourceTree = "<group>"; };
+		DD5313D62944AEBA00185AD5 /* MRMetalShaderTypes.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalShaderTypes.h; sourceTree = "<group>"; };
+		DD5313D72944AEBA00185AD5 /* MRMetalNV12Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalNV12Pipeline.m; sourceTree = "<group>"; };
+		DD5313D82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMetalYUYV422Pipeline.m; sourceTree = "<group>"; };
+		DD5313D92944AEBA00185AD5 /* MRMetalUYVY422Pipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalUYVY422Pipeline.h; sourceTree = "<group>"; };
+		DD5313DA2944AEBA00185AD5 /* AAPLMathUtilities.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AAPLMathUtilities.m; sourceTree = "<group>"; };
+		DD5313DB2944AEBA00185AD5 /* MRMetalBGRAPipeline.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalBGRAPipeline.h; sourceTree = "<group>"; };
+		DD5313DC2944AEBA00185AD5 /* MRMetalOffscreenRendering.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMetalOffscreenRendering.h; sourceTree = "<group>"; };
+		DD5313EA2944B0D000185AD5 /* MRMetalViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRMetalViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5313F32944B2AF00185AD5 /* MRRWeakProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRRWeakProxy.m; path = ../../Common/Util/MRRWeakProxy.m; sourceTree = "<group>"; };
+		DD5313F42944B2AF00185AD5 /* MRRWeakProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRRWeakProxy.h; path = ../../Common/Util/MRRWeakProxy.h; sourceTree = "<group>"; };
+		DD5313F52944B2AF00185AD5 /* NSFileManager+Sandbox.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "NSFileManager+Sandbox.h"; path = "../../Common/Util/NSFileManager+Sandbox.h"; sourceTree = "<group>"; };
+		DD5313F62944B2AF00185AD5 /* NSFileManager+Sandbox.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "NSFileManager+Sandbox.m"; path = "../../Common/Util/NSFileManager+Sandbox.m"; sourceTree = "<group>"; };
+		DD5313F92944B3DC00185AD5 /* CoreServices.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreServices.framework; path = System/Library/Frameworks/CoreServices.framework; sourceTree = SDKROOT; };
+		DD5314132945DDC600185AD5 /* MRAudioUnitViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioUnitViewController.h; sourceTree = "<group>"; };
+		DD5314142945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioUnitViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD5314152945DDC600185AD5 /* MRAudioUnitViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioUnitViewController.m; sourceTree = "<group>"; };
+		DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "FFmpegTutorial-iOS-Bridging-Header.h"; sourceTree = "<group>"; };
+		DD97CCCC293B5BD400797F3B /* MRCrossPlatformUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MRCrossPlatformUtil.h; path = ../../Common/MRCrossPlatformUtil.h; sourceTree = "<group>"; };
+		DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MRCrossPlatformUtil.m; path = ../../Common/MRCrossPlatformUtil.m; sourceTree = "<group>"; };
+		DD97CCD0293B5BE900797F3B /* MRMovieProberViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRMovieProberViewController.h; sourceTree = "<group>"; };
+		DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRMovieProberViewController.m; sourceTree = "<group>"; };
+		DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGLVersionViewController.m; sourceTree = "<group>"; };
+		DD97CCD6293B5BE900797F3B /* MRGLVersionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGLVersionViewController.h; sourceTree = "<group>"; };
+		DD97CCD7293B5BE900797F3B /* MRGLVersionViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGLVersionViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CCD9293B5BE900797F3B /* MRReadPacketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRReadPacketViewController.h; sourceTree = "<group>"; };
+		DD97CCDB293B5BE900797F3B /* MRReadPacketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRReadPacketViewController.m; sourceTree = "<group>"; };
+		DD97CCDD293B5BE900797F3B /* MRCustomThreadViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCustomThreadViewController.h; sourceTree = "<group>"; };
+		DD97CCDE293B5BE900797F3B /* MRCustomThreadViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCustomThreadViewController.m; sourceTree = "<group>"; };
+		DD97CCE1293B5BE900797F3B /* MRCustomDecoderViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCustomDecoderViewController.h; sourceTree = "<group>"; };
+		DD97CCE3293B5BE900797F3B /* MRCustomDecoderViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCustomDecoderViewController.m; sourceTree = "<group>"; };
+		DD97CCE5293B5BE900797F3B /* MRDecodePacketViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRDecodePacketViewController.h; sourceTree = "<group>"; };
+		DD97CCE7293B5BE900797F3B /* MRDecodePacketViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRDecodePacketViewController.m; sourceTree = "<group>"; };
+		DD97CCF8293B744000797F3B /* MRCustomThreadViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRCustomThreadViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CCFA293B74C100797F3B /* MRMovieProberViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRMovieProberViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CCFC293B7C4700797F3B /* MRReadPacketViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRReadPacketViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CCFE293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRDecodePacketViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CD00293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRCustomDecoderViewController-iOS.xib"; sourceTree = "<group>"; };
+		DD97CD44293C53D500797F3B /* MRVideoRenderingProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingProtocol.h; sourceTree = "<group>"; };
+		DD97CD5B293C53D500797F3B /* MRVideoRenderingBasicProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingBasicProtocol.h; sourceTree = "<group>"; };
+		DD97CD5C293C53D500797F3B /* MRVideoRenderingV2Protocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRVideoRenderingV2Protocol.h; sourceTree = "<group>"; };
+		DD97CD5E293C53D500797F3B /* MRGAMViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRGAMViewController.h; sourceTree = "<group>"; };
+		DD97CD5F293C53D500797F3B /* MRCoreMediaView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreMediaView.m; sourceTree = "<group>"; };
+		DD97CD60293C53D500797F3B /* MRCoreGraphicsView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreGraphicsView.m; sourceTree = "<group>"; };
+		DD97CD61293C53D500797F3B /* MRCoreAnimationView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreAnimationView.h; sourceTree = "<group>"; };
+		DD97CD62293C53D500797F3B /* MRGAMViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRGAMViewController.m; sourceTree = "<group>"; };
+		DD97CD63293C53D500797F3B /* MRCoreGraphicsView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreGraphicsView.h; sourceTree = "<group>"; };
+		DD97CD65293C53D500797F3B /* MRCoreMediaView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRCoreMediaView.h; sourceTree = "<group>"; };
+		DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRCoreAnimationView.m; sourceTree = "<group>"; };
+		DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRGAMViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDBFE772294EF8C400403352 /* MRAudioRendererViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRendererViewController.h; sourceTree = "<group>"; };
+		DDBFE773294EF8C400403352 /* MRAudioRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioRenderer.m; sourceTree = "<group>"; };
+		DDBFE775294EF8C400403352 /* MRAudioUnitRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioUnitRenderer.m; sourceTree = "<group>"; };
+		DDBFE776294EF8C400403352 /* MRAudioQueueRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioQueueRenderer.h; sourceTree = "<group>"; };
+		DDBFE777294EF8C400403352 /* MRAudioUnitRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioUnitRenderer.h; sourceTree = "<group>"; };
+		DDBFE778294EF8C400403352 /* MRAudioRendererImpProtocol.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRendererImpProtocol.h; sourceTree = "<group>"; };
+		DDBFE779294EF8C400403352 /* MRAudioQueueRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioQueueRenderer.m; sourceTree = "<group>"; };
+		DDBFE77B294EF8C400403352 /* MRAudioRendererViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioRendererViewController.m; sourceTree = "<group>"; };
+		DDBFE77C294EF8C400403352 /* MRAudioRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioRenderer.h; sourceTree = "<group>"; };
+		DDBFE77D294EF8C400403352 /* MRAudioRendererViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioRendererViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRHaveFunVideoRenderer.m; sourceTree = "<group>"; };
+		DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRHaveFunViewController.m; sourceTree = "<group>"; };
+		DDCC56AE294EC7090024A4D7 /* MRHaveFunVideoRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunVideoRenderer.h; sourceTree = "<group>"; };
+		DDCC56B0294EC7090024A4D7 /* MRHaveFunViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRHaveFunViewController.h; sourceTree = "<group>"; };
+		DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRHaveFunViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDE0751B2B31DBB4004B7042 /* MRAudioEmbedViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MRAudioEmbedViewController.m; sourceTree = "<group>"; };
+		DDE0751C2B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = "MRAudioEmbedViewController-iOS.xib"; sourceTree = "<group>"; };
+		DDE0751D2B31DBB4004B7042 /* MRAudioEmbedViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MRAudioEmbedViewController.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6003F587195388D20070C39A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */,
+				6003F592195388D20070C39A /* UIKit.framework in Frameworks */,
+				C90157D52DACDFFB004ED6F2 /* FFmpegTutorial.framework in Frameworks */,
+				6003F58E195388D20070C39A /* Foundation.framework in Frameworks */,
+				DD5313FA2944B3DC00185AD5 /* CoreServices.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		6003F581195388D10070C39A = {
+			isa = PBXGroup;
+			children = (
+				6003F593195388D20070C39A /* iOSExample */,
+				6003F58C195388D20070C39A /* Frameworks */,
+				6003F58B195388D20070C39A /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		6003F58B195388D20070C39A /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				6003F58A195388D20070C39A /* FFmpegTutorial.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		6003F58C195388D20070C39A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C90157D42DACDFFA004ED6F2 /* FFmpegTutorial.framework */,
+				DD5313F92944B3DC00185AD5 /* CoreServices.framework */,
+				6003F58D195388D20070C39A /* Foundation.framework */,
+				6003F58F195388D20070C39A /* CoreGraphics.framework */,
+				6003F591195388D20070C39A /* UIKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		6003F593195388D20070C39A /* iOSExample */ = {
+			isa = PBXGroup;
+			children = (
+				6003F59C195388D20070C39A /* MRAppDelegate.h */,
+				6003F59D195388D20070C39A /* MRAppDelegate.m */,
+				DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */,
+				DD97CD14293C53D500797F3B /* 2.Video Rendering */,
+				DD5314012945DDC600185AD5 /* 3.Audio Rendering */,
+				C94AF2172B3040EE006DC380 /* 4.Movie Player */,
+				DDCC56AB294EC7090024A4D7 /* 5.Have Fun */,
+				DD4CCBEC28F1A72B0047F238 /* RootViewController */,
+				6003F594195388D20070C39A /* Supporting Files */,
+			);
+			path = iOSExample;
+			sourceTree = "<group>";
+		};
+		6003F594195388D20070C39A /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313F22944B29D00185AD5 /* MRUtil */,
+				DD97CCCC293B5BD400797F3B /* MRCrossPlatformUtil.h */,
+				DD97CCCD293B5BD400797F3B /* MRCrossPlatformUtil.m */,
+				DD4CCBEA28F1A6DF0047F238 /* NavigationController */,
+				DD5BA15C248893A20093D46C /* FFmpegTutorial-iOS-Bridging-Header.h */,
+				6003F5A8195388D20070C39A /* Images.xcassets */,
+				71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */,
+				873B8AEA1B1F5CCA007FD442 /* Main.storyboard */,
+				6003F595195388D20070C39A /* iOSExample.plist */,
+				6003F596195388D20070C39A /* InfoPlist.strings */,
+				6003F599195388D20070C39A /* main.m */,
+				6003F59B195388D20070C39A /* iOSExample.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		C94AF2172B3040EE006DC380 /* 4.Movie Player */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF2182B3040EE006DC380 /* PacketQueue */,
+				C94AF2352B3040EE006DC380 /* VideoFrameQueue */,
+				C94AF2602B305659006DC380 /* VideoEmbed */,
+				DDE075192B31DBB4004B7042 /* AudioEmbed */,
+				C9F3DFD82B33CF4B003602E0 /* PlayProgress */,
+				C9F3DFED2B33D56F003602E0 /* SyncAV */,
+			);
+			name = "4.Movie Player";
+			path = "../../Common/4.Movie Player";
+			sourceTree = "<group>";
+		};
+		C94AF2182B3040EE006DC380 /* PacketQueue */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF21A2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib */,
+				C94AF21C2B3040EE006DC380 /* MRPacketQueueViewController.h */,
+				C94AF2192B3040EE006DC380 /* MRPacketQueueViewController.m */,
+			);
+			path = PacketQueue;
+			sourceTree = "<group>";
+		};
+		C94AF2352B3040EE006DC380 /* VideoFrameQueue */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF2362B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib */,
+				C94AF2372B3040EE006DC380 /* MRVideoFrameQueueViewController.h */,
+				C94AF2392B3040EE006DC380 /* MRVideoFrameQueueViewController.m */,
+			);
+			path = VideoFrameQueue;
+			sourceTree = "<group>";
+		};
+		C94AF2602B305659006DC380 /* VideoEmbed */ = {
+			isa = PBXGroup;
+			children = (
+				C94AF2662B305809006DC380 /* MRVideoEmbedViewController-iOS.xib */,
+				C94AF2632B305659006DC380 /* MRVideoEmbedViewController.h */,
+				C94AF2612B305659006DC380 /* MRVideoEmbedViewController.m */,
+			);
+			path = VideoEmbed;
+			sourceTree = "<group>";
+		};
+		C9F3DFD82B33CF4B003602E0 /* PlayProgress */ = {
+			isa = PBXGroup;
+			children = (
+				C9F3DFD92B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib */,
+				C9F3DFDA2B33CF4B003602E0 /* MRPlayProgressViewController.h */,
+				C9F3DFDC2B33CF4B003602E0 /* MRPlayProgressViewController.m */,
+			);
+			path = PlayProgress;
+			sourceTree = "<group>";
+		};
+		C9F3DFED2B33D56F003602E0 /* SyncAV */ = {
+			isa = PBXGroup;
+			children = (
+				C9F3DFEF2B33D56F003602E0 /* MRSyncAVViewController-iOS.xib */,
+				C9F3DFF02B33D56F003602E0 /* MRSyncAVViewController.h */,
+				C9F3DFEE2B33D56F003602E0 /* MRSyncAVViewController.m */,
+			);
+			path = SyncAV;
+			sourceTree = "<group>";
+		};
+		DD469DEE294621E8004F5F39 /* AudioQueue */ = {
+			isa = PBXGroup;
+			children = (
+				DD469DEF294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib */,
+				DD469DF0294621E8004F5F39 /* MRAudioQueueViewController.h */,
+				DD469DF2294621E8004F5F39 /* MRAudioQueueViewController.m */,
+			);
+			path = AudioQueue;
+			sourceTree = "<group>";
+		};
+		DD4CCBE828F1A65C0047F238 /* 1.The Basis Of AV */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCD3293B5BE900797F3B /* OpenGL Version */,
+				DD97CCDC293B5BE900797F3B /* Custom Thread */,
+				DD97CCCF293B5BE900797F3B /* Movie Prober */,
+				DD97CCD8293B5BE900797F3B /* Read Packet */,
+				DD97CCE4293B5BE900797F3B /* Decode Packet */,
+				DD97CCE0293B5BE900797F3B /* Custom Decoder */,
+			);
+			path = "1.The Basis Of AV";
+			sourceTree = "<group>";
+		};
+		DD4CCBEA28F1A6DF0047F238 /* NavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				DD2EADF4244C923600B057DE /* MRNavigationController.h */,
+				DD2EADF5244C923600B057DE /* MRNavigationController.m */,
+			);
+			path = NavigationController;
+			sourceTree = "<group>";
+		};
+		DD4CCBEC28F1A72B0047F238 /* RootViewController */ = {
+			isa = PBXGroup;
+			children = (
+				DD2EADF7244C9CE500B057DE /* MRTableViewController.h */,
+				DD2EADF8244C9CE500B057DE /* MRTableViewController.m */,
+			);
+			path = RootViewController;
+			sourceTree = "<group>";
+		};
+		DD53138229443F4400185AD5 /* OpenGL ES2 */ = {
+			isa = PBXGroup;
+			children = (
+				DD53138729443F4400185AD5 /* 1_sampler2D_es2.fsh */,
+				DD53138529443F4400185AD5 /* 2_sampler2D_es2.fsh */,
+				DD53138429443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh */,
+				DD53138329443F4400185AD5 /* 3_sampler2D_es2.fsh */,
+				DD53138929443F4400185AD5 /* common_es2.vsh */,
+				DD5313932944403B00185AD5 /* MRGLES2RGBXView.h */,
+				DD5313922944403B00185AD5 /* MRGLES2RGBXView.m */,
+				DD53139E29448BC000185AD5 /* MRGLES2NV12View.h */,
+				DD53139F29448BC000185AD5 /* MRGLES2NV12View.m */,
+				DD5313A22944A4A900185AD5 /* MRGLES2NV21View.h */,
+				DD5313A12944A4A900185AD5 /* MRGLES2NV21View.m */,
+				DD5313A52944AA3100185AD5 /* MRGLES2YUV420PView.h */,
+				DD5313A42944AA3100185AD5 /* MRGLES2YUV420PView.m */,
+				DD53138A29443F4400185AD5 /* MRGLES2ViewController-iOS.xib */,
+				DD53138829443F4400185AD5 /* MRGLES2ViewController.h */,
+				DD53138629443F4400185AD5 /* MRGLES2ViewController.m */,
+			);
+			path = "OpenGL ES2";
+			sourceTree = "<group>";
+		};
+		DD5313A72944AD3400185AD5 /* OpenGL ES3 */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313AE2944AD3400185AD5 /* 1_sampler2D_es3.fsh */,
+				DD5313AD2944AD3400185AD5 /* 2_sampler2D_es3.fsh */,
+				DD5313A92944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh */,
+				DD5313AA2944AD3400185AD5 /* 3_sampler2D_es3.fsh */,
+				DD5313B72944AD3400185AD5 /* common_es3.vsh */,
+				DD5313AC2944AD3400185AD5 /* MRGLES3NV12View.h */,
+				DD5313B32944AD3400185AD5 /* MRGLES3NV12View.m */,
+				DD5313B52944AD3400185AD5 /* MRGLES3NV21View.h */,
+				DD5313AF2944AD3400185AD5 /* MRGLES3NV21View.m */,
+				DD5313A82944AD3400185AD5 /* MRGLES3RGBXView.h */,
+				DD5313B22944AD3400185AD5 /* MRGLES3RGBXView.m */,
+				DD5313B02944AD3400185AD5 /* MRGLES3ViewController-iOS.xib */,
+				DD5313B42944AD3400185AD5 /* MRGLES3ViewController.h */,
+				DD5313AB2944AD3400185AD5 /* MRGLES3ViewController.m */,
+				DD5313B62944AD3400185AD5 /* MRGLES3YUV420PView.h */,
+				DD5313B12944AD3400185AD5 /* MRGLES3YUV420PView.m */,
+			);
+			path = "OpenGL ES3";
+			sourceTree = "<group>";
+		};
+		DD5313C32944AEBA00185AD5 /* Metal */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313CF2944AEBA00185AD5 /* AAPLMathUtilities.h */,
+				DD5313DA2944AEBA00185AD5 /* AAPLMathUtilities.m */,
+				DD5313D32944AEBA00185AD5 /* MRMetalBasePipeline.h */,
+				DD5313C92944AEBA00185AD5 /* MRMetalBasePipeline.m */,
+				DD5313DB2944AEBA00185AD5 /* MRMetalBGRAPipeline.h */,
+				DD5313D02944AEBA00185AD5 /* MRMetalBGRAPipeline.m */,
+				DD5313C72944AEBA00185AD5 /* MRMetalNV12Pipeline.h */,
+				DD5313D72944AEBA00185AD5 /* MRMetalNV12Pipeline.m */,
+				DD5313C52944AEBA00185AD5 /* MRMetalNV21Pipeline.h */,
+				DD5313D12944AEBA00185AD5 /* MRMetalNV21Pipeline.m */,
+				DD5313DC2944AEBA00185AD5 /* MRMetalOffscreenRendering.h */,
+				DD5313CE2944AEBA00185AD5 /* MRMetalOffscreenRendering.m */,
+				DD5313CB2944AEBA00185AD5 /* MRMetalShaders.metal */,
+				DD5313D62944AEBA00185AD5 /* MRMetalShaderTypes.h */,
+				DD5313D92944AEBA00185AD5 /* MRMetalUYVY422Pipeline.h */,
+				DD5313CC2944AEBA00185AD5 /* MRMetalUYVY422Pipeline.m */,
+				DD5313D52944AEBA00185AD5 /* MRMetalView.h */,
+				DD5313C82944AEBA00185AD5 /* MRMetalView.m */,
+				DD5313D42944AEBA00185AD5 /* MRMetalViewController.h */,
+				DD5313CA2944AEBA00185AD5 /* MRMetalViewController.m */,
+				DD5313EA2944B0D000185AD5 /* MRMetalViewController-iOS.xib */,
+				DD5313D22944AEBA00185AD5 /* MRMetalYUV420PPipeline.h */,
+				DD5313C42944AEBA00185AD5 /* MRMetalYUV420PPipeline.m */,
+				DD5313C62944AEBA00185AD5 /* MRMetalYUYV422Pipeline.h */,
+				DD5313D82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m */,
+			);
+			path = Metal;
+			sourceTree = "<group>";
+		};
+		DD5313F22944B29D00185AD5 /* MRUtil */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313F42944B2AF00185AD5 /* MRRWeakProxy.h */,
+				DD5313F32944B2AF00185AD5 /* MRRWeakProxy.m */,
+				DD5313F52944B2AF00185AD5 /* NSFileManager+Sandbox.h */,
+				DD5313F62944B2AF00185AD5 /* NSFileManager+Sandbox.m */,
+			);
+			name = MRUtil;
+			sourceTree = "<group>";
+		};
+		DD5314012945DDC600185AD5 /* 3.Audio Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				DD5314122945DDC600185AD5 /* AudioUnit */,
+				DD469DEE294621E8004F5F39 /* AudioQueue */,
+				DDBFE771294EF8C400403352 /* AudioRenderer */,
+			);
+			name = "3.Audio Rendering";
+			path = "../../Common/3.Audio Rendering";
+			sourceTree = "<group>";
+		};
+		DD5314122945DDC600185AD5 /* AudioUnit */ = {
+			isa = PBXGroup;
+			children = (
+				DD5314132945DDC600185AD5 /* MRAudioUnitViewController.h */,
+				DD5314142945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib */,
+				DD5314152945DDC600185AD5 /* MRAudioUnitViewController.m */,
+			);
+			path = AudioUnit;
+			sourceTree = "<group>";
+		};
+		DD97CCCF293B5BE900797F3B /* Movie Prober */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCD0293B5BE900797F3B /* MRMovieProberViewController.h */,
+				DD97CCD2293B5BE900797F3B /* MRMovieProberViewController.m */,
+				DD97CCFA293B74C100797F3B /* MRMovieProberViewController-iOS.xib */,
+			);
+			name = "Movie Prober";
+			path = "../../../Common/1.The Basis Of AV/Movie Prober";
+			sourceTree = "<group>";
+		};
+		DD97CCD3293B5BE900797F3B /* OpenGL Version */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCD7293B5BE900797F3B /* MRGLVersionViewController-iOS.xib */,
+				DD97CCD6293B5BE900797F3B /* MRGLVersionViewController.h */,
+				DD97CCD4293B5BE900797F3B /* MRGLVersionViewController.m */,
+			);
+			name = "OpenGL Version";
+			path = "../../../Common/1.The Basis Of AV/OpenGL Version";
+			sourceTree = "<group>";
+		};
+		DD97CCD8293B5BE900797F3B /* Read Packet */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCD9293B5BE900797F3B /* MRReadPacketViewController.h */,
+				DD97CCDB293B5BE900797F3B /* MRReadPacketViewController.m */,
+				DD97CCFC293B7C4700797F3B /* MRReadPacketViewController-iOS.xib */,
+			);
+			name = "Read Packet";
+			path = "../../../Common/1.The Basis Of AV/Read Packet";
+			sourceTree = "<group>";
+		};
+		DD97CCDC293B5BE900797F3B /* Custom Thread */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCDD293B5BE900797F3B /* MRCustomThreadViewController.h */,
+				DD97CCDE293B5BE900797F3B /* MRCustomThreadViewController.m */,
+				DD97CCF8293B744000797F3B /* MRCustomThreadViewController-iOS.xib */,
+			);
+			name = "Custom Thread";
+			path = "../../../Common/1.The Basis Of AV/Custom Thread";
+			sourceTree = "<group>";
+		};
+		DD97CCE0293B5BE900797F3B /* Custom Decoder */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCE1293B5BE900797F3B /* MRCustomDecoderViewController.h */,
+				DD97CCE3293B5BE900797F3B /* MRCustomDecoderViewController.m */,
+				DD97CD00293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib */,
+			);
+			name = "Custom Decoder";
+			path = "../../../Common/1.The Basis Of AV/Custom Decoder";
+			sourceTree = "<group>";
+		};
+		DD97CCE4293B5BE900797F3B /* Decode Packet */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CCE5293B5BE900797F3B /* MRDecodePacketViewController.h */,
+				DD97CCE7293B5BE900797F3B /* MRDecodePacketViewController.m */,
+				DD97CCFE293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib */,
+			);
+			name = "Decode Packet";
+			path = "../../../Common/1.The Basis Of AV/Decode Packet";
+			sourceTree = "<group>";
+		};
+		DD97CD14293C53D500797F3B /* 2.Video Rendering */ = {
+			isa = PBXGroup;
+			children = (
+				DD5313982944410600185AD5 /* MROpenGLCompiler.h */,
+				DD5313962944410500185AD5 /* MROpenGLCompiler.m */,
+				DD5313972944410600185AD5 /* MROpenGLHelper.h */,
+				DD5313952944410500185AD5 /* MROpenGLHelper.m */,
+				DD97CD44293C53D500797F3B /* MRVideoRenderingProtocol.h */,
+				DD97CD5B293C53D500797F3B /* MRVideoRenderingBasicProtocol.h */,
+				DD97CD5C293C53D500797F3B /* MRVideoRenderingV2Protocol.h */,
+				DD97CD5D293C53D500797F3B /* Core-Graphics-Animation-Media */,
+				DD53138229443F4400185AD5 /* OpenGL ES2 */,
+				DD5313A72944AD3400185AD5 /* OpenGL ES3 */,
+				DD5313C32944AEBA00185AD5 /* Metal */,
+			);
+			name = "2.Video Rendering";
+			path = "../../Common/2.Video Rendering";
+			sourceTree = "<group>";
+		};
+		DD97CD5D293C53D500797F3B /* Core-Graphics-Animation-Media */ = {
+			isa = PBXGroup;
+			children = (
+				DD97CD61293C53D500797F3B /* MRCoreAnimationView.h */,
+				DD97CD66293C53D500797F3B /* MRCoreAnimationView.m */,
+				DD97CD63293C53D500797F3B /* MRCoreGraphicsView.h */,
+				DD97CD60293C53D500797F3B /* MRCoreGraphicsView.m */,
+				DD97CD65293C53D500797F3B /* MRCoreMediaView.h */,
+				DD97CD5F293C53D500797F3B /* MRCoreMediaView.m */,
+				DD97CD5E293C53D500797F3B /* MRGAMViewController.h */,
+				DD97CD62293C53D500797F3B /* MRGAMViewController.m */,
+				DD97CDB7293C775E00797F3B /* MRGAMViewController-iOS.xib */,
+			);
+			path = "Core-Graphics-Animation-Media";
+			sourceTree = "<group>";
+		};
+		DDBFE771294EF8C400403352 /* AudioRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFE774294EF8C400403352 /* AudioRenderImp */,
+				DDBFE77C294EF8C400403352 /* MRAudioRenderer.h */,
+				DDBFE773294EF8C400403352 /* MRAudioRenderer.m */,
+				DDBFE772294EF8C400403352 /* MRAudioRendererViewController.h */,
+				DDBFE77B294EF8C400403352 /* MRAudioRendererViewController.m */,
+				DDBFE77D294EF8C400403352 /* MRAudioRendererViewController-iOS.xib */,
+			);
+			path = AudioRenderer;
+			sourceTree = "<group>";
+		};
+		DDBFE774294EF8C400403352 /* AudioRenderImp */ = {
+			isa = PBXGroup;
+			children = (
+				DDBFE775294EF8C400403352 /* MRAudioUnitRenderer.m */,
+				DDBFE776294EF8C400403352 /* MRAudioQueueRenderer.h */,
+				DDBFE777294EF8C400403352 /* MRAudioUnitRenderer.h */,
+				DDBFE778294EF8C400403352 /* MRAudioRendererImpProtocol.h */,
+				DDBFE779294EF8C400403352 /* MRAudioQueueRenderer.m */,
+			);
+			path = AudioRenderImp;
+			sourceTree = "<group>";
+		};
+		DDCC56AB294EC7090024A4D7 /* 5.Have Fun */ = {
+			isa = PBXGroup;
+			children = (
+				DDCC56AE294EC7090024A4D7 /* MRHaveFunVideoRenderer.h */,
+				DDCC56AC294EC7090024A4D7 /* MRHaveFunVideoRenderer.m */,
+				DDCC56B0294EC7090024A4D7 /* MRHaveFunViewController.h */,
+				DDCC56AD294EC7090024A4D7 /* MRHaveFunViewController.m */,
+				DDCC56B4294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib */,
+			);
+			name = "5.Have Fun";
+			path = "../../Common/5.Have Fun";
+			sourceTree = "<group>";
+		};
+		DDE075192B31DBB4004B7042 /* AudioEmbed */ = {
+			isa = PBXGroup;
+			children = (
+				DDE0751C2B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib */,
+				DDE0751D2B31DBB4004B7042 /* MRAudioEmbedViewController.h */,
+				DDE0751B2B31DBB4004B7042 /* MRAudioEmbedViewController.m */,
+			);
+			path = AudioEmbed;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		6003F589195388D20070C39A /* iOSExample */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "iOSExample" */;
+			buildPhases = (
+				6003F586195388D20070C39A /* Sources */,
+				6003F587195388D20070C39A /* Frameworks */,
+				6003F588195388D20070C39A /* Resources */,
+				C90157D32DACDFCF004ED6F2 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iOSExample;
+			productName = FFmpegTutotial;
+			productReference = 6003F58A195388D20070C39A /* FFmpegTutorial.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6003F582195388D10070C39A /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = MR;
+				LastUpgradeCheck = 1150;
+				ORGANIZATIONNAME = "Matt Reach's Awesome FFmpeg Tutotial";
+				TargetAttributes = {
+					6003F589195388D20070C39A = {
+						DevelopmentTeam = 96C96H28CU;
+						LastSwiftMigration = 1150;
+						ProvisioningStyle = Automatic;
+					};
+				};
+			};
+			buildConfigurationList = 6003F585195388D10070C39A /* Build configuration list for PBXProject "iOSExample" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 6003F581195388D10070C39A;
+			productRefGroup = 6003F58B195388D20070C39A /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				6003F589195388D20070C39A /* iOSExample */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		6003F588195388D20070C39A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDBFE783294EF8C400403352 /* MRAudioRendererViewController-iOS.xib in Resources */,
+				873B8AEB1B1F5CCA007FD442 /* Main.storyboard in Resources */,
+				DD97CCFF293B7EAB00797F3B /* MRDecodePacketViewController-iOS.xib in Resources */,
+				DDCC56B5294EC8410024A4D7 /* MRHaveFunViewController-iOS.xib in Resources */,
+				C94AF24C2B3040EE006DC380 /* MRVideoFrameQueueViewController-iOS.xib in Resources */,
+				71719F9F1E33DC2100824A3D /* LaunchScreen.storyboard in Resources */,
+				DD53139129443F4400185AD5 /* MRGLES2ViewController-iOS.xib in Resources */,
+				DD5313B82944AD3400185AD5 /* 2_sampler2D_NV21_es3.fsh in Resources */,
+				DD97CCEC293B5BE900797F3B /* MRGLVersionViewController-iOS.xib in Resources */,
+				C9F3DFF32B33D56F003602E0 /* MRSyncAVViewController-iOS.xib in Resources */,
+				DD97CCFB293B74C100797F3B /* MRMovieProberViewController-iOS.xib in Resources */,
+				DD53138C29443F4400185AD5 /* 2_sampler2D_NV21_es2.fsh in Resources */,
+				DD5313C22944AD3400185AD5 /* common_es3.vsh in Resources */,
+				6003F5A9195388D20070C39A /* Images.xcassets in Resources */,
+				DD97CD01293B7F3100797F3B /* MRCustomDecoderViewController-iOS.xib in Resources */,
+				C94AF23F2B3040EE006DC380 /* MRPacketQueueViewController-iOS.xib in Resources */,
+				DD97CDB8293C775E00797F3B /* MRGAMViewController-iOS.xib in Resources */,
+				6003F598195388D20070C39A /* InfoPlist.strings in Resources */,
+				DD97CCF9293B744000797F3B /* MRCustomThreadViewController-iOS.xib in Resources */,
+				C9F3DFDD2B33CF4B003602E0 /* MRPlayProgressViewController-iOS.xib in Resources */,
+				DD469DF3294621E8004F5F39 /* MRAudioQueueViewController-iOS.xib in Resources */,
+				C94AF2672B305809006DC380 /* MRVideoEmbedViewController-iOS.xib in Resources */,
+				DD97CCFD293B7C4700797F3B /* MRReadPacketViewController-iOS.xib in Resources */,
+				DD5313B92944AD3400185AD5 /* 3_sampler2D_es3.fsh in Resources */,
+				DD5313BB2944AD3400185AD5 /* 2_sampler2D_es3.fsh in Resources */,
+				DD53138F29443F4400185AD5 /* 1_sampler2D_es2.fsh in Resources */,
+				DDE075202B31DBB4004B7042 /* MRAudioEmbedViewController-iOS.xib in Resources */,
+				DD53138D29443F4400185AD5 /* 2_sampler2D_es2.fsh in Resources */,
+				DD5313BE2944AD3400185AD5 /* MRGLES3ViewController-iOS.xib in Resources */,
+				DD5313BC2944AD3400185AD5 /* 1_sampler2D_es3.fsh in Resources */,
+				DD53138B29443F4400185AD5 /* 3_sampler2D_es2.fsh in Resources */,
+				DD53139029443F4400185AD5 /* common_es2.vsh in Resources */,
+				DD53141E2945DDC600185AD5 /* MRAudioUnitViewController-iOS.xib in Resources */,
+				DD5313EB2944B0D000185AD5 /* MRMetalViewController-iOS.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		6003F586195388D20070C39A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DD2EADF9244C9CE500B057DE /* MRTableViewController.m in Sources */,
+				C94AF23E2B3040EE006DC380 /* MRPacketQueueViewController.m in Sources */,
+				DD97CDA4293C53D600797F3B /* MRCoreMediaView.m in Sources */,
+				DD5313BD2944AD3400185AD5 /* MRGLES3NV21View.m in Sources */,
+				DD5313E02944AEBA00185AD5 /* MRMetalViewController.m in Sources */,
+				DDCC56B2294EC7090024A4D7 /* MRHaveFunViewController.m in Sources */,
+				DD5313A32944A4A900185AD5 /* MRGLES2NV21View.m in Sources */,
+				DD5313A62944AA3100185AD5 /* MRGLES2YUV420PView.m in Sources */,
+				DD97CCEA293B5BE900797F3B /* MRGLVersionViewController.m in Sources */,
+				DD97CCCE293B5BD400797F3B /* MRCrossPlatformUtil.m in Sources */,
+				DD53141F2945DDC600185AD5 /* MRAudioUnitViewController.m in Sources */,
+				DDCC56B1294EC7090024A4D7 /* MRHaveFunVideoRenderer.m in Sources */,
+				6003F59E195388D20070C39A /* MRAppDelegate.m in Sources */,
+				DD97CCEE293B5BE900797F3B /* MRReadPacketViewController.m in Sources */,
+				DD5313E42944AEBA00185AD5 /* MRMetalOffscreenRendering.m in Sources */,
+				DD97CCEF293B5BE900797F3B /* MRCustomThreadViewController.m in Sources */,
+				DD5313F72944B2AF00185AD5 /* MRRWeakProxy.m in Sources */,
+				C94AF24E2B3040EE006DC380 /* MRVideoFrameQueueViewController.m in Sources */,
+				DD5313E52944AEBA00185AD5 /* MRMetalBGRAPipeline.m in Sources */,
+				DD469DF5294621E8004F5F39 /* MRAudioQueueViewController.m in Sources */,
+				DD5313E62944AEBA00185AD5 /* MRMetalNV21Pipeline.m in Sources */,
+				DD97CDA6293C53D600797F3B /* MRGAMViewController.m in Sources */,
+				DD5313DE2944AEBA00185AD5 /* MRMetalView.m in Sources */,
+				C9F3DFF22B33D56F003602E0 /* MRSyncAVViewController.m in Sources */,
+				DD97CCF2293B5BE900797F3B /* MRCustomDecoderViewController.m in Sources */,
+				DDBFE77E294EF8C400403352 /* MRAudioRenderer.m in Sources */,
+				DD5313E82944AEBA00185AD5 /* MRMetalYUYV422Pipeline.m in Sources */,
+				DD97CDA5293C53D600797F3B /* MRCoreGraphicsView.m in Sources */,
+				DDE0751F2B31DBB4004B7042 /* MRAudioEmbedViewController.m in Sources */,
+				DD5313DF2944AEBA00185AD5 /* MRMetalBasePipeline.m in Sources */,
+				DD5313E72944AEBA00185AD5 /* MRMetalNV12Pipeline.m in Sources */,
+				DD5313E12944AEBA00185AD5 /* MRMetalShaders.metal in Sources */,
+				DD97CDA8293C53D600797F3B /* MRCoreAnimationView.m in Sources */,
+				DD5313942944403B00185AD5 /* MRGLES2RGBXView.m in Sources */,
+				DD5313BA2944AD3400185AD5 /* MRGLES3ViewController.m in Sources */,
+				DD5313992944410600185AD5 /* MROpenGLHelper.m in Sources */,
+				DD5313E92944AEBA00185AD5 /* AAPLMathUtilities.m in Sources */,
+				DD2EADF6244C923600B057DE /* MRNavigationController.m in Sources */,
+				DD5313E22944AEBA00185AD5 /* MRMetalUYVY422Pipeline.m in Sources */,
+				C9F3DFDF2B33CF4B003602E0 /* MRPlayProgressViewController.m in Sources */,
+				DD5313F82944B2AF00185AD5 /* NSFileManager+Sandbox.m in Sources */,
+				DD53138E29443F4400185AD5 /* MRGLES2ViewController.m in Sources */,
+				DD5313C02944AD3400185AD5 /* MRGLES3RGBXView.m in Sources */,
+				DD5313BF2944AD3400185AD5 /* MRGLES3YUV420PView.m in Sources */,
+				C94AF2642B305659006DC380 /* MRVideoEmbedViewController.m in Sources */,
+				DDBFE782294EF8C400403352 /* MRAudioRendererViewController.m in Sources */,
+				DD53139A2944410600185AD5 /* MROpenGLCompiler.m in Sources */,
+				DD97CCE9293B5BE900797F3B /* MRMovieProberViewController.m in Sources */,
+				DD5313DD2944AEBA00185AD5 /* MRMetalYUV420PPipeline.m in Sources */,
+				6003F59A195388D20070C39A /* main.m in Sources */,
+				DD5313A029448BC000185AD5 /* MRGLES2NV12View.m in Sources */,
+				DDBFE77F294EF8C400403352 /* MRAudioUnitRenderer.m in Sources */,
+				DD97CCF4293B5BE900797F3B /* MRDecodePacketViewController.m in Sources */,
+				DDBFE780294EF8C400403352 /* MRAudioQueueRenderer.m in Sources */,
+				DD5313C12944AD3400185AD5 /* MRGLES3NV12View.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		6003F596195388D20070C39A /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				6003F597195388D20070C39A /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		71719F9D1E33DC2100824A3D /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				71719F9E1E33DC2100824A3D /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		6003F5BD195388D20070C39A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		6003F5BE195388D20070C39A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		6003F5C0195388D20070C39A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 96C96H28CU;
+				FRAMEWORK_SEARCH_PATHS = $TARGET_BUILD_DIR/FFmpegTutorial.framework;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iOSExample/iOSExample.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/ffmpeg/include",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/openssl/include",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/iOSExample/iOSExample.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0;
+				MODULE_NAME = ExampleApp;
+				OTHER_LDFLAGS = (
+					"-framework",
+					FFmpegTutorial,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.debugly.FFmpegTutorial.${DEVELOPMENT_TEAM}";
+				PRODUCT_NAME = FFmpegTutorial;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 4.0;
+				VALID_ARCHS = "arm64 x86_64";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		6003F5C1195388D20070C39A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 96C96H28CU;
+				FRAMEWORK_SEARCH_PATHS = $TARGET_BUILD_DIR/FFmpegTutorial.framework;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = iOSExample/iOSExample.pch;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/ffmpeg/include",
+					"$(PROJECT_DIR)/../../build/product/ios/universal/openssl/include",
+				);
+				INFOPLIST_FILE = "$(SRCROOT)/iOSExample/iOSExample.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 2.0;
+				MODULE_NAME = ExampleApp;
+				OTHER_LDFLAGS = (
+					"-framework",
+					FFmpegTutorial,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "cn.debugly.FFmpegTutorial.${DEVELOPMENT_TEAM}";
+				PRODUCT_NAME = FFmpegTutorial;
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "FFmpegTutorial-iOS/FFmpegTutorial-iOS-Bridging-Header.h";
+				SWIFT_VERSION = 4.0;
+				VALID_ARCHS = "arm64 x86_64";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		6003F585195388D10070C39A /* Build configuration list for PBXProject "iOSExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6003F5BD195388D20070C39A /* Debug */,
+				6003F5BE195388D20070C39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		6003F5BF195388D20070C39A /* Build configuration list for PBXNativeTarget "iOSExample" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6003F5C0195388D20070C39A /* Debug */,
+				6003F5C1195388D20070C39A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6003F582195388D10070C39A /* Project object */;
+}

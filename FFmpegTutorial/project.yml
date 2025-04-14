@@ -1,0 +1,113 @@
+name: FFmpegTutorial
+options:
+  bundleIdPrefix: com.debugly
+targets:
+  FFmpegTutorial-iOS:
+    platform: iOS
+    supportedDestinations: [iOS]
+    type: framework
+    deploymentTarget: 12.0
+    sources:
+      - path: t01
+        excludes: 
+          - "FFTOpenGLVersionHelper.[hm]"
+      - path: t02
+      - path: t04
+      - path: t05
+      - path: t06
+      - path: t10
+      - path: t20
+      - path: t30
+      - path: t31
+      - path: t32
+      - path: t33
+      - path: t34
+      - path: t35
+      - path: t36
+      - path: t50
+      - path: common
+        excludes: 
+          - "hud/mac/*.[hm]"
+    settings:
+      PRODUCT_NAME: FFmpegTutorial
+      GENERATE_INFOPLIST_FILE: YES
+      MTL_LANGUAGE_REVISION: Metal20
+      GCC_PREPROCESSOR_DEFINITIONS: "$(inherited) IJK_USE_METAL_2=1"
+      HEADER_SEARCH_PATHS: "$(inherited) $(PROJECT_DIR)/../build/product/ios/universal/ffmpeg/include $(PROJECT_DIR)/../build/product/ios/universal/openssl/include"
+      LIBRARY_SEARCH_PATHS: "$(inherited) $(PROJECT_DIR)/../build/product/ios/universal/ffmpeg/lib $(PROJECT_DIR)/../build/product/ios/universal/openssl/lib"
+    dependencies:
+      - sdk: UIKit.framework
+      - sdk: OpenGLES.framework
+      - sdk: CoreFoundation.framework
+      - sdk: CoreVideo.framework
+      - sdk: CoreImage.framework
+      - sdk: VideoToolbox.framework
+      - sdk: CoreMedia.framework
+      - sdk: AudioToolbox.framework
+      - sdk: Security.framework
+      - sdk: libz.tbd
+      - sdk: libbz2.tbd
+      - sdk: libiconv.tbd
+      - sdk: liblzma.tbd
+      - sdk: libxml2.tbd
+      - framework: ../build/product/ios/universal/ffmpeg/lib/libavcodec.a
+      - framework: ../build/product/ios/universal/ffmpeg/lib/libavformat.a
+      - framework: ../build/product/ios/universal/ffmpeg/lib/libavutil.a
+      - framework: ../build/product/ios/universal/ffmpeg/lib/libswresample.a
+      - framework: ../build/product/ios/universal/ffmpeg/lib/libswscale.a
+      - framework: ../build/product/ios/universal/openssl/lib/libcrypto.a
+      - framework: ../build/product/ios/universal/openssl/lib/libssl.a
+  FFmpegTutorial-macOS:
+    platform: macOS
+    type: framework
+    deploymentTarget: 10.13
+    sources:
+      - path: t01
+      - path: t02
+      - path: t04
+      - path: t05
+      - path: t06
+      - path: t10
+      - path: t20
+      - path: t30
+      - path: t31
+      - path: t32
+      - path: t33
+      - path: t34
+      - path: t35
+      - path: t36
+      - path: t50
+      - path: common
+        excludes: 
+          - "hud/ios/*.[hm]"
+    settings:
+      PRODUCT_NAME: FFmpegTutorial
+      GENERATE_INFOPLIST_FILE: YES
+      MTL_LANGUAGE_REVISION: Metal20
+      GCC_PREPROCESSOR_DEFINITIONS: "$(inherited) IJK_USE_METAL_2=1"
+      HEADER_SEARCH_PATHS: "$(inherited) $(PROJECT_DIR)/../build/product/macos/universal/ffmpeg/include $(PROJECT_DIR)/../build/product/macos/universal/openssl/include"
+      LIBRARY_SEARCH_PATHS: "$(inherited) $(PROJECT_DIR)/../build/product/macos/universal/ffmpeg/lib $(PROJECT_DIR)/../build/product/macos/universal/openssl/lib"
+    dependencies:
+      - sdk: AppKit.framework
+      - sdk: OpenGL.framework
+      - sdk: CoreFoundation.framework
+      - sdk: CoreVideo.framework
+      - sdk: CoreImage.framework
+      - sdk: VideoToolbox.framework
+      - sdk: CoreMedia.framework
+      - sdk: AudioToolbox.framework
+      - sdk: Security.framework
+      - sdk: libz.tbd
+      - sdk: libbz2.tbd
+      - sdk: libiconv.tbd
+      - sdk: liblzma.tbd
+      - sdk: libxml2.tbd
+      - sdk: ../build/product/macos/universal/ffmpeg/lib/libavcodec.a
+      - sdk: ../build/product/macos/universal/ffmpeg/lib/libavformat.a
+      - sdk: ../build/product/macos/universal/ffmpeg/lib/libavutil.a
+      - sdk: ../build/product/macos/universal/ffmpeg/lib/libswresample.a
+      - sdk: ../build/product/macos/universal/ffmpeg/lib/libswscale.a
+      - sdk: ../build/product/macos/universal/openssl/lib/libcrypto.a
+      - sdk: ../build/product/macos/universal/openssl/lib/libssl.a
+
+      

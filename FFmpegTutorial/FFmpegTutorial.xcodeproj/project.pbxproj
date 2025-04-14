@@ -1,0 +1,1326 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 54;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		00387F8EC93FA21EA4CDE612 /* FFTDecoder0x10.h in Headers */ = {isa = PBXBuildFile; fileRef = FD85DDDB2DBD1E203BA1B149 /* FFTDecoder0x10.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		00534E44C6BA1B7F889078E0 /* FFTPlayer0x30.h in Headers */ = {isa = PBXBuildFile; fileRef = 7882BCB77D68F0BB294DC274 /* FFTPlayer0x30.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0096DA8B9A5A534ED092C549 /* FFTPlayer0x33.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C723A69C553BB4B1FFDB2D3 /* FFTPlayer0x33.m */; };
+		01C58EA00DFBB3B362DBEBCC /* FFTSyncClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DFEC5579A89E67062B7330 /* FFTSyncClock.m */; };
+		03B3DE53714FEEAA54FBE354 /* FFTPlayer0x31.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AF6C736999666DE3BDE4219 /* FFTPlayer0x31.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		04FC8F9CA26F79678536E698 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 672BDD208A873BF8AA3F3FDA /* libavcodec.a */; };
+		05424C2A31F706C9DCB1E6DA /* FFTPlayer0x05.m in Sources */ = {isa = PBXBuildFile; fileRef = 641BEC40D70704CD73E43CA3 /* FFTPlayer0x05.m */; };
+		0729D2BB9F879F9FA9EE151A /* FFTPlayer0x50.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D13C4341DCBDFA8354FB933 /* FFTPlayer0x50.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0AB9B4518976EA234311A9DC /* FFTPlayer0x50.m in Sources */ = {isa = PBXBuildFile; fileRef = C31C4C6F7F89D825EFCB2D80 /* FFTPlayer0x50.m */; };
+		0DD1C7D99A9A9AF1DFE7D4A4 /* FFTSyncClock.h in Headers */ = {isa = PBXBuildFile; fileRef = 310A0099AD0753B8D4FD24C3 /* FFTSyncClock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E04133004EEB1684A2D881B /* FFTVersionHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BE9DB530B248E3DDA206FE9 /* FFTVersionHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E5E4FA3E46B8AB6A250BF04 /* FFTPlayer0x06.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FE0A0B5F299AB26FF03571F /* FFTPlayer0x06.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		0E6D91EC9AA57AFC8A085FFA /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCE4184BE998D7E4F506907D /* CoreMedia.framework */; };
+		10340DD2AD7141340AD25362 /* FFTVersionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F6C76FE812508653C48BE64 /* FFTVersionHelper.m */; };
+		104B2E2B32F682A4BA7DC452 /* FFTPlayer0x04.h in Headers */ = {isa = PBXBuildFile; fileRef = FB3E993B048D27654DEA082E /* FFTPlayer0x04.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		114535AF546F41DBD5279E4C /* FFTAudioResample.m in Sources */ = {isa = PBXBuildFile; fileRef = 2329E97656B5ABD244DFB1A3 /* FFTAudioResample.m */; };
+		126E6398123FAF5FA3019129 /* FFTVideoScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 04777F8B930678661C24EB40 /* FFTVideoScale.m */; };
+		1471FA597E0364927FF58AD8 /* FFTAudioRendererImpProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = B1899C8941C37246674D9977 /* FFTAudioRendererImpProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		155BBB770BE686866F7FF23D /* FFTPlayer0x36.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1C2E66E1DBBBD5EFB1247 /* FFTPlayer0x36.m */; };
+		15719B38C3F2F6E3A7505902 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6EA51D692B9106A1E2E384 /* Security.framework */; };
+		15FEBEE1D35DD76B3C7A9967 /* FFTDecoder0x10.m in Sources */ = {isa = PBXBuildFile; fileRef = 439B4BF5190DB37ED856C6B3 /* FFTDecoder0x10.m */; };
+		166A0DB8DC3CEBD70A03AFEB /* FFTPlayer0x36.h in Headers */ = {isa = PBXBuildFile; fileRef = 09BEC85CCC2942FC0CA82290 /* FFTPlayer0x36.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		168E48460C66CB159263BF91 /* FFTDispatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9258D2DCE1975ADCE385B800 /* FFTDispatch.m */; };
+		18224E0852E5DF44702A7EF4 /* FFTPlayerHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6922E80D9C1C950E9E8524FA /* FFTPlayerHeader.m */; };
+		1B3B8F079EFB9E3918736CBE /* FFTAudioRendererProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 673E85849674AEC23EB786C1 /* FFTAudioRendererProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1D55B392CBE452D7DFE7E71E /* FFTDecoder0x06.m in Sources */ = {isa = PBXBuildFile; fileRef = 1023A5E2F2C5A6BCA31B5CF6 /* FFTDecoder0x06.m */; };
+		1D7B94BFADCBC39FCD595C9D /* FFTAudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8D74190EF3965632A68C72 /* FFTAudioQueueRenderer.m */; };
+		1DEFA3702856FBC82C327AE7 /* IJKMetalShaderTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 25955D37F071C477B3ADD73E /* IJKMetalShaderTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1E46FE102FB85A268DC28E3C /* FFTAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D07F53DCC11D8669E38075 /* FFTAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		1FF4E8A519BB583BCBE30924 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D0DA8316DD14BAFEED7D45 /* VideoToolbox.framework */; };
+		201727FD0E320C7D4B6AC92F /* FFTAudioResample.h in Headers */ = {isa = PBXBuildFile; fileRef = A130480A1B745FC9E5D51902 /* FFTAudioResample.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		239BE1A1C9222B69F0EF9F82 /* FFTDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD411B47EAC3E21752308AE /* FFTDispatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		23F545199AB59AF90E62458A /* FFTDecoder0x06.h in Headers */ = {isa = PBXBuildFile; fileRef = 73454FE7C1EE0DDA33AC4B68 /* FFTDecoder0x06.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		26D22B88DF05E666F7FFECC1 /* FFTSyncClock.h in Headers */ = {isa = PBXBuildFile; fileRef = 310A0099AD0753B8D4FD24C3 /* FFTSyncClock.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		281309811C92511E89A47315 /* FFTAudioRendererProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 673E85849674AEC23EB786C1 /* FFTAudioRendererProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2C97D93193E89F565F50A347 /* FFTPlayer0x02.h in Headers */ = {isa = PBXBuildFile; fileRef = 401DC39194FE82F542A719DF /* FFTPlayer0x02.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		2D1A3AEE657A3F9D019236E0 /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 66F152E267204CBA41B4E347 /* libavformat.a */; };
+		2DD9F7A613D2014A999C8FD5 /* FFTPlayer0x04.h in Headers */ = {isa = PBXBuildFile; fileRef = FB3E993B048D27654DEA082E /* FFTPlayer0x04.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		302B5021882459FA0006FD71 /* FFTPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = FD9D4A6EAEA93E043D7C5AE5 /* FFTPlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		304C3D507310FE6B8144FCB7 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3276F1EA995D4E22288BC614 /* libswscale.a */; };
+		321378AD094EEAD03CD6D8B3 /* IJKMetalView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92A73F121C4F81AEF5DDB9AE /* IJKMetalView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		32FECEA3016CC7D76EE543BA /* FFTPlayer0x33.h in Headers */ = {isa = PBXBuildFile; fileRef = A2C6C518C264B63B2B0D3A85 /* FFTPlayer0x33.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		33B13FBC273CD6352D9026AA /* FFTPlayer0x06.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E242A74E4F3C53DEE171A1 /* FFTPlayer0x06.m */; };
+		33C3BBBDAC6DC77281C34773 /* FFTDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D033090BCBACBAD183AB1C01 /* FFTDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		35106A3FC530610AEB813066 /* FFTPacketQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 23709776344758B43A03837C /* FFTPacketQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3512CD8DECF1BF2D1C10C480 /* FFTPlayer0x05.m in Sources */ = {isa = PBXBuildFile; fileRef = 641BEC40D70704CD73E43CA3 /* FFTPlayer0x05.m */; };
+		3527487D0A58265F1FA6299E /* FFTHudRowView.h in Headers */ = {isa = PBXBuildFile; fileRef = 184ABE9441396D2E4731540B /* FFTHudRowView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3550965113433953F5E70FFB /* libavformat.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 0393ACACFF42A65DD3775184 /* libavformat.a */; };
+		35B30EF68A318C1E9368C9A4 /* FFTVideoFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8A071A7D62B483C0F5A38 /* FFTVideoFrameQueue.m */; };
+		385769A926A3BB89FCC55059 /* FFTVideoScale.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D161A5618C016EC69088426 /* FFTVideoScale.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		394CE88A534691B4C8E08A43 /* FFTVersionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 8F6C76FE812508653C48BE64 /* FFTVersionHelper.m */; };
+		39F45C7678FF4DB34E7BAC6B /* FFTAudioUnitRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C134C933ADF2BDF2920C47E /* FFTAudioUnitRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3A8B0B549E76365ECC869CFB /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD28E255615B8234EAF857DB /* liblzma.tbd */; };
+		3ACAB8641B01E8AA54673D75 /* FFTVideoScale.m in Sources */ = {isa = PBXBuildFile; fileRef = 04777F8B930678661C24EB40 /* FFTVideoScale.m */; };
+		3B2F9B2E5632770CE53A9897 /* VideoToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 20D0DA8316DD14BAFEED7D45 /* VideoToolbox.framework */; };
+		3BE654FC333DCAEB2DE26B93 /* FFTAudioResample.h in Headers */ = {isa = PBXBuildFile; fileRef = A130480A1B745FC9E5D51902 /* FFTAudioResample.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3D4879A01538476CCB563E2E /* FFTPlayer0x10.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC5C627643E9EDAB9B520C0 /* FFTPlayer0x10.m */; };
+		3DA63CC90F6EE54778D66323 /* libavcodec.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1B63F4C681FF0234DF66F75A /* libavcodec.a */; };
+		3F2F5071327BAB5B22F41ED9 /* FFTPlayer0x20.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F26A22415E2983EFB0D97C3 /* FFTPlayer0x20.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		3FFD568B6501676519C58B1B /* FFTPlayer0x35.m in Sources */ = {isa = PBXBuildFile; fileRef = 0732188C2D8990257189D971 /* FFTPlayer0x35.m */; };
+		40B0189D89D11C181A57592C /* FFTAudioQueueRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = BF8D74190EF3965632A68C72 /* FFTAudioQueueRenderer.m */; };
+		41503D57F7FAC366A0A4FE79 /* FFTAudioFrameQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 80D9D5B98A7B6B7272908C76 /* FFTAudioFrameQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		419CA4A34AA44541AD4A2BBF /* FFTAudioResample.m in Sources */ = {isa = PBXBuildFile; fileRef = 2329E97656B5ABD244DFB1A3 /* FFTAudioResample.m */; };
+		4336829311C9E24B1942F624 /* FFTFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0531F7B352AC336C0ECE97C7 /* FFTFrameQueue.m */; };
+		4531EFAE4853639559DCCE53 /* FFTThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 3070B79F27783B2A01A97C6E /* FFTThread.m */; };
+		464C89912AB68FDAD971F57D /* FFTPlayer0x05.h in Headers */ = {isa = PBXBuildFile; fileRef = FB363066903EE61EC80DD9E3 /* FFTPlayer0x05.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4698EDEFEB400C94BA2CCD38 /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0BF7BD89EBC5278731C6286 /* CoreFoundation.framework */; };
+		46C9B59F4D8EB32A204B4EE9 /* FFTAudioQueueRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FDAA4C52EA0E430649BAA52 /* FFTAudioQueueRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		46F6B01335D5D71791F06E72 /* FFTConvertUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 81D6FA7FF23D8D686E5CFC6B /* FFTConvertUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		472EF804C79C1388D6D7CEF5 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 166D3A3143E244A9E38FCA2E /* libavutil.a */; };
+		49A077DB8B09DFBEED85CF19 /* FFTHudControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B07B437443F88229CC004C88 /* FFTHudControl.m */; };
+		4A7C58680043222A88CBA028 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AE6EA51D692B9106A1E2E384 /* Security.framework */; };
+		4C178BA1DD60F15CCB972A09 /* FFTDispatch.h in Headers */ = {isa = PBXBuildFile; fileRef = 4AD411B47EAC3E21752308AE /* FFTDispatch.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		4DC3D88B3ED2F3ACB21EBED5 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 843690FE299EEED58D7976AA /* libcrypto.a */; };
+		4ED3F86C18F8BBA3793D6F16 /* libswscale.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 691D28A7E1C93969592AEB63 /* libswscale.a */; };
+		4F215A3853747F33D3100DD5 /* FFTHudRowView.m in Sources */ = {isa = PBXBuildFile; fileRef = 23566AFFE05803699536D8C1 /* FFTHudRowView.m */; };
+		5100C784157E72EA4BC2D773 /* FFTPlayer0x02.h in Headers */ = {isa = PBXBuildFile; fileRef = 401DC39194FE82F542A719DF /* FFTPlayer0x02.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		51C65236F3B10DF3E6A01BD8 /* IJKOverlayAttach.m in Sources */ = {isa = PBXBuildFile; fileRef = F9912B49FA72611F9D5665BB /* IJKOverlayAttach.m */; };
+		534F25672C4F217C3A8F54E5 /* IJKVideoRenderingProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8790C5113B99D49505C7C51F /* IJKVideoRenderingProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		539BE383FE76F410A7F11E75 /* FFTHudControl.m in Sources */ = {isa = PBXBuildFile; fileRef = B07B437443F88229CC004C88 /* FFTHudControl.m */; };
+		541BD8AC24423F42DADB0B21 /* FFTPlayer0x02.m in Sources */ = {isa = PBXBuildFile; fileRef = 40782F46B425497616EBE9A8 /* FFTPlayer0x02.m */; };
+		54824BD73603B57501E03CCF /* FFTPlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EE56CDFCA7750AAB83CB40 /* FFTPlatform.m */; };
+		551EE07725818A186095F885 /* FFTPlayer0x30.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5729111B7D1FDCD7A11B82 /* FFTPlayer0x30.m */; };
+		552D6076D9AFA90AC180079E /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 470AB520FBA719D5DF4BF7CE /* libbz2.tbd */; };
+		553FCD48D3D88AFC31F733B4 /* FFTPlayerHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 10D227775FAF8EBE7F365147 /* FFTPlayerHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5565C33D7B80D691CC03B98E /* FFTPlayer0x36.m in Sources */ = {isa = PBXBuildFile; fileRef = 7EC1C2E66E1DBBBD5EFB1247 /* FFTPlayer0x36.m */; };
+		57E5D1746091289F1811DDD4 /* FFTPlayer0x33.h in Headers */ = {isa = PBXBuildFile; fileRef = A2C6C518C264B63B2B0D3A85 /* FFTPlayer0x33.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5A63FEF6567EE1AC7CFBB1DF /* FFTPlayer0x34.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F30DE130F8586A9654BDE52 /* FFTPlayer0x34.m */; };
+		5BD53508ADF5C8CB1FFB8019 /* FFTFrameQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6768207FDDB6A72E57DF19D4 /* FFTFrameQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		5BD7AED1FA12975693C71A1E /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F0BF7BD89EBC5278731C6286 /* CoreFoundation.framework */; };
+		5DD29A29C3B632431A17B6D9 /* FFTPlayer0x34.h in Headers */ = {isa = PBXBuildFile; fileRef = 444F7106E3694BEA20A33F28 /* FFTPlayer0x34.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		608B488664BE5A7B4C780ECF /* FFTPlatform.h in Headers */ = {isa = PBXBuildFile; fileRef = FD9D4A6EAEA93E043D7C5AE5 /* FFTPlatform.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		608E2EBE0430C2EFF7ED8254 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6845E3570E34764C9EAF20C1 /* CoreVideo.framework */; };
+		60F81DA452FEA6DA282B555F /* FFTPlayerHeader.h in Headers */ = {isa = PBXBuildFile; fileRef = 10D227775FAF8EBE7F365147 /* FFTPlayerHeader.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		61A668792BA80A6857C67F71 /* IJKMetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = C56950571C218B5641A00A18 /* IJKMetalShaders.metal */; };
+		627E4A09E6D01CEBEF571676 /* FFTPlayer0x04.m in Sources */ = {isa = PBXBuildFile; fileRef = A55D94030B1FEA4F7CADDCD3 /* FFTPlayer0x04.m */; };
+		636F016A23A3CE30856AE3AA /* FFTAudioRendererImpProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = B1899C8941C37246674D9977 /* FFTAudioRendererImpProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6554F2E194BE4024534275C7 /* FFTAudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C33B02BC08EC45A937157255 /* FFTAudioRenderer.m */; };
+		6671A08D52CA49079920E40D /* FFTThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C2DF36E6CB515F76942E4AA /* FFTThread.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		68099021441EC0C9D14EA6C1 /* FFTVersionHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 6BE9DB530B248E3DDA206FE9 /* FFTVersionHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		683BC60B93488C622FC9A217 /* FFTVideoFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 8BF8A071A7D62B483C0F5A38 /* FFTVideoFrameQueue.m */; };
+		6873716DC67A465C938DE00E /* IJKMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = DF32EEFEC9299E263DBBEC7F /* IJKMetalOffscreenRendering.m */; };
+		68AE4053C75B2F7924AB0495 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 17747DEF9C37919CC7D6206D /* libz.tbd */; };
+		6B2C21426EB3DDC6CE16D049 /* FFTDecoder.h in Headers */ = {isa = PBXBuildFile; fileRef = D033090BCBACBAD183AB1C01 /* FFTDecoder.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6CCC4FC2B32C31C451FA1C45 /* FFTOpenGLVersionHelper.h in Headers */ = {isa = PBXBuildFile; fileRef = 0F85B0353E19F833E92AE93D /* FFTOpenGLVersionHelper.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		6ED9817973CAF5F19E6DC5F7 /* IJKMetalShaders.metal in Sources */ = {isa = PBXBuildFile; fileRef = C56950571C218B5641A00A18 /* IJKMetalShaders.metal */; };
+		7058690AE15E9C46B461CBFA /* FFTHudControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E5DA551285A15F838BBA3C /* FFTHudControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		71C60AE709B824C91B62AA3B /* FFTPlayer0x50.h in Headers */ = {isa = PBXBuildFile; fileRef = 1D13C4341DCBDFA8354FB933 /* FFTPlayer0x50.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7203EFCB061AB322F2E66581 /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 710C86CC7EA9039C5EF8DD7A /* libxml2.tbd */; };
+		72B4FBE72AE69C32AA3D1056 /* FFTPlatform.m in Sources */ = {isa = PBXBuildFile; fileRef = 36EE56CDFCA7750AAB83CB40 /* FFTPlatform.m */; };
+		7382AA7B0156E36B8619BA38 /* IJKMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 558699DCD9880C6EC4D2B0EF /* IJKMathUtilities.m */; };
+		76DFCA1AF66D70BA6B5D6650 /* IJKMetalView.h in Headers */ = {isa = PBXBuildFile; fileRef = 92A73F121C4F81AEF5DDB9AE /* IJKMetalView.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7BD38CFADC01529A6FDE070E /* IJKMetalRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 71995DC8FE42314D3164CDDD /* IJKMetalRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7CC84051BE4C42CD85EA41A1 /* FFTAudioRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = C33B02BC08EC45A937157255 /* FFTAudioRenderer.m */; };
+		7CFEE42F6CE0A8EA54BF5BA5 /* IJKMathUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A65255268C66AA4D08DB0E7A /* IJKMathUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		7DA98DCAF33A2C3C72EB9767 /* FFTOpenGLVersionHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = 4E0749E0E06533147F702028 /* FFTOpenGLVersionHelper.m */; };
+		807C44D7C179F0C12B53E8D8 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = CF14F7FC997C9880994BF758 /* libssl.a */; };
+		8307B8B96C346C387B118E1A /* FFTPlayer0x05.h in Headers */ = {isa = PBXBuildFile; fileRef = FB363066903EE61EC80DD9E3 /* FFTPlayer0x05.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		837C4CC1E58A120230330DA8 /* libavutil.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EFCE1BC96CB408C6911AB524 /* libavutil.a */; };
+		83C19C27AB8255059B96E3B3 /* FFTDecoder0x10.m in Sources */ = {isa = PBXBuildFile; fileRef = 439B4BF5190DB37ED856C6B3 /* FFTDecoder0x10.m */; };
+		8418BD3F8664E0F2A4A6A29D /* FFTDecoder0x10.h in Headers */ = {isa = PBXBuildFile; fileRef = FD85DDDB2DBD1E203BA1B149 /* FFTDecoder0x10.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		84DE1C00FC81157E7BAEE90A /* FFTThread.h in Headers */ = {isa = PBXBuildFile; fileRef = 3C2DF36E6CB515F76942E4AA /* FFTThread.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		877838E38A141688C2D6738E /* FFTPlayer0x06.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FE0A0B5F299AB26FF03571F /* FFTPlayer0x06.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8C05C59ABB218FF6FED66CDC /* FFTPacketQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = F7357895521EB8FACFD8F3A8 /* FFTPacketQueue.m */; };
+		8D268FF464887FCE18208BE5 /* FFTPlayer0x36.h in Headers */ = {isa = PBXBuildFile; fileRef = 09BEC85CCC2942FC0CA82290 /* FFTPlayer0x36.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		8D7EA595DF191CCC02F0EF3F /* IJKMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AABE1E342DE36AE00A1AB17 /* IJKMetalView.m */; };
+		8F37D25B2C3648E7E72B452C /* AppKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F2BC9B65562EA7E14DB6CA7C /* AppKit.framework */; };
+		906F1B0512185CFE7241221E /* FFTDecoder0x06.m in Sources */ = {isa = PBXBuildFile; fileRef = 1023A5E2F2C5A6BCA31B5CF6 /* FFTDecoder0x06.m */; };
+		9169C3456DA5884D14450B8E /* IJKMetalOffscreenRendering.m in Sources */ = {isa = PBXBuildFile; fileRef = DF32EEFEC9299E263DBBEC7F /* IJKMetalOffscreenRendering.m */; };
+		9239F86182BC4D35F036B369 /* FFTSyncClock.m in Sources */ = {isa = PBXBuildFile; fileRef = 28DFEC5579A89E67062B7330 /* FFTSyncClock.m */; };
+		92D1818B5893D49C64F9E35C /* FFTConvertUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C21848AC27ADEF42A87B424E /* FFTConvertUtil.m */; };
+		92F648E70FA9369CADFAE691 /* FFTAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA2792A41C7EDD2DF26CC30 /* FFTAbstractLogger.m */; };
+		93D21E9CD2A96FB605AF77E6 /* libssl.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A232F1F75EBFA26F514D6D1 /* libssl.a */; };
+		941858DFFB9B9ED06EF5E8B2 /* FFTPlayer0x04.m in Sources */ = {isa = PBXBuildFile; fileRef = A55D94030B1FEA4F7CADDCD3 /* FFTPlayer0x04.m */; };
+		953AC02DEB575B5B470F5BC2 /* FFTDecoder0x06.h in Headers */ = {isa = PBXBuildFile; fileRef = 73454FE7C1EE0DDA33AC4B68 /* FFTDecoder0x06.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		95687FBFA9950D75E537757A /* FFTPlayerHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 6922E80D9C1C950E9E8524FA /* FFTPlayerHeader.m */; };
+		966407F03204A62A832E2CE8 /* FFTAudioQueueRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 3FDAA4C52EA0E430649BAA52 /* FFTAudioQueueRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		96D56AA1D9B0A8B2E9CCA94F /* FFTAudioRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = A71F9A67D1A2099B70E38190 /* FFTAudioRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		987ABAEFBAEF6495A44E76C9 /* IJKMetalPipelineMeta.h in Headers */ = {isa = PBXBuildFile; fileRef = E07485C10E9488E3DEE33912 /* IJKMetalPipelineMeta.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		98E8BC604707C605EC47B359 /* IJKMetalRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 53283B51BE4BFFE8EE465397 /* IJKMetalRenderer.m */; };
+		996C02907F5E14F2035DD6D4 /* IJKMetalOffscreenRendering.h in Headers */ = {isa = PBXBuildFile; fileRef = F083A4FE7E25343D88D07FD8 /* IJKMetalOffscreenRendering.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9B18EC831344E0BDA18D4E19 /* liblzma.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = DD28E255615B8234EAF857DB /* liblzma.tbd */; };
+		9B821B07FB4FAD71887E0118 /* FFTPlayer0x34.m in Sources */ = {isa = PBXBuildFile; fileRef = 9F30DE130F8586A9654BDE52 /* FFTPlayer0x34.m */; };
+		9C2C2AFA3BCAAA3466BF64FC /* FFTDecoder0x20.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F25D1D030A138383945E5 /* FFTDecoder0x20.m */; };
+		9CC3BCAD64E08C8EFB18D10D /* FFTDecoder0x20.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DB137E79214C3D59D06A28F /* FFTDecoder0x20.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		9D952BFE279E91909C0C6D29 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D93C9C8834059ACBCFCB7878 /* libiconv.tbd */; };
+		A0A52290293ACED137290A4F /* FFTVideoFrameQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 627107664F30B02778C9F7EA /* FFTVideoFrameQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A0C2AB42CD34F1F8F1325161 /* FFTAbstractLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = 2BA2792A41C7EDD2DF26CC30 /* FFTAbstractLogger.m */; };
+		A0E5BB7F8C339062E4C2C664 /* FFTPlayer0x32.h in Headers */ = {isa = PBXBuildFile; fileRef = 916C5E22568145E156617C7B /* FFTPlayer0x32.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A13808B9E0225B8802DE059A /* FFTVideoFrameQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 627107664F30B02778C9F7EA /* FFTVideoFrameQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A26B74A9E9EFE8475C98BC2C /* IJKMetalShaderTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4C46362EB3C7F0DE7B83CB /* IJKMetalShaderTypes.m */; };
+		A37735D916D1C4E29D42D3DB /* FFTPlayer0x10.h in Headers */ = {isa = PBXBuildFile; fileRef = 89F622CA460CCD2C1B535A63 /* FFTPlayer0x10.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A3E9F4A976B9E419A8BBBE39 /* IJKMathUtilities.h in Headers */ = {isa = PBXBuildFile; fileRef = A65255268C66AA4D08DB0E7A /* IJKMathUtilities.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A4939E6077B4D0181D8C84F6 /* IJKMetalPipelineMeta.h in Headers */ = {isa = PBXBuildFile; fileRef = E07485C10E9488E3DEE33912 /* IJKMetalPipelineMeta.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A816CA93520A8C148952257E /* IJKMathUtilities.m in Sources */ = {isa = PBXBuildFile; fileRef = 558699DCD9880C6EC4D2B0EF /* IJKMathUtilities.m */; };
+		A8FC639284A91F717B5FB54E /* FFTAbstractLogger.h in Headers */ = {isa = PBXBuildFile; fileRef = A9D07F53DCC11D8669E38075 /* FFTAbstractLogger.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		AC3DDE1EE8BDD75919381C6D /* FFTPacketQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 23709776344758B43A03837C /* FFTPacketQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		ACE15EDB80B8600039CFB69C /* FFTPlayer0x33.m in Sources */ = {isa = PBXBuildFile; fileRef = 2C723A69C553BB4B1FFDB2D3 /* FFTPlayer0x33.m */; };
+		AD190ACF009992E8545CFB45 /* FFTPlayer0x35.m in Sources */ = {isa = PBXBuildFile; fileRef = 0732188C2D8990257189D971 /* FFTPlayer0x35.m */; };
+		AD8C74F9066646948408521E /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C515019942B9353C4CCFB26D /* libswresample.a */; };
+		AFC60D4332CBE276DA6E5CC5 /* IJKOverlayAttach.h in Headers */ = {isa = PBXBuildFile; fileRef = 95151216906E1673509BF6C9 /* IJKOverlayAttach.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B1C540CB372C7DE5C6C93265 /* FFTPlayer0x34.h in Headers */ = {isa = PBXBuildFile; fileRef = 444F7106E3694BEA20A33F28 /* FFTPlayer0x34.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B2B10567125F2B688EE6A0C3 /* FFTDecoder0x20.h in Headers */ = {isa = PBXBuildFile; fileRef = 0DB137E79214C3D59D06A28F /* FFTDecoder0x20.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B49641DEE251E5C3C32A221A /* FFTAudioUnitRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 9C134C933ADF2BDF2920C47E /* FFTAudioUnitRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		B64B1FB90F78D428F28C428F /* FFTPlayer0x06.m in Sources */ = {isa = PBXBuildFile; fileRef = D1E242A74E4F3C53DEE171A1 /* FFTPlayer0x06.m */; };
+		B73CAE34634FFAB73CC2B243 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 07A44C08CF6AD553CB92821D /* OpenGLES.framework */; };
+		B9AF292CBE29E7CA3F58B587 /* FFTConvertUtil.h in Headers */ = {isa = PBXBuildFile; fileRef = 81D6FA7FF23D8D686E5CFC6B /* FFTConvertUtil.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BA54AAE27F2413231DCCAE32 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1CF4943825198510EB83BA /* AudioToolbox.framework */; };
+		BA923ED7933DA80E82D4AD10 /* CoreVideo.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6845E3570E34764C9EAF20C1 /* CoreVideo.framework */; };
+		BCA1B8499B523D3F7630724A /* FFTPlayer0x10.h in Headers */ = {isa = PBXBuildFile; fileRef = 89F622CA460CCD2C1B535A63 /* FFTPlayer0x10.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		BE618CEA85026EEE31328259 /* libswresample.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FF1D84D15EC13F5F4265E003 /* libswresample.a */; };
+		C05BA896412526194DE7C14B /* FFTPacketQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = F7357895521EB8FACFD8F3A8 /* FFTPacketQueue.m */; };
+		C068CE54456370EAC2A15FEB /* FFTAudioFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A81B3F6C12218636CDD3F4 /* FFTAudioFrameQueue.m */; };
+		C0CF2A3BF7A2B813F91E535D /* FFTPlayer0x32.m in Sources */ = {isa = PBXBuildFile; fileRef = B54B209834A125FA51F4D6B9 /* FFTPlayer0x32.m */; };
+		C259E3E868D1086ED0E51B9E /* IJKMetalRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 53283B51BE4BFFE8EE465397 /* IJKMetalRenderer.m */; };
+		C2E16BCBDF6A1DA64ABD594B /* IJKVideoRenderingProtocol.h in Headers */ = {isa = PBXBuildFile; fileRef = 8790C5113B99D49505C7C51F /* IJKVideoRenderingProtocol.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CAB539505463F23546CA47CD /* FFTPlayer0x20.h in Headers */ = {isa = PBXBuildFile; fileRef = 3F26A22415E2983EFB0D97C3 /* FFTPlayer0x20.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		CC1FDB39BF754BD67C0AEE02 /* IJKMetalPipelineMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBAC50B2D3A9FF504C16F21 /* IJKMetalPipelineMeta.m */; };
+		CC55E870DBD004E0FE445820 /* FFTPlayer0x10.m in Sources */ = {isa = PBXBuildFile; fileRef = FEC5C627643E9EDAB9B520C0 /* FFTPlayer0x10.m */; };
+		D1A242554FD79A5141E50982 /* libcrypto.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 960C20A4881CBBCB46E85267 /* libcrypto.a */; };
+		D1CCFD91396F760BC76CE563 /* FFTPlayer0x30.h in Headers */ = {isa = PBXBuildFile; fileRef = 7882BCB77D68F0BB294DC274 /* FFTPlayer0x30.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D26ABFCA64C521999AA34BCF /* FFTHudControl.h in Headers */ = {isa = PBXBuildFile; fileRef = 08E5DA551285A15F838BBA3C /* FFTHudControl.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		D3E9A3019AD24925FA770ED1 /* IJKMetalView.m in Sources */ = {isa = PBXBuildFile; fileRef = 0AABE1E342DE36AE00A1AB17 /* IJKMetalView.m */; };
+		D50A5509EDA011C66626762C /* FFTDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ECAA5603B59E65440749D73 /* FFTDecoder.m */; };
+		D5877E3D3ED44368C6CE7F48 /* FFTAudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D54A9239E29544D4F02BCC0 /* FFTAudioUnitRenderer.m */; };
+		D5B7816BB4EC8750D36BD6ED /* libxml2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 710C86CC7EA9039C5EF8DD7A /* libxml2.tbd */; };
+		D7B4FDCD3D19E5D64E901E2A /* IJKMetalShaderTypes.m in Sources */ = {isa = PBXBuildFile; fileRef = DD4C46362EB3C7F0DE7B83CB /* IJKMetalShaderTypes.m */; };
+		D7D1216165DB2D5996601254 /* FFTDecoder.m in Sources */ = {isa = PBXBuildFile; fileRef = 1ECAA5603B59E65440749D73 /* FFTDecoder.m */; };
+		DA02A687FEE0B21D6E1C8BB7 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D1CF4943825198510EB83BA /* AudioToolbox.framework */; };
+		DA4B21033524CADDD518FCD1 /* IJKMetalShaderTypes.h in Headers */ = {isa = PBXBuildFile; fileRef = 25955D37F071C477B3ADD73E /* IJKMetalShaderTypes.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DB14181B46918CEEB33CFA21 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DCE4184BE998D7E4F506907D /* CoreMedia.framework */; };
+		DB3D6BFDBF278CD073764A4F /* FFTPlayer0x31.h in Headers */ = {isa = PBXBuildFile; fileRef = 3AF6C736999666DE3BDE4219 /* FFTPlayer0x31.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DBFBA9F7072FED9F32BAE957 /* FFTPlayer0x35.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CA8FB2C384B54516AE65696 /* FFTPlayer0x35.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		DDC1EB3590A6D6B7834F378A /* FFTDispatch.m in Sources */ = {isa = PBXBuildFile; fileRef = 9258D2DCE1975ADCE385B800 /* FFTDispatch.m */; };
+		DDE4CEBA8FE9DD6BF8B05768 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4D013225AAA1A58C07EEFBD6 /* UIKit.framework */; };
+		DEE1E202684E7C96A1FD6594 /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D93C9C8834059ACBCFCB7878 /* libiconv.tbd */; };
+		DF29B4323221AE3E5AA3B636 /* IJKMetalPipelineMeta.m in Sources */ = {isa = PBXBuildFile; fileRef = 7DBAC50B2D3A9FF504C16F21 /* IJKMetalPipelineMeta.m */; };
+		DF6A48A5443617B0FD593ED1 /* FFTDecoder0x20.m in Sources */ = {isa = PBXBuildFile; fileRef = A00F25D1D030A138383945E5 /* FFTDecoder0x20.m */; };
+		E093B4AC9616C434830C034D /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49966417CA7B93560202690D /* CoreImage.framework */; };
+		E16341650E1B89A26296B80D /* FFTFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 0531F7B352AC336C0ECE97C7 /* FFTFrameQueue.m */; };
+		E16FEC69BD4F3ECDAE57AD7A /* IJKOverlayAttach.h in Headers */ = {isa = PBXBuildFile; fileRef = 95151216906E1673509BF6C9 /* IJKOverlayAttach.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E339E77BEC26ABB0B17A5D39 /* FFTFrameQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 6768207FDDB6A72E57DF19D4 /* FFTFrameQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E36E576A972DA7977C116B9E /* FFTHudViewCell.h in Headers */ = {isa = PBXBuildFile; fileRef = 6E4D3965FA69903C4F57DBB3 /* FFTHudViewCell.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		E473DAEF73AAC8B99599C7BC /* FFTThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 3070B79F27783B2A01A97C6E /* FFTThread.m */; };
+		E625E8DCA399BE50F36C6D26 /* FFTHudViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C725E27124B931F58742ED4D /* FFTHudViewCell.m */; };
+		E64C875244B47E4E11CF7E28 /* FFTPlayer0x31.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3957B93828F27F3B9A701 /* FFTPlayer0x31.m */; };
+		E672C56A2A9CAC052BBD77A7 /* FFTPlayer0x32.m in Sources */ = {isa = PBXBuildFile; fileRef = B54B209834A125FA51F4D6B9 /* FFTPlayer0x32.m */; };
+		E8253A2AAA674A52909A006A /* FFTPlayer0x50.m in Sources */ = {isa = PBXBuildFile; fileRef = C31C4C6F7F89D825EFCB2D80 /* FFTPlayer0x50.m */; };
+		E9517801C8A64E2B9D778312 /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 17747DEF9C37919CC7D6206D /* libz.tbd */; };
+		E9AD86CC6C468D83D46CBF82 /* FFTPlayer0x20.m in Sources */ = {isa = PBXBuildFile; fileRef = 463381B83FFBEF40B7316505 /* FFTPlayer0x20.m */; };
+		EE69A9EE5E31C28459CFA208 /* FFTPlayer0x30.m in Sources */ = {isa = PBXBuildFile; fileRef = EF5729111B7D1FDCD7A11B82 /* FFTPlayer0x30.m */; };
+		F02556CFD5DAA56CB8690610 /* FFTPlayer0x02.m in Sources */ = {isa = PBXBuildFile; fileRef = 40782F46B425497616EBE9A8 /* FFTPlayer0x02.m */; };
+		F0B13CDD00A968D23D050D83 /* FFTAudioFrameQueue.m in Sources */ = {isa = PBXBuildFile; fileRef = 15A81B3F6C12218636CDD3F4 /* FFTAudioFrameQueue.m */; };
+		F19A3C2697B0F9E8B61159FD /* libbz2.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 470AB520FBA719D5DF4BF7CE /* libbz2.tbd */; };
+		F30FF8CFE8EFC50F727CC398 /* FFTAudioRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = A71F9A67D1A2099B70E38190 /* FFTAudioRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F5B59BCAD06FE10DAFF2E03A /* FFTPlayer0x32.h in Headers */ = {isa = PBXBuildFile; fileRef = 916C5E22568145E156617C7B /* FFTPlayer0x32.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F64D0E8383E0F1CBBF88060D /* FFTAudioFrameQueue.h in Headers */ = {isa = PBXBuildFile; fileRef = 80D9D5B98A7B6B7272908C76 /* FFTAudioFrameQueue.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F70E80F0BD835A59365558B6 /* IJKMetalRenderer.h in Headers */ = {isa = PBXBuildFile; fileRef = 71995DC8FE42314D3164CDDD /* IJKMetalRenderer.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F70FC5BAB1EFD974E67B6A89 /* FFTPlayer0x31.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EA3957B93828F27F3B9A701 /* FFTPlayer0x31.m */; };
+		F8CF359B3E30E0347A61ED00 /* FFTVideoScale.h in Headers */ = {isa = PBXBuildFile; fileRef = 9D161A5618C016EC69088426 /* FFTVideoScale.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		F9459AC2B78C527688B1D629 /* FFTPlayer0x35.h in Headers */ = {isa = PBXBuildFile; fileRef = 8CA8FB2C384B54516AE65696 /* FFTPlayer0x35.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FAA99E84070FDDAC8A632AFB /* IJKOverlayAttach.m in Sources */ = {isa = PBXBuildFile; fileRef = F9912B49FA72611F9D5665BB /* IJKOverlayAttach.m */; };
+		FCC9468433372EC4864A437A /* IJKMetalOffscreenRendering.h in Headers */ = {isa = PBXBuildFile; fileRef = F083A4FE7E25343D88D07FD8 /* IJKMetalOffscreenRendering.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		FCEB15D31316B13FA74E1DCC /* FFTConvertUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = C21848AC27ADEF42A87B424E /* FFTConvertUtil.m */; };
+		FDEB34B293DDF52F9309F905 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C91005DEBBC95B2B10BE70B1 /* OpenGL.framework */; };
+		FDEC71C60F462C9A84090BFF /* FFTPlayer0x20.m in Sources */ = {isa = PBXBuildFile; fileRef = 463381B83FFBEF40B7316505 /* FFTPlayer0x20.m */; };
+		FF87A2E67B2331406DA44492 /* CoreImage.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 49966417CA7B93560202690D /* CoreImage.framework */; };
+		FF9F102654A315149B124E30 /* FFTAudioUnitRenderer.m in Sources */ = {isa = PBXBuildFile; fileRef = 6D54A9239E29544D4F02BCC0 /* FFTAudioUnitRenderer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0393ACACFF42A65DD3775184 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../build/product/ios/universal/ffmpeg/lib/libavformat.a; sourceTree = "<group>"; };
+		04777F8B930678661C24EB40 /* FFTVideoScale.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTVideoScale.m; sourceTree = "<group>"; };
+		0531F7B352AC336C0ECE97C7 /* FFTFrameQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTFrameQueue.m; sourceTree = "<group>"; };
+		0732188C2D8990257189D971 /* FFTPlayer0x35.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x35.m; sourceTree = "<group>"; };
+		07A44C08CF6AD553CB92821D /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		08E5DA551285A15F838BBA3C /* FFTHudControl.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTHudControl.h; sourceTree = "<group>"; };
+		09BEC85CCC2942FC0CA82290 /* FFTPlayer0x36.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x36.h; sourceTree = "<group>"; };
+		0AABE1E342DE36AE00A1AB17 /* IJKMetalView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKMetalView.m; sourceTree = "<group>"; };
+		0DB137E79214C3D59D06A28F /* FFTDecoder0x20.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTDecoder0x20.h; sourceTree = "<group>"; };
+		0F85B0353E19F833E92AE93D /* FFTOpenGLVersionHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTOpenGLVersionHelper.h; sourceTree = "<group>"; };
+		1023A5E2F2C5A6BCA31B5CF6 /* FFTDecoder0x06.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTDecoder0x06.m; sourceTree = "<group>"; };
+		10D227775FAF8EBE7F365147 /* FFTPlayerHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayerHeader.h; sourceTree = "<group>"; };
+		15A81B3F6C12218636CDD3F4 /* FFTAudioFrameQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTAudioFrameQueue.m; sourceTree = "<group>"; };
+		166D3A3143E244A9E38FCA2E /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../build/product/ios/universal/ffmpeg/lib/libavutil.a; sourceTree = "<group>"; };
+		17747DEF9C37919CC7D6206D /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		184ABE9441396D2E4731540B /* FFTHudRowView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTHudRowView.h; sourceTree = "<group>"; };
+		1B63F4C681FF0234DF66F75A /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../build/product/ios/universal/ffmpeg/lib/libavcodec.a; sourceTree = "<group>"; };
+		1D13C4341DCBDFA8354FB933 /* FFTPlayer0x50.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x50.h; sourceTree = "<group>"; };
+		1ECAA5603B59E65440749D73 /* FFTDecoder.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTDecoder.m; sourceTree = "<group>"; };
+		20D0DA8316DD14BAFEED7D45 /* VideoToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = VideoToolbox.framework; path = System/Library/Frameworks/VideoToolbox.framework; sourceTree = SDKROOT; };
+		2329E97656B5ABD244DFB1A3 /* FFTAudioResample.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTAudioResample.m; sourceTree = "<group>"; };
+		23566AFFE05803699536D8C1 /* FFTHudRowView.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTHudRowView.m; sourceTree = "<group>"; };
+		23709776344758B43A03837C /* FFTPacketQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPacketQueue.h; sourceTree = "<group>"; };
+		25955D37F071C477B3ADD73E /* IJKMetalShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMetalShaderTypes.h; sourceTree = "<group>"; };
+		28DFEC5579A89E67062B7330 /* FFTSyncClock.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTSyncClock.m; sourceTree = "<group>"; };
+		2A232F1F75EBFA26F514D6D1 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../build/product/ios/universal/openssl/lib/libssl.a; sourceTree = "<group>"; };
+		2BA2792A41C7EDD2DF26CC30 /* FFTAbstractLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTAbstractLogger.m; sourceTree = "<group>"; };
+		2C723A69C553BB4B1FFDB2D3 /* FFTPlayer0x33.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x33.m; sourceTree = "<group>"; };
+		3070B79F27783B2A01A97C6E /* FFTThread.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTThread.m; sourceTree = "<group>"; };
+		310A0099AD0753B8D4FD24C3 /* FFTSyncClock.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTSyncClock.h; sourceTree = "<group>"; };
+		3276F1EA995D4E22288BC614 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../build/product/macos/universal/ffmpeg/lib/libswscale.a; sourceTree = SDKROOT; };
+		36EE56CDFCA7750AAB83CB40 /* FFTPlatform.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlatform.m; sourceTree = "<group>"; };
+		3AF6C736999666DE3BDE4219 /* FFTPlayer0x31.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x31.h; sourceTree = "<group>"; };
+		3C2DF36E6CB515F76942E4AA /* FFTThread.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTThread.h; sourceTree = "<group>"; };
+		3EA3957B93828F27F3B9A701 /* FFTPlayer0x31.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x31.m; sourceTree = "<group>"; };
+		3F26A22415E2983EFB0D97C3 /* FFTPlayer0x20.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x20.h; sourceTree = "<group>"; };
+		3FDAA4C52EA0E430649BAA52 /* FFTAudioQueueRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioQueueRenderer.h; sourceTree = "<group>"; };
+		3FE0A0B5F299AB26FF03571F /* FFTPlayer0x06.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x06.h; sourceTree = "<group>"; };
+		401DC39194FE82F542A719DF /* FFTPlayer0x02.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x02.h; sourceTree = "<group>"; };
+		40782F46B425497616EBE9A8 /* FFTPlayer0x02.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x02.m; sourceTree = "<group>"; };
+		439B4BF5190DB37ED856C6B3 /* FFTDecoder0x10.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTDecoder0x10.m; sourceTree = "<group>"; };
+		444F7106E3694BEA20A33F28 /* FFTPlayer0x34.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x34.h; sourceTree = "<group>"; };
+		463381B83FFBEF40B7316505 /* FFTPlayer0x20.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x20.m; sourceTree = "<group>"; };
+		470AB520FBA719D5DF4BF7CE /* libbz2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libbz2.tbd; path = usr/lib/libbz2.tbd; sourceTree = SDKROOT; };
+		49966417CA7B93560202690D /* CoreImage.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreImage.framework; path = System/Library/Frameworks/CoreImage.framework; sourceTree = SDKROOT; };
+		4AD411B47EAC3E21752308AE /* FFTDispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTDispatch.h; sourceTree = "<group>"; };
+		4D013225AAA1A58C07EEFBD6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		4E0749E0E06533147F702028 /* FFTOpenGLVersionHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTOpenGLVersionHelper.m; sourceTree = "<group>"; };
+		53283B51BE4BFFE8EE465397 /* IJKMetalRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKMetalRenderer.m; sourceTree = "<group>"; };
+		558699DCD9880C6EC4D2B0EF /* IJKMathUtilities.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKMathUtilities.m; sourceTree = "<group>"; };
+		604F1E4A4EF99698A1FF5CEA /* FFmpegTutorial-iOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "FFmpegTutorial-iOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		627107664F30B02778C9F7EA /* FFTVideoFrameQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTVideoFrameQueue.h; sourceTree = "<group>"; };
+		641BEC40D70704CD73E43CA3 /* FFTPlayer0x05.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x05.m; sourceTree = "<group>"; };
+		66F152E267204CBA41B4E347 /* libavformat.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavformat.a; path = ../build/product/macos/universal/ffmpeg/lib/libavformat.a; sourceTree = SDKROOT; };
+		672BDD208A873BF8AA3F3FDA /* libavcodec.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavcodec.a; path = ../build/product/macos/universal/ffmpeg/lib/libavcodec.a; sourceTree = SDKROOT; };
+		673E85849674AEC23EB786C1 /* FFTAudioRendererProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioRendererProtocol.h; sourceTree = "<group>"; };
+		6768207FDDB6A72E57DF19D4 /* FFTFrameQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTFrameQueue.h; sourceTree = "<group>"; };
+		6845E3570E34764C9EAF20C1 /* CoreVideo.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreVideo.framework; path = System/Library/Frameworks/CoreVideo.framework; sourceTree = SDKROOT; };
+		691D28A7E1C93969592AEB63 /* libswscale.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswscale.a; path = ../build/product/ios/universal/ffmpeg/lib/libswscale.a; sourceTree = "<group>"; };
+		6922E80D9C1C950E9E8524FA /* FFTPlayerHeader.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayerHeader.m; sourceTree = "<group>"; };
+		6BE9DB530B248E3DDA206FE9 /* FFTVersionHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTVersionHelper.h; sourceTree = "<group>"; };
+		6D54A9239E29544D4F02BCC0 /* FFTAudioUnitRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTAudioUnitRenderer.m; sourceTree = "<group>"; };
+		6E4D3965FA69903C4F57DBB3 /* FFTHudViewCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTHudViewCell.h; sourceTree = "<group>"; };
+		710C86CC7EA9039C5EF8DD7A /* libxml2.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libxml2.tbd; path = usr/lib/libxml2.tbd; sourceTree = SDKROOT; };
+		71995DC8FE42314D3164CDDD /* IJKMetalRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMetalRenderer.h; sourceTree = "<group>"; };
+		73454FE7C1EE0DDA33AC4B68 /* FFTDecoder0x06.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTDecoder0x06.h; sourceTree = "<group>"; };
+		7882BCB77D68F0BB294DC274 /* FFTPlayer0x30.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x30.h; sourceTree = "<group>"; };
+		7DBAC50B2D3A9FF504C16F21 /* IJKMetalPipelineMeta.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKMetalPipelineMeta.m; sourceTree = "<group>"; };
+		7EC1C2E66E1DBBBD5EFB1247 /* FFTPlayer0x36.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x36.m; sourceTree = "<group>"; };
+		80D9D5B98A7B6B7272908C76 /* FFTAudioFrameQueue.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioFrameQueue.h; sourceTree = "<group>"; };
+		81D6FA7FF23D8D686E5CFC6B /* FFTConvertUtil.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTConvertUtil.h; sourceTree = "<group>"; };
+		843690FE299EEED58D7976AA /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../build/product/macos/universal/openssl/lib/libcrypto.a; sourceTree = SDKROOT; };
+		8790C5113B99D49505C7C51F /* IJKVideoRenderingProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKVideoRenderingProtocol.h; sourceTree = "<group>"; };
+		88023E43841ABBC8D7B74530 /* FFmpegTutorial-macOS.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = "FFmpegTutorial-macOS.framework"; sourceTree = BUILT_PRODUCTS_DIR; };
+		89F622CA460CCD2C1B535A63 /* FFTPlayer0x10.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x10.h; sourceTree = "<group>"; };
+		8BF8A071A7D62B483C0F5A38 /* FFTVideoFrameQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTVideoFrameQueue.m; sourceTree = "<group>"; };
+		8CA8FB2C384B54516AE65696 /* FFTPlayer0x35.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x35.h; sourceTree = "<group>"; };
+		8F6C76FE812508653C48BE64 /* FFTVersionHelper.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTVersionHelper.m; sourceTree = "<group>"; };
+		916C5E22568145E156617C7B /* FFTPlayer0x32.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x32.h; sourceTree = "<group>"; };
+		9258D2DCE1975ADCE385B800 /* FFTDispatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTDispatch.m; sourceTree = "<group>"; };
+		92A73F121C4F81AEF5DDB9AE /* IJKMetalView.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMetalView.h; sourceTree = "<group>"; };
+		95151216906E1673509BF6C9 /* IJKOverlayAttach.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKOverlayAttach.h; sourceTree = "<group>"; };
+		960C20A4881CBBCB46E85267 /* libcrypto.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libcrypto.a; path = ../build/product/ios/universal/openssl/lib/libcrypto.a; sourceTree = "<group>"; };
+		9C134C933ADF2BDF2920C47E /* FFTAudioUnitRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioUnitRenderer.h; sourceTree = "<group>"; };
+		9D161A5618C016EC69088426 /* FFTVideoScale.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTVideoScale.h; sourceTree = "<group>"; };
+		9D1CF4943825198510EB83BA /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		9F30DE130F8586A9654BDE52 /* FFTPlayer0x34.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x34.m; sourceTree = "<group>"; };
+		A00F25D1D030A138383945E5 /* FFTDecoder0x20.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTDecoder0x20.m; sourceTree = "<group>"; };
+		A130480A1B745FC9E5D51902 /* FFTAudioResample.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioResample.h; sourceTree = "<group>"; };
+		A2C6C518C264B63B2B0D3A85 /* FFTPlayer0x33.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x33.h; sourceTree = "<group>"; };
+		A55D94030B1FEA4F7CADDCD3 /* FFTPlayer0x04.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x04.m; sourceTree = "<group>"; };
+		A65255268C66AA4D08DB0E7A /* IJKMathUtilities.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMathUtilities.h; sourceTree = "<group>"; };
+		A71F9A67D1A2099B70E38190 /* FFTAudioRenderer.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioRenderer.h; sourceTree = "<group>"; };
+		A9D07F53DCC11D8669E38075 /* FFTAbstractLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAbstractLogger.h; sourceTree = "<group>"; };
+		AE6EA51D692B9106A1E2E384 /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		B07B437443F88229CC004C88 /* FFTHudControl.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTHudControl.m; sourceTree = "<group>"; };
+		B1899C8941C37246674D9977 /* FFTAudioRendererImpProtocol.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTAudioRendererImpProtocol.h; sourceTree = "<group>"; };
+		B54B209834A125FA51F4D6B9 /* FFTPlayer0x32.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x32.m; sourceTree = "<group>"; };
+		BF8D74190EF3965632A68C72 /* FFTAudioQueueRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTAudioQueueRenderer.m; sourceTree = "<group>"; };
+		C21848AC27ADEF42A87B424E /* FFTConvertUtil.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTConvertUtil.m; sourceTree = "<group>"; };
+		C31C4C6F7F89D825EFCB2D80 /* FFTPlayer0x50.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x50.m; sourceTree = "<group>"; };
+		C33B02BC08EC45A937157255 /* FFTAudioRenderer.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTAudioRenderer.m; sourceTree = "<group>"; };
+		C515019942B9353C4CCFB26D /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../build/product/macos/universal/ffmpeg/lib/libswresample.a; sourceTree = SDKROOT; };
+		C56950571C218B5641A00A18 /* IJKMetalShaders.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = IJKMetalShaders.metal; sourceTree = "<group>"; };
+		C725E27124B931F58742ED4D /* FFTHudViewCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTHudViewCell.m; sourceTree = "<group>"; };
+		C91005DEBBC95B2B10BE70B1 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		CF14F7FC997C9880994BF758 /* libssl.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libssl.a; path = ../build/product/macos/universal/openssl/lib/libssl.a; sourceTree = SDKROOT; };
+		D033090BCBACBAD183AB1C01 /* FFTDecoder.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTDecoder.h; sourceTree = "<group>"; };
+		D1E242A74E4F3C53DEE171A1 /* FFTPlayer0x06.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x06.m; sourceTree = "<group>"; };
+		D93C9C8834059ACBCFCB7878 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
+		DCE4184BE998D7E4F506907D /* CoreMedia.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreMedia.framework; path = System/Library/Frameworks/CoreMedia.framework; sourceTree = SDKROOT; };
+		DD28E255615B8234EAF857DB /* liblzma.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = liblzma.tbd; path = usr/lib/liblzma.tbd; sourceTree = SDKROOT; };
+		DD4C46362EB3C7F0DE7B83CB /* IJKMetalShaderTypes.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKMetalShaderTypes.m; sourceTree = "<group>"; };
+		DF32EEFEC9299E263DBBEC7F /* IJKMetalOffscreenRendering.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKMetalOffscreenRendering.m; sourceTree = "<group>"; };
+		E07485C10E9488E3DEE33912 /* IJKMetalPipelineMeta.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMetalPipelineMeta.h; sourceTree = "<group>"; };
+		EF5729111B7D1FDCD7A11B82 /* FFTPlayer0x30.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x30.m; sourceTree = "<group>"; };
+		EFCE1BC96CB408C6911AB524 /* libavutil.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libavutil.a; path = ../build/product/macos/universal/ffmpeg/lib/libavutil.a; sourceTree = SDKROOT; };
+		F083A4FE7E25343D88D07FD8 /* IJKMetalOffscreenRendering.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = IJKMetalOffscreenRendering.h; sourceTree = "<group>"; };
+		F0BF7BD89EBC5278731C6286 /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		F2BC9B65562EA7E14DB6CA7C /* AppKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AppKit.framework; path = System/Library/Frameworks/AppKit.framework; sourceTree = SDKROOT; };
+		F7357895521EB8FACFD8F3A8 /* FFTPacketQueue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPacketQueue.m; sourceTree = "<group>"; };
+		F9912B49FA72611F9D5665BB /* IJKOverlayAttach.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = IJKOverlayAttach.m; sourceTree = "<group>"; };
+		FB363066903EE61EC80DD9E3 /* FFTPlayer0x05.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x05.h; sourceTree = "<group>"; };
+		FB3E993B048D27654DEA082E /* FFTPlayer0x04.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlayer0x04.h; sourceTree = "<group>"; };
+		FD85DDDB2DBD1E203BA1B149 /* FFTDecoder0x10.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTDecoder0x10.h; sourceTree = "<group>"; };
+		FD9D4A6EAEA93E043D7C5AE5 /* FFTPlatform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FFTPlatform.h; sourceTree = "<group>"; };
+		FEC5C627643E9EDAB9B520C0 /* FFTPlayer0x10.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = FFTPlayer0x10.m; sourceTree = "<group>"; };
+		FF1D84D15EC13F5F4265E003 /* libswresample.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libswresample.a; path = ../build/product/ios/universal/ffmpeg/lib/libswresample.a; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		6511AA08074B828EEDE09DEB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8F37D25B2C3648E7E72B452C /* AppKit.framework in Frameworks */,
+				FDEB34B293DDF52F9309F905 /* OpenGL.framework in Frameworks */,
+				4698EDEFEB400C94BA2CCD38 /* CoreFoundation.framework in Frameworks */,
+				608E2EBE0430C2EFF7ED8254 /* CoreVideo.framework in Frameworks */,
+				FF87A2E67B2331406DA44492 /* CoreImage.framework in Frameworks */,
+				3B2F9B2E5632770CE53A9897 /* VideoToolbox.framework in Frameworks */,
+				0E6D91EC9AA57AFC8A085FFA /* CoreMedia.framework in Frameworks */,
+				BA54AAE27F2413231DCCAE32 /* AudioToolbox.framework in Frameworks */,
+				15719B38C3F2F6E3A7505902 /* Security.framework in Frameworks */,
+				E9517801C8A64E2B9D778312 /* libz.tbd in Frameworks */,
+				552D6076D9AFA90AC180079E /* libbz2.tbd in Frameworks */,
+				DEE1E202684E7C96A1FD6594 /* libiconv.tbd in Frameworks */,
+				3A8B0B549E76365ECC869CFB /* liblzma.tbd in Frameworks */,
+				D5B7816BB4EC8750D36BD6ED /* libxml2.tbd in Frameworks */,
+				04FC8F9CA26F79678536E698 /* libavcodec.a in Frameworks */,
+				2D1A3AEE657A3F9D019236E0 /* libavformat.a in Frameworks */,
+				837C4CC1E58A120230330DA8 /* libavutil.a in Frameworks */,
+				AD8C74F9066646948408521E /* libswresample.a in Frameworks */,
+				304C3D507310FE6B8144FCB7 /* libswscale.a in Frameworks */,
+				4DC3D88B3ED2F3ACB21EBED5 /* libcrypto.a in Frameworks */,
+				807C44D7C179F0C12B53E8D8 /* libssl.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B682CB41F2CE20041FB70C64 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				DDE4CEBA8FE9DD6BF8B05768 /* UIKit.framework in Frameworks */,
+				B73CAE34634FFAB73CC2B243 /* OpenGLES.framework in Frameworks */,
+				5BD7AED1FA12975693C71A1E /* CoreFoundation.framework in Frameworks */,
+				BA923ED7933DA80E82D4AD10 /* CoreVideo.framework in Frameworks */,
+				E093B4AC9616C434830C034D /* CoreImage.framework in Frameworks */,
+				1FF4E8A519BB583BCBE30924 /* VideoToolbox.framework in Frameworks */,
+				DB14181B46918CEEB33CFA21 /* CoreMedia.framework in Frameworks */,
+				DA02A687FEE0B21D6E1C8BB7 /* AudioToolbox.framework in Frameworks */,
+				4A7C58680043222A88CBA028 /* Security.framework in Frameworks */,
+				68AE4053C75B2F7924AB0495 /* libz.tbd in Frameworks */,
+				F19A3C2697B0F9E8B61159FD /* libbz2.tbd in Frameworks */,
+				9D952BFE279E91909C0C6D29 /* libiconv.tbd in Frameworks */,
+				9B18EC831344E0BDA18D4E19 /* liblzma.tbd in Frameworks */,
+				7203EFCB061AB322F2E66581 /* libxml2.tbd in Frameworks */,
+				3DA63CC90F6EE54778D66323 /* libavcodec.a in Frameworks */,
+				3550965113433953F5E70FFB /* libavformat.a in Frameworks */,
+				472EF804C79C1388D6D7CEF5 /* libavutil.a in Frameworks */,
+				BE618CEA85026EEE31328259 /* libswresample.a in Frameworks */,
+				4ED3F86C18F8BBA3793D6F16 /* libswscale.a in Frameworks */,
+				D1A242554FD79A5141E50982 /* libcrypto.a in Frameworks */,
+				93D21E9CD2A96FB605AF77E6 /* libssl.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		00E2BC30DC268811F89A9320 /* ios */ = {
+			isa = PBXGroup;
+			children = (
+				6E4D3965FA69903C4F57DBB3 /* FFTHudViewCell.h */,
+				C725E27124B931F58742ED4D /* FFTHudViewCell.m */,
+			);
+			path = ios;
+			sourceTree = "<group>";
+		};
+		0B75A6F1CD2EC8D02B6C6173 /* t34 */ = {
+			isa = PBXGroup;
+			children = (
+				444F7106E3694BEA20A33F28 /* FFTPlayer0x34.h */,
+				9F30DE130F8586A9654BDE52 /* FFTPlayer0x34.m */,
+			);
+			path = t34;
+			sourceTree = "<group>";
+		};
+		1648F9728F3EA26A7064ED27 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				F2BC9B65562EA7E14DB6CA7C /* AppKit.framework */,
+				9D1CF4943825198510EB83BA /* AudioToolbox.framework */,
+				F0BF7BD89EBC5278731C6286 /* CoreFoundation.framework */,
+				49966417CA7B93560202690D /* CoreImage.framework */,
+				DCE4184BE998D7E4F506907D /* CoreMedia.framework */,
+				6845E3570E34764C9EAF20C1 /* CoreVideo.framework */,
+				1B63F4C681FF0234DF66F75A /* libavcodec.a */,
+				672BDD208A873BF8AA3F3FDA /* libavcodec.a */,
+				0393ACACFF42A65DD3775184 /* libavformat.a */,
+				66F152E267204CBA41B4E347 /* libavformat.a */,
+				166D3A3143E244A9E38FCA2E /* libavutil.a */,
+				EFCE1BC96CB408C6911AB524 /* libavutil.a */,
+				470AB520FBA719D5DF4BF7CE /* libbz2.tbd */,
+				960C20A4881CBBCB46E85267 /* libcrypto.a */,
+				843690FE299EEED58D7976AA /* libcrypto.a */,
+				D93C9C8834059ACBCFCB7878 /* libiconv.tbd */,
+				DD28E255615B8234EAF857DB /* liblzma.tbd */,
+				2A232F1F75EBFA26F514D6D1 /* libssl.a */,
+				CF14F7FC997C9880994BF758 /* libssl.a */,
+				FF1D84D15EC13F5F4265E003 /* libswresample.a */,
+				C515019942B9353C4CCFB26D /* libswresample.a */,
+				691D28A7E1C93969592AEB63 /* libswscale.a */,
+				3276F1EA995D4E22288BC614 /* libswscale.a */,
+				710C86CC7EA9039C5EF8DD7A /* libxml2.tbd */,
+				17747DEF9C37919CC7D6206D /* libz.tbd */,
+				C91005DEBBC95B2B10BE70B1 /* OpenGL.framework */,
+				07A44C08CF6AD553CB92821D /* OpenGLES.framework */,
+				AE6EA51D692B9106A1E2E384 /* Security.framework */,
+				4D013225AAA1A58C07EEFBD6 /* UIKit.framework */,
+				20D0DA8316DD14BAFEED7D45 /* VideoToolbox.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		29037D34467943116A7E385B /* t02 */ = {
+			isa = PBXGroup;
+			children = (
+				401DC39194FE82F542A719DF /* FFTPlayer0x02.h */,
+				40782F46B425497616EBE9A8 /* FFTPlayer0x02.m */,
+			);
+			path = t02;
+			sourceTree = "<group>";
+		};
+		2E05BBC74B8A86684C053AB9 /* t10 */ = {
+			isa = PBXGroup;
+			children = (
+				FD85DDDB2DBD1E203BA1B149 /* FFTDecoder0x10.h */,
+				439B4BF5190DB37ED856C6B3 /* FFTDecoder0x10.m */,
+				89F622CA460CCD2C1B535A63 /* FFTPlayer0x10.h */,
+				FEC5C627643E9EDAB9B520C0 /* FFTPlayer0x10.m */,
+			);
+			path = t10;
+			sourceTree = "<group>";
+		};
+		2E5EB5FF0850DC0454C08CE5 /* t50 */ = {
+			isa = PBXGroup;
+			children = (
+				1D13C4341DCBDFA8354FB933 /* FFTPlayer0x50.h */,
+				C31C4C6F7F89D825EFCB2D80 /* FFTPlayer0x50.m */,
+			);
+			path = t50;
+			sourceTree = "<group>";
+		};
+		2FA11B214E167912E1E9F977 /* t04 */ = {
+			isa = PBXGroup;
+			children = (
+				FB3E993B048D27654DEA082E /* FFTPlayer0x04.h */,
+				A55D94030B1FEA4F7CADDCD3 /* FFTPlayer0x04.m */,
+			);
+			path = t04;
+			sourceTree = "<group>";
+		};
+		3866AD01792143E11BEB872C /* t01 */ = {
+			isa = PBXGroup;
+			children = (
+				0F85B0353E19F833E92AE93D /* FFTOpenGLVersionHelper.h */,
+				4E0749E0E06533147F702028 /* FFTOpenGLVersionHelper.m */,
+				6BE9DB530B248E3DDA206FE9 /* FFTVersionHelper.h */,
+				8F6C76FE812508653C48BE64 /* FFTVersionHelper.m */,
+			);
+			path = t01;
+			sourceTree = "<group>";
+		};
+		41FE1282A2DEC2B4C8582648 /* t31 */ = {
+			isa = PBXGroup;
+			children = (
+				3AF6C736999666DE3BDE4219 /* FFTPlayer0x31.h */,
+				3EA3957B93828F27F3B9A701 /* FFTPlayer0x31.m */,
+			);
+			path = t31;
+			sourceTree = "<group>";
+		};
+		5033A5B37A8DD6C48F238E21 /* t30 */ = {
+			isa = PBXGroup;
+			children = (
+				7882BCB77D68F0BB294DC274 /* FFTPlayer0x30.h */,
+				EF5729111B7D1FDCD7A11B82 /* FFTPlayer0x30.m */,
+			);
+			path = t30;
+			sourceTree = "<group>";
+		};
+		5700FB94355B2824A422D585 /* mac */ = {
+			isa = PBXGroup;
+			children = (
+				184ABE9441396D2E4731540B /* FFTHudRowView.h */,
+				23566AFFE05803699536D8C1 /* FFTHudRowView.m */,
+			);
+			path = mac;
+			sourceTree = "<group>";
+		};
+		61249FEE146537DA9A1B5915 /* t35 */ = {
+			isa = PBXGroup;
+			children = (
+				8CA8FB2C384B54516AE65696 /* FFTPlayer0x35.h */,
+				0732188C2D8990257189D971 /* FFTPlayer0x35.m */,
+			);
+			path = t35;
+			sourceTree = "<group>";
+		};
+		634D2DBFB898EF881016EFE5 /* hud */ = {
+			isa = PBXGroup;
+			children = (
+				08E5DA551285A15F838BBA3C /* FFTHudControl.h */,
+				B07B437443F88229CC004C88 /* FFTHudControl.m */,
+				00E2BC30DC268811F89A9320 /* ios */,
+				5700FB94355B2824A422D585 /* mac */,
+			);
+			path = hud;
+			sourceTree = "<group>";
+		};
+		64D447F1959DDD77CA4CFE42 /* t06 */ = {
+			isa = PBXGroup;
+			children = (
+				73454FE7C1EE0DDA33AC4B68 /* FFTDecoder0x06.h */,
+				1023A5E2F2C5A6BCA31B5CF6 /* FFTDecoder0x06.m */,
+				3FE0A0B5F299AB26FF03571F /* FFTPlayer0x06.h */,
+				D1E242A74E4F3C53DEE171A1 /* FFTPlayer0x06.m */,
+			);
+			path = t06;
+			sourceTree = "<group>";
+		};
+		650A6CF45C412D9F015903FB /* t05 */ = {
+			isa = PBXGroup;
+			children = (
+				FB363066903EE61EC80DD9E3 /* FFTPlayer0x05.h */,
+				641BEC40D70704CD73E43CA3 /* FFTPlayer0x05.m */,
+			);
+			path = t05;
+			sourceTree = "<group>";
+		};
+		672E75B9835AC9FEDF31A79D /* t36 */ = {
+			isa = PBXGroup;
+			children = (
+				09BEC85CCC2942FC0CA82290 /* FFTPlayer0x36.h */,
+				7EC1C2E66E1DBBBD5EFB1247 /* FFTPlayer0x36.m */,
+			);
+			path = t36;
+			sourceTree = "<group>";
+		};
+		6F18BAB178AB859E6C7A8179 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				604F1E4A4EF99698A1FF5CEA /* FFmpegTutorial-iOS.framework */,
+				88023E43841ABBC8D7B74530 /* FFmpegTutorial-macOS.framework */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		8F788C3CCF5CEC21CA5B7CAC /* t32 */ = {
+			isa = PBXGroup;
+			children = (
+				916C5E22568145E156617C7B /* FFTPlayer0x32.h */,
+				B54B209834A125FA51F4D6B9 /* FFTPlayer0x32.m */,
+			);
+			path = t32;
+			sourceTree = "<group>";
+		};
+		94257AE2447B63234BDABDE8 = {
+			isa = PBXGroup;
+			children = (
+				ECB98EB53A97B5663FC2B680 /* common */,
+				3866AD01792143E11BEB872C /* t01 */,
+				29037D34467943116A7E385B /* t02 */,
+				2FA11B214E167912E1E9F977 /* t04 */,
+				650A6CF45C412D9F015903FB /* t05 */,
+				64D447F1959DDD77CA4CFE42 /* t06 */,
+				2E05BBC74B8A86684C053AB9 /* t10 */,
+				B9E6D502A8043AC56F9A4DA2 /* t20 */,
+				5033A5B37A8DD6C48F238E21 /* t30 */,
+				41FE1282A2DEC2B4C8582648 /* t31 */,
+				8F788C3CCF5CEC21CA5B7CAC /* t32 */,
+				E0A9A1F1412964618F591F6F /* t33 */,
+				0B75A6F1CD2EC8D02B6C6173 /* t34 */,
+				61249FEE146537DA9A1B5915 /* t35 */,
+				672E75B9835AC9FEDF31A79D /* t36 */,
+				2E5EB5FF0850DC0454C08CE5 /* t50 */,
+				1648F9728F3EA26A7064ED27 /* Frameworks */,
+				6F18BAB178AB859E6C7A8179 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		B9E6D502A8043AC56F9A4DA2 /* t20 */ = {
+			isa = PBXGroup;
+			children = (
+				0DB137E79214C3D59D06A28F /* FFTDecoder0x20.h */,
+				A00F25D1D030A138383945E5 /* FFTDecoder0x20.m */,
+				3F26A22415E2983EFB0D97C3 /* FFTPlayer0x20.h */,
+				463381B83FFBEF40B7316505 /* FFTPlayer0x20.m */,
+			);
+			path = t20;
+			sourceTree = "<group>";
+		};
+		E0A9A1F1412964618F591F6F /* t33 */ = {
+			isa = PBXGroup;
+			children = (
+				A2C6C518C264B63B2B0D3A85 /* FFTPlayer0x33.h */,
+				2C723A69C553BB4B1FFDB2D3 /* FFTPlayer0x33.m */,
+			);
+			path = t33;
+			sourceTree = "<group>";
+		};
+		E2A7B6F81B9553D5EF36EA7D /* audioRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				A71F9A67D1A2099B70E38190 /* FFTAudioRenderer.h */,
+				C33B02BC08EC45A937157255 /* FFTAudioRenderer.m */,
+				673E85849674AEC23EB786C1 /* FFTAudioRendererProtocol.h */,
+				F7EFA0E7EDDA82C2C32FEB32 /* AudioRenderImp */,
+			);
+			path = audioRenderer;
+			sourceTree = "<group>";
+		};
+		ECB98EB53A97B5663FC2B680 /* common */ = {
+			isa = PBXGroup;
+			children = (
+				A9D07F53DCC11D8669E38075 /* FFTAbstractLogger.h */,
+				2BA2792A41C7EDD2DF26CC30 /* FFTAbstractLogger.m */,
+				80D9D5B98A7B6B7272908C76 /* FFTAudioFrameQueue.h */,
+				15A81B3F6C12218636CDD3F4 /* FFTAudioFrameQueue.m */,
+				A130480A1B745FC9E5D51902 /* FFTAudioResample.h */,
+				2329E97656B5ABD244DFB1A3 /* FFTAudioResample.m */,
+				81D6FA7FF23D8D686E5CFC6B /* FFTConvertUtil.h */,
+				C21848AC27ADEF42A87B424E /* FFTConvertUtil.m */,
+				D033090BCBACBAD183AB1C01 /* FFTDecoder.h */,
+				1ECAA5603B59E65440749D73 /* FFTDecoder.m */,
+				4AD411B47EAC3E21752308AE /* FFTDispatch.h */,
+				9258D2DCE1975ADCE385B800 /* FFTDispatch.m */,
+				6768207FDDB6A72E57DF19D4 /* FFTFrameQueue.h */,
+				0531F7B352AC336C0ECE97C7 /* FFTFrameQueue.m */,
+				23709776344758B43A03837C /* FFTPacketQueue.h */,
+				F7357895521EB8FACFD8F3A8 /* FFTPacketQueue.m */,
+				FD9D4A6EAEA93E043D7C5AE5 /* FFTPlatform.h */,
+				36EE56CDFCA7750AAB83CB40 /* FFTPlatform.m */,
+				10D227775FAF8EBE7F365147 /* FFTPlayerHeader.h */,
+				6922E80D9C1C950E9E8524FA /* FFTPlayerHeader.m */,
+				310A0099AD0753B8D4FD24C3 /* FFTSyncClock.h */,
+				28DFEC5579A89E67062B7330 /* FFTSyncClock.m */,
+				3C2DF36E6CB515F76942E4AA /* FFTThread.h */,
+				3070B79F27783B2A01A97C6E /* FFTThread.m */,
+				627107664F30B02778C9F7EA /* FFTVideoFrameQueue.h */,
+				8BF8A071A7D62B483C0F5A38 /* FFTVideoFrameQueue.m */,
+				9D161A5618C016EC69088426 /* FFTVideoScale.h */,
+				04777F8B930678661C24EB40 /* FFTVideoScale.m */,
+				E2A7B6F81B9553D5EF36EA7D /* audioRenderer */,
+				634D2DBFB898EF881016EFE5 /* hud */,
+				FB975042661E4675BEA91433 /* videoRenderer */,
+			);
+			path = common;
+			sourceTree = "<group>";
+		};
+		F7EFA0E7EDDA82C2C32FEB32 /* AudioRenderImp */ = {
+			isa = PBXGroup;
+			children = (
+				3FDAA4C52EA0E430649BAA52 /* FFTAudioQueueRenderer.h */,
+				BF8D74190EF3965632A68C72 /* FFTAudioQueueRenderer.m */,
+				B1899C8941C37246674D9977 /* FFTAudioRendererImpProtocol.h */,
+				9C134C933ADF2BDF2920C47E /* FFTAudioUnitRenderer.h */,
+				6D54A9239E29544D4F02BCC0 /* FFTAudioUnitRenderer.m */,
+			);
+			path = AudioRenderImp;
+			sourceTree = "<group>";
+		};
+		FB975042661E4675BEA91433 /* videoRenderer */ = {
+			isa = PBXGroup;
+			children = (
+				A65255268C66AA4D08DB0E7A /* IJKMathUtilities.h */,
+				558699DCD9880C6EC4D2B0EF /* IJKMathUtilities.m */,
+				F083A4FE7E25343D88D07FD8 /* IJKMetalOffscreenRendering.h */,
+				DF32EEFEC9299E263DBBEC7F /* IJKMetalOffscreenRendering.m */,
+				E07485C10E9488E3DEE33912 /* IJKMetalPipelineMeta.h */,
+				7DBAC50B2D3A9FF504C16F21 /* IJKMetalPipelineMeta.m */,
+				71995DC8FE42314D3164CDDD /* IJKMetalRenderer.h */,
+				53283B51BE4BFFE8EE465397 /* IJKMetalRenderer.m */,
+				C56950571C218B5641A00A18 /* IJKMetalShaders.metal */,
+				25955D37F071C477B3ADD73E /* IJKMetalShaderTypes.h */,
+				DD4C46362EB3C7F0DE7B83CB /* IJKMetalShaderTypes.m */,
+				92A73F121C4F81AEF5DDB9AE /* IJKMetalView.h */,
+				0AABE1E342DE36AE00A1AB17 /* IJKMetalView.m */,
+				95151216906E1673509BF6C9 /* IJKOverlayAttach.h */,
+				F9912B49FA72611F9D5665BB /* IJKOverlayAttach.m */,
+				8790C5113B99D49505C7C51F /* IJKVideoRenderingProtocol.h */,
+			);
+			path = videoRenderer;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		047261E7EA877E8298696ED2 /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1E46FE102FB85A268DC28E3C /* FFTAbstractLogger.h in Headers */,
+				41503D57F7FAC366A0A4FE79 /* FFTAudioFrameQueue.h in Headers */,
+				966407F03204A62A832E2CE8 /* FFTAudioQueueRenderer.h in Headers */,
+				96D56AA1D9B0A8B2E9CCA94F /* FFTAudioRenderer.h in Headers */,
+				1471FA597E0364927FF58AD8 /* FFTAudioRendererImpProtocol.h in Headers */,
+				1B3B8F079EFB9E3918736CBE /* FFTAudioRendererProtocol.h in Headers */,
+				201727FD0E320C7D4B6AC92F /* FFTAudioResample.h in Headers */,
+				39F45C7678FF4DB34E7BAC6B /* FFTAudioUnitRenderer.h in Headers */,
+				B9AF292CBE29E7CA3F58B587 /* FFTConvertUtil.h in Headers */,
+				6B2C21426EB3DDC6CE16D049 /* FFTDecoder.h in Headers */,
+				23F545199AB59AF90E62458A /* FFTDecoder0x06.h in Headers */,
+				00387F8EC93FA21EA4CDE612 /* FFTDecoder0x10.h in Headers */,
+				B2B10567125F2B688EE6A0C3 /* FFTDecoder0x20.h in Headers */,
+				4C178BA1DD60F15CCB972A09 /* FFTDispatch.h in Headers */,
+				5BD53508ADF5C8CB1FFB8019 /* FFTFrameQueue.h in Headers */,
+				D26ABFCA64C521999AA34BCF /* FFTHudControl.h in Headers */,
+				E36E576A972DA7977C116B9E /* FFTHudViewCell.h in Headers */,
+				35106A3FC530610AEB813066 /* FFTPacketQueue.h in Headers */,
+				302B5021882459FA0006FD71 /* FFTPlatform.h in Headers */,
+				5100C784157E72EA4BC2D773 /* FFTPlayer0x02.h in Headers */,
+				104B2E2B32F682A4BA7DC452 /* FFTPlayer0x04.h in Headers */,
+				464C89912AB68FDAD971F57D /* FFTPlayer0x05.h in Headers */,
+				877838E38A141688C2D6738E /* FFTPlayer0x06.h in Headers */,
+				A37735D916D1C4E29D42D3DB /* FFTPlayer0x10.h in Headers */,
+				CAB539505463F23546CA47CD /* FFTPlayer0x20.h in Headers */,
+				00534E44C6BA1B7F889078E0 /* FFTPlayer0x30.h in Headers */,
+				03B3DE53714FEEAA54FBE354 /* FFTPlayer0x31.h in Headers */,
+				F5B59BCAD06FE10DAFF2E03A /* FFTPlayer0x32.h in Headers */,
+				57E5D1746091289F1811DDD4 /* FFTPlayer0x33.h in Headers */,
+				B1C540CB372C7DE5C6C93265 /* FFTPlayer0x34.h in Headers */,
+				F9459AC2B78C527688B1D629 /* FFTPlayer0x35.h in Headers */,
+				8D268FF464887FCE18208BE5 /* FFTPlayer0x36.h in Headers */,
+				71C60AE709B824C91B62AA3B /* FFTPlayer0x50.h in Headers */,
+				60F81DA452FEA6DA282B555F /* FFTPlayerHeader.h in Headers */,
+				0DD1C7D99A9A9AF1DFE7D4A4 /* FFTSyncClock.h in Headers */,
+				84DE1C00FC81157E7BAEE90A /* FFTThread.h in Headers */,
+				0E04133004EEB1684A2D881B /* FFTVersionHelper.h in Headers */,
+				A13808B9E0225B8802DE059A /* FFTVideoFrameQueue.h in Headers */,
+				F8CF359B3E30E0347A61ED00 /* FFTVideoScale.h in Headers */,
+				7CFEE42F6CE0A8EA54BF5BA5 /* IJKMathUtilities.h in Headers */,
+				996C02907F5E14F2035DD6D4 /* IJKMetalOffscreenRendering.h in Headers */,
+				A4939E6077B4D0181D8C84F6 /* IJKMetalPipelineMeta.h in Headers */,
+				F70E80F0BD835A59365558B6 /* IJKMetalRenderer.h in Headers */,
+				DA4B21033524CADDD518FCD1 /* IJKMetalShaderTypes.h in Headers */,
+				76DFCA1AF66D70BA6B5D6650 /* IJKMetalView.h in Headers */,
+				E16FEC69BD4F3ECDAE57AD7A /* IJKOverlayAttach.h in Headers */,
+				C2E16BCBDF6A1DA64ABD594B /* IJKVideoRenderingProtocol.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		DAC464DCC45F7490A3E45BAF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A8FC639284A91F717B5FB54E /* FFTAbstractLogger.h in Headers */,
+				F64D0E8383E0F1CBBF88060D /* FFTAudioFrameQueue.h in Headers */,
+				46C9B59F4D8EB32A204B4EE9 /* FFTAudioQueueRenderer.h in Headers */,
+				F30FF8CFE8EFC50F727CC398 /* FFTAudioRenderer.h in Headers */,
+				636F016A23A3CE30856AE3AA /* FFTAudioRendererImpProtocol.h in Headers */,
+				281309811C92511E89A47315 /* FFTAudioRendererProtocol.h in Headers */,
+				3BE654FC333DCAEB2DE26B93 /* FFTAudioResample.h in Headers */,
+				B49641DEE251E5C3C32A221A /* FFTAudioUnitRenderer.h in Headers */,
+				46F6B01335D5D71791F06E72 /* FFTConvertUtil.h in Headers */,
+				33C3BBBDAC6DC77281C34773 /* FFTDecoder.h in Headers */,
+				953AC02DEB575B5B470F5BC2 /* FFTDecoder0x06.h in Headers */,
+				8418BD3F8664E0F2A4A6A29D /* FFTDecoder0x10.h in Headers */,
+				9CC3BCAD64E08C8EFB18D10D /* FFTDecoder0x20.h in Headers */,
+				239BE1A1C9222B69F0EF9F82 /* FFTDispatch.h in Headers */,
+				E339E77BEC26ABB0B17A5D39 /* FFTFrameQueue.h in Headers */,
+				7058690AE15E9C46B461CBFA /* FFTHudControl.h in Headers */,
+				3527487D0A58265F1FA6299E /* FFTHudRowView.h in Headers */,
+				6CCC4FC2B32C31C451FA1C45 /* FFTOpenGLVersionHelper.h in Headers */,
+				AC3DDE1EE8BDD75919381C6D /* FFTPacketQueue.h in Headers */,
+				608B488664BE5A7B4C780ECF /* FFTPlatform.h in Headers */,
+				2C97D93193E89F565F50A347 /* FFTPlayer0x02.h in Headers */,
+				2DD9F7A613D2014A999C8FD5 /* FFTPlayer0x04.h in Headers */,
+				8307B8B96C346C387B118E1A /* FFTPlayer0x05.h in Headers */,
+				0E5E4FA3E46B8AB6A250BF04 /* FFTPlayer0x06.h in Headers */,
+				BCA1B8499B523D3F7630724A /* FFTPlayer0x10.h in Headers */,
+				3F2F5071327BAB5B22F41ED9 /* FFTPlayer0x20.h in Headers */,
+				D1CCFD91396F760BC76CE563 /* FFTPlayer0x30.h in Headers */,
+				DB3D6BFDBF278CD073764A4F /* FFTPlayer0x31.h in Headers */,
+				A0E5BB7F8C339062E4C2C664 /* FFTPlayer0x32.h in Headers */,
+				32FECEA3016CC7D76EE543BA /* FFTPlayer0x33.h in Headers */,
+				5DD29A29C3B632431A17B6D9 /* FFTPlayer0x34.h in Headers */,
+				DBFBA9F7072FED9F32BAE957 /* FFTPlayer0x35.h in Headers */,
+				166A0DB8DC3CEBD70A03AFEB /* FFTPlayer0x36.h in Headers */,
+				0729D2BB9F879F9FA9EE151A /* FFTPlayer0x50.h in Headers */,
+				553FCD48D3D88AFC31F733B4 /* FFTPlayerHeader.h in Headers */,
+				26D22B88DF05E666F7FFECC1 /* FFTSyncClock.h in Headers */,
+				6671A08D52CA49079920E40D /* FFTThread.h in Headers */,
+				68099021441EC0C9D14EA6C1 /* FFTVersionHelper.h in Headers */,
+				A0A52290293ACED137290A4F /* FFTVideoFrameQueue.h in Headers */,
+				385769A926A3BB89FCC55059 /* FFTVideoScale.h in Headers */,
+				A3E9F4A976B9E419A8BBBE39 /* IJKMathUtilities.h in Headers */,
+				FCC9468433372EC4864A437A /* IJKMetalOffscreenRendering.h in Headers */,
+				987ABAEFBAEF6495A44E76C9 /* IJKMetalPipelineMeta.h in Headers */,
+				7BD38CFADC01529A6FDE070E /* IJKMetalRenderer.h in Headers */,
+				1DEFA3702856FBC82C327AE7 /* IJKMetalShaderTypes.h in Headers */,
+				321378AD094EEAD03CD6D8B3 /* IJKMetalView.h in Headers */,
+				AFC60D4332CBE276DA6E5CC5 /* IJKOverlayAttach.h in Headers */,
+				534F25672C4F217C3A8F54E5 /* IJKVideoRenderingProtocol.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0ED2DBE8AF763E842A74F874 /* FFmpegTutorial-iOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2B9EDB4390004C091840942A /* Build configuration list for PBXNativeTarget "FFmpegTutorial-iOS" */;
+			buildPhases = (
+				047261E7EA877E8298696ED2 /* Headers */,
+				5971AE6241A642773CCD24E6 /* Sources */,
+				B682CB41F2CE20041FB70C64 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FFmpegTutorial-iOS";
+			productName = "FFmpegTutorial-iOS";
+			productReference = 604F1E4A4EF99698A1FF5CEA /* FFmpegTutorial-iOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+		1C50C99255A8A0A07F004D06 /* FFmpegTutorial-macOS */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 14D37CFADDA30A4C2BD24C37 /* Build configuration list for PBXNativeTarget "FFmpegTutorial-macOS" */;
+			buildPhases = (
+				DAC464DCC45F7490A3E45BAF /* Headers */,
+				93FE7595A3D5BA29304D9BD0 /* Sources */,
+				6511AA08074B828EEDE09DEB /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "FFmpegTutorial-macOS";
+			productName = "FFmpegTutorial-macOS";
+			productReference = 88023E43841ABBC8D7B74530 /* FFmpegTutorial-macOS.framework */;
+			productType = "com.apple.product-type.framework";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		09ED5976D099BB802D4B32FC /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
+				TargetAttributes = {
+				};
+			};
+			buildConfigurationList = 11024C5F02AABD3D3D5A6213 /* Build configuration list for PBXProject "FFmpegTutorial" */;
+			compatibilityVersion = "Xcode 14.0";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				Base,
+				en,
+			);
+			mainGroup = 94257AE2447B63234BDABDE8;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0ED2DBE8AF763E842A74F874 /* FFmpegTutorial-iOS */,
+				1C50C99255A8A0A07F004D06 /* FFmpegTutorial-macOS */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		5971AE6241A642773CCD24E6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92F648E70FA9369CADFAE691 /* FFTAbstractLogger.m in Sources */,
+				C068CE54456370EAC2A15FEB /* FFTAudioFrameQueue.m in Sources */,
+				40B0189D89D11C181A57592C /* FFTAudioQueueRenderer.m in Sources */,
+				6554F2E194BE4024534275C7 /* FFTAudioRenderer.m in Sources */,
+				419CA4A34AA44541AD4A2BBF /* FFTAudioResample.m in Sources */,
+				D5877E3D3ED44368C6CE7F48 /* FFTAudioUnitRenderer.m in Sources */,
+				FCEB15D31316B13FA74E1DCC /* FFTConvertUtil.m in Sources */,
+				D7D1216165DB2D5996601254 /* FFTDecoder.m in Sources */,
+				1D55B392CBE452D7DFE7E71E /* FFTDecoder0x06.m in Sources */,
+				15FEBEE1D35DD76B3C7A9967 /* FFTDecoder0x10.m in Sources */,
+				9C2C2AFA3BCAAA3466BF64FC /* FFTDecoder0x20.m in Sources */,
+				168E48460C66CB159263BF91 /* FFTDispatch.m in Sources */,
+				E16341650E1B89A26296B80D /* FFTFrameQueue.m in Sources */,
+				539BE383FE76F410A7F11E75 /* FFTHudControl.m in Sources */,
+				E625E8DCA399BE50F36C6D26 /* FFTHudViewCell.m in Sources */,
+				8C05C59ABB218FF6FED66CDC /* FFTPacketQueue.m in Sources */,
+				72B4FBE72AE69C32AA3D1056 /* FFTPlatform.m in Sources */,
+				541BD8AC24423F42DADB0B21 /* FFTPlayer0x02.m in Sources */,
+				941858DFFB9B9ED06EF5E8B2 /* FFTPlayer0x04.m in Sources */,
+				3512CD8DECF1BF2D1C10C480 /* FFTPlayer0x05.m in Sources */,
+				33B13FBC273CD6352D9026AA /* FFTPlayer0x06.m in Sources */,
+				3D4879A01538476CCB563E2E /* FFTPlayer0x10.m in Sources */,
+				FDEC71C60F462C9A84090BFF /* FFTPlayer0x20.m in Sources */,
+				EE69A9EE5E31C28459CFA208 /* FFTPlayer0x30.m in Sources */,
+				E64C875244B47E4E11CF7E28 /* FFTPlayer0x31.m in Sources */,
+				E672C56A2A9CAC052BBD77A7 /* FFTPlayer0x32.m in Sources */,
+				0096DA8B9A5A534ED092C549 /* FFTPlayer0x33.m in Sources */,
+				9B821B07FB4FAD71887E0118 /* FFTPlayer0x34.m in Sources */,
+				AD190ACF009992E8545CFB45 /* FFTPlayer0x35.m in Sources */,
+				5565C33D7B80D691CC03B98E /* FFTPlayer0x36.m in Sources */,
+				0AB9B4518976EA234311A9DC /* FFTPlayer0x50.m in Sources */,
+				95687FBFA9950D75E537757A /* FFTPlayerHeader.m in Sources */,
+				9239F86182BC4D35F036B369 /* FFTSyncClock.m in Sources */,
+				E473DAEF73AAC8B99599C7BC /* FFTThread.m in Sources */,
+				394CE88A534691B4C8E08A43 /* FFTVersionHelper.m in Sources */,
+				683BC60B93488C622FC9A217 /* FFTVideoFrameQueue.m in Sources */,
+				3ACAB8641B01E8AA54673D75 /* FFTVideoScale.m in Sources */,
+				7382AA7B0156E36B8619BA38 /* IJKMathUtilities.m in Sources */,
+				9169C3456DA5884D14450B8E /* IJKMetalOffscreenRendering.m in Sources */,
+				CC1FDB39BF754BD67C0AEE02 /* IJKMetalPipelineMeta.m in Sources */,
+				98E8BC604707C605EC47B359 /* IJKMetalRenderer.m in Sources */,
+				D7B4FDCD3D19E5D64E901E2A /* IJKMetalShaderTypes.m in Sources */,
+				6ED9817973CAF5F19E6DC5F7 /* IJKMetalShaders.metal in Sources */,
+				8D7EA595DF191CCC02F0EF3F /* IJKMetalView.m in Sources */,
+				FAA99E84070FDDAC8A632AFB /* IJKOverlayAttach.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		93FE7595A3D5BA29304D9BD0 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A0C2AB42CD34F1F8F1325161 /* FFTAbstractLogger.m in Sources */,
+				F0B13CDD00A968D23D050D83 /* FFTAudioFrameQueue.m in Sources */,
+				1D7B94BFADCBC39FCD595C9D /* FFTAudioQueueRenderer.m in Sources */,
+				7CC84051BE4C42CD85EA41A1 /* FFTAudioRenderer.m in Sources */,
+				114535AF546F41DBD5279E4C /* FFTAudioResample.m in Sources */,
+				FF9F102654A315149B124E30 /* FFTAudioUnitRenderer.m in Sources */,
+				92D1818B5893D49C64F9E35C /* FFTConvertUtil.m in Sources */,
+				D50A5509EDA011C66626762C /* FFTDecoder.m in Sources */,
+				906F1B0512185CFE7241221E /* FFTDecoder0x06.m in Sources */,
+				83C19C27AB8255059B96E3B3 /* FFTDecoder0x10.m in Sources */,
+				DF6A48A5443617B0FD593ED1 /* FFTDecoder0x20.m in Sources */,
+				DDC1EB3590A6D6B7834F378A /* FFTDispatch.m in Sources */,
+				4336829311C9E24B1942F624 /* FFTFrameQueue.m in Sources */,
+				49A077DB8B09DFBEED85CF19 /* FFTHudControl.m in Sources */,
+				4F215A3853747F33D3100DD5 /* FFTHudRowView.m in Sources */,
+				7DA98DCAF33A2C3C72EB9767 /* FFTOpenGLVersionHelper.m in Sources */,
+				C05BA896412526194DE7C14B /* FFTPacketQueue.m in Sources */,
+				54824BD73603B57501E03CCF /* FFTPlatform.m in Sources */,
+				F02556CFD5DAA56CB8690610 /* FFTPlayer0x02.m in Sources */,
+				627E4A09E6D01CEBEF571676 /* FFTPlayer0x04.m in Sources */,
+				05424C2A31F706C9DCB1E6DA /* FFTPlayer0x05.m in Sources */,
+				B64B1FB90F78D428F28C428F /* FFTPlayer0x06.m in Sources */,
+				CC55E870DBD004E0FE445820 /* FFTPlayer0x10.m in Sources */,
+				E9AD86CC6C468D83D46CBF82 /* FFTPlayer0x20.m in Sources */,
+				551EE07725818A186095F885 /* FFTPlayer0x30.m in Sources */,
+				F70FC5BAB1EFD974E67B6A89 /* FFTPlayer0x31.m in Sources */,
+				C0CF2A3BF7A2B813F91E535D /* FFTPlayer0x32.m in Sources */,
+				ACE15EDB80B8600039CFB69C /* FFTPlayer0x33.m in Sources */,
+				5A63FEF6567EE1AC7CFBB1DF /* FFTPlayer0x34.m in Sources */,
+				3FFD568B6501676519C58B1B /* FFTPlayer0x35.m in Sources */,
+				155BBB770BE686866F7FF23D /* FFTPlayer0x36.m in Sources */,
+				E8253A2AAA674A52909A006A /* FFTPlayer0x50.m in Sources */,
+				18224E0852E5DF44702A7EF4 /* FFTPlayerHeader.m in Sources */,
+				01C58EA00DFBB3B362DBEBCC /* FFTSyncClock.m in Sources */,
+				4531EFAE4853639559DCCE53 /* FFTThread.m in Sources */,
+				10340DD2AD7141340AD25362 /* FFTVersionHelper.m in Sources */,
+				35B30EF68A318C1E9368C9A4 /* FFTVideoFrameQueue.m in Sources */,
+				126E6398123FAF5FA3019129 /* FFTVideoScale.m in Sources */,
+				A816CA93520A8C148952257E /* IJKMathUtilities.m in Sources */,
+				6873716DC67A465C938DE00E /* IJKMetalOffscreenRendering.m in Sources */,
+				DF29B4323221AE3E5AA3B636 /* IJKMetalPipelineMeta.m in Sources */,
+				C259E3E868D1086ED0E51B9E /* IJKMetalRenderer.m in Sources */,
+				A26B74A9E9EFE8475C98BC2C /* IJKMetalShaderTypes.m in Sources */,
+				61A668792BA80A6857C67F71 /* IJKMetalShaders.metal in Sources */,
+				D3E9A3019AD24925FA770ED1 /* IJKMetalView.m in Sources */,
+				51C65236F3B10DF3E6A01BD8 /* IJKOverlayAttach.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		47E629871CA41CAE813E7C14 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited) IJK_USE_METAL_2=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/macos/universal/ffmpeg/include $(PROJECT_DIR)/../build/product/macos/universal/openssl/include";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/macos/universal/ffmpeg/lib $(PROJECT_DIR)/../build/product/macos/universal/openssl/lib";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_LANGUAGE_REVISION = Metal20;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.debugly.FFmpegTutorial-macOS";
+				PRODUCT_NAME = FFmpegTutorial;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		75013CC8DBADEC40017ECD64 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"../build/product/ios/universal/ffmpeg/lib\"",
+					"\"../build/product/ios/universal/openssl/lib\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited) IJK_USE_METAL_2=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/ios/universal/ffmpeg/include $(PROJECT_DIR)/../build/product/ios/universal/openssl/include";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/ios/universal/ffmpeg/lib $(PROJECT_DIR)/../build/product/ios/universal/openssl/lib";
+				MTL_LANGUAGE_REVISION = Metal20;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.debugly.FFmpegTutorial-iOS";
+				PRODUCT_NAME = FFmpegTutorial;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+		B8990360766476D2ACDD016D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"$(inherited)",
+					"DEBUG=1",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		C3AFF03F7C782AFB455D2588 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"../build/product/ios/universal/ffmpeg/lib\"",
+					"\"../build/product/ios/universal/openssl/lib\"",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited) IJK_USE_METAL_2=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/ios/universal/ffmpeg/include $(PROJECT_DIR)/../build/product/ios/universal/openssl/include";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/ios/universal/ffmpeg/lib $(PROJECT_DIR)/../build/product/ios/universal/openssl/lib";
+				MTL_LANGUAGE_REVISION = Metal20;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.debugly.FFmpegTutorial-iOS";
+				PRODUCT_NAME = FFmpegTutorial;
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = YES;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = YES;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Release;
+		};
+		CCCA14056232E7C6C8E68F96 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		CCF86619DA5E1CBE1964616A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "";
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEFINES_MODULE = YES;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				DYLIB_INSTALL_NAME_BASE = "@rpath";
+				GCC_PREPROCESSOR_DEFINITIONS = "$(inherited) IJK_USE_METAL_2=1";
+				GENERATE_INFOPLIST_FILE = YES;
+				HEADER_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/macos/universal/ffmpeg/include $(PROJECT_DIR)/../build/product/macos/universal/openssl/include";
+				INSTALL_PATH = "$(LOCAL_LIBRARY_DIR)/Frameworks";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				LIBRARY_SEARCH_PATHS = "$(inherited) $(PROJECT_DIR)/../build/product/macos/universal/ffmpeg/lib $(PROJECT_DIR)/../build/product/macos/universal/openssl/lib";
+				MACOSX_DEPLOYMENT_TARGET = 10.13;
+				MTL_LANGUAGE_REVISION = Metal20;
+				PRODUCT_BUNDLE_IDENTIFIER = "com.debugly.FFmpegTutorial-macOS";
+				PRODUCT_NAME = FFmpegTutorial;
+				SDKROOT = macosx;
+				SKIP_INSTALL = YES;
+				VERSIONING_SYSTEM = "apple-generic";
+			};
+			name = Debug;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		11024C5F02AABD3D3D5A6213 /* Build configuration list for PBXProject "FFmpegTutorial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B8990360766476D2ACDD016D /* Debug */,
+				CCCA14056232E7C6C8E68F96 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		14D37CFADDA30A4C2BD24C37 /* Build configuration list for PBXNativeTarget "FFmpegTutorial-macOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				CCF86619DA5E1CBE1964616A /* Debug */,
+				47E629871CA41CAE813E7C14 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		2B9EDB4390004C091840942A /* Build configuration list for PBXNativeTarget "FFmpegTutorial-iOS" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				75013CC8DBADEC40017ECD64 /* Debug */,
+				C3AFF03F7C782AFB455D2588 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 09ED5976D099BB802D4B32FC /* Project object */;
+}
