@@ -38,9 +38,7 @@ open Example/macOS/macOSExample.xcworkspace
 
 ## 简介
 
-前期为方便管理依赖，项目使用 Pod 开发库（Development Pod）的形式来组织，现在已经不再用了，避免对 cocoapods 的依赖。
-
-所有对 FFmpeg 的封装代码都放在 FFmpegTutorial 库里，如何编译 FFmpeg 不是本教程的重点，在执行 ./install-pre-any.sh 脚本时会自动下载已经预编译好的 FFmpeg 库，编译 FFmpeg 的脚本也是开源的 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)。
+所有对 FFmpeg6 的封装代码都放在 FFmpegTutorial 库里，执行 ./install-pre-any.sh 脚本时会自动下载已经预编译好的 FFmpeg 静态库，编译 FFmpeg 的脚本也是开源的 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)。
 
 教程共分为六个部分，提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发:
 
@@ -86,8 +84,6 @@ open Example/macOS/macOSExample.xcworkspace
 
 ## 捐赠
 
-编写这个教程，花费了七年的时间，期间工程重构了三次，不记得熬了多少个夜晚去死磕遇到的问题...
-
-希望这些教程能够为新人学习音视频渲染提供上帮助，请买杯咖啡给我提提神儿。
+编写本教程花费了本人大量的时间，希望能够为新人学习音视频渲染提供一些帮助，请买杯咖啡给我提提神儿。
 
 ![donate.jpg](https://i.postimg.cc/xdVqnBLp/IMG-7481.jpg)
