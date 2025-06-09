@@ -650,14 +650,12 @@ static int decode_interrupt_cb(void *ctx)
                 if (vp.pts + duration < master_time) {
                     [_videoClk setClock:vp.pts];
                     [_videoFrameQueue pop];
-                    self.videoFrameCount--;
                 } else {
                     break;
                 }
             }
         } else {
             [_videoFrameQueue pop];
-            self.videoFrameCount--;
             *remaining_time = 0.04;
         }
         double diff = [_audioClk getClock] - [_videoClk getClock];
