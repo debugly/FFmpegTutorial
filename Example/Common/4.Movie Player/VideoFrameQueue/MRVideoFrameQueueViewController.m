@@ -208,7 +208,6 @@
         [self.indicatorView stopAnimation:nil];
         self.audioFrameQueue = [[FFTAudioFrameQueue alloc] init];
         [self setupAudioRender:player.sampleFormat sampleRate:player.sampleRate];
-        [self playAudio];
         
         [self prepareRendererView];
         self.videoFrameQueue = [[FFTVideoFrameQueue alloc] init];
@@ -242,6 +241,7 @@
         //audio
         else if (type == 2) {
             [self enQueueAudioFrame:frame];
+            [self playAudio];
         }
     };
     [player prepareToPlay];

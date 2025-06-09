@@ -359,8 +359,8 @@
 		C94AF2172B3040EE006DC380 /* 4.Movie Player */ = {
 			isa = PBXGroup;
 			children = (
-				C94AF2182B3040EE006DC380 /* PacketQueue */,
 				C94AF2352B3040EE006DC380 /* VideoFrameQueue */,
+				C94AF2182B3040EE006DC380 /* PacketQueue */,
 				C94AF2602B305659006DC380 /* VideoEmbed */,
 				DDE075192B31DBB4004B7042 /* AudioEmbed */,
 				C9F3DFD82B33CF4B003602E0 /* PlayProgress */,

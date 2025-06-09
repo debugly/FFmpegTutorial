@@ -118,7 +118,7 @@
             },
             @{
                 @"title":@"PacketQueue",
-                @"detail":@"增加 AVPacket 缓存队列，创建解码线程",
+                @"detail":@"增加 AVPacket 缓存队列，分别创建解码线程",
                 @"class":@"MRPacketQueueViewController",
             },
             @{
