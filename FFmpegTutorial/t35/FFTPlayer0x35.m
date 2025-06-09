@@ -47,7 +47,8 @@ kFFTPlayer0x35InfoKey kFFTPlayer0x35Duration = @"kFFTPlayer0x35Duration";
     //音频重采样
     FFTAudioResample *_audioResample;
     
-    FFTPacketQueue *_packetQueue;
+    FFTPacketQueue *_audioPacketQueue;
+    FFTPacketQueue *_videoPacketQueue;
     
     FFTVideoFrameQueue *_videoFrameQueue;
     FFTAudioFrameQueue *_audioFrameQueue;
@@ -74,7 +75,8 @@ kFFTPlayer0x35InfoKey kFFTPlayer0x35Duration = @"kFFTPlayer0x35Duration";
 
 //读包线程
 @property (nonatomic, strong) FFTThread *readThread;
-@property (nonatomic, strong) FFTThread *decoderThread;
+@property (nonatomic, strong) FFTThread *audioDecoderThread;
+@property (nonatomic, strong) FFTThread *videoDecoderThread;
 @property (nonatomic, strong) FFTThread *videoThread;
 
 @property (atomic, assign) int abort_request;
@@ -97,7 +99,8 @@ static int decode_interrupt_cb(void *ctx)
 - (void)_stop
 {
     self.abort_request = 1;
-    [_packetQueue cancel];
+    [_audioPacketQueue cancel];
+    [_videoPacketQueue cancel];
     [_videoFrameQueue cancel];
     [_audioFrameQueue cancel];
     
@@ -112,9 +115,14 @@ static int decode_interrupt_cb(void *ctx)
         [self.readThread join];
     }
     
-    if (self.decoderThread) {
-        [self.decoderThread cancel];
-        [self.decoderThread join];
+    if (self.audioDecoderThread) {
+        [self.audioDecoderThread cancel];
+        [self.audioDecoderThread join];
+    }
+    
+    if (self.videoDecoderThread) {
+        [self.videoDecoderThread cancel];
+        [self.videoDecoderThread join];
     }
     
     if (self.videoThread) {
@@ -144,13 +152,17 @@ static int decode_interrupt_cb(void *ctx)
         NSAssert(NO, @"不允许重复创建");
     }
     
-    _packetQueue = [[FFTPacketQueue alloc] init];
+    _audioPacketQueue = [[FFTPacketQueue alloc] init];
+    _videoPacketQueue = [[FFTPacketQueue alloc] init];
     
     self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
     
-    self.decoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
-    self.decoderThread.name = @"mr-decoder";
+    self.audioDecoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(audioDecoderFunc) object:nil];
+    self.audioDecoderThread.name = @"audio-decoder";
+    
+    self.videoDecoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(videoDecoderFunc) object:nil];
+    self.videoDecoderThread.name = @"video-decoder";
     
     self.videoThread = [[FFTThread alloc] initWithTarget:self selector:@selector(videoThreadFunc) object:nil];
     self.videoThread.name = @"mr-v-display";
@@ -183,9 +195,9 @@ static int decode_interrupt_cb(void *ctx)
                 pkt->data = NULL;
                 pkt->size = 0;
                 pkt->stream_index = _videoDecoder.streamIdx;
-                [_packetQueue enQueue:pkt];
+                [_videoPacketQueue enQueue:pkt];
                 pkt->stream_index = _audioDecoder.streamIdx;
-                [_packetQueue enQueue:pkt];
+                [_audioPacketQueue enQueue:pkt];
                 break;
             }
             
@@ -204,7 +216,7 @@ static int decode_interrupt_cb(void *ctx)
                     if (pkt->data != NULL) {
                         self.videoPktCount++;
                     }
-                    [_packetQueue enQueue:pkt];
+                    [_videoPacketQueue enQueue:pkt];
                 }
                     break;
                 case AVMEDIA_TYPE_AUDIO:
@@ -212,7 +224,7 @@ static int decode_interrupt_cb(void *ctx)
                     if (pkt->data != NULL) {
                         self.audioPktCount++;
                     }
-                    [_packetQueue enQueue:pkt];
+                    [_audioPacketQueue enQueue:pkt];
                 }
                     break;
                 default:
@@ -383,8 +395,9 @@ static int decode_interrupt_cb(void *ctx)
     });
     
     _formatCtx = formatCtx;
-    [self.decoderThread start];
-    //[self.videoThread start];
+    [self.audioDecoderThread start];
+    [self.videoDecoderThread start];
+
     //循环读包
     [self readPacketLoop:formatCtx];
 }
@@ -467,7 +480,6 @@ static int decode_interrupt_cb(void *ctx)
 
 #pragma mark - 解码
 
-
 - (FFTDecoder *)openStreamComponent:(AVFormatContext *)ic streamIdx:(int)idx
 {
     FFTDecoder *decoder = [FFTDecoder new];
@@ -500,11 +512,11 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoderFunc
+- (void)audioDecoderFunc
 {
     while (!self.abort_request) {
         __weakSelf__
-        [_packetQueue deQueue:^(AVPacket * pkt) {
+        [_audioPacketQueue deQueue:^(AVPacket * pkt) {
             __strongSelf__
             if (pkt) {
                 [self decodePkt:pkt];
@@ -512,6 +524,20 @@ static int decode_interrupt_cb(void *ctx)
         }];
     }
 }
+
+- (void)videoDecoderFunc
+{
+    while (!self.abort_request) {
+        __weakSelf__
+        [_videoPacketQueue deQueue:^(AVPacket * pkt) {
+            __strongSelf__
+            if (pkt) {
+                [self decodePkt:pkt];
+            }
+        }];
+    }
+}
+
 
 #pragma mark - FFTDecoderDelegate
 
@@ -759,7 +785,6 @@ static int decode_interrupt_cb(void *ctx)
 {
     const char *fmt_str = av_sample_fmt_to_string(frame->format);
     self.audioSamplelInfo = [NSString stringWithFormat:@"(%s)%d",fmt_str,frame->sample_rate];
- 
     [_audioFrameQueue enQueue:frame];
 }
 
@@ -819,10 +844,10 @@ static int decode_interrupt_cb(void *ctx)
     return [_audioRender name];
 }
 
-- (UIView *)videoRender
+- (UIView<IJKVideoRenderingProtocol> *)videoRender
 {
     if (!_videoRender) {
-        id videoRender = [[IJKMetalView alloc] init];
+        IJKMetalView *videoRender = [[IJKMetalView alloc] init];
         _videoRender = videoRender;
     }
     return _videoRender;
