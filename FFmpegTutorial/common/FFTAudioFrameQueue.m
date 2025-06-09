@@ -18,6 +18,15 @@
 
 @implementation FFTAudioFrameQueue
 
+- (instancetype)init
+{
+    self = [self initWithCapacity:15];
+    if (self) {
+        
+    }
+    return self;
+}
+
 - (void)enQueue:(AVFrame *)frame
 {
     FFFrameItem *item = [[FFFrameItem alloc] initWithAVFrame:frame];

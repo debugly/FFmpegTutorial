@@ -24,6 +24,7 @@
 
 - (void)dealloc
 {
+    av_frame_unref(_frame);
     av_frame_free(&_frame);
 }
 
@@ -31,6 +32,7 @@
 
 @interface FFTFrameQueue ()
 
+@property (nonatomic, assign, readwrite) int capacity;
 @property (nonatomic, strong) NSMutableArray *queue;
 @property (nonatomic, strong) NSRecursiveLock *lock;
 @property (atomic, assign) BOOL canceled;
@@ -44,10 +46,11 @@
     
 }
 
-- (instancetype)init
+- (instancetype)initWithCapacity:(int)capacity
 {
     self = [super init];
     if (self) {
+        self.capacity = capacity;
         self.queue = [NSMutableArray array];
         self.lock = [[NSRecursiveLock alloc] init];
     }
@@ -69,8 +72,15 @@
     if (self.canceled) {
         return;
     }
+    int count;
     [self.lock lock];
+    while (!self.canceled && [self.queue count] >= self.capacity) {
+        [self.lock unlock];
+        usleep(30*1000);
+        [self.lock lock];
+    }
     [self.queue addObject:item];
+    [self.queue count];
     [self.lock unlock];
 }
 

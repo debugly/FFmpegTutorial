@@ -23,9 +23,11 @@ typedef struct AVFrame AVFrame;
 
 @interface FFTFrameQueue : NSObject
 
+@property (nonatomic, assign, readonly) int capacity;
 @property (nonatomic, assign) BOOL eof;
 @property (nonatomic, assign) double streamTimeBase;
 
+- (instancetype)initWithCapacity:(int)capacity NS_DESIGNATED_INITIALIZER;
 - (void)push:(FFFrameItem *)frame;
 - (void)pop;
 - (int)count;

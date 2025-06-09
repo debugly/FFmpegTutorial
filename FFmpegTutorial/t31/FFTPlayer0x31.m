@@ -34,7 +34,8 @@ kFFTPlayer0x31InfoKey kFFTPlayer0x31Height = @"kFFTPlayer0x31Height";
     //音频重采样
     FFTAudioResample *_audioResample;
     
-    FFTPacketQueue *_packetQueue;
+    FFTPacketQueue *_audioPacketQueue;
+    FFTPacketQueue *_videoPacketQueue;
     
     AVFormatContext * _formatCtx;
     //读包完毕？
@@ -43,7 +44,8 @@ kFFTPlayer0x31InfoKey kFFTPlayer0x31Height = @"kFFTPlayer0x31Height";
 
 //读包线程
 @property (nonatomic, strong) FFTThread *readThread;
-@property (nonatomic, strong) FFTThread *decoderThread;
+@property (nonatomic, strong) FFTThread *audioDecoderThread;
+@property (nonatomic, strong) FFTThread *videoDecoderThread;
 
 @property (atomic, assign) int abort_request;
 @property (nonatomic, copy) dispatch_block_t onErrorBlock;
@@ -65,7 +67,8 @@ static int decode_interrupt_cb(void *ctx)
 - (void)_stop
 {
     self.abort_request = 1;
-    [_packetQueue cancel];
+    [_audioPacketQueue cancel];
+    [_videoPacketQueue cancel];
     
     //避免重复stop做无用功
     if (self.readThread) {
@@ -73,9 +76,14 @@ static int decode_interrupt_cb(void *ctx)
         [self.readThread join];
     }
     
-    if (self.decoderThread) {
-        [self.decoderThread cancel];
-        [self.decoderThread join];
+    if (self.audioDecoderThread) {
+        [self.audioDecoderThread cancel];
+        [self.audioDecoderThread join];
+    }
+    
+    if (self.videoDecoderThread) {
+        [self.videoDecoderThread cancel];
+        [self.videoDecoderThread join];
     }
     
     //读包线程结束了，销毁下相关结构体
@@ -99,13 +107,18 @@ static int decode_interrupt_cb(void *ctx)
     if (self.readThread) {
         NSAssert(NO, @"不允许重复创建");
     }
-    _packetQueue = [[FFTPacketQueue alloc] init];
+    _audioPacketQueue = [[FFTPacketQueue alloc] init];
+    _videoPacketQueue = [[FFTPacketQueue alloc] init];
     
     self.readThread = [[FFTThread alloc] initWithTarget:self selector:@selector(readPacketsFunc) object:nil];
     self.readThread.name = @"mr-read";
     
-    self.decoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(decoderFunc) object:nil];
-    self.decoderThread.name = @"mr-decoder";
+    self.audioDecoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(audioDecoderFunc) object:nil];
+    
+    self.videoDecoderThread = [[FFTThread alloc] initWithTarget:self selector:@selector(videoDecoderFunc) object:nil];
+    
+    self.audioDecoderThread.name = @"audio-decoder";
+    self.videoDecoderThread.name = @"video-decoder";
 }
 
 #pragma -mark 读包线程
@@ -135,9 +148,9 @@ static int decode_interrupt_cb(void *ctx)
                 pkt->data = NULL;
                 pkt->size = 0;
                 pkt->stream_index = _videoDecoder.streamIdx;
-                [_packetQueue enQueue:pkt];
+                [_videoPacketQueue enQueue:pkt];
                 pkt->stream_index = _audioDecoder.streamIdx;
-                [_packetQueue enQueue:pkt];
+                [_audioPacketQueue enQueue:pkt];
                 break;
             }
             
@@ -156,7 +169,7 @@ static int decode_interrupt_cb(void *ctx)
                     if (pkt->data != NULL) {
                         self.videoPktCount++;
                     }
-                    [_packetQueue enQueue:pkt];
+                    [_videoPacketQueue enQueue:pkt];
                 }
                     break;
                 case AVMEDIA_TYPE_AUDIO:
@@ -164,7 +177,7 @@ static int decode_interrupt_cb(void *ctx)
                     if (pkt->data != NULL) {
                         self.audioPktCount++;
                     }
-                    [_packetQueue enQueue:pkt];
+                    [_audioPacketQueue enQueue:pkt];
                 }
                     break;
                 default:
@@ -319,7 +332,8 @@ static int decode_interrupt_cb(void *ctx)
     });
     
     _formatCtx = formatCtx;
-    [self.decoderThread start];
+    [self.audioDecoderThread start];
+    [self.videoDecoderThread start];
     //循环读包
     [self readPacketLoop:formatCtx];
 }
@@ -435,11 +449,24 @@ static int decode_interrupt_cb(void *ctx)
     }
 }
 
-- (void)decoderFunc
+- (void)audioDecoderFunc
 {
     while (!self.abort_request) {
         __weakSelf__
-        [_packetQueue deQueue:^(AVPacket * pkt) {
+        [_audioPacketQueue deQueue:^(AVPacket * pkt) {
+            __strongSelf__
+            if (pkt) {
+                [self decodePkt:pkt];
+            }
+        }];
+    }
+}
+
+- (void)videoDecoderFunc
+{
+    while (!self.abort_request) {
+        __weakSelf__
+        [_videoPacketQueue deQueue:^(AVPacket * pkt) {
             __strongSelf__
             if (pkt) {
                 [self decodePkt:pkt];

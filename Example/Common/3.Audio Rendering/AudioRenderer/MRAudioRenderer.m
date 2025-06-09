@@ -21,6 +21,7 @@
     FILE * file_pcm_l;
     FILE * file_pcm_r;
 #endif
+    int _playing;
 }
 
 @property (nonatomic, assign, readwrite) MRSampleFormat sampleFmt;
@@ -86,17 +87,26 @@
 
 - (void)play
 {
-    [self.audioRendererImp play];
+    if (!_playing) {
+        [self.audioRendererImp play];
+        _playing = YES;
+    }
 }
 
 - (void)pause
 {
-    [self.audioRendererImp pause];
+    if (_playing) {
+        [self.audioRendererImp pause];
+    }
+    _playing = NO;
 }
 
 - (void)stop
 {
-    [self.audioRendererImp stop];
+    if (_playing) {
+        [self.audioRendererImp stop];
+    }
+    _playing = NO;
 }
 
 - (float)outputVolume

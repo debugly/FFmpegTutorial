@@ -10,6 +10,15 @@
 
 @implementation FFTVideoFrameQueue
 
+- (instancetype)init
+{
+    self = [self initWithCapacity:5];
+    if (self) {
+        
+    }
+    return self;
+}
+
 - (void)enQueue:(AVFrame *)frame
 {
     FFFrameItem *item = [[FFFrameItem alloc] initWithAVFrame:frame];
