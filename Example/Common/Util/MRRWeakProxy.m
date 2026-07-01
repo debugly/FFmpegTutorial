@@ -3,7 +3,7 @@
 // FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 04/18/2020.
-//  Copyright (c) 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright (c) 2020 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 
 #import "MRRWeakProxy.h"

@@ -1,7 +1,7 @@
 //  FFmpegTutorial
 //
 //  Created by qianlongxu.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 
 
 //https://stackoverflow.com/questions/8788049/shader-differences-on-ios

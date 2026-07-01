@@ -737,7 +737,7 @@
 			dependencies = (
 			);
 			name = iOSExample;
-			productName = FFmpegTutotial;
+			productName = FFmpegTutorial;
 			productReference = 6003F58A195388D20070C39A /* FFmpegTutorial.app */;
 			productType = "com.apple.product-type.application";
 		};
@@ -749,7 +749,7 @@
 			attributes = {
 				CLASSPREFIX = MR;
 				LastUpgradeCheck = 1150;
-				ORGANIZATIONNAME = "Matt Reach's Awesome FFmpeg Tutotial";
+				ORGANIZATIONNAME = "Matt Reach's Awesome FFmpeg Tutorial";
 				TargetAttributes = {
 					6003F589195388D20070C39A = {
 						DevelopmentTeam = 96C96H28CU;

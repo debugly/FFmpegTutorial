@@ -1,7 +1,7 @@
 //  FFmpegTutorial
 //
 //  Created by qianlongxu.
-//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 
 
 #version 330

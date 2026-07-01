@@ -3,7 +3,7 @@
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2023/12/21.
-//  Copyright © 2023 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2023 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 // 音视频同步
 

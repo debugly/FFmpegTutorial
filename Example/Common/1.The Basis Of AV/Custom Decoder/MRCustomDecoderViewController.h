@@ -3,7 +3,7 @@
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/7/5.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 // 创建解码器类封装解码逻辑
 

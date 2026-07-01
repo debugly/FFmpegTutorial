@@ -3,7 +3,7 @@
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/9/26.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 
 //Audio Queue Support packet fmt only!

@@ -3,7 +3,7 @@
 //  FFmpegTutorial-macOS
 //
 //  Created by qianlongxu on 2021/9/26.
-//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2021 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 // 音频渲染器，内部根据音频采样深度自动和数据组织格式
 // 自动选择 AudioUnit 或者 AudioQueue;

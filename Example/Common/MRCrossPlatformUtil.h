@@ -3,7 +3,7 @@
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2022/12/3.
-//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2022 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 
 #ifndef MRCrossPlatformUtil_h

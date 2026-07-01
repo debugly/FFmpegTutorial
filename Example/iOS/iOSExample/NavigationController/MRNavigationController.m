@@ -3,7 +3,7 @@
 //  FFmpegTutorial-iOS
 //
 //  Created by qianlongxu on 2020/4/19.
-//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutotial. All rights reserved.
+//  Copyright © 2020 Matt Reach's Awesome FFmpeg Tutorial. All rights reserved.
 //
 
 #import "MRNavigationController.h"
