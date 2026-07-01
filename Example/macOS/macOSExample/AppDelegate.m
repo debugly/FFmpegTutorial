@@ -19,8 +19,12 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification
 {
+    // Disable macOS state restoration to prevent crashes from corrupted or missing restoration class state.
+    [[NSUserDefaults standardUserDefaults] setBool:YES forKey:@"ApplePersistenceIgnoreState"];
+
     // Insert code here to initialize your application
     NSWindow *window = [[NSWindow alloc] initWithContentRect:CGRectZero styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable backing:NSBackingStoreBuffered defer:YES];
+    window.restorable = NO;
 
     window.titleVisibility = NSWindowTitleHidden;
     window.titlebarAppearsTransparent = YES;
@@ -58,6 +62,11 @@
             [self.rootWinController showWindow:nil];
         }
     }
+    return YES;
+}
+
+- (BOOL)applicationSupportsSecureRestorableState:(NSApplication *)app
+{
     return YES;
 }
 
