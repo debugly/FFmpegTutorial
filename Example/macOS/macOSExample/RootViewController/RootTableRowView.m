@@ -148,7 +148,7 @@
 - (void)drawSelectionInRect:(NSRect)dirtyRect
 {
 //    CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-//    CGContextSetFillColorWithColor(context, (__bridge CGColorRef)[NSColor secondarySelectedControlColor]);
+//    CGContextSetFillColorWithColor(context, [NSColor secondarySelectedControlColor].CGColor);
 //    CGContextFillRect(context, dirtyRect);
 //
 //    [[NSColor colorWithWhite:0.5 alpha:0.5] drawSwatchInRect:dirtyRect];
@@ -172,7 +172,7 @@
         case KSeparactorStyleHeadPadding:
         {
             CGContextRef context = [[NSGraphicsContext currentContext] graphicsPort];
-            CGContextSetStrokeColorWithColor(context, (__bridge CGColorRef)[NSColor colorWithWhite:0.1 alpha:0.1]);
+            CGContextSetStrokeColorWithColor(context, [NSColor colorWithWhite:0.1 alpha:0.1].CGColor);
             CGContextSetLineWidth(context, 1);
             //    CGFloat dashArray[] = {3,1};
             //    CGContextSetLineDash(context, 1, dashArray, 1);//跳过3个再画虚线，所以刚开始有6-（3-2）=5个虚点
