@@ -11,6 +11,7 @@
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
 cd FFmpegTutorial
+#下载预编译好的 FFmpeg 静态库
 ./install-pre-any.sh ios
 open Example/iOS/iOSExample.xcworkspace
 ```
@@ -26,6 +27,7 @@ open Example/iOS/iOSExample.xcworkspace
 ```bash
 git clone https://github.com/debugly/FFmpegTutorial.git
 cd FFmpegTutorial
+#下载预编译好的 FFmpeg 静态库
 ./install-pre-any.sh macos
 open Example/macOS/macOSExample.xcworkspace
 ```
@@ -36,9 +38,8 @@ open Example/macOS/macOSExample.xcworkspace
 
 ![](md/imgs/macos-snapshot-3.png)
 
-## 简介
 
-所有对 FFmpeg6 的封装代码都放在 FFmpegTutorial 库里，执行 ./install-pre-any.sh 脚本时会自动下载已经预编译好的 FFmpeg 静态库，编译 FFmpeg 的脚本也是开源的 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)。
+## 简介
 
 教程共分为六个部分，提供了 iOS 和 macOS 的上层调用示例，使用 Objective-C 语言开发:
 
@@ -80,7 +81,11 @@ open Example/macOS/macOSExample.xcworkspace
 
 六、跨平台播放器
 
-- [fsplayer](https://github.com/debugly/fsplayer)
+- 参考 [fsplayer](https://github.com/debugly/fsplayer)
+
+七、编译 FFmpeg
+
+- 参考 [MRFFToolChainBuildShell](https://github.com/debugly/MRFFToolChainBuildShell)
 
 ## 捐赠
 
